@@ -1,0 +1,25 @@
+{
+  "name": "frontend_admin",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "xiiyuoo",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.5"
+  }
+}
