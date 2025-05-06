@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">client_app</string>
+
+    <string name="bottom_nav_home">Homepage</string>
+    <string name="bottom_nav_product">Product</string>
+    <string name="bottom_nav_compare">Compare</string>
+    <string name="bottom_nav_account">Account</string>
+
 </resources>
