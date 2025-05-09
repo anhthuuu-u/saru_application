@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái xác thực thành công (màu xanh lá) -->
+    <item android:state_selected="true">
+        <shape android:shape="ring"
+            android:innerRadiusRatio="2.0"
+            android:thicknessRatio="2.0"
+            android:useLevel="false">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="10dp" android:color="#00FF00" />
+        </shape>
+    </item>
+    <!-- Trạng thái xác thực thất bại (màu đỏ) -->
+    <item android:state_enabled="false">
+        <shape android:shape="ring"
+            android:innerRadiusRatio="2.0"
+            android:thicknessRatio="2.0"
+            android:useLevel="false">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="10dp" android:color="#FF0000" />
+        </shape>
+    </item>
+    <!-- Trạng thái mặc định (màu xám) -->
+    <item>
+        <shape android:shape="ring"
+            android:innerRadiusRatio="2.0"
+            android:thicknessRatio="2.0"
+            android:useLevel="false">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="10dp" android:color="@android:color/darker_gray" />
+        </shape>
+    </item>
+</selector>
