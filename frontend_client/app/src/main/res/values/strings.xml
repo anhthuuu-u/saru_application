@@ -1,13 +1,27 @@
 <resources>
     <string name="app_name">client_app</string>
+    <!--Onbroading -->
     <string name="title_onbroading">Yo, my drinking pal! \nWelcome to Saru\'s spirits!</string>
     <string name="subtitle_onbroading">Discover genuine selections, compliant with standards.</string>
     <string name="btn_login">Login</string>
     <string name="text_signup">New to us?</string>
     <string name="btn_signup">Signup</string>
+    <!--Login -->
     <string name="title_email">Email <font color="#FF0000">*</font> </string>
     <string name="hint_email">Enter your email address</string>
     <string name="title_password">Password <font color="#FF0000">*</font> </string>
     <string name="hint_password">Enter your password</string>
     <string name="btn_forgot_password"><u>Forgot password?</u></string>
+    <!--Signup -->
+    <string name="title_signup">SIGN UP</string>
+    <string name="title_fullname">Full Name <font color="#FF0000">*</font> </string>
+    <string name="hint_fullname">Enter your full name</string>
+    <string name="txt_disclaimer">According to the law, we need to <font color="#FF0000">verify your identity</font> to be able to purchase alcoholic beverages and tobacco.</string>
+    <string name="title_id_card">ID Card/CCCD <font color="#FF0000">*</font> </string>
+    <string name="upload_id_card">Upload ID Card/CCCD</string>
+    <string name="title_face_verification">Face Verification <font color="#FF0000">*</font> </string>
+    <string name="upload_face_verification">Face Verification</string>
+    <string name="chk_agree"><font color="#FF0000">*</font> I have read and agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Saru</string>
+    <string name="text_login">Already have account?</string>
+
 </resources>
