@@ -25,5 +25,18 @@
     <string name="text_login">Already have account?</string>
     <!--Greeting -->
     <string name="btn_greeting">Start to sip!</string>
+    <!--ForgotPassword -->
+    <string name="title_forgot_password">FORGOT PASSWORD</string>
+    <string name="txt_input_email">Please enter the email address you used to create your account, and we will send you a verification code to reset your password.</string>
+    <string name="btn_continue">Continue</string>
+    <string name="txt_input_code">We have sent a verification code to the email address %s. Please enter the verification code you received!</string>
+    <string name="txt_resend_code">Haven\'t receive a code?</string>
+    <string name="btn_resend_code">Resend code</string>
+    <string name="txt_input_password">Enter your new password for the account with the email address %s!</string>
+    <string name="title_new_password">New Password <font color="#FF0000">*</string>
+    <string name="hint_new_password">Enter your new password</string>
+    <string name="title_confirm_password">Confirm Password <font color="#FF0000">*</font> </string>
+    <string name="hint_confirm_password">Enter your password again</string>
+
 
 </resources>
