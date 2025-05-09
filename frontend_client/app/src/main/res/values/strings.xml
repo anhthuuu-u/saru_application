@@ -23,5 +23,7 @@
     <string name="upload_face_verification">Face Verification</string>
     <string name="chk_agree"><font color="#FF0000">*</font> I have read and agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Saru</string>
     <string name="text_login">Already have account?</string>
+    <!--Greeting -->
+    <string name="btn_greeting">Start to sip!</string>
 
 </resources>
