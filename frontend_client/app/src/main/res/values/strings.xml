@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">client_app</string>
+    <string name="title_onbroading">Yo, my drinking pal! \nWelcome to Saru\'s spirits!</string>
+    <string name="subtitle_onbroading">Discover genuine selections, compliant with standards.</string>
+    <string name="btn_login">Login</string>
+    <string name="text_signup">New to us?</string>
+
+    <string name="btn_signup">Signup</string>
 </resources>
