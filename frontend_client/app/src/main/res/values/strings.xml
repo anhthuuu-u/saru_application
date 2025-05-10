@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">client_app</string>
+    <string name="title_blog_Blog">BLOG</string>
+    <string name="title_blog_catalog">Catalog</string>
+    <string name="title_blog_inforTayBacWine">Information about Tay Bac Wine</string>
+    <string name="title_blog_seemore">See more</string>
+    <string name="title_blog_tips">Tips</string>
+    <string name="title_blog_suggestforyou">Suggest for you</string>
+    <string name="title_blog_titleblogs">Title blog</string>
+    <string name="title_blog_blogcatalog">Blog Catalog</string>
+    <string name="title_blog_blogtitle">Blog title</string>
+    <string name="title_blog_blogcontent">Content</string>
+    <string name="title_blog_suggestfyou">Suggest for you</string>
+    <string name="title_blogeachcatalog_blogcatalogname_infor">INFORMATION ABOUT TAY BAC WINE</string>
+    <string name="title_detailblog_titleblog">THE HEALTH BENEFITS OF TAY BAC WINE</string>
+    <string name="title_detailblog_datepost">Posting date</string>
+    <string name="title_detailblog_view">View</string>
+    <string name="title_detailblog_relatednews">Related news</string>
 </resources>
