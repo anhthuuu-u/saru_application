@@ -1,3 +1,197 @@
 <resources>
-    <string name="app_name">client_app</string>
+    <!-- FRAGMENT PROFILE -->
+    <!-- Header -->
+    <string name="account_title">ACCOUNT</string>
+    <string name="user_name">CAM TU</string>
+    <string name="user_email">tuttc22411c@st.uel.edu.vn</string>
+
+    <!-- Orders -->
+    <string name="my_orders">My Orders</string>
+    <string name="pending_confirm">Pending confirmation</string>
+    <string name="pending_payment">Pending payment</string>
+    <string name="shipping">Shipping</string>
+    <string name="return_exchange">Return/Exchange</string>
+    <string name="view_all_orders">View all</string>
+
+    <!-- Account Info -->
+    <string name="account_info">Account Information</string>
+    <string name="personal_info">Personal info</string>
+    <string name="my_reviews">My reviews</string>
+    <string name="recently_viewed">Recently viewed</string>
+    <string name="my_voucher">My voucher</string>
+
+    <!-- Support -->
+    <string name="support">Support</string>
+    <string name="about_us">About Us</string>
+    <string name="customer_support_center">Customer Support Center</string>
+    <string name="introduce_saru">About Saru</string>
+    <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
+
+    <!-- ACTIVITY PROFILE EDIT -->
+    <!-- Header -->
+    <string name="profile_title">ACCOUNT INFORMATION</string>
+    <string name="back">Back</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="profile_image">Profile Image</string>
+
+    <!-- Personal Info -->
+    <string name="personal_info_title">Personal Information</string>
+    <string name="customer_name_label">Customer Name:</string>
+    <string name="gender_label">Gender:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="phone_label">Phone Number:</string>
+    <string name="dob_label">Date of Birth:</string>
+    <string name="email_label">Email:</string>
+    <string name="password_label">Password:</string>
+    <string name="join_date_label">Join Date:</string>
+    <string name="payment_method_label">Payment Method:</string>
+
+    <!-- Shipping Address -->
+    <string name="shipping_address_title">Shipping Address</string>
+    <string name="address_label">Address:</string>
+    <string name="add_address">Add address</string>
+    <string name="set_default_address">Set as default address</string>
+
+    <!-- ACTIVITY UPDATECARD -->
+    <string name="update_payment_info_title">UPDATE PAYMENT INFORMATION</string>
+    <string name="card_info_title">Card Information</string>
+    <string name="card_type_label">Card Type:</string>
+    <string name="card_type_prompt">Select Card Type</string>
+    <string name="select_bank_label">Select Bank:</string>
+    <string name="select_bank_placeholder"></string>
+    <string name="card_number_label">Card Number:</string>
+    <string name="card_number_placeholder"></string>
+    <string name="cvv_label">CVV:</string>
+    <string name="cvv_placeholder"></string>
+    <string name="expiry_date_label">Expiry Date:</string>
+    <string name="expiry_date_placeholder"></string>
+    <string name="save_info_button">Save Information</string>
+    <string name="update_success_message">Update successful!</string>
+
+    <!-- Array for Spinner (Card Types) -->
+    <string-array name="card_types">
+        <item>Mastercard</item>
+        <item>Visa</item>
+        <item>American Express</item>
+    </string-array>
+
+    <!-- ORDER LIST -->
+    <string name="back_button_description">Back Button</string>
+    <string name="order_detail_title">ORDER DETAILS</string>
+    <string name="order_tab_all">All</string>
+    <string name="order_tab_confirm">Pending Confirmation</string>
+    <string name="order_tab_payment">Pending Payment</string>
+    <string name="order_tab_shipping">Pending Delivery</string>
+    <string name="order_tab_complete">Delivered</string>
+    <string name="order_code_label">Order Code:</string>
+    <string name="order_code_value">SARU12345</string>
+    <string name="order_details_link">View details</string>
+    <string name="order_date_label">Order Date:</string>
+    <string name="order_date_value">11/20/2024</string>
+    <string name="order_status_label">Status:</string>
+    <string name="order_status_value">Delivered</string>
+    <string name="product_count_value">2 products</string>
+    <string name="products_label">Products</string>
+    <string name="product_name_1">MO MA DAO WINE - MOC CHAU</string>
+    <string name="product_brand_1">Brand: xxxxxx</string>
+    <string name="product_quantity_1">x2</string>
+    <string name="product_price_1">400,000₫</string>
+    <string name="product_old_price_1"><strike>430,000₫</strike></string>
+    <string name="shipping_fee_label">Shipping fee</string>
+    <string name="shipping_fee_value">20,000₫</string>
+    <string name="total_amount_label">Total amount</string>
+    <string name="total_amount_value">420,000₫</string>
+    <string name="contact_shipping_title">Shipping Information</string>
+    <string name="contact_name_value">Nguyen Van A</string>
+    <string name="contact_phone_value">0901234567</string>
+    <string name="contact_address_value">123 ABC Street, District 1, HCMC</string>
+
+    <!-- ORDER DETAIL ACTION BUTTONS -->
+    <string name="cancel_order">Cancel order</string>
+    <string name="write_review">Write review</string>
+    <string name="request_return">Request return/exchange</string>
+
+    <!-- REVIEWS -->
+    <string name="order_review_title">ORDER REVIEW</string>
+    <string name="product_label">Product</string>
+    <string name="product_name">Mao Dao Moc Chau Plum Wine</string>
+    <string name="brand_label">Brand: %s</string>
+    <string name="brand_value">XXXXX</string>
+    <string name="quantity_label">x%s</string>
+    <string name="original_price">-%s</string>
+    <string name="discounted_price">%s</string>
+    <string name="order_rating_label">Order Rating</string>
+    <string name="attach_media_label">Attach Photo/Video</string>
+    <string name="write_review_label">Write Review</string>
+    <string name="write_review_hint">Write your review here</string>
+    <string name="submit_review_button">Submit review</string>
+    <string name="review_submit_success">Send review successful!</string>
+
+    <!-- RETURN REQUEST -->
+    <string name="return_request_title">RETURN REQUEST</string>
+    <string name="request_label">Request</string>
+    <string name="request_refunded">Refunded</string>
+    <string name="request_returned">Returned</string>
+    <string name="reason_return_label">Reason for Refund/Return</string>
+    <string name="reason_wrong_item">Wrong item (size, color, etc.)</string>
+    <string name="reason_not_as_expected">Item not as expected</string>
+    <string name="reason_not_meet_request">Item does not meet request</string>
+    <string name="reason_return_other">Other:</string>
+    <string name="other_reason_hint">Enter other reason</string>
+    <string name="amount_refunded_label">Amount to be refunded:</string>
+    <string name="amount_refunded_value">Yes</string>
+    <string name="product_image_description">Product Image</string>
+    <string name="submit_return_button">Send request</string>
+    <string name="return_submit_success">Send request successful!</string>
+
+    <!-- CANCEL REQUEST -->
+    <string name="cancel_request_title">CANCEL REQUEST</string>
+    <string name="reason_cancel_label">Reason for cancel</string>
+    <string name="reason_no_need">I no longer need it</string>
+    <string name="reason_change_address">I want to change the address</string>
+    <string name="reason_not_meet_expectation">The item did not meet expectations</string>
+    <string name="reason_cancel_other">Other:</string>
+    <string name="other_reason_cancel_hint">Enter other reason</string>
+    <string name="amount_cancel_refunded_label">Amount to be refunded:</string>
+    <string name="amount_cancel_refunded_value">Yes</string>
+    <string name="submit_cancel_button">Send request</string>
+    <string name="cancel_submit_success">Send request successful!</string>
+
+    <!-- CUSTOMER SUPPORT CENTER -->
+    <string name="customer_support_title">CUSTOMER SUPPORT CENTER</string>
+    <string name="ask_question_label">Ask a Question</string>
+    <string name="ask_question_hint">Enter your question</string>
+    <string name="contact_us_label">Contact Us</string>
+    <string name="faqs_label">FAQs - Frequently Asked Questions</string>
+    <string name="faq_question_1">What is your return policy?</string>
+    <string name="faq_answer_1">You can return any item within 14 days of purchase.</string>
+    <string name="faq_question_2">How can I track my order?</string>
+    <string name="faq_answer_2">Once shipped, we’ll email you a tracking number you can use on our website.</string>
+    <string name="faq_question_3">Do you ship internationally?</string>
+    <string name="faq_answer_3">Yes, we ship to most countries. Shipping fees may apply based on location.</string>
+    <string name="faq_question_4">Can I change my delivery address?</string>
+    <string name="faq_answer_4">If your order hasn’t shipped yet, contact support to update your delivery details.</string>
+    <string name="faq_question_5">Which payment methods are accepted?</string>
+    <string name="faq_answer_5">We accept Visa, MasterCard, PayPal, and bank transfers.</string>
+    <string name="faq_question_6">How do I contact support?</string>
+    <string name="faq_answer_6">You can email us at support@example.com or call us at +123456789.</string>
+
+    <!-- LIVE CHAT -->
+    <string name="chat_button_description">Open chat</string>
+    <string name="chat_title">LIVE CHAT</string>
+    <string name="chat_hint">Enter your message</string>
+    <string name="chat_bot_greeting">Hello! How can I help you today?</string>
+    <string name="send_message">Send</string>
+
+    <!-- LANGUAGE -->
+    <string name="language_selection_title">LANGUAGE SELECTION</string>
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Vietnamese</string>
+    <string name="submit_language_button">Confirm</string>
+    <string name="language">Language</string>
+    <string name="language_current">English</string> <!-- hoặc Tiếng Việt nếu đã chọn -->
+    <string name="allow_notifications">Allow notifications</string>
+
 </resources>
