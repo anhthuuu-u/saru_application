@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">client_app</string>
+    <string name="title_notification_notification">NOTIFICATION</string>
+    <string name="title_notification_system">System</string>
+    <string name="title_notification_order">Order</string>
+    <string name="title_notification_discount">Discount</string>
+    <string name="title_notification_selectall">Select all</string>
+    <string name="title_notification_deleteall">Delete all</string>
+    <string name="title_notification_changepass">Change the password</string>
+    <string name="title_notification_message">Message</string>
+    <string name="title_notification_time">Time</string>
+    <string name="title_notification_fromorder_statussucess">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_sucess">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_popup_savechanges">Do you want to save the changes?</string>
+    <string name="title_confimation_popup_back">Back</string>
 </resources>
