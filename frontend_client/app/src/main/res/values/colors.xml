@@ -10,4 +10,5 @@
     <color name="color_ochre">#D8A850</color>
     <color name="color_medium_gray">#969696</color>
     <color name="color_creamy_white">#F2E8DA</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -39,4 +39,18 @@
     <string name="title_product_cart_select_all">Select all</string>
     <string name="title_product_cart_payment">Payment</string>
     <string name="title_product_comparison_name">Peach Wine</string>
+    <string name="Homepage_TayBac_Wine">Tay Bac Wine</string>
+    <string name="Homepage_Accessories">Accessories</string>
+    <string name="Homepage_Wine_Gift">Set wine gift</string>
+    <string name="Homepage_CS">Customer Service</string>
+    <string name="Homepage_Orders">Orders</string>
+    <string name="Homepage_supersale_section">Super Sale</string>
+    <string name="Title_view_all">View all</string>
+    <string name="Homepage_BestSeller_section">Best Seller</string>
+    <string name="Homepage_Customer_reviews">Customer Reviews</string>
+    <string name="title_voucher_management">Vouchers</string>
+    <string name="Voucher_save_btn">Save</string>
+    <string name="Voucher_description">Free ship for new customer</string>
+    <string name="Voucher_value">Discount 200</string>
+    <string name="Voucher_status">Expired</string>
 </resources>

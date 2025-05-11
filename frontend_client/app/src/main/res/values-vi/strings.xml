@@ -39,4 +39,19 @@
     <string name="title_product_cart_select_all">Chọn tất cả</string>
     <string name="title_product_cart_payment">Thanh toán</string>
     <string name="title_product_comparison_name">Rượu Mận</string>
+    <string name="Homepage_TayBac_Wine">Rượu Tây Bắc</string>
+    <string name="Homepage_Accessories">Phụ kiện</string>
+    <string name="Homepage_Wine_Gift">Bộ quà tặng rượu</string>
+    <string name="Homepage_CS">Dịch vụ khách hàng</string>
+    <string name="Homepage_Orders">Đơn hàng</string>
+    <string name="Homepage_supersale_section">Siêu khuyến mãi</string>
+    <string name="Title_view_all">Xem tất cả</string>
+    <string name="Homepage_BestSeller_section">Bán chạy nhất</string>
+    <string name="Homepage_Customer_reviews">Đánh giá của khách hàng</string>
+    <string name="title_voucher_management">Phiếu giảm giá</string>
+    <string name="Voucher_save_btn">Lưu</string>
+    <string name="Voucher_description">Miễn phí vận chuyển cho khách hàng mới</string>
+    <string name="Voucher_value">Giảm 200</string>
+    <string name="Voucher_status">Đã hết hạn</string>
+
 </resources>
