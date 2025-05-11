@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_golden_yellow"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <!-- Title Filter Product Dialog -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/title_filter_product_dialog"
+        android:textColor="@color/color_dark_brown"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+        <!-- Category -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/filter_product_dialog_category"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_filter_dialog"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Price Range -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_filter_product_dialog_price_range"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/edit_price_min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Min"
+            android:inputType="number"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edit_price_max"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Max"
+            android:inputType="number"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Sort By -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_product_dialog_sort"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_sort_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_filter_dialog"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Brand -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_filter_product_dialog_brand"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_filter_dialog"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Volume -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_filter_product_dialog_volume"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_filter_dialog"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Wine Type -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_filter_product_dialog_wine_type"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner_wine_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_filter_dialog"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Others -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_filter_product_dialog_others"
+        android:textColor="@color/color_espresso"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/checkbox_best_selling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Best Selling"
+        android:textColor="@color/color_espresso"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_on_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="On Sale"
+        android:textColor="@color/color_espresso"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Reset Filter and Apply Filter -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_border"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/button_apply_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_golden_yellow"
+            android:paddingVertical="8dp"
+            android:text="@string/title_filter_product_apply"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+        <!-- Reset Filter -->
+        <TextView
+            android:id="@+id/text_reset_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_reset"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>
