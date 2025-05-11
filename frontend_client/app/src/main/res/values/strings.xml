@@ -261,11 +261,7 @@
     <string name="title_notification_message">Message</string>
     <string name="title_notification_time">Time</string>
     <string name="title_notification_fromorder_statussucess">Delivery successful</string>
-    <string name="title_notification_fromorder_status_success">Delivery successful</string>
     <string name="title_notification_fromorder_status_sucess">Delivery successful</string>
-    <string name="title_notification_fromorder_status_success">Delivery successful</string>
-    <string name="title_notification_fromorder_status_success">Delivery successful</string>
-    <string name="title_notification_fromorder_status_success">Delivery successful</string>
     <string name="title_notification_popup_savechanges">Do you want to save the changes?</string>
     <string name="title_confimation_popup_back">Back</string>
 
