@@ -17,6 +17,7 @@
         <activity
 
 
+
             android:name=".TransactionEditAddressActivity"
             android:exported="false" />
         <activity
@@ -82,7 +83,30 @@
             android:exported="false" />
         <activity
             android:name=".Blog_ListActivity"
-
+            android:exported="false" />
+        <activity
+            android:name=".FaceAuthenticationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FogotPasswordCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FogotPasswordOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GreetingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnbroadingActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -93,6 +117,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
         <activity
             android:name=".Aboutus_SARUActivity"
@@ -106,7 +131,6 @@
         <meta-data
             android:name="com.google.android.geo.AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I"
             android:value="AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I" />
-
 
 
         <meta-data
