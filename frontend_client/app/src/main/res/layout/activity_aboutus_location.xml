@@ -27,6 +27,7 @@
             android:layout_width="455dp"
             android:layout_height="38dp"
             android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/title_aboutus"
             android:textAlignment="center"
             android:textColor="#B16527"
@@ -47,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/inter"
             android:text="@string/title_aboutus_saru_taybacwine"
             android:textAlignment="center" />
 
@@ -55,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/title_aboutus_storelocation"
             android:textAlignment="center"
             android:textStyle="bold" />
@@ -104,6 +107,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
                         android:text="@string/title_aboutuslocation_LaoCaiBranch"
                         android:textColor="#000"
                         android:textSize="16sp"
@@ -112,6 +116,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
                         android:text="@string/title_aboutuslocation_LaoCaiBranch_Address"
                         android:textColor="#666"
                         android:textSize="14sp" />
@@ -119,10 +124,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
                         android:text="Hotline: 0123.456.789"
                         android:textColor="#FF5722"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -172,6 +178,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
                         android:text="@string/title_aboutuslocation_HCMBranch"
                         android:textColor="#000"
                         android:textSize="16sp"
@@ -180,6 +187,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
                         android:text="@string/title_aboutuslocation_HoChiMinhBranch_Address"
                         android:textColor="#666"
                         android:textSize="14sp" />
@@ -187,6 +195,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
                         android:text="Hotline: 0123.456.879"
                         android:textColor="#FF5722"
                         android:textSize="14sp"
