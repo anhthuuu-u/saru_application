@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
 
+
         <item>@font/inter</item>
         <item>@font/inter_bold</item>
         <item>@font/inter_extralight</item>
@@ -11,7 +12,6 @@
         <item>@font/inter_semibold</item>
         <item>@font/inter_thin</item>
         <item>@font/inter_tight</item>
-        <item>@font/inter_medium</item>
         <item>@font/italianno</item>
 
     </array>

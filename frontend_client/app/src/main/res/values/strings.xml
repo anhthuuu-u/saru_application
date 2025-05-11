@@ -269,8 +269,7 @@
     <string name="title_notification_popup_savechanges">Do you want to save the changes?</string>
     <string name="title_confimation_popup_back">Back</string>
 
-    <string name="app_name">client_app</string>
-<<<<<<< HEAD
+
     <string name="title_blog_Blog">BLOG</string>
     <string name="title_blog_catalog">Catalog</string>
     <string name="title_blog_inforTayBacWine">Information about Tay Bac Wine</string>
@@ -346,6 +345,11 @@
     <string name="title_confirm_password">Confirm Password <font color="#FF0000">*</font> </string>
     <string name="hint_confirm_password">Enter your password again</string>
 
+
+    <string name="bottom_nav_home">Homepage</string>
+    <string name="bottom_nav_product">Product</string>
+    <string name="bottom_nav_compare">Compare</string>
+    <string name="bottom_nav_account">Account</string>
 
 </resources>
 
