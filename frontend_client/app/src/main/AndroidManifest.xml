@@ -15,6 +15,14 @@
         <activity
             android:name=".VouchersManagement"
             android:exported="true" >
+        </activity>
+        <activity>
+            android:name=".TransactionEditAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionCheckoutActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity
+
             android:name=".Homepage"
             android:exported="false" />
         <activity
@@ -39,9 +48,10 @@
             android:name=".Products"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
 
+            android:name=".MainActivity"
+            android:exported="false"/>
+        </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
