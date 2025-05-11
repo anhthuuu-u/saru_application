@@ -4,12 +4,12 @@
     <string name="title_delivery_information">Delivery Information</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
-    <string name="title_customer_address">KTX Đại học Quốc gia Khu B, TP Thủ Đức, TP Hồ Chí Minh</string>
+    <string name="title_customer_address">Dormitory Area B - Ho Chi Minh City National University, Thu Duc City, Ho Chi Minh City, Vietnam</string>
     <string name="title_product">Product</string>
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
-    <string name="title_brand">Thương hiệu:</string>
+    <string name="title_brand">Brand:</string>
     <string name="title_brand_name_3">xxxxxxxxxxxx</string>
     <string name="title_brand_name_2">yyyyyyyyyyy</string>
     <string name="title_brand_name_1">zzzzzzzzzzzzzzzz</string>
@@ -37,6 +37,6 @@
     <string name="title_product_3_price">400.000 đ</string>
     <string name="title_quantity_2">x2</string>
     <string name="title_quantity_1">x1</string>
-    <string name="title_voucher_code_hint">Enter voucher code here...</string>
+    <string name="title_voucher_code_hint">Enter voucher code here</string>
     <string name="title_product_price_original">460.000 đ</string>
 </resources>

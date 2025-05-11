@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ứng dụng Saru</string>
+    <string name="title_transaction_checkout">Thanh Toán</string>
+    <string name="title_delivery_information">Thông tin vận chuyển</string>
+    <string name="title_customer_name">Anh Khoa</string>
+    <string name="title_customer_phone_number">0941705717</string>
+    <string name="title_customer_address">KTX Đại học Quốc gia Khu B, TP Thủ Đức, TP Hồ Chí Minh</string>
+    <string name="title_product">Sản phẩm</string>
+    <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
+    <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
+    <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
+    <string name="title_brand">Thương hiệu:</string>
+    <string name="title_brand_name_3">xxxxxxxxxxxx</string>
+    <string name="title_brand_name_2">yyyyyyyyyyy</string>
+    <string name="title_brand_name_1">zzzzzzzzzzzzzzzz</string>
+    <string name="title_shipping_fee">Phí vận chuyển:</string>
+    <string name="title_merchandise_total">Tổng số tiền</string>
+    <string name="title_item_quantity">(x sản phẩm)</string>
+    <string name="title_delivery_time">Thời gian vận chuển</string>
+    <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
+    <string name="title_transaction_term">Khi nhấn \"Thanh toán\" đồng nghĩa với việc bạn đồng ý tuân thủ theo Điều khoản Saru của Saru</string>
+    <string name="title_place_order">Thanh toán</string>
+    <string name="title_total_payment">Tổng cộng</string>
+    <string name="title_total_price">1.020.000đ</string>
+    <string name="title_total_saved">Tiết kiệm</string>
+    <string name="title_saved_price">150.000đ</string>
+    <string name="title_payment_method">Phương thức thanh toán</string>
+    <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
+    <string name="title_bank">Thẻ ngân hàng (Thẻ tín Dụng hoặc thẻ ghi Nợ)</string>
+    <string name="title_ewallet">Ví điện tử</string>
+    <string name="title_voucher_code">Mã giảm giá</string>
+    <string name="title_voucher_apply">Áp dụng</string>
+    <string name="title_merchandise_total_price">1.020.000đ</string>
+    <string name="title_shipping_fee_price">20.000 đ</string>
+    <string name="title_product_1_price">400.000 đ</string>
+    <string name="title_product_2_price">200.000 đ</string>
+    <string name="title_product_3_price">400.000 đ</string>
+    <string name="title_quantity_2">x2</string>
+    <string name="title_quantity_1">x1</string>
+    <string name="title_voucher_code_hint">Nhập mã giảm giá tại đây</string>
+    <string name="title_product_price_original">460.000 đ</string>
+</resources>
