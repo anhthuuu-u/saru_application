@@ -1,4 +1,5 @@
 <resources>
+
     <string name="title_transaction_checkout">Check Out</string>
     <string name="title_delivery_information">Delivery Information</string>
     <string name="title_customer_name">Anh Khoa</string>
@@ -247,5 +248,23 @@
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Address: 16 Le Hong Phong, Lao Cai City, Lao Cai Province</string>
     <string name="title_aboutuslocation_HCMBranch">Saru Tay Bac Store, Ho Chi Minh Branch</string>
     <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Cô Bắc Street, Cô Giang Ward, District 1, Ho Chi Minh City</string>
-</resources>
 
+
+    <string name="title_notification_notification">NOTIFICATION</string>
+    <string name="title_notification_system">System</string>
+    <string name="title_notification_order">Order</string>
+    <string name="title_notification_discount">Discount</string>
+    <string name="title_notification_selectall">Select all</string>
+    <string name="title_notification_deleteall">Delete all</string>
+    <string name="title_notification_changepass">Change the password</string>
+    <string name="title_notification_message">Message</string>
+    <string name="title_notification_time">Time</string>
+    <string name="title_notification_fromorder_statussucess">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_sucess">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_popup_savechanges">Do you want to save the changes?</string>
+    <string name="title_confimation_popup_back">Back</string>
+</resources>
