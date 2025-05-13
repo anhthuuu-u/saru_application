@@ -47,7 +47,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.6"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <TextView
                 android:id="@+id/textView"
@@ -396,7 +396,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    tools:text="CCCD đã được tải lên thành công."
+                    tools:text="@string/status_upload_success_id"
                     tools:textColor="@android:color/holo_green_dark"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
