@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="subtitleTextView" type="id" />
-    <item name="emailInputLayout" type="id">input_email</item>
-    <item name="passwordInputLayout" type="id">imput_password</item>
-    <item name="txtInputPassword" type="id">txtInputPassword</item>
+    <item name="emailInputLayout" type="id"/>
+    <item name="passwordInputLayout" type="id"/>
+    <item name="txtInputPassword" type="id"/>
+    <item name="btn_forgot_password" type="id"/>
 </resources>
