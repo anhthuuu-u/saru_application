@@ -13,23 +13,33 @@
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
-            android:name=".Notification_Popup_ConfirmationActivity"
+            android:name=".Notification_FromDiscountActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".Notification_PopUp_MessageActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Notification_Popup_ConfirmationActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".Notification_FromOrderActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Notification_FromSettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Notification_FromSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
+
 
         <meta-data
             android:name="preloaded_fonts"
