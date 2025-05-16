@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">client_app</string>
+    <string name="app_name">SARU</string>
     <string name="title_blog_Blog">BLOG</string>
     <string name="title_blog_catalog">Catalog</string>
     <string name="title_blog_inforTayBacWine">Information about Tay Bac Wine</string>
@@ -16,4 +16,5 @@
     <string name="title_detailblog_datepost">Posting date</string>
     <string name="title_detailblog_view">View</string>
     <string name="title_detailblog_relatednews">Related news</string>
+
 </resources>
