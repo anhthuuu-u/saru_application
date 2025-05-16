@@ -101,7 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                android:src="@mipmap/img_wine"
+                android:src="@drawable/img_wine"
                 android:scaleType="centerInside"
                 android:padding="8dp"
                 android:contentDescription="Peach Wine Image" />
@@ -111,7 +111,7 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                android:src="@mipmap/img_wine"
+                android:src="@drawable/img_wine"
                 android:scaleType="centerInside"
                 android:padding="8dp"
                 android:contentDescription="Peach Wine (Peach) Image" />
@@ -121,7 +121,7 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                android:src="@mipmap/img_wine"
+                android:src="@drawable/img_wine"
                 android:scaleType="centerInside"
                 android:padding="8dp"
                 android:contentDescription="Rice Wine Image" />

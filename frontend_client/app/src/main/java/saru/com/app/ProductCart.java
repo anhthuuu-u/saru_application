@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import saru.com.app.connectors.CartAdapter;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;

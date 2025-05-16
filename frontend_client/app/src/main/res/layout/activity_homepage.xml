@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_creamy_white">
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            app:srcCompat="@mipmap/img_saru_logo_white_bg" />
+            app:srcCompat="@drawable/img_saru_logo_white_bg" />
 
         <LinearLayout
             android:id="@+id/toolbar_layout"
@@ -86,8 +87,6 @@
                 app:srcCompat="@mipmap/ic_cart" />
         </LinearLayout>
 
-        <!-- Categories -->
-
         <!-- Banner -->
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -114,7 +113,7 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <!-- Siêu Sale Section -->
+        <!--Categories-->
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -135,7 +134,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="23dp"
-                        android:src="@mipmap/img_taybac_wine" />
+                        android:src="@drawable/img_taybac_wine" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -154,7 +153,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@mipmap/img_accessories" />
+                        android:src="@drawable/img_accessories" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -173,7 +172,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-                        android:src="@mipmap/img_set_gift" />
+                        android:src="@drawable/img_set_gift" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -192,7 +191,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="35dp"
-                        android:src="@mipmap/img_cs" />
+                        android:src="@drawable/img_cs" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -211,7 +210,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="7dp"
-                        android:src="@mipmap/img_order" />
+                        android:src="@drawable/img_order" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -220,38 +219,90 @@
                         android:textColor="@color/color_espresso" />
                 </LinearLayout>
 
-                <!-- Add more category items as needed -->
             </LinearLayout>
         </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgSaruCupForYouSection"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/img_saru_cup" />
 
             <TextView
+                android:id="@+id/txtForYou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Homepage_supersale_section"
-                android:textColor="@color/color_espresso"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/title_homepage_foryou"
+                android:textColor="@color/color_dark_brown"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtViewAllForYou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="235dp"
                 android:text="@string/Title_view_all"
-                android:textColor="@color/color_golden_yellow" />
+                android:textColor="@color/color_dark_brown" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_super_sale"
+            android:id="@+id/recycler_view_for_you"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtBestSellerTitle" />
+
+       <!--Super Sale Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/imgSaruCupSuperSaleSection"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/img_saru_cup" />
+
+            <TextView
+                android:id="@+id/txtSuperSalesTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/Homepage_supersale_section"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtViewAllSuperSales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="205dp"
+                android:text="@string/Title_view_all"
+                android:textColor="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_super_sales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtSuperSalesTitle" />
 
         <!-- Sản Phẩm Bán Chạy Section -->
         <LinearLayout
@@ -260,39 +311,73 @@
             android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/imgSaruCupBestSellerSection"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/img_saru_cup" />
 
             <TextView
+                android:id="@+id/txtBestSellerTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
                 android:text="@string/Homepage_BestSeller_section"
-                android:textColor="@color/color_espresso"
+                android:textColor="@color/color_dark_brown"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtViewAllBestSeller"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="206dp"
                 android:text="@string/Title_view_all"
-                android:textColor="@color/color_golden_yellow" />
+                android:textColor="@color/color_dark_brown" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_best_sellers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
-
-        <!-- Đánh Giá Của Khách Hàng Section -->
-        <TextView
+            android:id="@+id/recycler_view_best_seller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/Homepage_Customer_reviews"
-            android:textColor="@color/color_espresso"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtBestSellerTitle" />
 
-        <!-- Add customer review items here -->
+        <!-- Đánh Giá Của Khách Hàng Section -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/imgSaruCupReviewSection"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/img_saru_cup" />
+
+            <TextView
+                android:id="@+id/txtCustomerReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/Homepage_Customer_reviews"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_customer_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtCustomerReviews" />
+
     </LinearLayout>
 </ScrollView>

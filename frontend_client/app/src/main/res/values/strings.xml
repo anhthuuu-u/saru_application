@@ -53,4 +53,9 @@
     <string name="Voucher_description">Free ship for new customer</string>
     <string name="Voucher_value">Discount 200</string>
     <string name="Voucher_status">Expired</string>
+    <string name="title_homepage_foryou">For you</string>
+    <string name="title_product_category">Ruou Tay Bac</string>
+    <string name="title_customer_name">Customer Name</string>
+    <string name="title_purchased_product">Purchased Product</string>
+    <string name="title_customer_review_content">Customer Reviews</string>
 </resources>

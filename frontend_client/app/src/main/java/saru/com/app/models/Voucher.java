@@ -13,9 +13,7 @@ public class Voucher implements Serializable {
         this.expiryDate = expiryDate;
     }
 
-    public String getVoucherCode() {
-        return voucherCode;
-    }
+    public String getVoucherCode() { return voucherCode;}
 
     public String getDescription() {
         return description;

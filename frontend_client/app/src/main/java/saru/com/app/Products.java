@@ -1,6 +1,7 @@
 package saru.com.app;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -22,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.graphics.Rect;
 
+import saru.com.app.connectors.ProductAdapter;
+
 public class Products extends AppCompatActivity {
 
     @Override
@@ -41,6 +44,25 @@ public class Products extends AppCompatActivity {
         // Nút Filter
         ImageButton btnFilter = findViewById(R.id.btn_filter);
         btnFilter.setOnClickListener(v -> showFilterDialog());
+
+        // Xử lý nút btn_cart
+        ImageButton btnCart = findViewById(R.id.btn_cart);
+        if (btnCart != null) {
+            btnCart.setOnClickListener(v -> {
+                Intent intent = new Intent(Products.this, ProductCart.class);
+                startActivity(intent);
+            });
+        }
+
+        // Xử lý nút btn_back_arrow
+        ImageButton btnBackArrow = findViewById(R.id.btn_back_arrow);
+        if (btnBackArrow != null) {
+            btnBackArrow.setOnClickListener(v -> {
+                Intent intent = new Intent(Products.this, Homepage.class);
+                startActivity(intent);
+                finish(); // Kết thúc activity Products để không quay lại khi nhấn back
+            });
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

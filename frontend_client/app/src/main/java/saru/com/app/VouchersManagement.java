@@ -1,15 +1,17 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import saru.com.app.adapters.VoucherAdapter;
+import saru.com.app.connectors.VoucherAdapter;
 import saru.com.app.models.VoucherList;
-import saru.com.app.R;
 
 public class VouchersManagement extends AppCompatActivity {
 
@@ -42,6 +44,21 @@ public class VouchersManagement extends AppCompatActivity {
 
         // Thông báo adapter cập nhật dữ liệu
         voucherAdapter.notifyDataSetChanged();
+        // Xử lý nút btn_back_arrow
+        ImageButton btnBackArrow = findViewById(R.id.btn_back_arrow);
+        if (btnBackArrow != null) {
+            btnBackArrow.setOnClickListener(v -> {
+                Intent intent = new Intent(VouchersManagement.this, Homepage.class);
+                startActivity(intent);
+                finish(); // Kết thúc activity Products để không quay lại khi nhấn back
+            });
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Xử lý window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
