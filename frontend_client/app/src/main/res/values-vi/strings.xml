@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SARU</string>
+    <string name="title_aboutus">VỀ CHÚNG TÔI</string>
+    <string name="title_aboutus_saru_taybacwine">SARU - Rượu Tây Bắc </string>
+    <string name="title_aboutus_storelocation">Vị trí cửa hàng</string>
+    <string name="title_aboutus_Founder">Founder</string>
+    <string name="title_aboutus_CEO">CEO</string>
+    <string name="title_aboutus_CMO">CMO\n</string>
+    <string name="title_aboutus_CFO">CFO\n</string>
+    <string name="title_aboutus_cto">CTO</string>
+    <string name="title_aboutus_coo">COO</string>
+    <string name="title_aboutus_endpage">Về chúng tôi</string>
+    <string name="title_aboutuslocation_LaoCaiBranch">Cửa hàng Saru Tây Bắc chi nhánh Lào Cai</string>
+    <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
+    <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
+    <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Đường Cô Bắc, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh</string>
+</resources>

@@ -1,6 +1,9 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +20,14 @@ import com.google.android.gms.maps.model.* ;
 
 public class MainActivity extends AppCompatActivity  implements OnMapReadyCallback {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         // Load the map fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_container);
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
             return insets;
         });
     }
+
 
     public void onMapReady(GoogleMap googleMap) {
         // Define the location (e.g., Lào Cai, Vietnam)
