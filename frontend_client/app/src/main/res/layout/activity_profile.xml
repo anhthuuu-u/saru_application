@@ -26,7 +26,7 @@
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_back_arrow"
+                android:src="@mipmap/ic_back_arrow"
                 android:layout_marginEnd="8dp" />
 
             <TextView
@@ -59,7 +59,7 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/img_circle"
+                android:src="@mipmap/img_circle"
                 android:layout_marginEnd="12dp"/>
 
             <LinearLayout
@@ -83,14 +83,6 @@
                     android:textColor="#B16628"
                     android:textSize="12sp" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/ic_edit_profile"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:src="@drawable/ic_edit"
-                android:clickable="true"
-                android:focusable="true" />
         </LinearLayout>
 
         <!-- Section: My Orders -->
@@ -157,7 +149,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:contentDescription="@string/pending_confirm"
-                        android:src="@drawable/img_pending_confirm_order" />
+                        android:src="@mipmap/img_pending_confirm_order" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -183,7 +175,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:contentDescription="@string/pending_payment"
-                        android:src="@drawable/img_unpaid" />
+                        android:src="@mipmap/img_unpaid" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -209,7 +201,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:contentDescription="@string/shipping"
-                        android:src="@drawable/img_on_delivery" />
+                        android:src="@mipmap/img_on_delivery" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -235,7 +227,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:contentDescription="@string/return_exchange"
-                        android:src="@drawable/img_exchange" />
+                        android:src="@mipmap/img_exchange" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -290,9 +282,10 @@
                     android:padding="8dp">
 
                     <ImageView
+                        android:id="@+id/img_profile"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/img_personal"
+                        android:src="@mipmap/img_personal"
                         android:contentDescription="@string/personal_info" />
 
                     <TextView
@@ -301,58 +294,6 @@
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
                         android:text="@string/personal_info"
-                        android:textColor="#FBBC05"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Item 2 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/img_feedback"
-                        android:contentDescription="@string/my_reviews" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:paddingTop="4dp"
-                        android:text="@string/my_reviews"
-                        android:textColor="#FBBC05"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Item 3 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/img_recent"
-                        android:contentDescription="@string/recently_viewed" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:paddingTop="4dp"
-                        android:text="@string/recently_viewed"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -370,7 +311,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/img_my_voucher"
+                        android:src="@mipmap/img_my_voucher"
                         android:contentDescription="@string/my_voucher" />
 
                     <TextView
@@ -419,7 +360,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_about_us"
+                    android:src="@mipmap/ic_about_us"
                     android:contentDescription="@string/about_us"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
@@ -435,7 +376,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_forward_arrow"
+                    android:src="@mipmap/ic_forward_arrow"
                     android:layout_marginStart="8dp"
                     app:tint="#FBBC05" />
             </LinearLayout>
@@ -451,7 +392,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_support"
+                    android:src="@mipmap/ic_support"
                     android:contentDescription="@string/customer_support_center"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
@@ -468,7 +409,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_forward_arrow"
+                    android:src="@mipmap/ic_forward_arrow"
                     android:layout_marginStart="8dp"
                     app:tint="#FBBC05" />
             </LinearLayout>
@@ -484,7 +425,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_introduce_saru"
+                    android:src="@mipmap/ic_introduce_saru"
                     android:contentDescription="@string/introduce_saru"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
@@ -500,7 +441,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_forward_arrow"
+                    android:src="@mipmap/ic_forward_arrow"
                     android:layout_marginStart="8dp"
                     app:tint="#FBBC05" />
             </LinearLayout>
@@ -516,7 +457,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_noti"
+                    android:src="@mipmap/ic_noti"
                     android:contentDescription="@string/notifications"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
@@ -532,7 +473,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_forward_arrow"
+                    android:src="@mipmap/ic_forward_arrow"
                     android:layout_marginStart="8dp"
                     app:tint="#FBBC05" />
             </LinearLayout>
@@ -549,7 +490,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_setting"
+                    android:src="@mipmap/ic_setting"
                     android:contentDescription="@string/settings"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
@@ -565,7 +506,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@drawable/ic_forward_arrow"
+                    android:src="@mipmap/ic_forward_arrow"
                     android:layout_marginStart="8dp"
                     app:tint="#FBBC05" />
             </LinearLayout>

@@ -30,7 +30,7 @@
                 android:id="@+id/faq_toggle_icon_1"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:src="@drawable/ic_down_arrow" />
+                android:src="@mipmap/ic_down_arrow" />
         </LinearLayout>
 
         <View

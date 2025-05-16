@@ -16,7 +16,7 @@
             android:id="@+id/ic_back_arrow"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/ic_back_arrow" />
+            android:src="@mipmap/ic_back_arrow" />
 
         <TextView
             android:layout_width="0dp"

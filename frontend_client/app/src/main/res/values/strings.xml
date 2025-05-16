@@ -67,7 +67,7 @@
     <string name="cvv_placeholder"></string>
     <string name="expiry_date_label">Expiry Date:</string>
     <string name="expiry_date_placeholder"></string>
-    <string name="save_info_button">Save Information</string>
+    <string name="save_info_button">Save information</string>
     <string name="update_success_message">Update successful!</string>
 
     <!-- Array for Spinner (Card Types) -->
@@ -141,7 +141,7 @@
     <string name="reason_return_other">Other:</string>
     <string name="other_reason_hint">Enter other reason</string>
     <string name="amount_refunded_label">Amount to be refunded:</string>
-    <string name="amount_refunded_value">Yes</string>
+    <string name="amount_refunded_value">0đ</string>
     <string name="product_image_description">Product Image</string>
     <string name="submit_return_button">Send request</string>
     <string name="return_submit_success">Send request successful!</string>
@@ -155,7 +155,7 @@
     <string name="reason_cancel_other">Other:</string>
     <string name="other_reason_cancel_hint">Enter other reason</string>
     <string name="amount_cancel_refunded_label">Amount to be refunded:</string>
-    <string name="amount_cancel_refunded_value">Yes</string>
+    <string name="amount_cancel_refunded_value">0đ</string>
     <string name="submit_cancel_button">Send request</string>
     <string name="cancel_submit_success">Send request successful!</string>
 
