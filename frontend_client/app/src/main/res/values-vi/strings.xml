@@ -3,14 +3,14 @@
     <string name="app_name">Ứng dụng Saru</string>
     <string name="title_transaction_checkout">THANH TOÁN</string>
 
-    -- Delivery Information --
+<!--    Delivery Information-->
     <string name="title_delivery_information">Thông tin vận chuyển</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
     <string name="title_customer_address">KTX Đại học Quốc gia Khu B, TP Thủ Đức, TP Hồ Chí Minh, Việt Nam</string>
     <string name="title_product">Sản phẩm</string>
 
-    -- Order Products --
+<!--    Order Products-->
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -33,7 +33,7 @@
     <string name="title_delivery_time">Thời gian vận chuển</string>
     <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
 
-    -- Voucher Code --
+<!--    Voucher Code-->
     <string name="title_voucher_code">Mã giảm giá</string>
     <string name="title_voucher_apply">Áp dụng</string>
     <string name="title_voucher_code_hint">Nhập mã giảm giá tại đây</string>
@@ -42,7 +42,7 @@
     <string name="title_invalid_voucher_code">Mã giảm không tồn tại</string>
     <string name="title_enter_voucher_code_message">Nhập mã giảm tại đây</string>
 
-    -- Payment Method --
+<!--    Payment Method-->
     <string name="title_payment_method">Phương thức thanh toán</string>
     <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
     <string name="title_cod_detail">Thanh toán khi nhận hàng</string>
@@ -54,7 +54,7 @@
     <string name="title_ewallet">Ví điện tử</string>
     <string name="title_ewallet_detail">Ví điện tử Momo</string>
 
-    -- Place Order Navigation --
+<!--    Place Order Navigation-->
     <string name="title_transaction_term">Khi nhấn \"Thanh toán\" đồng nghĩa với việc bạn đồng ý tuân thủ theo Điều khoản Saru của Saru</string>
     <string name="title_place_order">Thanh toán</string>
     <string name="title_total_payment">Tổng cộng</string>
@@ -62,7 +62,7 @@
     <string name="title_total_saved">Tiết kiệm</string>
     <string name="title_saved_price">150.000đ</string>
 
-    -- Edit Address Information --
+<!--    Edit Address Information-->
     <string name="title_edit_address">SỬA ĐỊA CHỈ</string>
     <string name="title_address">Địa chỉ</string>
     <string name="title_customer_name_hint">Họ và tên</string>
@@ -75,7 +75,7 @@
     <string name="title_transaction_edit_address_cancel">Quay lại</string>
     <string name="title_transaction_edit_address_confirm">Xác nhận</string>
 
-    -- Successful Payment --
+<!--    Successful Payment-->
     <string name="title_successful_payment">THANH TOÁN THÀNH CÔNG</string>
     <string name="title_order_completed">ĐẶT HÀNG THÀNH CÔNG</string>
     <string name="title_order_tracking_message">Vui lòng theo dõi tình trạng đơn hàng</string>
@@ -90,9 +90,32 @@
     <string name="title_the_add_to_cart">"Sản phẩm "</string>
     <string name="title_add_to_cart_message">" đã thêm vào giỏ hàng của bạn"</string>
 
-    -- Warning Exit Transaction --
+<!--    Warning Exit Transaction-->
     <string name="title_confirm_exit">Xác nhận thoát</string>
     <string name="title_confirm_exit_message">Bạn có muốn thoát không?</string>
     <string name="title_confirm_exit_message_yes">Có</string>
     <string name="title_confirm_exit_message_no">Không</string>
+
+<!--    Transaction Face Authorization-->
+    <string name="title_transaction_face_authorization">XÁC THỰC KHUÔN MẶT</string>
+    <string name="title_face_authorization_processing">Đang nhận diện khuôn mặt để xác thực thanh toán, vui lòng nhìn thẳng vào màn hình...</string>
+    <string name="title_face_authorization_error">Xác thực không thành công, vui lòng nhập mật khẩu</string>
+    <string name="title_face_error_password">Mật khẩu:</string>
+    <string name="title_face_author_password_hint">Nhập mật khẩu của bạn</string>
+
+<!--    Edit Payment Method-->
+    <string name="title_edit_payment_method">CHỈNH SỬA PHƯƠNG THỨC THANH TOÁN</string>
+    <string name="title_card_info">Thông Tin Thẻ</string>
+    <string name="title_card_type">Loại Thẻ:</string>
+    <string name="title_choose_bank">Chọn ngân Hàng:</string>
+    <string name="title_card_number">Số Thẻ:</string>
+    <string name="title_security_cvv">CVV:</string>
+    <string name="title_expiration_date">Ngày Hết Hạn</string>
+    <string name="title_cvv">345678901</string> <!-- (Xem lại dòng này nếu không phải là dữ liệu mẫu) -->
+    <string name="error_invalid_expiry_date">Ngày hết hạn không hợp lệ</string>
+    <string name="message_payment_method_updated">Phương thức thanh toán đã được cập nhật</string>
+    <string name="error_invalid_cvv">Mã CVV không hợp lệ</string>
+    <string name="error_invalid_card_number">Số thẻ không hợp lệ</string>
+    <string name="error_bank_name_empty">Vui lòng chọn ngân hàng</string>
+
 </resources>

@@ -122,7 +122,13 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 //
 //        }
         );
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                openTransactionFaceAuthorization();
+            }
+        });
 
         // Apply discount code button
         btnApplyVoucherCode.setOnClickListener(v -> {
@@ -194,12 +200,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         // Checkout button
         btnPlaceOrder.setOnClickListener(v -> {
             processCheckout();
-        });
-        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSuccessfulPaymentActivity();
-            }
         });
     }
 
@@ -353,8 +353,12 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditAddressActivity.class);
         startActivity(intent);
     }
-    void openSuccessfulPaymentActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, SuccessfulPaymentActivity.class);
+//    void openSuccessfulPaymentActivity() {
+//        Intent intent = new Intent(TransactionCheckoutActivity.this, SuccessfulPaymentActivity.class);
+//        startActivity(intent);
+//    }
+    void  openTransactionFaceAuthorization(){
+        Intent intent=new Intent(TransactionCheckoutActivity.this, TransactionFaceAuthorizationActivity.class);
         startActivity(intent);
     }
 

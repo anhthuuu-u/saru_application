@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Quyền camera cần thiết cho xác thực khuôn mặt -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +21,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
+        <activity
+            android:name=".TransactionEditPaymentMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionFaceAuthorizationManualActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionFaceAuthorizationActivity"
+            android:exported="false" />
         <activity
             android:name=".SuccessfulPaymentActivity"
             android:exported="false" />
@@ -29,7 +47,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

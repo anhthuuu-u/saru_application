@@ -175,9 +175,9 @@
             android:backgroundTint="@android:color/white"
             android:onClick="onCancelClick"
             android:text="@string/title_transaction_edit_address_cancel"
-            android:textColor="#FFC107"
+            android:textColor="@color/color_golden_yellow"
             app:cornerRadius="24dp"
-            app:strokeColor="#FFC107"
+            app:strokeColor="@color/color_golden_yellow"
             app:strokeWidth="1dp" />
 
         <Button

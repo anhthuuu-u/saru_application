@@ -287,6 +287,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/title_product_price_original_1"
+                                android:textAlignment="textEnd"
                                 android:textAllCaps="false"
                                 android:textSize="8sp" />
                         </LinearLayout>
@@ -419,12 +420,14 @@
                                 android:textColor="@color/color_dark_brown"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
+
                             <TextView
                                 android:id="@+id/txtProductOriginal2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/title_product_price_original_2"
+                                android:textAlignment="textEnd"
                                 android:textAllCaps="false"
                                 android:textSize="8sp" />
                         </LinearLayout>
@@ -567,6 +570,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/title_product_price_original_1"
+                                android:textAlignment="textEnd"
                                 android:textAllCaps="false"
                                 android:textSize="8sp" />
                         </LinearLayout>
@@ -714,7 +718,6 @@
                         android:id="@+id/txtVoucherCode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:fontFamily="@font/inter_bold"
                         android:text="@string/title_voucher_code"
                         android:textColor="@color/color_golden_yellow"
@@ -727,6 +730,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="0"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            app:srcCompat="@mipmap/ic_voucher" />
 
                         <EditText
                             android:id="@+id/edtVoucherCode"
