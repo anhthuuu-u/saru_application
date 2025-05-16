@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ứng dụng Saru</string>
-    <string name="title_transaction_checkout">Thanh Toán</string>
+    <string name="title_transaction_checkout">THANH TOÁN</string>
+
+    -- Delivery Information --
     <string name="title_delivery_information">Thông tin vận chuyển</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
-    <string name="title_customer_address">KTX Đại học Quốc gia Khu B, TP Thủ Đức, TP Hồ Chí Minh</string>
+    <string name="title_customer_address">KTX Đại học Quốc gia Khu B, TP Thủ Đức, TP Hồ Chí Minh, Việt Nam</string>
     <string name="title_product">Sản phẩm</string>
+
+    -- Order Products --
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -14,23 +18,6 @@
     <string name="title_brand_name_3">xxxxxxxxxxxx</string>
     <string name="title_brand_name_2">yyyyyyyyyyy</string>
     <string name="title_brand_name_1">zzzzzzzzzzzzzzzz</string>
-    <string name="title_shipping_fee">Phí vận chuyển:</string>
-    <string name="title_merchandise_total">Tổng số tiền</string>
-    <string name="title_item_quantity">(x sản phẩm)</string>
-    <string name="title_delivery_time">Thời gian vận chuển</string>
-    <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
-    <string name="title_transaction_term">Khi nhấn \"Thanh toán\" đồng nghĩa với việc bạn đồng ý tuân thủ theo Điều khoản Saru của Saru</string>
-    <string name="title_place_order">Thanh toán</string>
-    <string name="title_total_payment">Tổng cộng</string>
-    <string name="title_total_price">1.020.000đ</string>
-    <string name="title_total_saved">Tiết kiệm</string>
-    <string name="title_saved_price">150.000đ</string>
-    <string name="title_payment_method">Phương thức thanh toán</string>
-    <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
-    <string name="title_bank">Thẻ ngân hàng (Thẻ tín Dụng hoặc thẻ ghi Nợ)</string>
-    <string name="title_ewallet">Ví điện tử</string>
-    <string name="title_voucher_code">Mã giảm giá</string>
-    <string name="title_voucher_apply">Áp dụng</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
     <string name="title_product_1_price">400.000 đ</string>
@@ -38,6 +25,74 @@
     <string name="title_product_3_price">400.000 đ</string>
     <string name="title_quantity_2">x2</string>
     <string name="title_quantity_1">x1</string>
+    <string name="title_product_price_original_1">460.000 đ</string>
+    <string name="title_product_price_original_2">230.000 đ</string>
+    <string name="title_shipping_fee">Phí vận chuyển:</string>
+    <string name="title_merchandise_total">Tổng số tiền</string>
+    <string name="title_item_quantity">(x sản phẩm)</string>
+    <string name="title_delivery_time">Thời gian vận chuển</string>
+    <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
+
+    -- Voucher Code --
+    <string name="title_voucher_code">Mã giảm giá</string>
+    <string name="title_voucher_apply">Áp dụng</string>
     <string name="title_voucher_code_hint">Nhập mã giảm giá tại đây</string>
-    <string name="title_product_price_original">460.000 đ</string>
+    <string name="title_applied">Đã áp dụng</string>
+    <string name="title_voucher_applied_success">Áp dụng mã giảm thành công</string>
+    <string name="title_invalid_voucher_code">Mã giảm không tồn tại</string>
+    <string name="title_enter_voucher_code_message">Nhập mã giảm tại đây</string>
+
+    -- Payment Method --
+    <string name="title_payment_method">Phương thức thanh toán</string>
+    <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
+    <string name="title_cod_detail">Thanh toán khi nhận hàng</string>
+    <string name="title_bank">Thẻ ngân hàng (Thẻ tín Dụng hoặc thẻ ghi Nợ)</string>
+    <string name="title_bank_name">Ngân hàng: Vietcombank</string>
+    <string name="title_customer_bank_name">Tên khách hàng: Anh Khoa</string>
+    <string name="title_bank_type">Loại thẻ: Mastercard</string>
+    <string name="title_bank_number_card">Số thẻ: ******789</string>
+    <string name="title_ewallet">Ví điện tử</string>
+    <string name="title_ewallet_detail">Ví điện tử Momo</string>
+
+    -- Place Order Navigation --
+    <string name="title_transaction_term">Khi nhấn \"Thanh toán\" đồng nghĩa với việc bạn đồng ý tuân thủ theo Điều khoản Saru của Saru</string>
+    <string name="title_place_order">Thanh toán</string>
+    <string name="title_total_payment">Tổng cộng</string>
+    <string name="title_total_price">1.020.000đ</string>
+    <string name="title_total_saved">Tiết kiệm</string>
+    <string name="title_saved_price">150.000đ</string>
+
+    -- Edit Address Information --
+    <string name="title_edit_address">SỬA ĐỊA CHỈ</string>
+    <string name="title_address">Địa chỉ</string>
+    <string name="title_customer_name_hint">Họ và tên</string>
+    <string name="title_customer_phone_number_hint">Số điện thoại</string>
+    <string name="title_customer_phone_number_edit">0941705717</string>
+    <string name="title_customer_name_edit">Anh Khoa</string>
+    <string name="title_customer_address_hint">Tỉnh/Thành phố, Quận/Huyện, Phường/Xã, Tên đường, Số nhà</string>
+    <string name="title_customer_address_edit">669 Đỗ Mười, Khu phố 6, Phường Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh</string>
+    <string name="title_google">Google</string>
+    <string name="title_transaction_edit_address_cancel">Quay lại</string>
+    <string name="title_transaction_edit_address_confirm">Xác nhận</string>
+
+    -- Successful Payment --
+    <string name="title_successful_payment">THANH TOÁN THÀNH CÔNG</string>
+    <string name="title_order_completed">ĐẶT HÀNG THÀNH CÔNG</string>
+    <string name="title_order_tracking_message">Vui lòng theo dõi tình trạng đơn hàng</string>
+    <string name="title_order_details">Xem chi tiết</string>
+    <string name="title_product_suggest">SẢN PHẨM TƯƠNG TỰ</string>
+    <string name="title_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="title_product_name">RƯỢU NGÔ</string>
+    <string name="title_product_brand">Rượu Tây Bắc</string>
+    <string name="title_product_star">5.0</string>
+    <string name="title_product_review">(10 Đánh giá)</string>
+    <string name="title_product_price">200.000đ</string>
+    <string name="title_the_add_to_cart">"Sản phẩm "</string>
+    <string name="title_add_to_cart_message">" đã thêm vào giỏ hàng của bạn"</string>
+
+    -- Warning Exit Transaction --
+    <string name="title_confirm_exit">Xác nhận thoát</string>
+    <string name="title_confirm_exit_message">Bạn có muốn thoát không?</string>
+    <string name="title_confirm_exit_message_yes">Có</string>
+    <string name="title_confirm_exit_message_no">Không</string>
 </resources>

@@ -6,109 +6,120 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class TransactionEditAddressActivity extends AppCompatActivity {
 
-    private ImageView backButton;
+    private ImageView imgBack;
     private TextView titleTextView;
-    private EditText nameEditText;
-    private EditText phoneEditText;
-    private EditText addressEditText;
-    private ConstraintLayout googleMapButton;
-    private Button cancelButton;
-    private Button confirmButton;
+    private EditText edtCustomerName;
+    private EditText edtPhoneNumber;
+    private EditText edtCustomerAddress;
+    private LinearLayout googleMapButton;
+    private Button btnTransactionEditAddressCancel;
+    private Button btnTransactionEditAddressConfirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_edit_address);
 
-        initializeViews();
+        addViews();
         setupListeners();
         loadAddressData();
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 
-    private void initializeViews() {
-        backButton = findViewById(R.id.back_button);
-        titleTextView = findViewById(R.id.title_text_view);
-        nameEditText = findViewById(R.id.name_edit_text);
-        phoneEditText = findViewById(R.id.phone_edit_text);
-        addressEditText = findViewById(R.id.address_edit_text);
+    private void addViews() {
+        imgBack = findViewById(R.id.imgBack);
+        titleTextView = findViewById(R.id.txtEditAddress);
+        edtCustomerName = findViewById(R.id.edtCustomerName);
+        edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
+        edtCustomerAddress = findViewById(R.id.edtCustomerAddress);
         googleMapButton = findViewById(R.id.google_map_button);
-        cancelButton = findViewById(R.id.cancel_button);
-        confirmButton = findViewById(R.id.confirm_button);
+        btnTransactionEditAddressCancel = findViewById(R.id.btnTransactionEditAddressCancel);
+        btnTransactionEditAddressConfirm = findViewById(R.id.btnTransactionEditAddressConfirm);
     }
 
     private void setupListeners() {
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Open Google Maps for address selection
-                // This would be implemented based on your app's requirements
-                Toast.makeText(TransactionEditAddressActivity.this,
-                        "Opening Google Maps...", Toast.LENGTH_SHORT).show();
-                // Intent to open map activity would go here
+                openGoogleMap();
             }
         });
+    }
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    public void onBackPressed(View view) {
+        // Handle back button click
+        finish();
+    }
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateInputs()) {
-                    saveAddressAndReturn();
-                }
-            }
-        });
+    public void onCancelClick(View view) {
+        // Handle cancel button click
+        finish();
+    }
+
+    public void onConfirmClick(View view) {
+        // Handle confirm button click
+        if (validateInputs()) {
+            saveAddressAndReturn();
+        }
+    }
+
+    private void openGoogleMap() {
+        // Open Google Maps for address selection
+        // This would be implemented based on your app's requirements
+        Toast.makeText(TransactionEditAddressActivity.this,
+                "Opening Google Maps...", Toast.LENGTH_SHORT).show();
+
+        // Intent to open map activity
+        // For example:
+        // Intent mapIntent = new Intent(this, MapSelectionActivity.class);
+        // startActivityForResult(mapIntent, MAP_REQUEST_CODE);
     }
 
     private void loadAddressData() {
         // Check if we're editing an existing address
         Intent intent = getIntent();
         if (intent.hasExtra("address_name")) {
-            nameEditText.setText(intent.getStringExtra("address_name"));
-            phoneEditText.setText(intent.getStringExtra("address_phone"));
-            addressEditText.setText(intent.getStringExtra("address_full"));
+            edtCustomerName.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_name)));
+            edtPhoneNumber.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_phone_number)));
+            edtCustomerAddress.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_address)));
         }
     }
 
     private boolean validateInputs() {
         boolean isValid = true;
 
-        if (nameEditText.getText().toString().trim().isEmpty()) {
-            nameEditText.setError("Tên không được để trống");
+        if (edtCustomerName.getText().toString().trim().isEmpty()) {
+            edtCustomerName.setError("Tên không được để trống");
             isValid = false;
         }
 
-        String phone = phoneEditText.getText().toString().trim();
+        String phone = edtPhoneNumber.getText().toString().trim();
         if (phone.isEmpty()) {
-            phoneEditText.setError("Số điện thoại không được để trống");
+            edtPhoneNumber.setError("Số điện thoại không được để trống");
             isValid = false;
         } else if (!phone.matches("\\d{10,11}")) {
-            phoneEditText.setError("Số điện thoại không hợp lệ");
+            edtPhoneNumber.setError("Số điện thoại không hợp lệ");
             isValid = false;
         }
 
-        if (addressEditText.getText().toString().trim().isEmpty()) {
-            addressEditText.setError("Địa chỉ không được để trống");
+        if (edtCustomerAddress.getText().toString().trim().isEmpty()) {
+            edtCustomerAddress.setError("Địa chỉ không được để trống");
             isValid = false;
         }
 
@@ -116,9 +127,9 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
     }
 
     private void saveAddressAndReturn() {
-        String name = nameEditText.getText().toString().trim();
-        String phone = phoneEditText.getText().toString().trim();
-        String address = addressEditText.getText().toString().trim();
+        String name = edtCustomerName.getText().toString().trim();
+        String phone = edtPhoneNumber.getText().toString().trim();
+        String address = edtCustomerAddress.getText().toString().trim();
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("address_name", name);
@@ -127,7 +138,9 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
 
         setResult(RESULT_OK, resultIntent);
 
-        // Return to TransactionCheckoutActivity
+        Toast.makeText(this, "Đã lưu địa chỉ", Toast.LENGTH_SHORT).show();
+
+        // Return to previous activity
         finish();
     }
 }
