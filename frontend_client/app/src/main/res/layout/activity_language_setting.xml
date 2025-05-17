@@ -108,7 +108,6 @@
                         android:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
-
             <!-- Submit Button -->
             <Button
                 android:id="@+id/submit_language_button"

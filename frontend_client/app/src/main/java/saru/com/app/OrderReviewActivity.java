@@ -23,7 +23,7 @@ public class OrderReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_review);
 
         icBackArrow = findViewById(R.id.ic_back_arrow);
-        submitButton = findViewById(R.id.submit_review_button);
+        submitButton = findViewById(R.id.review_submit_button);
 
         // Quay về trang OrderDetailActivity
         icBackArrow.setOnClickListener(new View.OnClickListener() {

@@ -22,7 +22,7 @@ public class OrderCancelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_cancel);
 
         icBackArrow = findViewById(R.id.ic_back_arrow);
-        submitButton = findViewById(R.id.submit_cancel_button);
+        submitButton = findViewById(R.id.cancel_submit_button);
 
         // Quay về trang OrderDetailActivity
         icBackArrow.setOnClickListener(new View.OnClickListener() {

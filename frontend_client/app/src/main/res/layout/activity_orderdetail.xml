@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
-                android:text="@string/products_label"
+                android:text="@string/order_products_label"
                 android:textColor="#FBBC05"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -186,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
-                            android:text="@string/product_name_1"
+                            android:text="@string/order_product_name_1"
                             android:textColor="#85461F"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -195,7 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_light"
-                            android:text="@string/product_brand_1"
+                            android:text="@string/order_product_brand_1"
                             android:textColor="#85461F"
                             android:textSize="8sp"
                             android:textStyle="italic"
@@ -212,7 +212,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/inter_light"
-                                android:text="@string/product_quantity_1"
+                                android:text="@string/order_product_quantity_1"
                                 android:textColor="#85461F"
                                 android:textSize="8sp" />
 
@@ -222,7 +222,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
                                 android:fontWeight="400"
-                                android:text="@string/product_old_price_1"
+                                android:text="@string/order_product_old_price_1"
                                 android:textColor="#FBBC05"
                                 android:textSize="8sp" />
 
@@ -231,7 +231,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:fontFamily="@font/inter_bold"
-                                android:text="@string/product_price_1"
+                                android:text="@string/order_product_price_1"
                                 android:textColor="#85461F"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
@@ -257,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:text="@string/shipping_fee_label"
+                    android:text="@string/order_shipping_fee_label"
                     android:textColor="#000000"
                     android:textSize="10sp" />
 
@@ -265,7 +265,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
-                    android:text="@string/shipping_fee_value"
+                    android:text="@string/order_shipping_fee_value"
                     android:textColor="#85461F"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -281,7 +281,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:text="@string/total_amount_label"
+                    android:text="@string/order_total_amount_label"
                     android:textColor="#000000"
                     android:textSize="10sp"
                     android:textStyle="normal" />
@@ -290,7 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
-                    android:text="@string/total_amount_value"
+                    android:text="@string/order_total_amount_value"
                     android:textColor="#85461F"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -312,7 +312,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/inter_bold"
-                android:text="@string/contact_shipping_title"
+                android:text="@string/order_contact_shipping_title"
                 android:textColor="#FBBC05"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -322,7 +322,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
-                android:text="@string/contact_name_value"
+                android:text="@string/order_contact_name_value"
                 android:textColor="#000000"
                 android:layout_marginBottom="3dp"
                 android:textSize="10sp" />
@@ -332,7 +332,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="@string/contact_phone_value"
+                android:text="@string/order_contact_phone_value"
                 android:layout_marginBottom="3dp"
                 android:textColor="#000000"
                 android:textSize="10sp" />
@@ -343,7 +343,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
                 android:layout_marginBottom="3dp"
-                android:text="@string/contact_address_value"
+                android:text="@string/order_contact_address_value"
                 android:textColor="#000000"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -365,7 +365,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
-                android:text="@string/cancel_order"
+                android:text="@string/order_cancel_order"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#999999"
                 android:textSize="12sp" />
@@ -377,7 +377,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="4dp"
-                android:text="@string/write_review"
+                android:text="@string/order_write_review"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#F8BC3B"
                 android:textSize="12sp" />
@@ -389,7 +389,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="4dp"
-                android:text="@string/request_return"
+                android:text="@string/order_request_return"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#F8BC3B"
                 android:textSize="12sp" />

@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_medium"
-                android:text="@string/ask_question_label"
+                android:text="@string/cs_ask_question_label"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
                 android:id="@+id/ask_question_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/ask_question_hint"
+                android:hint="@string/cs_ask_question_hint"
                 android:background="@android:drawable/edit_text"
                 android:padding="12dp"
                 android:textSize="14sp"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_medium"
-                android:text="@string/contact_us_label"
+                android:text="@string/cs_contact_us_label"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_medium"
-                android:text="@string/faqs_label"
+                android:text="@string/cs_faqs_label"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -186,7 +186,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@mipmap/ic_send"
-                android:contentDescription="@string/send_message" />
+                android:contentDescription="@string/chat_send_message" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

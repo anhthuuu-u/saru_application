@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_name"
+                    android:text="@string/profile_user_name"
                     android:textColor="#B16628"
                     android:textStyle="bold"
                     android:textSize="20sp" />
@@ -79,7 +79,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_email"
+                    android:text="@string/profile_user_email"
                     android:textColor="#B16628"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingVertical="4dp"
-                    android:text="@string/my_orders"
+                    android:text="@string/profile_my_orders"
                     android:textColor="#FBBC05"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:paddingVertical="4dp"
-                    android:text="@string/view_all_orders"
+                    android:text="@string/profile_view_all_orders"
                     android:textColor="#FBBC05"
                     android:textSize="14sp"
                     android:textStyle="italic" />
@@ -148,7 +148,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:contentDescription="@string/pending_confirm"
+                        android:contentDescription="@string/profile_pending_confirm"
                         android:src="@mipmap/img_pending_confirm_order" />
 
                     <TextView
@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/pending_confirm"
+                        android:text="@string/profile_pending_confirm"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -174,7 +174,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:contentDescription="@string/pending_payment"
+                        android:contentDescription="@string/profile_pending_payment"
                         android:src="@mipmap/img_unpaid" />
 
                     <TextView
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/pending_payment"
+                        android:text="@string/profile_pending_payment"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -200,7 +200,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:contentDescription="@string/shipping"
+                        android:contentDescription="@string/profile_shipping"
                         android:src="@mipmap/img_on_delivery" />
 
                     <TextView
@@ -208,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/shipping"
+                        android:text="@string/profile_shipping"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -226,7 +226,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:contentDescription="@string/return_exchange"
+                        android:contentDescription="@string/profile_return_exchange"
                         android:src="@mipmap/img_exchange" />
 
                     <TextView
@@ -234,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/return_exchange"
+                        android:text="@string/profile_return_exchange"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -258,7 +258,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_info"
+                android:text="@string/profile_account_info"
                 android:textColor="#FBBC05"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -286,14 +286,14 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:src="@mipmap/img_personal"
-                        android:contentDescription="@string/personal_info" />
+                        android:contentDescription="@string/profile_personal_info" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/personal_info"
+                        android:text="@string/profile_personal_info"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -312,14 +312,14 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:src="@mipmap/img_my_voucher"
-                        android:contentDescription="@string/my_voucher" />
+                        android:contentDescription="@string/profile_my_voucher" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingTop="4dp"
-                        android:text="@string/my_voucher"
+                        android:text="@string/profile_my_voucher"
                         android:textColor="#FBBC05"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -344,7 +344,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="4dp"
-                android:text="@string/support"
+                android:text="@string/profile_support"
                 android:textColor="#FBBC05"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -361,7 +361,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@mipmap/ic_about_us"
-                    android:contentDescription="@string/about_us"
+                    android:contentDescription="@string/profile_about_us"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
 
@@ -369,7 +369,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/about_us"
+                    android:text="@string/profile_about_us"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
@@ -393,7 +393,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@mipmap/ic_support"
-                    android:contentDescription="@string/customer_support_center"
+                    android:contentDescription="@string/profile_customer_support_center"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
 
@@ -402,7 +402,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/customer_support_center"
+                    android:text="@string/profile_customer_support_center"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
@@ -426,7 +426,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@mipmap/ic_introduce_saru"
-                    android:contentDescription="@string/introduce_saru"
+                    android:contentDescription="@string/profile_introduce_saru"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
 
@@ -434,7 +434,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/introduce_saru"
+                    android:text="@string/profile_introduce_saru"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
@@ -458,7 +458,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@mipmap/ic_noti"
-                    android:contentDescription="@string/notifications"
+                    android:contentDescription="@string/profile_notifications"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
 
@@ -466,7 +466,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/notifications"
+                    android:text="@string/profile_notifications"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
@@ -491,7 +491,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@mipmap/ic_setting"
-                    android:contentDescription="@string/settings"
+                    android:contentDescription="@string/profile_settings"
                     android:layout_marginEnd="12dp"
                     app:tint="#FBBC05" />
 
@@ -499,7 +499,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/settings"
+                    android:text="@string/profile_settings"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
@@ -557,7 +557,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/allow_notifications"
+                        android:text="@string/setting_allow_notifications"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />

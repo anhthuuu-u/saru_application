@@ -23,7 +23,7 @@ public class OrderRequestReturnActivity extends AppCompatActivity {
 
         // Ánh xạ view
         backArrow = findViewById(R.id.ic_back_arrow);
-        submitReturnButton = findViewById(R.id.submit_return_button);
+        submitReturnButton = findViewById(R.id.return_submit_button);
 
         // Bắt sự kiện click nút back
         backArrow.setOnClickListener(new View.OnClickListener() {

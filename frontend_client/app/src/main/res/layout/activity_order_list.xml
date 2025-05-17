@@ -212,14 +212,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:text="@string/product_count_value"
+                        android:text="@string/order_product_count_value"
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/total_amount_value"
+                        android:text="@string/order_total_amount_value"
                         android:textColor="#008000"
                         android:textSize="12sp"
                         android:textStyle="bold" />

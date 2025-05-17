@@ -29,6 +29,5 @@ public class ProfileEditActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }

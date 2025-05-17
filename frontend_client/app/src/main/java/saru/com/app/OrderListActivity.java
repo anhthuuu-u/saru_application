@@ -23,6 +23,7 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
 
+
         TextView orderDetailsLink = findViewById(R.id.tv_order_details);
         orderDetailsLink.setOnClickListener(new View.OnClickListener() {
             @Override
