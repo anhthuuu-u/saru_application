@@ -423,4 +423,9 @@
     <string name="language">Ngôn ngữ</string>
     <string name="language_current">Tiếng Việt</string>
     <string name="allow_notifications">Cho phép thông báo</string>
+
+    <string name="bottom_nav_home">Trang chủ</string>
+    <string name="bottom_nav_product">Sản phẩm</string>
+    <string name="bottom_nav_compare">So sánh</string>
+    <string name="bottom_nav_account">Tài khoản</string>
 </resources>

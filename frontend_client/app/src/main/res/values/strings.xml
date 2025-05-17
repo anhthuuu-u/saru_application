@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">SARU</string>
     <string name="title_transaction_checkout">CHECK OUT</string>
 
@@ -427,6 +428,11 @@
     <string name="language">Language</string>
     <string name="language_current">English</string> <!-- hoặc Tiếng Việt nếu đã chọn -->
     <string name="allow_notifications">Allow notifications</string>
+
+    <string name="bottom_nav_home">Homepage</string>
+    <string name="bottom_nav_product">Product</string>
+    <string name="bottom_nav_compare">Compare</string>
+    <string name="bottom_nav_account">Account</string>
 
 </resources>
 
