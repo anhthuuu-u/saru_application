@@ -8,6 +8,7 @@
         <item>@font/inter_extrabold</item>
         <item>@font/inter_thin</item>
         <item>@font/inter_tight</item>
+        <item>@font/inter_medium</item>
 
     </array>
 </resources>

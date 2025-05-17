@@ -4,6 +4,61 @@
     <string name="title_transaction_checkout">THANH TOÁN</string>
 
 <!--    Delivery Information-->
+    <string name="title_DeliveryInformation_product_name">Rượu Ngô</string>
+    <string name="tilte_products">SẢN PHẨM</string>
+    <string name="title_search_bar">Tìm kiếm</string>
+    <string name="title_filter_product">Lọc sản phẩm</string>
+    <string name="title_DeliveryInformation_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="title_DeliveryInformation_product_price">200.000đ</string>
+    <string name="title_product_detail">CHI TIẾT SẢN PHẨM\n</string>
+    <string name="title_compare_button">So sánh</string>
+    <string name="title_product_description">Dù được uống trực tiếp hay pha chế, Rượu Mận Đào là một loại đồ uống linh hoạt và thỏa mãn cho cả người mới bắt đầu và những người đã có kinh nghiệm.</string>
+    <string name="title_related_products">Sản phẩm liên quan</string>
+    <string name="title_DeliveryInformation_product_brand">Nhà máy chưng cất Mam</string>
+    <string name="title_product_status">Còn hàng</string>
+    <string name="title_product_alcohol">Độ cồn</string>
+    <string name="title_product_net">Dung tích thực</string>
+    <string name="title_product_type">Loại rượu</string>
+    <string name="title_product_ingredients">Nguyên liệu</string>
+    <string name="title_compare">So sánh</string>
+    <string name="title_filter_product_dialog">Lọc sản phẩm</string>
+    <string name="filter_product_dialog_category">Danh mục</string>
+    <string name="title_filter_product_dialog_price_range">Khoảng giá</string>
+    <string name="title_product_dialog_sort">Sắp xếp theo</string>
+    <string name="title_filter_product_dialog_brand">Thương hiệu</string>
+    <string name="title_filter_product_dialog_volume">Dung tích</string>
+    <string name="title_filter_product_dialog_wine_type">Loại rượu</string>
+    <string name="title_filter_product_dialog_others">Khác</string>
+    <string name="title_filter_product_apply">Áp dụng bộ lọc</string>
+    <string name="title_filter_product_reset">Đặt lại bộ lọc</string>
+    <string name="title_product_comparison">SO SÁNH SẢN PHẨM</string>
+    <string name="title_product_taste">Hương vị</string>
+    <string name="title_product_comparison_price">Giá</string>
+    <string name="title_product_comparison_subtitle">Giúp bạn có sự lựa chọn tốt nhất!</string>
+    <string name="title_delete_btn_comparison">Xóa tất cả</string>
+    <string name="title_product_cart">GIỎ HÀNG SẢN PHẨM</string>
+    <string name="title_product_cart_name">Rượu Mơ Mận Đào Mộc Châu</string>
+    <string name="title_product_cart_price">Giá: 400.000đ</string>
+    <string name="title_product_cart_total_price">Tổng giá: 400.000đ</string>
+    <string name="title_product_cart_select_all">Chọn tất cả</string>
+    <string name="title_product_cart_payment">Thanh toán</string>
+    <string name="title_product_comparison_name">Rượu Mận</string>
+    <string name="Homepage_TayBac_Wine">Rượu Tây Bắc</string>
+    <string name="Homepage_Accessories">Phụ kiện</string>
+    <string name="Homepage_Wine_Gift">Bộ quà tặng rượu</string>
+    <string name="Homepage_CS">Dịch vụ khách hàng</string>
+    <string name="Homepage_Orders">Đơn hàng</string>
+    <string name="Homepage_supersale_section">Siêu khuyến mãi</string>
+    <string name="Title_view_all">Xem tất cả</string>
+    <string name="Homepage_BestSeller_section">Bán chạy nhất</string>
+    <string name="Homepage_Customer_reviews">Đánh giá của khách hàng</string>
+    <string name="title_voucher_management">Phiếu giảm giá</string>
+    <string name="Voucher_save_btn">Lưu</string>
+    <string name="Voucher_description">Miễn phí vận chuyển cho khách hàng mới</string>
+    <string name="Voucher_value">Giảm 200</string>
+    <string name="Voucher_status">Đã hết hạn</string>
+    <string name="title_DeliveryInformation_transaction_checkout">Thanh Toán</string>
+
     <string name="title_delivery_information">Thông tin vận chuyển</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
@@ -37,6 +92,7 @@
     <string name="title_voucher_code">Mã giảm giá</string>
     <string name="title_voucher_apply">Áp dụng</string>
     <string name="title_voucher_code_hint">Nhập mã giảm giá tại đây</string>
+
     <string name="title_applied">Đã áp dụng</string>
     <string name="title_voucher_applied_success">Áp dụng mã giảm thành công</string>
     <string name="title_invalid_voucher_code">Mã giảm không tồn tại</string>
@@ -171,5 +227,8 @@
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
     <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
     <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Đường Cô Bắc, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh</string>
+
+    <string name="title_product_price_original">460.000 đ</string>
+
 
 </resources>
