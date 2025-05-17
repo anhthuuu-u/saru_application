@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">client_app</string>
-<<<<<<< HEAD
+    <string name="app_name">SARU</string>
+
     <string name="title_transaction_checkout">CHECK OUT</string>
 
 <!--    Delivery Information-->
@@ -121,6 +121,8 @@
     <string name="error_invalid_cvv">Invalid CVV</string>
     <string name="error_invalid_card_number">Invalid Card Number</string>
     <string name="error_bank_name_empty">Bank Empty</string>
+
+    <!--Setting-->
     <string name="title_notification_notification">NOTIFICATION</string>
     <string name="title_notification_system">System</string>
     <string name="title_notification_order">Order</string>
@@ -141,5 +143,22 @@
     <string name="title_notification_successfulldelivery">Delivery successful</string>
     <string name="titlePopUpMessage">Notification deleted successfully!</string>
     <string name="title_notification_discount1">You have just received a 20k discount on every order.</string>
+    <!--Blog-->
+    <string name="title_blog_Blog">BLOG</string>
+    <string name="title_blog_catalog">Catalog</string>
+    <string name="title_blog_inforTayBacWine">Information about Tay Bac Wine</string>
+    <string name="title_blog_seemore">See more</string>
+    <string name="title_blog_tips">Tips</string>
+    <string name="title_blog_suggestforyou">Suggest for you</string>
+    <string name="title_blog_titleblogs">Title blog</string>
+    <string name="title_blog_blogcatalog">Blog Catalog</string>
+    <string name="title_blog_blogtitle">Blog title</string>
+    <string name="title_blog_blogcontent">Content</string>
+    <string name="title_blog_suggestfyou">Suggest for you</string>
+    <string name="title_blogeachcatalog_blogcatalogname_infor">INFORMATION ABOUT TAY BAC WINE</string>
+    <string name="title_detailblog_titleblog">THE HEALTH BENEFITS OF TAY BAC WINE</string>
+    <string name="title_detailblog_datepost">Posting date</string>
+    <string name="title_detailblog_view">View</string>
+    <string name="title_detailblog_relatednews">Related news</string>
 
 </resources>

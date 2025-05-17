@@ -139,4 +139,21 @@
     <string name="titlePopUpMessage">Đã xóa thông báo thành công!</string>
     <string name="title_notification_discount1">Bạn vừa nhận được khuyến mãi 20k cho mọi đơn hàng</string>
 
+    <string name="title_blog_Blog">BLOG</string>
+    <string name="title_blog_catalog">Danh mục</string>
+    <string name="title_blog_inforTayBacWine">Kiến thức về rượu Tây Bắc</string>
+    <string name="title_blog_seemore">Xem thêm</string>
+    <string name="title_blog_tips">Mẹo hữu ích</string>
+    <string name="title_blog_suggestforyou">Gợi ý cho bạn</string>
+    <string name="title_blog_titleblogs">Tiêu đề blog</string>
+    <string name="title_blog_blogcatalog">Danh mục blog</string>
+    <string name="title_blog_blogtitle">Tiêu đề blog</string>
+    <string name="title_blog_blogcontent">Nội dung</string>
+    <string name="title_blog_suggestfyou">Gợi ý cho bạn</string>
+    <string name="title_blogeachcatalog_blogcatalogname_infor">KIẾN THỨC VỀ RƯỢU TÂY BẮC</string>
+    <string name="title_detailblog_titleblog">Công dụng của Rượu Tây Bắc đối với sức khỏe</string>
+    <string name="title_detailblog_datepost">Ngày đăng</string>
+    <string name="title_detailblog_view">Lượt xem</string>
+    <string name="title_detailblog_relatednews">Tin tức liên quan</string>
+
 </resources>

@@ -22,6 +22,7 @@
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
+
             android:name=".TransactionEditPaymentMethodActivity"
             android:exported="false" />
         <activity
@@ -49,6 +50,15 @@
             android:name=".Notification_FromSettingActivity"
             android:exported="false" />
         <activity
+            android:name=".Blog_BlogDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Blog_EachCatalogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Blog_ListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -57,7 +67,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="preloaded_fonts"
