@@ -1,6 +1,8 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,25 +12,29 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ProfileUpdateCardActivity extends AppCompatActivity {
+public class OrderReviewActivity extends AppCompatActivity {
+
+    ImageView icBackArrow;
+    Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_updatecard);
+        setContentView(R.layout.activity_order_review);
 
-        // Back button
-        ImageView backArrow = findViewById(R.id.ic_back_arrow);
-        backArrow.setOnClickListener(new View.OnClickListener() {
+        icBackArrow = findViewById(R.id.ic_back_arrow);
+        submitButton = findViewById(R.id.review_submit_button);
+
+        // Quay về trang OrderDetailActivity
+        icBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Quay lại ProfileEditActivity
+                finish(); // hoặc dùng Intent nếu cần chuyển mới
             }
         });
 
-        // Save button
-        Button saveButton = findViewById(R.id.btn_save_info);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        // Xử lý khi bấm nút Gửi đánh giá
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCustomToast();
@@ -40,13 +46,13 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast, null);
 
-        TextView message = layout.findViewById(R.id.tv_toast_message);
-        message.setText(getString(R.string.update_success_message)); // sử dụng string resource
+        TextView toastText = layout.findViewById(R.id.tv_toast_message);
+        toastText.setText(getString(R.string.review_submit_success)); // chuỗi từ strings.xml
 
         Toast toast = new Toast(getApplicationContext());
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 100); // gần phía trên
         toast.show();
     }
 }
-

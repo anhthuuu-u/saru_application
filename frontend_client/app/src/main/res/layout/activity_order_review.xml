@@ -25,118 +25,15 @@
                 android:layout_marginEnd="8dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="339dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/inter_bold"
                 android:gravity="center"
-                android:paddingStart="0dp"
-                android:text="@string/order_detail_title"
+                android:text="@string/review_title"
                 android:textColor="#B16628"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Order Information Section (Outside White Frame) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
-
-            <!-- Order Code and Order Date on the Same Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <!-- Order Code (Left Side) -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="start">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
-                        android:text="@string/order_code_label"
-                        android:textColor="#85461F"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/inter_bold"
-                        android:singleLine="true"
-                        android:text="@string/order_code_value"
-                        android:textColor="#85461F"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Order Date (Right Side) -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="@string/order_date_label"
-                        android:textColor="#85461F"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:fontFamily="@font/inter_light"
-                        android:singleLine="true"
-                        android:text="@string/order_date_value"
-                        android:textColor="#85461F"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Order Status Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_light"
-                android:text="@string/order_status_label"
-                android:textColor="#85461F"
-                android:textSize="12sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="@string/order_status_value"
-                android:textColor="#009E1D"
-                android:textSize="12sp"
-                android:textStyle="italic" />
         </LinearLayout>
 
         <!-- Products Section -->
@@ -152,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
-                android:text="@string/order_products_label"
+                android:text="@string/order_product_label"
                 android:textColor="#FBBC05"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -186,7 +83,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
-                            android:text="@string/order_product_name_1"
+                            android:text="@string/order_product_name"
                             android:textColor="#85461F"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -283,8 +180,7 @@
                     android:fontFamily="@font/inter"
                     android:text="@string/order_total_amount_label"
                     android:textColor="#000000"
-                    android:textSize="10sp"
-                    android:textStyle="normal" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -292,107 +188,98 @@
                     android:fontFamily="@font/inter_bold"
                     android:text="@string/order_total_amount_value"
                     android:textColor="#85461F"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Contact Information Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Order Rating Label -->
+        <TextView
+            android:id="@+id/order_rating_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_rounded_white"
-            android:padding="12dp">
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/review_rating_label"
+            android:textColor="#F8BC3B"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <!-- Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="@string/order_contact_shipping_title"
-                android:textColor="#FBBC05"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+        <!-- Rating Stars -->
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:src="@mipmap/ic_star_yellow" />
 
-            <!-- Contact Name -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_bold"
-                android:text="@string/order_contact_name_value"
-                android:textColor="#000000"
-                android:layout_marginBottom="3dp"
-                android:textSize="10sp" />
-
-            <!-- Contact Phone -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/order_contact_phone_value"
-                android:layout_marginBottom="3dp"
-                android:textColor="#000000"
-                android:textSize="10sp" />
-
-            <!-- Contact Address -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:layout_marginBottom="3dp"
-                android:text="@string/order_contact_address_value"
-                android:textColor="#000000"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <!-- Action Buttons Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Attach Media Label -->
+        <TextView
+            android:id="@+id/attach_media_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/review_attach_media_label"
+            android:textColor="#F8BC3B"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Media Attachment Placeholder -->
+        <LinearLayout
+            android:id="@+id/media_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#F0F0F0"
             android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="8dp"
-            android:weightSum="3">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
-            <!-- Cancel Order -->
-            <Button
-                android:id="@+id/btn_cancel_order"
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:text="@string/order_cancel_order"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#999999"
-                android:textSize="12sp" />
+                android:src="@android:drawable/ic_menu_camera"
+                android:layout_marginEnd="16dp" />
 
-            <!-- Write Review -->
-            <Button
-                android:id="@+id/btn_write_review"
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-                android:text="@string/order_write_review"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#F8BC3B"
-                android:textSize="12sp" />
-
-            <!-- Request Return/Exchange -->
-            <Button
-                android:id="@+id/btn_request_return"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:text="@string/order_request_return"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#F8BC3B"
-                android:textSize="12sp" />
+                android:src="@android:drawable/ic_media_play" />
         </LinearLayout>
+
+        <!-- Write Review Label -->
+        <TextView
+            android:id="@+id/write_review_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/review_write_review_label"
+            android:textColor="#F8BC3B"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Review Input -->
+        <EditText
+            android:id="@+id/review_input"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="#F0F0F0"
+            android:fontFamily="@font/inter"
+            android:gravity="start|top"
+            android:hint="@string/review_write_review_hint"
+            android:padding="8dp"
+            android:textSize="12sp" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/review_submit_button"
+            android:layout_width="149dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#FFC107"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/review_submit_button"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 </ScrollView>

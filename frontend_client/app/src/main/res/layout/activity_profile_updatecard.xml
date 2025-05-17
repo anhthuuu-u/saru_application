@@ -25,14 +25,14 @@
                 android:id="@+id/ic_back_arrow"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_back_arrow"
+                android:src="@mipmap/ic_back_arrow"
                 android:layout_marginEnd="8dp" />
 
             <TextView
                 android:layout_width="373dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/update_payment_info_title"
+                android:text="@string/card_update_payment_info_title"
                 android:textAlignment="center"
                 android:textColor="#B16628"
                 android:textSize="16sp"
@@ -52,7 +52,7 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/img_circle"
+                android:src="@mipmap/img_circle"
                 android:layout_marginEnd="12dp"
                 android:contentDescription="@string/profile_image" />
 
@@ -65,7 +65,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_name"
+                    android:text="@string/profile_user_name"
                     android:textColor="#B16628"
                     android:textStyle="bold"
                     android:textSize="20sp" />
@@ -73,7 +73,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_email"
+                    android:text="@string/profile_user_email"
                     android:textColor="#B16628"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -136,7 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/select_bank_label"
+                    android:text="@string/card_select_bank_label"
                     android:textColor="#F8BC3B"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="@string/select_bank_placeholder"
+                    android:hint="@string/card_select_bank_placeholder"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -193,7 +193,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/cvv_label"
+                    android:text="@string/card_cvv_label"
                     android:textColor="#F8BC3B"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="@string/cvv_placeholder"
+                    android:hint="@string/card_cvv_placeholder"
                     android:inputType="number"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
@@ -222,7 +222,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/expiry_date_label"
+                    android:text="@string/card_expiry_date_label"
                     android:textColor="#F8BC3B"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="@string/expiry_date_placeholder"
+                    android:hint="@string/card_expiry_date_placeholder"
                     android:inputType="date"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
@@ -245,7 +245,7 @@
             android:id="@+id/btn_save_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_info_button"
+            android:text="@string/card_save_info_button"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:backgroundTint="#FBBC05"
