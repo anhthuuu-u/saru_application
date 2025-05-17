@@ -19,13 +19,11 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
-
             android:name=".TransactionEditPaymentMethodActivity"
             android:exported="false" />
         <activity
@@ -94,6 +92,46 @@
             android:name=".Homepage"
             android:exported="false" />
         <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ProfileEditActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".OrderListActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".OrderDetailActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ProfileUpdateCardActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".OrderReviewActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".OrderRequestReturnActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".OrderCancelActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".CustomerSupportActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".LanguageSettingActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -105,10 +143,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <meta-data
             android:name="com.google.android.geo.AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I"
             android:value="AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I" />
-
 
     </application>
 
