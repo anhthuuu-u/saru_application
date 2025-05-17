@@ -25,7 +25,6 @@
             app:tint="@color/color_dark_brown" />
 
         <TextView
-            android:id="@+id/txtEditPaymentMedthod"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

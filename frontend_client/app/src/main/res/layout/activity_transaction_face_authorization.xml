@@ -26,7 +26,6 @@
             app:tint="@color/color_dark_brown" />
 
         <TextView
-            android:id="@+id/txtEditPaymentMedthod"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -62,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="50dp"
-            android:src="@drawable/ic_account"
+            android:src="@mipmap/ic_account"
             app:tint="@color/design_default_color_on_secondary" />
 
     </FrameLayout>

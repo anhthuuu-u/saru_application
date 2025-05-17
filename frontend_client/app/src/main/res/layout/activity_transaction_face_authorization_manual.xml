@@ -26,7 +26,6 @@
             app:tint="@color/color_dark_brown" />
 
         <TextView
-            android:id="@+id/txtEditPaymentMedthod"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/face_authentication_circle"
-            android:backgroundTint="#CC0000" />
+            android:backgroundTint="@android:color/holo_red_dark" />
 
         <!-- Face Icon Overlay -->
         <ImageView
@@ -64,7 +63,7 @@
             android:layout_height="match_parent"
             android:padding="50dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="#CC0000"/>
+            app:tint="@android:color/holo_red_dark"/>
 
     </FrameLayout>
 

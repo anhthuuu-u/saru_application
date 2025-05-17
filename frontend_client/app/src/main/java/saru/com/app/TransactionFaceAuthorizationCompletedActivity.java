@@ -1,6 +1,8 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,10 @@ public class TransactionFaceAuthorizationCompletedActivity extends AppCompatActi
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(TransactionFaceAuthorizationCompletedActivity.this, SuccessfulPaymentActivity.class);
+            startActivity(intent);
+            finish();
+        }, 300);
     }
 }

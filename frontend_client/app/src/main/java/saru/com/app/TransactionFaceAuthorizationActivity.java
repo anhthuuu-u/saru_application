@@ -20,7 +20,7 @@ public class TransactionFaceAuthorizationActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_transaction_face_authorization);
         addViews();
-        addEvent();
+        addEvents();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -29,10 +29,11 @@ public class TransactionFaceAuthorizationActivity extends AppCompatActivity {
     }
 
     private void addViews() {
+
         imgFaceAuthorization=findViewById(R.id.imgFaceAuthorization);
     }
 
-    private void addEvent() {
+    private void addEvents() {
         imgFaceAuthorization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,9 +43,11 @@ public class TransactionFaceAuthorizationActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(View view) {
+        finish();
     }
     void  openTransactionFaceAuthorizationManualActivity(){
         Intent intent=new Intent(TransactionFaceAuthorizationActivity.this, TransactionFaceAuthorizationManualActivity.class);
         startActivity(intent);
+        finish();
     }
 }

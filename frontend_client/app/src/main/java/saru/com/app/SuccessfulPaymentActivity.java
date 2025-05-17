@@ -69,7 +69,7 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
      * 4. Xử lý sự kiện khi người dùng nhấn nút thêm vào giỏ hàng
      */
     public void do_add_to_cart(View view) {
-        String productName = getString(R.string.title_product_name);
+        String productName = getString(R.string.title_trans_product_name);
         String message = getString(R.string.title_the_add_to_cart) + productName + getString(R.string.title_add_to_cart_message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
