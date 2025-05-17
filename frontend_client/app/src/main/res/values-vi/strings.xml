@@ -117,7 +117,7 @@
     <string name="error_invalid_cvv">Mã CVV không hợp lệ</string>
     <string name="error_invalid_card_number">Số thẻ không hợp lệ</string>
     <string name="error_bank_name_empty">Vui lòng chọn ngân hàng</string>
-
+    <!--Setting-->
     <string name="title_notification_notification">THÔNG BÁO</string>
     <string name="title_notification_system">Hệ thống</string>
     <string name="title_notification_order">Đơn hàng</string>
@@ -138,7 +138,7 @@
     <string name="title_notification_successfulldelivery">Giao hàng thành công</string>
     <string name="titlePopUpMessage">Đã xóa thông báo thành công!</string>
     <string name="title_notification_discount1">Bạn vừa nhận được khuyến mãi 20k cho mọi đơn hàng</string>
-
+    <!--Blog-->
     <string name="title_blog_Blog">BLOG</string>
     <string name="title_blog_catalog">Danh mục</string>
     <string name="title_blog_inforTayBacWine">Kiến thức về rượu Tây Bắc</string>
@@ -155,5 +155,21 @@
     <string name="title_detailblog_datepost">Ngày đăng</string>
     <string name="title_detailblog_view">Lượt xem</string>
     <string name="title_detailblog_relatednews">Tin tức liên quan</string>
+
+    <!--Aboutus-->
+    <string name="title_aboutus">VỀ CHÚNG TÔI</string>
+    <string name="title_aboutus_saru_taybacwine">SARU - Rượu Tây Bắc </string>
+    <string name="title_aboutus_storelocation">Vị trí cửa hàng</string>
+    <string name="title_aboutus_Founder">Founder</string>
+    <string name="title_aboutus_CEO">CEO</string>
+    <string name="title_aboutus_CMO">CMO\n</string>
+    <string name="title_aboutus_CFO">CFO\n</string>
+    <string name="title_aboutus_cto">CTO</string>
+    <string name="title_aboutus_coo">COO</string>
+    <string name="title_aboutus_endpage">Về chúng tôi</string>
+    <string name="title_aboutuslocation_LaoCaiBranch">Cửa hàng Saru Tây Bắc chi nhánh Lào Cai</string>
+    <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
+    <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
+    <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Đường Cô Bắc, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh</string>
 
 </resources>

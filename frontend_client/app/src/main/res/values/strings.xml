@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">SARU</string>
-
     <string name="title_transaction_checkout">CHECK OUT</string>
 
 <!--    Delivery Information-->
@@ -161,4 +160,20 @@
     <string name="title_detailblog_view">View</string>
     <string name="title_detailblog_relatednews">Related news</string>
 
+    <!--About us-->
+
+    <string name="title_aboutus">ABOUT US</string>
+    <string name="title_aboutus_saru_taybacwine">SARU - Tây Bắc Wine</string>
+    <string name="title_aboutus_storelocation">Store Location</string>
+    <string name="title_aboutus_Founder">Founder</string>
+    <string name="title_aboutus_CEO">CEO</string>
+    <string name="title_aboutus_CMO">CMO\n</string>
+    <string name="title_aboutus_CFO">CFO\n</string>
+    <string name="title_aboutus_cto">CTO</string>
+    <string name="title_aboutus_coo">COO</string>
+    <string name="title_aboutus_endpage">About us</string>
+    <string name="title_aboutuslocation_LaoCaiBranch">Saru Tay Bac Store, Lao Cai Branch</string>
+    <string name="title_aboutuslocation_LaoCaiBranch_Address">Address: 16 Le Hong Phong, Lao Cai City, Lao Cai Province</string>
+    <string name="title_aboutuslocation_HCMBranch">Saru Tay Bac Store, Ho Chi Minh Branch</string>
+    <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Cô Bắc Street, Cô Giang Ward, District 1, Ho Chi Minh City</string>
 </resources>
