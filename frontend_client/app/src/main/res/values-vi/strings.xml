@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Ứng dụng Saru</string>
     <string name="title_transaction_checkout">THANH TOÁN</string>
 
@@ -428,4 +429,54 @@
     <string name="bottom_nav_product">Sản phẩm</string>
     <string name="bottom_nav_compare">So sánh</string>
     <string name="bottom_nav_account">Tài khoản</string>
+
+    <string name="app_name">Saru</string>
+    <string name="title_onbroading">Chào đồng tửu!\nChào mừng đến với Saru!</string>
+    <string name="subtitle_onbroading">Khám phá rượu chuẩn, nguồn gốc rõ ràng tại Saru.</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="text_signup">Bạn mới đến?</string>
+    <string name="btn_signup">Đăng ký</string>
+    <string name="title_email">Email <font color="#FF0000">*</font> </string>
+    <string name="hint_email">Nhập email của bạn</string>
+    <string name="title_password">Mật khẩu <font color="#FF0000">*</font> </string>
+    <string name="hint_password">Nhập mật khẩu</string>
+    <string name="btn_forgot_password"><u>Quên mật khẩu?</u></string>
+    <string name="title_signup">ĐĂNG KÝ</string>
+    <string name="title_fullname">Họ và tên <font color="#FF0000">*</font> </string>
+    <string name="hint_fullname">Nhập họ và tên</string>
+    <string name="txt_disclaimer">Để tuân thủ quy định, chúng tôi cần <font color="#FF0000">xác minh danh tính</font> để bạn mua được các sản phẩm có cồn.</string>
+    <string name="title_id_card">CMND/CCCD <font color="#FF0000">*</font> </string>
+    <string name="upload_id_card">Tải CMND/CCCD</string>
+    <string name="title_face_verification">Xác thực khuôn mặt <font color="#FF0000">*</font> </string>
+    <string name="upload_face_verification">Xác thực khuôn mặt</string>
+    <string name="chk_agree"><font color="#FF0000">*</font> Tôi đã đọc và đồng ý với <a href="#">Điều khoản dịch vụ</a> &amp; <a href="#">Chính sách bảo mật</a> của Saru</string>
+    <string name="text_login">Đã có tài khoản?</string>
+    <string name="prompt_upload_id_card">Chạm để tải lên mặt trước CMND/CCCD</string>
+    <string name="btn_change_image">Đổi ảnh</string>
+    <string name="status_uploading">Đang tải...</string>
+    <string name="status_upload_success_id">Đã tải CMND/CCCD.</string>
+    <string name="status_error_upload_failed">Tải lên không thành công. Thử lại nhé.</string>
+    <string name="status_error_file_too_large">Ảnh lớn quá. Chọn ảnh nhỏ hơn nha.</string>
+    <string name="status_error_invalid_file">Chọn ảnh thôi bạn ơi.</string>
+    <string name="status_error_camera_permission">Cho phép Saru dùng camera nha.</string>
+    <string name="prompt_start_face_verification">Chạm để bắt đầu xác thực khuôn mặt.</string>
+    <string name="title_face_authentication">Xác thực khuôn mặt</string>
+    <string name="face_auth_initial_prompt">Saru đang nhận diện khuôn mặt, nhìn thẳng nha bạn...</string>
+    <string name="face_auth_success">Xác thực thành công!</string>
+    <string name="face_auth_failure_mismatch">Khuôn mặt không khớp với CMND/CCCD rồi!</string>
+    <string name="btn_scan_again">Quét lại</string>
+    <string name="btn_back_to_signup">Về trang đăng ký</string>
+    <string name="btn_greeting">Lai rai thôi!</string>
+    <string name="title_forgot_password">QUÊN MẬT KHẨU</string>
+    <string name="txt_input_email">Nhập email bạn dùng tạo tài khoản, Saru gửi mã xác thực để đặt lại mật khẩu nha.</string>
+    <string name="btn_continue">Tiếp tục</string>
+    <string name="txt_input_code">Saru đã gửi mã đến %s rồi đó. Nhập vô nha!</string>
+    <string name="txt_resend_code">Chưa thấy mã hả?</string>
+    <string name="btn_resend_code">Gửi lại mã</string>
+    <string name="txt_input_password">Nhập mật khẩu mới cho tài khoản %s nè!</string>
+    <string name="title_new_password">Mật khẩu mới <font color="#FF0000">*</font></string>
+    <string name="hint_new_password">Nhập mật khẩu mới</string>
+    <string name="title_confirm_password">Xác nhận mật khẩu <font color="#FF0000">*</font> </string>
+    <string name="hint_confirm_password">Nhập lại mật khẩu</string>
 </resources>
+

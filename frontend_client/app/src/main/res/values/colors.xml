@@ -2,9 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="color_terracotta">#B16628</color>
     <color name="color_golden_yellow">#F8BC3B</color>
+    <color name="red">#FF0000</color>
+    <color name="color_authenciation">#FFF8ED</color>
     <color name="color_dark_brown">#85461F</color>
     <color name="color_espresso">#38312F</color>
     <color name="color_pale_peach">#E2BF9E</color>
@@ -12,7 +13,4 @@
     <color name="color_medium_gray">#969696</color>
     <color name="color_creamy_white">#F2E8DA</color>
     <color name="voucher_applied_color">#4CAF50</color>
-    <color name="red">#FF0000</color>
-
-
 </resources>
