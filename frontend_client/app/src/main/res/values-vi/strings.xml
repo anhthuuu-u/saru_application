@@ -118,4 +118,25 @@
     <string name="error_invalid_card_number">Số thẻ không hợp lệ</string>
     <string name="error_bank_name_empty">Vui lòng chọn ngân hàng</string>
 
+    <string name="title_notification_notification">THÔNG BÁO</string>
+    <string name="title_notification_system">Hệ thống</string>
+    <string name="title_notification_order">Đơn hàng</string>
+    <string name="title_notification_discount">Khuyến mãi</string>
+    <string name="title_notification_selectall">Danh sách thông báo</string>
+    <string name="title_notification_deleteall">Xóa tất cả</string>
+    <string name="title_notification_changepass">Đổi mật khẩu</string>
+    <string name="title_notification_message">Nội dung</string>
+    <string name="title_notification_time">Thời gian</string>
+    <string name="title_notification_fromorder_statussucess">Giao hàng thành công</string>
+    <string name="title_notification_fromorder_status_success">Giao hàng thành công</string>
+    <string name="title_notification_fromorder_status_sucess">Giao hàng thành công</string>
+    <string name="title_notification_popup_savechanges">Bạn có muốn lưu thay đổi?</string>
+    <string name="title_confimation_popup_back">Trở về</string>
+    <string name="titlePopUpConfirm_Back">Trở về</string>
+    <string name="titlePopUpConfirmConfirm">Xác nhận</string>
+    <string name="titlePopUpConfirm_SaveChange">Bạn có muốn lưu thay đổi?</string>
+    <string name="title_notification_successfulldelivery">Giao hàng thành công</string>
+    <string name="titlePopUpMessage">Đã xóa thông báo thành công!</string>
+    <string name="title_notification_discount1">Bạn vừa nhận được khuyến mãi 20k cho mọi đơn hàng</string>
+
 </resources>

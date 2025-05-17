@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">client_app</string>
+<<<<<<< HEAD
     <string name="title_transaction_checkout">CHECK OUT</string>
 
 <!--    Delivery Information-->
@@ -120,4 +121,25 @@
     <string name="error_invalid_cvv">Invalid CVV</string>
     <string name="error_invalid_card_number">Invalid Card Number</string>
     <string name="error_bank_name_empty">Bank Empty</string>
+    <string name="title_notification_notification">NOTIFICATION</string>
+    <string name="title_notification_system">System</string>
+    <string name="title_notification_order">Order</string>
+    <string name="title_notification_discount">Discount</string>
+    <string name="title_notification_selectall">Select all</string>
+    <string name="title_notification_deleteall">Delete all</string>
+    <string name="title_notification_changepass">Change the password</string>
+    <string name="title_notification_message">Message</string>
+    <string name="title_notification_time">Time</string>
+    <string name="title_notification_fromorder_statussucess">Delivery successful</string>
+    <string name="title_notification_fromorder_status_success">Delivery successful</string>
+    <string name="title_notification_fromorder_status_sucess">Delivery successful</string>
+    <string name="title_notification_popup_savechanges">Do you want to save the changes?</string>
+    <string name="title_confimation_popup_back">Back</string>
+    <string name="titlePopUpConfirm_Back">Back</string>
+    <string name="titlePopUpConfirmConfirm">Confirm</string>
+    <string name="titlePopUpConfirm_SaveChange">Do you want to save the changes?</string>
+    <string name="title_notification_successfulldelivery">Delivery successful</string>
+    <string name="titlePopUpMessage">Notification deleted successfully!</string>
+    <string name="title_notification_discount1">You have just received a 20k discount on every order.</string>
+
 </resources>
