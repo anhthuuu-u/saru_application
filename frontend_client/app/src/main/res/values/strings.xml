@@ -314,6 +314,7 @@
     <string-array name="card_types">
         <item>Mastercard</item>
         <item>Visa</item>
+        <item>JCB</item>
         <item>American Express</item>
     </string-array>
 
