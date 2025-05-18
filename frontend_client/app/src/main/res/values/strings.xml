@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">SARU</string>
     <string name="title_transaction_checkout">CHECK OUT</string>
@@ -311,7 +311,7 @@
     <string name="update_success_message">Update successful!</string>
 
     <!-- Array for Spinner (Card Types) -->
-    <string-array name="card_types">
+    <string-array name="card_types" >
         <item>Mastercard</item>
         <item>Visa</item>
         <item>American Express</item>
