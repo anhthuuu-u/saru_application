@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center">
-
     <TextView
         android:id="@+id/tv_toast_message"
         android:layout_width="wrap_content"

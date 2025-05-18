@@ -49,6 +49,7 @@ public class CustomerSupportActivity extends AppCompatActivity {
         });
     }
 
+
     private void setupFaqItem(int containerId, int answerId, int iconId, int dividerId) {
         LinearLayout container = findViewById(containerId);
         TextView answer = findViewById(answerId);
