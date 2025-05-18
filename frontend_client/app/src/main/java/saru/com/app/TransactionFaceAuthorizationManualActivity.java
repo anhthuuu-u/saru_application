@@ -40,18 +40,20 @@ public class TransactionFaceAuthorizationManualActivity extends AppCompatActivit
         btnFaceAuthorConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSuccessfulPaymentActivity();
+                openTransactionAuthorizationCompletedActivity();
+                finish();
             }
         });
     }
 
     public void onBackPressed(View view) {
+        finish();
     }
 
     public void onConfirmClick(View view) {
     }
-    void openSuccessfulPaymentActivity() {
-        Intent intent = new Intent(TransactionFaceAuthorizationManualActivity.this, SuccessfulPaymentActivity.class);
+    void openTransactionAuthorizationCompletedActivity() {
+        Intent intent = new Intent(TransactionFaceAuthorizationManualActivity.this, TransactionFaceAuthorizationCompletedActivity.class);
         startActivity(intent);
     }
 }

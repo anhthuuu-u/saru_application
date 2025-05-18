@@ -59,13 +59,14 @@
     <string name="Voucher_value">Discount 200</string>
     <string name="Voucher_status">Expired</string>
     <string name="title_DeliveryInformation_transaction_checkout">Check Out</string>
+
     <string name="title_delivery_information">Delivery Information</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
     <string name="title_customer_address">Dormitory Area B - Ho Chi Minh City National University, Thu Duc City, Ho Chi Minh City, Vietnam</string>
     <string name="title_product">Product</string>
 
-<!--    Order Products-->
+    <!--    Order Products-->
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -88,7 +89,7 @@
     <string name="title_delivery_time">Time to delivery</string>
     <string name="title_expected_delivery">Expected Delivery ngày tháng năm</string>
 
-<!--    Voucher Code-->
+    <!--    Voucher Code-->
     <string name="title_voucher_code">Voucher Code</string>
     <string name="title_voucher_apply">Apply</string>
     <string name="title_voucher_code_hint">Enter voucher code here</string>
@@ -97,7 +98,7 @@
     <string name="title_invalid_voucher_code">Invalid voucher code</string>
     <string name="title_enter_voucher_code_message">Please enter a voucher code</string>
 
-<!--    Payment Method-->
+    <!--    Payment Method-->
     <string name="title_payment_method">Payment Method</string>
 
     <string name="title_cash_on_delivery">Cash on Delivery (COD)</string>
@@ -113,7 +114,7 @@
     <string name="title_ewallet_detail">Momo Ewallet</string>
 
 
-<!--    Place Order Navigation-->
+    <!--    Place Order Navigation-->
     <string name="title_transaction_term">"By clicking \"Place Order\", you are agreeing to Saru's General Transaction Term "</string>
     <string name="title_place_order">Place Order</string>
     <string name="title_total_payment">Total Payment</string>
@@ -121,7 +122,7 @@
     <string name="title_total_saved">Total Saved</string>
     <string name="title_saved_price">150.000 đ</string>
 
-<!--    Edit Address Information-->
+    <!--    Edit Address Information-->
     <string name="title_edit_address">EDIT ADDRESS</string>
     <string name="title_address">Address</string>
     <string name="title_customer_name_hint">Full name</string>
@@ -134,35 +135,36 @@
     <string name="title_transaction_edit_address_cancel">"Cancel "</string>
     <string name="title_transaction_edit_address_confirm">Confirm</string>
 
-<!--    Successful Payment-->
+    <!--    Successful Payment-->
     <string name="title_successful_payment">SUCCESSFUL PAYMENT</string>
     <string name="title_order_completed">THE ORDER HAS BEEN PLACED</string>
     <string name="title_order_tracking_message">Track your order here</string>
     <string name="title_order_details">See Order Details</string>
     <string name="title_product_suggest">SUGGESTED PRODUCTS</string>
-    <string name="title_add_to_cart">Add to Cart</string>
-    <string name="title_product_name">RƯỢU NGÔ</string>
-    <string name="title_product_brand">Rượu Tây Bắc</string>
+    <string name="title_trans_add_to_cart">Add to Cart</string>
+    <string name="title_trans_product_name">RƯỢU NGÔ</string>
+    <string name="title_trans_product_brand">Rượu Tây Bắc</string>
     <string name="title_product_star">5.0</string>
     <string name="title_product_review">(10 Reviews)</string>
-    <string name="title_product_price">200.000đ</string>
+    <string name="title_trans_product_price">200.000đ</string>
     <string name="title_the_add_to_cart">"The "</string>
     <string name="title_add_to_cart_message">" has been added to your cart"</string>
 
-<!--    Warning Exit Transaction-->
+    <!--    Warning Exit Transaction-->
     <string name="title_confirm_exit">Confirm Exit</string>
     <string name="title_confirm_exit_message">Are you sure not to make order</string>
     <string name="title_confirm_exit_message_yes">Yes</string>
     <string name="title_confirm_exit_message_no">No</string>
 
-<!--    Transaction Face Authorization-->
+    <!--    Transaction Face Authorization-->
     <string name="title_transaction_face_authorization"> FACE AUTHORIZATION</string>
     <string name="title_face_authorization_processing">Facial recognition is in progress for payment authentication, please look straight ahead...</string>
     <string name="title_face_authorization_error">Authentication failed, please enter password</string>
     <string name="title_face_error_password">Password:</string>
     <string name="title_face_author_password_hint">Enter your password</string>
+    <string name="title_face_authorization_completed">Verified successfully</string>
 
-<!--    Edit Payment Method-->
+    <!--    Edit Payment Method-->
     <string name="title_edit_payment_method">EDIT PAYMENT METHOD</string>
     <string name="title_card_info">Card Information</string>
     <string name="title_card_type">Card Type:</string>

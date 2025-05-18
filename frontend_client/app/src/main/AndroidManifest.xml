@@ -24,6 +24,9 @@
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
+            android:name=".TransactionFaceAuthorizationCompletedActivity"
+            android:exported="false" />
+        <activity
 
             android:name=".TransactionEditPaymentMethodActivity"
             android:exported="false" />

@@ -24,6 +24,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     // UI Components
     ImageView imgBack;
     ImageView imgEditInfo;
+    ImageView imgEditInfoBank;
     TextView txtCustomerName;
     TextView txtCustomerPhoneNumber;
     TextView txtCustomerAddress;
@@ -84,6 +85,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private void addViews() {
         imgBack = findViewById(R.id.imgBack);
         imgEditInfo = findViewById(R.id.imgEditInfo);
+        imgEditInfoBank=findViewById(R.id.imgEditInfoBank);
         txtCustomerName = findViewById(R.id.txtCustomerName);
         txtCustomerPhoneNumber = findViewById(R.id.txtCustomerPhoneNumber);
         txtCustomerAddress = findViewById(R.id.txtCustomerAddress);
@@ -125,8 +127,14 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openTransactionFaceAuthorizationActivity();
+            }
+        });
 
-                openTransactionFaceAuthorization();
+        imgEditInfoBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTransactionEditPaymentMethodActivity();
             }
         });
 
@@ -198,9 +206,9 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         });
 
         // Checkout button
-        btnPlaceOrder.setOnClickListener(v -> {
-            processCheckout();
-        });
+//        btnPlaceOrder.setOnClickListener(v -> {
+//            processCheckout();
+//        });
     }
 
     private void applyVoucherCode(String discountCode) {
@@ -312,8 +320,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
                 break;
         }
     }
-    private void processCheckout() {
-    }
+//    private void processCheckout() {
+//    }
 
     public void do_back(View view) {
         AlertDialog.Builder builder=new AlertDialog.Builder(TransactionCheckoutActivity.this);
@@ -353,11 +361,11 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditAddressActivity.class);
         startActivity(intent);
     }
-//    void openSuccessfulPaymentActivity() {
-//        Intent intent = new Intent(TransactionCheckoutActivity.this, SuccessfulPaymentActivity.class);
-//        startActivity(intent);
-//    }
-    void  openTransactionFaceAuthorization(){
+    void openTransactionEditPaymentMethodActivity(){
+        Intent intent=new Intent(TransactionCheckoutActivity.this, TransactionEditPaymentMethodActivity.class);
+        startActivity(intent);
+    }
+    void  openTransactionFaceAuthorizationActivity(){
         Intent intent=new Intent(TransactionCheckoutActivity.this, TransactionFaceAuthorizationActivity.class);
         startActivity(intent);
     }

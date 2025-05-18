@@ -7,7 +7,7 @@
     android:id="@+id/main"
     android:background="@color/color_creamy_white"
     android:orientation="vertical"
-    tools:context=".TransactionFaceAuthorizationActivity">
+    tools:context=".TransactionFaceAuthorizationCompletedActivity">
 
     <!-- Header with Back Button and Title -->
     <LinearLayout
@@ -16,14 +16,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp">
-
-        <ImageView
-            android:onClick="onBackPressed"
-            android:id="@+id/imgBack"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_back_arrow"
-            app:tint="@color/color_dark_brown" />
 
         <TextView
             android:layout_width="0dp"
@@ -35,9 +27,6 @@
             android:textColor="@color/color_terracotta"
             android:textSize="18sp" />
 
-        <View
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
     </LinearLayout>
 
     <!-- Camera Preview with Face Overlay -->
@@ -53,28 +42,27 @@
             android:id="@+id/faceOverlayCircle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/face_authentication_circle" />
+            android:background="@drawable/face_authentication_circle"
+            android:backgroundTint="@color/voucher_applied_color"/>
 
         <!-- Face Icon Overlay -->
         <ImageView
-            android:id="@+id/imgFaceAuthorization"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="50dp"
-            android:src="@mipmap/ic_account"
-            app:tint="@color/design_default_color_on_secondary" />
+            android:src="@drawable/ic_account_completed"
+            app:tint="@color/voucher_applied_color" />
 
     </FrameLayout>
 
     <!-- Status Message -->
     <TextView
-        android:id="@+id/txtFaceAuthorizationProcessing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="54dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
-        android:text="@string/title_face_authorization_processing"
+        android:text="@string/title_face_authorization_completed"
         android:textColor="#808080"
         android:textSize="12sp" />
 

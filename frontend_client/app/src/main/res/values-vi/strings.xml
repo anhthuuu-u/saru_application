@@ -138,12 +138,12 @@
     <string name="title_order_tracking_message">Vui lòng theo dõi tình trạng đơn hàng</string>
     <string name="title_order_details">Xem chi tiết</string>
     <string name="title_product_suggest">SẢN PHẨM TƯƠNG TỰ</string>
-    <string name="title_add_to_cart">Thêm vào giỏ hàng</string>
-    <string name="title_product_name">RƯỢU NGÔ</string>
-    <string name="title_product_brand">Rượu Tây Bắc</string>
+    <string name="title_trans_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="title_trans_product_name">RƯỢU NGÔ</string>
+    <string name="title_trans_product_brand">Rượu Tây Bắc</string>
     <string name="title_product_star">5.0</string>
     <string name="title_product_review">(10 Đánh giá)</string>
-    <string name="title_product_price">200.000đ</string>
+    <string name="title_trans_product_price">200.000đ</string>
     <string name="title_the_add_to_cart">"Sản phẩm "</string>
     <string name="title_add_to_cart_message">" đã thêm vào giỏ hàng của bạn"</string>
 
@@ -159,6 +159,7 @@
     <string name="title_face_authorization_error">Xác thực không thành công, vui lòng nhập mật khẩu</string>
     <string name="title_face_error_password">Mật khẩu:</string>
     <string name="title_face_author_password_hint">Nhập mật khẩu của bạn</string>
+    <string name="title_face_authorization_completed">Đã xác thực thành công</string>
 
 <!--    Edit Payment Method-->
     <string name="title_edit_payment_method">CHỈNH SỬA PHƯƠNG THỨC THANH TOÁN</string>
