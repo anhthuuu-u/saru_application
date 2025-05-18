@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_creamy_white"
+    android:orientation="vertical"
+    tools:context=".TransactionEditAddressActivity">
+
+    <!-- Top Bar with Back Button and Title -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:onClick="onBackPressed"
+            android:id="@+id/imgBack"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/color_dark_brown" />
+
+        <TextView
+            android:id="@+id/txtEditAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="@string/title_edit_address"
+            android:textColor="@color/color_terracotta"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+    </LinearLayout>
+
+    <!-- Form Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="10dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:id="@+id/form_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <!-- Name Field -->
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/title_address"
+                    android:textSize="14sp"
+                    android:textColor="@color/color_golden_yellow" />
+
+                <TextView
+                    android:id="@+id/name_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/title_customer_name_hint"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtCustomerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/title_customer_name_edit"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp" />
+
+                <!-- Phone Field -->
+                <TextView
+                    android:id="@+id/phone_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_customer_phone_number_hint"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/title_customer_phone_number_edit"
+                    android:ems="10"
+                    android:inputType="phone"
+                    android:textSize="16sp" />
+
+                <!-- Address Field -->
+                <TextView
+                    android:id="@+id/address_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_customer_address_hint"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtCustomerAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:text="@string/title_customer_address_edit"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:textSize="16sp" />
+
+                <!-- Google Maps Button -->
+                <LinearLayout
+                    android:id="@+id/google_map_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/material_dynamic_neutral90"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgMap"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="30dp"
+                        android:src="@mipmap/ic_map" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="@string/title_google"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:id="@+id/checkout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTransactionEditAddressCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/white"
+            android:onClick="onCancelClick"
+            android:text="@string/title_transaction_edit_address_cancel"
+            android:textColor="@color/color_golden_yellow"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/color_golden_yellow"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:onClick="onConfirmClick"
+            android:id="@+id/btnTransactionEditAddressConfirm"
+            android:backgroundTint="@color/color_golden_yellow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/title_transaction_edit_address_confirm"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>
