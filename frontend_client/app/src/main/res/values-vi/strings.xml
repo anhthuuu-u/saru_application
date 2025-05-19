@@ -13,7 +13,7 @@
     <string name="title_add_to_cart">Thêm vào giỏ hàng</string>
     <string name="title_product_price">200.000đ</string>
 
-    <string name="title_filter_product">Lọc sản phẩm</string>
+    <string name="title_filter_product_1">Lọc sản phẩm</string>
     <string name="title_DeliveryInformation_add_to_cart">Thêm vào giỏ hàng</string>
     <string name="title_DeliveryInformation_product_price">200.000đ</string>
 
@@ -71,11 +71,11 @@
     <string name="Voucher_status">Hết hạn</string>
     <string name="title_homepage_foryou">Dành cho bạn</string>
     <string name="title_product_category">Rượu Tây Bắc</string>
-    <string name="title_customer_name">Tên khách hàng</string>
+    <string name="title_customer_name_2">Tên khách hàng</string>
     <string name="title_purchased_product">Sản phẩm đã mua</string>
     <string name="title_customer_review_content">Đánh giá của khách hàng</string>
 
-    <string name="Voucher_status">Đã hết hạn</string>
+    <string name="Voucher_status_2">Đã hết hạn</string>
     <string name="title_DeliveryInformation_transaction_checkout">Thanh Toán</string>
 
     <string name="title_delivery_information">Thông tin vận chuyển</string>
@@ -85,6 +85,7 @@
     <string name="title_product">Sản phẩm</string>
 
 <!--    Order Products-->
+    <string name="title_product_name">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>

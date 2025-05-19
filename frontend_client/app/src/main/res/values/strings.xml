@@ -59,14 +59,16 @@
     <string name="Voucher_value">Discount 200</string>
     <string name="Voucher_status">Expired</string>
     <string name="title_DeliveryInformation_transaction_checkout">Check Out</string>
-
+    <string name="Voucher_status_2">Expired</string>
     <string name="title_delivery_information">Delivery Information</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
     <string name="title_customer_address">Dormitory Area B - Ho Chi Minh City National University, Thu Duc City, Ho Chi Minh City, Vietnam</string>
     <string name="title_product">Product</string>
+    <string name="title_customer_name_2">Customer Name</string>
 
     <!--    Order Products-->
+    <string name="title_product_name">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -149,7 +151,7 @@
     <string name="title_trans_product_price">200.000đ</string>
     <string name="title_the_add_to_cart">"The "</string>
     <string name="title_add_to_cart_message">" has been added to your cart"</string>
-
+    <string name="title_add_to_cart">Add to cart</string>
     <!--    Warning Exit Transaction-->
     <string name="title_confirm_exit">Confirm Exit</string>
     <string name="title_confirm_exit_message">Are you sure not to make order</string>
@@ -235,7 +237,9 @@
     <string name="title_aboutuslocation_HCMBranch">Saru Tay Bac Store, Ho Chi Minh Branch</string>
     <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Cô Bắc Street, Cô Giang Ward, District 1, Ho Chi Minh City</string>
     <string name="title_product_price_original">460.000 đ</string>
-
+    <string name="title_product_price">200.000đ</string>
+    <string name="title_filter_product_1">Filter products</string>
+    <string name="title_product_brand">Nhà máy chưng cất Mắm</string>
     <!-- FRAGMENT PROFILE -->
     <!-- Header -->
     <string name="account_title">ACCOUNT</string>
