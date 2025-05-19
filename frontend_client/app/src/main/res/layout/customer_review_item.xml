@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:id="@+id/customer_review_item"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- LinearLayout ngang để chứa ImageView và TextView tên khách hàng -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- ImageView cho ảnh khách hàng -->
+            <ImageView
+                android:id="@+id/imgCustomer"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="Customer Image"
+                app:srcCompat="@mipmap/ic_account" />
+
+            <!-- TextView cho tên khách hàng -->
+            <TextView
+                android:id="@+id/txtCustomerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/title_customer_name"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtPurchasedProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/title_purchased_product"
+            android:textColor="@color/color_ochre"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/txtReviewContent"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:text="@string/title_customer_review_content"
+            android:textColor="@color/color_medium_gray"
+            android:textSize="16sp" />
+
+        <!-- Sản phẩm đã mua -->
+
+        <!-- Nội dung đánh giá -->
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

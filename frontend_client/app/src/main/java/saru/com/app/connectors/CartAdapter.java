@@ -1,4 +1,4 @@
-package saru.com.app;
+package saru.com.app.connectors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import saru.com.app.R;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.Product;
 

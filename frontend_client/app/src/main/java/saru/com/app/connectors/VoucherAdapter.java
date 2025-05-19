@@ -1,4 +1,4 @@
-package saru.com.app.adapters;
+package saru.com.app.connectors;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +32,14 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
     public void onBindViewHolder(@NonNull VoucherViewHolder holder, int position) {
         Voucher voucher = voucherList.get(position);
         holder.voucherTitle.setText(voucher.getVoucherCode());
-        holder.voucherDescription.setText(voucher.getDescription());
+
+        // Cắt description thành khoảng 50 ký tự
+        String description = voucher.getDescription();
+        if (description.length() > 50) {
+            description = description.substring(0, 47) + "...";
+        }
+        holder.voucherDescription.setText(description);
+
         holder.voucherExpiry.setText("Sắp hết hạn: " + voucher.getExpiryDate());
 
         // Xử lý nút "Lưu" (có thể thêm logic lưu voucher vào đây)

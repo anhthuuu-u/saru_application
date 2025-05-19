@@ -1,15 +1,19 @@
-package saru.com.app;
+package saru.com.app.connectors;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import saru.com.app.ProductDetailActivity;
+import saru.com.app.R;
 import saru.com.app.models.Product;
 import saru.com.app.models.ProductList;
 
@@ -53,8 +57,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView textProductName;
         RatingBar ratingBar;
         TextView textProductPrice;
-        Button buttonAddToCart;
-        Button buttonAddToCompare;
+        Button btnAddToCart;
+        ImageButton btnComparison;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,8 +66,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textProductName = itemView.findViewById(R.id.text_product_name);
             ratingBar = itemView.findViewById(R.id.rating_bar);
             textProductPrice = itemView.findViewById(R.id.text_product_price);
-            buttonAddToCart = itemView.findViewById(R.id.button_add_to_cart);
-            buttonAddToCompare = itemView.findViewById(R.id.button_add_to_compare);
+            btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
+            btnComparison = itemView.findViewById(R.id.btnComparison);
         }
     }
 }

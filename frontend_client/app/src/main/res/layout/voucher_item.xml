@@ -3,32 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="4dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="8dp"
         android:background="@android:color/white">
 
         <!-- Icon (hình ảnh bên trái) -->
         <ImageView
             android:id="@+id/voucher_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="69dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:src="@android:drawable/ic_menu_info_details" />
+            app:srcCompat="@drawable/img_saru_cup" />
 
         <!-- Nội dung voucher -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <!-- Tiêu đề voucher -->
@@ -46,7 +47,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="start"/>
 
             <!-- Thời hạn -->
             <TextView
@@ -61,8 +65,8 @@
         <!-- Nút "Lưu" -->
         <Button
             android:id="@+id/voucher_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:backgroundTint="@color/color_golden_yellow"
             android:paddingStart="16dp"

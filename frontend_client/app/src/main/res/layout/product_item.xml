@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="205dp"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp">
+    android:layout_width="190dp"
+    android:layout_height="310dp"
+    app:cardBackgroundColor="@color/color_creamy_white"
+    app:cardCornerRadius="5dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
-        android:layout_width="205dp"
-        android:layout_height="match_parent"
+        android:layout_width="190dp"
+        android:layout_height="310dp"
         android:background="@color/color_creamy_white"
         android:orientation="vertical">
 
         <!-- Placeholder cho hình ảnh sản phẩm -->
         <ImageView
             android:id="@+id/image_product"
-            android:layout_width="203dp"
-            android:layout_height="150dp"
+            android:layout_width="190dp"
+            android:layout_height="169dp"
             android:background="@color/color_medium_gray" />
 
         <!-- Thông tin sản phẩm -->
@@ -25,10 +31,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/title_product_name"
-            android:textColor="@color/color_espresso"
+            android:textColor="@color/color_golden_yellow"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/txtProductCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/inter_light"
+            android:text="@string/title_product_category"
+            android:textColor="@color/color_dark_brown"
+            android:textSize="12sp" />
         <!-- Đánh giá sao -->
         <RatingBar
             android:id="@+id/rating_bar"
@@ -48,28 +68,52 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/title_product_price"
-            android:textColor="@color/color_terracotta"
+            android:textColor="@color/color_golden_yellow"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/button_add_to_cart"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:layout_margin="3dp"
-            android:background="@color/color_golden_yellow"
-            android:text="@string/title_add_to_cart"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/button_add_to_compare"
-            android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:layout_margin="3dp"
-            android:background="@color/color_golden_yellow"
-            android:text="@string/title_compare"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddToCart"
+                android:layout_width="102dp"
+                android:layout_height="37dp"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/title_add_to_cart"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:cornerRadius="5dp" />
+
+            <ImageButton
+                android:id="@+id/btnComparison"
+                android:layout_width="0dp"
+                android:layout_height="37dp"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/product_button"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@mipmap/ic_compare" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

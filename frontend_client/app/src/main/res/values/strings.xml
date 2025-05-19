@@ -499,7 +499,10 @@
     <string name="hint_confirm_password">Enter your password again</string>
     <string name="back">Back</string>
     <string name="logo">Saru Logo</string>
-
-
+    <string name="title_homepage_foryou">For you</string>
+    <string name="title_product_category">Ruou Tay Bac</string>
+    <string name="title_customer_name_1">Customer Name</string>
+    <string name="title_purchased_product">Purchased Product</string>
+    <string name="title_customer_review_content">Customer Reviews</string>
 </resources>
 
