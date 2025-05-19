@@ -18,8 +18,8 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/img_saru_logo_white_bg"
+        android:roundIcon="@mipmap/img_saru_logo_white_bg"
         android:supportsRtl="true"
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
