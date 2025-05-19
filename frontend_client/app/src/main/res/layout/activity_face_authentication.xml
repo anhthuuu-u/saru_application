@@ -2,190 +2,211 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_authenciation"
     tools:context=".FaceAuthenticationActivity">
 
-    <!-- Toolbar -->
-    <!-- Toolbar -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+    <!-- Custom Toolbar với nút Back và Logo -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/custom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/color_authenciation"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back_arrow">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:fontFamily="@font/inter_bold"
             android:text="@string/title_face_authentication"
             android:textColor="@color/color_terracotta"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
 
-    </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- Camera Preview (hidden initially) -->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/cameraPreviewView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@android:color/darker_gray"
-        android:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Face Overlay (hidden initially) -->
-    <ImageView
-        android:id="@+id/faceOverlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/bg_face_auth"
-        app:layout_constraintTop_toTopOf="@id/cameraPreviewView"
-        app:layout_constraintBottom_toBottomOf="@id/cameraPreviewView"
-        app:layout_constraintStart_toStartOf="@id/cameraPreviewView"
-        app:layout_constraintEnd_toEndOf="@id/cameraPreviewView"
-        android:layout_margin="48dp"
-        android:scaleType="fitCenter"
-        android:importantForAccessibility="no"
-        android:visibility="gone"/>
 
-    <!-- Initial State (visible initially) -->
-    <LinearLayout
-        android:id="@+id/initialStateContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <ImageView
-            android:id="@+id/initialStateIcon"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/bg_face_auth"
-            android:backgroundTint="@color/color_golden_yellow"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_account_auth"
-            app:tint="@color/color_medium_gray" />
-
-        <TextView
-            android:id="@+id/initialStateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxWidth="300dp"
-            android:text="@string/face_auth_initial_prompt"
-            android:textAlignment="center"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
-            android:fontFamily="@font/inter"
-            />
-
-        <ProgressBar
-            android:id="@+id/initialStateProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+        <!-- Camera Preview (hidden initially) -->
+        <androidx.camera.view.PreviewView
+            android:id="@+id/cameraPreviewView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/custom_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@android:color/darker_gray"
             android:visibility="gone" />
-    </LinearLayout>
 
-    <!-- Result State: Success (hidden initially) -->
-    <LinearLayout
-        android:id="@+id/resultSuccessStateContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="24dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone">
-
+        <!-- Face Overlay (hidden initially) -->
         <ImageView
-            android:id="@+id/resultSuccessIcon"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:background="@drawable/bg_face_auth"
-            android:src="@drawable/ic_ver_success"
-            android:layout_marginBottom="32dp"
-            android:scaleType="centerInside"/>
+            android:id="@+id/faceOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/bg_face_auth"
+            app:layout_constraintTop_toTopOf="@id/cameraPreviewView"
+            app:layout_constraintBottom_toBottomOf="@id/cameraPreviewView"
+            app:layout_constraintStart_toStartOf="@id/cameraPreviewView"
+            app:layout_constraintEnd_toEndOf="@id/cameraPreviewView"
+            android:layout_margin="48dp"
+            android:scaleType="fitCenter"
+            android:importantForAccessibility="no"
+            android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/resultSuccessText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/face_auth_success"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
-            android:maxWidth="300dp"
-            android:layout_marginBottom="32dp"/>
-
-    </LinearLayout>
-
-    <!-- Result State: Fail (hidden initially) -->
-    <LinearLayout
-        android:id="@+id/resultFailStateContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="24dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/resultFailIcon"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:background="@drawable/bg_face_auth"
-            android:src="@drawable/ic_ver_fail"
-            android:layout_marginBottom="32dp"
-            android:scaleType="centerInside"/>
-
-        <TextView
-            android:id="@+id/resultFailText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/face_auth_failure_mismatch"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
-            android:maxWidth="300dp"
-            android:layout_marginBottom="32dp"/>
-
-        <Button
-            android:id="@+id/resultSecondaryButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <!-- Initial State (visible initially) -->
+        <LinearLayout
+            android:id="@+id/initialStateContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_back_to_signup"
-            android:textColor="@color/color_golden_yellow"
-            app:strokeColor="@color/color_golden_yellow"
-            android:layout_marginBottom="8dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="64dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
 
-        <Button
-            android:id="@+id/resultPrimaryButton"
+            <ImageView
+                android:id="@+id/initialStateIcon"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_face_auth"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_account_auth"
+                app:tint="@color/color_medium_gray" />
+
+            <TextView
+                android:id="@+id/initialStateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:maxWidth="300dp"
+                android:text="@string/face_auth_initial_prompt"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp" />
+
+            <ProgressBar
+                android:id="@+id/initialStateProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Result State: Success (hidden initially) -->
+        <LinearLayout
+            android:id="@+id/resultSuccessStateContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_scan_again"
-            android:backgroundTint="@color/color_golden_yellow"
-            android:textColor="@android:color/white"
-            android:visibility="visible"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="24dp"
+            app:layout_constraintTop_toBottomOf="@id/custom_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/resultSuccessIcon"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:background="@drawable/bg_face_auth"
+                android:src="@drawable/ic_ver_success"
+                android:layout_marginBottom="32dp"
+                android:scaleType="centerInside"/>
+
+            <TextView
+                android:id="@+id/resultSuccessText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_auth_success"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:maxWidth="300dp"
+                android:layout_marginBottom="32dp"/>
+
+        </LinearLayout>
+
+        <!-- Result State: Fail (hidden initially) -->
+        <LinearLayout
+            android:id="@+id/resultFailStateContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="24dp"
+            app:layout_constraintTop_toBottomOf="@id/custom_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/resultFailIcon"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:background="@drawable/bg_face_auth"
+                android:src="@drawable/ic_ver_fail"
+                android:layout_marginBottom="32dp"
+                android:scaleType="centerInside"/>
+
+            <TextView
+                android:id="@+id/resultFailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_auth_failure_mismatch"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:maxWidth="300dp"
+                android:layout_marginBottom="32dp"/>
+
+            <Button
+                android:id="@+id/resultSecondaryButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_back_to_signup"
+                android:textColor="@color/color_golden_yellow"
+                app:strokeColor="@color/color_golden_yellow"
+                android:layout_marginBottom="8dp"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/resultPrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_scan_again"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:textColor="@android:color/white"
+                android:visibility="visible"/>
+        </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

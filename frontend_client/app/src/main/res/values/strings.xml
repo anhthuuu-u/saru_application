@@ -469,15 +469,15 @@
     <!-- Verification -->
     <string name="prompt_upload_id_card">Tap to upload the front of your ID card</string>
     <string name="btn_change_image">Change image</string>
-    <string name="status_uploading">Uploading...</string>
+    <string name="status_uploading">Uploading &#8230;</string>
     <string name="status_upload_success_id">ID card uploaded successfully.</string>
     <string name="status_error_upload_failed">Upload failed. Please try again.</string>
     <string name="status_error_file_too_large">File is too large. Please select a smaller file.</string>
     <string name="status_error_invalid_file">Invalid file type. Please select an image.</string>
     <string name="status_error_camera_permission">Camera permission is required.</string>
     <string name="prompt_start_face_verification">Tap to start face verification.</string>
-    <string name="title_face_authentication">Face Authentication</string>
-    <string name="face_auth_initial_prompt">Performing face recognition to verify your account registration, please look straight ahead...</string>
+    <string name="title_face_authentication">FACE AUTHENCIATION</string>
+    <string name="face_auth_initial_prompt">Performing face recognition to verify your account registration, please look straight ahead &#8230;</string>
     <string name="face_auth_success">Authentication successful</string>
     <string name="face_auth_failure_mismatch">No match with ID Card/CCCD information</string>
     <string name="btn_scan_again">Scan again</string>
@@ -497,6 +497,8 @@
     <string name="hint_new_password">Enter your new password</string>
     <string name="title_confirm_password">Confirm Password <font color="#FF0000">*</font> </string>
     <string name="hint_confirm_password">Enter your password again</string>
+    <string name="back">Back</string>
+    <string name="logo">Saru Logo</string>
 
 
 </resources>

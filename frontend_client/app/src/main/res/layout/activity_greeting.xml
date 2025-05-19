@@ -39,7 +39,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.6"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <!-- Login Button -->
             <TextView
@@ -59,7 +59,7 @@
                 app:layout_constraintWidth_percent="0.9" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_greeting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

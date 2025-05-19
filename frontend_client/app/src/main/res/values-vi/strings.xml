@@ -464,7 +464,7 @@
     <string name="status_error_invalid_file">Chọn ảnh thôi bạn ơi.</string>
     <string name="status_error_camera_permission">Cho phép Saru dùng camera nha.</string>
     <string name="prompt_start_face_verification">Chạm để bắt đầu xác thực khuôn mặt.</string>
-    <string name="title_face_authentication">Xác thực khuôn mặt</string>
+    <string name="title_face_authentication">XÁC THỰC KHUÔN MẶT</string>
     <string name="face_auth_initial_prompt">Saru đang nhận diện khuôn mặt, nhìn thẳng nha bạn...</string>
     <string name="face_auth_success">Xác thực thành công!</string>
     <string name="face_auth_failure_mismatch">Khuôn mặt không khớp với CMND/CCCD rồi!</string>
@@ -482,7 +482,12 @@
     <string name="hint_new_password">Nhập mật khẩu mới</string>
     <string name="title_confirm_password">Xác nhận mật khẩu <font color="#FF0000">*</font> </string>
     <string name="hint_confirm_password">Nhập lại mật khẩu</string>
+
     <string name="setting_allow_notifications">Cho phép thông báo</string>
 
+
+
+    <string name="back">Quay lại</string>
+    <string name="logo">Saru Logo</string>
 </resources>
 
