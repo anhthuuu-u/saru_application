@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="@color/color_creamy_white"
+    android:orientation="vertical"
+    tools:context=".TransactionFaceAuthorizationCompletedActivity">
+
+    <!-- Header with Back Button and Title -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="@string/title_transaction_face_authorization"
+            android:textColor="@color/color_terracotta"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <!-- Camera Preview with Face Overlay -->
+    <FrameLayout
+        android:id="@+id/cameraContainer"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp">
+
+        <!-- Circular Overlay -->
+        <View
+            android:id="@+id/faceOverlayCircle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/face_authentication_circle"
+            android:backgroundTint="@color/voucher_applied_color"/>
+
+        <!-- Face Icon Overlay -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="50dp"
+            android:src="@drawable/ic_account_completed"
+            app:tint="@color/voucher_applied_color" />
+
+    </FrameLayout>
+
+    <!-- Status Message -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="54dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/title_face_authorization_completed"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+</LinearLayout>
