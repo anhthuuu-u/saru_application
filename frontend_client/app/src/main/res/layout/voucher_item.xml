@@ -20,7 +20,7 @@
             android:layout_width="69dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/img_saru_cup" />
+            app:srcCompat="@mipmap/img_saru_cup" />
 
         <!-- Nội dung voucher -->
         <LinearLayout
