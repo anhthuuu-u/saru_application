@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/img_saru_logo_white_bg" />
+            app:srcCompat="@mipmap/img_saru_logo_white_bg" />
 
         <LinearLayout
             android:id="@+id/toolbar_layout"
@@ -134,7 +134,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="23dp"
-                        android:src="@drawable/img_taybac_wine" />
+                        android:src="@mipmap/img_taybac_wine" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -153,7 +153,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/img_accessories" />
+                        android:src="@mipmap/img_accessories" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -172,7 +172,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-                        android:src="@drawable/img_set_gift" />
+                        android:src="@mipmap/img_set_gift" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="35dp"
-                        android:src="@drawable/img_cs" />
+                        android:src="@mipmap/img_cs" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -210,7 +210,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="7dp"
-                        android:src="@drawable/img_order" />
+                        android:src="@mipmap/img_order" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -233,7 +233,7 @@
                 android:id="@+id/imgSaruCupForYouSection"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <TextView
                 android:id="@+id/txtForYou"
@@ -274,7 +274,7 @@
                 android:id="@+id/imgSaruCupSuperSaleSection"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <TextView
                 android:id="@+id/txtSuperSalesTitle"
@@ -315,7 +315,7 @@
                 android:id="@+id/imgSaruCupBestSellerSection"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <TextView
                 android:id="@+id/txtBestSellerTitle"
@@ -357,7 +357,7 @@
                 android:id="@+id/imgSaruCupReviewSection"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/img_saru_cup" />
+                app:srcCompat="@mipmap/img_saru_cup" />
 
             <TextView
                 android:id="@+id/txtCustomerReviews"
