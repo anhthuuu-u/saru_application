@@ -52,4 +52,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.roundedimageview)
     implementation(libs.play.services.maps.v1810)
+    implementation (libs.mongodb.driver.sync)
 }
