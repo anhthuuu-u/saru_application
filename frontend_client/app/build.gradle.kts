@@ -29,8 +29,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
+
+
+dependencies {
+    implementation ("com.google.android.material:material:1.12.0")}
 dependencies {
 
     implementation(libs.appcompat)
@@ -38,7 +45,12 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.camera.view)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.roundedimageview)
+    implementation(libs.play.services.maps.v1810)
+    implementation (libs.mongodb.driver.sync)
 }

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- ScrollView chứa nội dung chính -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F2E8DA"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/ic_back_arrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_back_arrow"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/customer_support_title"
+                    android:textSize="18sp"
+                    android:textColor="#B16628"
+                    android:fontFamily="@font/inter_bold"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- Ask a Question -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/cs_ask_question_label"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ask_question_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cs_ask_question_hint"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter"
+                android:layout_marginTop="8dp" />
+
+            <!-- Contact Us -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/cs_contact_us_label"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/bg_faq_card"
+                android:padding="12dp"
+                android:layout_marginTop="8dp">
+
+                <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@mipmap/ic_fb" android:layout_marginEnd="35dp"/>
+                <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@mipmap/ic_ig" android:layout_marginEnd="35dp"/>
+                <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@mipmap/ic_mail" android:layout_marginEnd="35dp"/>
+                <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@mipmap/ic_phone"/>
+            </LinearLayout>
+
+            <!-- FAQs -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/cs_faqs_label"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- FAQ Items -->
+            <include layout="@layout/item_faq" android:id="@+id/faq_1"/>
+            <include layout="@layout/item_faq" android:id="@+id/faq_2"/>
+            <include layout="@layout/item_faq" android:id="@+id/faq_3"/>
+            <include layout="@layout/item_faq" android:id="@+id/faq_4"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Chat Floating Button -->
+    <ImageView
+        android:id="@+id/btn_open_chat"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:src="@mipmap/ic_message"
+        android:contentDescription="@string/chat_button_description"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:id="@+id/chat_box"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="80dp"
+        android:background="@drawable/bg_chat_box"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:elevation="8dp">
+
+        <!-- Chat Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#B16628"
+            android:gravity="center"
+            android:text="@string/chat_title"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/inter_bold" />
+
+        <!-- Bot Message -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/img_saru_cup" />
+        </LinearLayout>
+
+        <!-- Chat Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/ic_add" />
+
+            <EditText
+                android:id="@+id/input_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/chat_hint"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/ic_send"
+                android:contentDescription="@string/chat_send_message" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

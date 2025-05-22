@@ -1,9 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Ứng dụng Saru</string>
     <string name="title_transaction_checkout">THANH TOÁN</string>
 
 <!--    Delivery Information-->
+    <string name="title_DeliveryInformation_product_name">Rượu Ngô</string>
+    <string name="tilte_products">SẢN PHẨM</string>
+    <string name="title_search_bar">Tìm kiếm</string>
+
+    <string name="title_filter_product">Lọc</string>
+    <string name="title_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="title_product_price">200.000đ</string>
+
+    <string name="title_filter_product_1">Lọc sản phẩm</string>
+    <string name="title_DeliveryInformation_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="title_DeliveryInformation_product_price">200.000đ</string>
+
+    <string name="title_product_detail">CHI TIẾT SẢN PHẨM\n</string>
+    <string name="title_compare_button">So sánh</string>
+    <string name="title_product_description">Dù uống trực tiếp hay pha chế, Rượu Đào Mận là một thức uống đa năng và thỏa mãn cho cả người mới bắt đầu và những người sành rượu.</string>
+    <string name="title_related_products">Sản phẩm liên quan</string>
+
+    <string name="title_product_brand">Nhà máy chưng cất Mắm</string>
+
+    <string name="title_DeliveryInformation_product_brand">Nhà máy chưng cất Mam</string>
+
+    <string name="title_product_status">Còn hàng</string>
+    <string name="title_product_alcohol">Nồng độ cồn</string>
+    <string name="title_product_net">Dung tích thực</string>
+    <string name="title_product_type">Loại rượu</string>
+    <string name="title_product_ingredients">Thành phần</string>
+    <string name="title_compare">So sánh</string>
+    <string name="title_filter_product_dialog">Lọc sản phẩm</string>
+    <string name="filter_product_dialog_category">Danh mục</string>
+    <string name="title_filter_product_dialog_price_range">Khoảng giá</string>
+    <string name="title_product_dialog_sort">Sắp xếp theo</string>
+    <string name="title_filter_product_dialog_brand">Thương hiệu</string>
+    <string name="title_filter_product_dialog_volume">Dung tích</string>
+    <string name="title_filter_product_dialog_wine_type">Loại rượu</string>
+    <string name="title_filter_product_dialog_others">Khác</string>
+    <string name="title_filter_product_apply">Áp dụng bộ lọc</string>
+    <string name="title_filter_product_reset">Đặt lại bộ lọc</string>
+    <string name="title_product_comparison">SO SÁNH SẢN PHẨM</string>
+    <string name="title_product_taste">Hương vị</string>
+    <string name="title_product_comparison_price">Giá</string>
+    <string name="title_product_comparison_subtitle">Giúp bạn có lựa chọn tốt nhất!</string>
+    <string name="title_delete_btn_comparison">Xóa tất cả</string>
+    <string name="title_product_cart">GIỎ HÀNG SẢN PHẨM</string>
+    <string name="title_product_cart_name">Rượu Mơ Mã Đào Mộc Châu</string>
+    <string name="title_product_cart_price">Giá: 400.000đ</string>
+    <string name="title_product_cart_total_price">Tổng giá: 400.000đ</string>
+    <string name="title_product_cart_select_all">Chọn tất cả</string>
+    <string name="title_product_cart_payment">Thanh toán</string>
+    <string name="title_product_comparison_name">Rượu Đào</string>
+    <string name="Homepage_TayBac_Wine">Rượu Tây Bắc</string>
+    <string name="Homepage_Accessories">Phụ kiện</string>
+    <string name="Homepage_Wine_Gift">Bộ quà tặng rượu</string>
+    <string name="Homepage_CS">Dịch vụ khách hàng</string>
+    <string name="Homepage_Orders">Đơn hàng</string>
+    <string name="Homepage_supersale_section">Siêu giảm giá</string>
+    <string name="Title_view_all">Xem tất cả</string>
+    <string name="Homepage_BestSeller_section">Bán chạy nhất</string>
+    <string name="Homepage_Customer_reviews">Đánh giá khách hàng</string>
+    <string name="title_voucher_management">Quản lý phiếu giảm giá</string>
+    <string name="Voucher_save_btn">Lưu</string>
+    <string name="Voucher_description">Miễn phí vận chuyển cho khách hàng mới</string>
+    <string name="Voucher_value">Giảm 200</string>
+
+    <string name="Voucher_status">Hết hạn</string>
+    <string name="title_homepage_foryou">Dành cho bạn</string>
+    <string name="title_product_category">Rượu Tây Bắc</string>
+    <string name="title_customer_name_2">Tên khách hàng</string>
+    <string name="title_purchased_product">Sản phẩm đã mua</string>
+    <string name="title_customer_review_content">Đánh giá của khách hàng</string>
+
+    <string name="Voucher_status_2">Đã hết hạn</string>
+    <string name="title_DeliveryInformation_transaction_checkout">Thanh Toán</string>
+
     <string name="title_delivery_information">Thông tin vận chuyển</string>
     <string name="title_customer_name">Anh Khoa</string>
     <string name="title_customer_phone_number">0941705717</string>
@@ -11,6 +85,7 @@
     <string name="title_product">Sản phẩm</string>
 
 <!--    Order Products-->
+    <string name="title_product_nam">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -37,6 +112,7 @@
     <string name="title_voucher_code">Mã giảm giá</string>
     <string name="title_voucher_apply">Áp dụng</string>
     <string name="title_voucher_code_hint">Nhập mã giảm giá tại đây</string>
+
     <string name="title_applied">Đã áp dụng</string>
     <string name="title_voucher_applied_success">Áp dụng mã giảm thành công</string>
     <string name="title_invalid_voucher_code">Mã giảm không tồn tại</string>
@@ -118,5 +194,320 @@
     <string name="error_invalid_cvv">Mã CVV không hợp lệ</string>
     <string name="error_invalid_card_number">Số thẻ không hợp lệ</string>
     <string name="error_bank_name_empty">Vui lòng chọn ngân hàng</string>
+    <!--Setting-->
+    <string name="title_notification_notification">THÔNG BÁO</string>
+    <string name="title_notification_system">Hệ thống</string>
+    <string name="title_notification_order">Đơn hàng</string>
+    <string name="title_notification_discount">Khuyến mãi</string>
+    <string name="title_notification_selectall">Danh sách thông báo</string>
+    <string name="title_notification_deleteall">Xóa tất cả</string>
+    <string name="title_notification_changepass">Đổi mật khẩu</string>
+    <string name="title_notification_message">Nội dung</string>
+    <string name="title_notification_time">Thời gian</string>
+    <string name="title_notification_fromorder_statussucess">Giao hàng thành công</string>
+    <string name="title_notification_fromorder_status_success">Giao hàng thành công</string>
+    <string name="title_notification_fromorder_status_sucess">Giao hàng thành công</string>
+    <string name="title_notification_popup_savechanges">Bạn có muốn lưu thay đổi?</string>
+    <string name="title_confimation_popup_back">Trở về</string>
+    <string name="titlePopUpConfirm_Back">Trở về</string>
+    <string name="titlePopUpConfirmConfirm">Xác nhận</string>
+    <string name="titlePopUpConfirm_SaveChange">Bạn có muốn lưu thay đổi?</string>
+    <string name="title_notification_successfulldelivery">Giao hàng thành công</string>
+    <string name="titlePopUpMessage">Đã xóa thông báo thành công!</string>
+    <string name="title_notification_discount1">Bạn vừa nhận được khuyến mãi 20k cho mọi đơn hàng</string>
+    <!--Blog-->
+    <string name="title_blog_Blog">BLOG</string>
+    <string name="title_blog_catalog">Danh mục</string>
+    <string name="title_blog_inforTayBacWine">Kiến thức về rượu Tây Bắc</string>
+    <string name="title_blog_seemore">Xem thêm</string>
+    <string name="title_blog_tips">Mẹo hữu ích</string>
+    <string name="title_blog_suggestforyou">Gợi ý cho bạn</string>
+    <string name="title_blog_titleblogs">Tiêu đề blog</string>
+    <string name="title_blog_blogcatalog">Danh mục blog</string>
+    <string name="title_blog_blogtitle">Tiêu đề blog</string>
+    <string name="title_blog_blogcontent">Nội dung</string>
+    <string name="title_blog_suggestfyou">Gợi ý cho bạn</string>
+    <string name="title_blogeachcatalog_blogcatalogname_infor">KIẾN THỨC VỀ RƯỢU TÂY BẮC</string>
+    <string name="title_detailblog_titleblog">Công dụng của Rượu Tây Bắc đối với sức khỏe</string>
+    <string name="title_detailblog_datepost">Ngày đăng</string>
+    <string name="title_detailblog_view">Lượt xem</string>
+    <string name="title_detailblog_relatednews">Tin tức liên quan</string>
 
+    <!--Aboutus-->
+    <string name="title_aboutus">VỀ CHÚNG TÔI</string>
+    <string name="title_aboutus_saru_taybacwine">SARU - Rượu Tây Bắc </string>
+    <string name="title_aboutus_storelocation">Vị trí cửa hàng</string>
+    <string name="title_aboutus_Founder">Founder</string>
+    <string name="title_aboutus_CEO">CEO</string>
+    <string name="title_aboutus_CMO">CMO\n</string>
+    <string name="title_aboutus_CFO">CFO\n</string>
+    <string name="title_aboutus_cto">CTO</string>
+    <string name="title_aboutus_coo">COO</string>
+    <string name="title_aboutus_endpage">Về chúng tôi</string>
+    <string name="title_aboutuslocation_LaoCaiBranch">Cửa hàng Saru Tây Bắc chi nhánh Lào Cai</string>
+    <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
+    <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
+    <string name="title_aboutuslocation_HoChiMinhBranch_Address">252 Đường Cô Bắc, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh</string>
+
+    <string name="title_product_price_original">460.000 đ</string>
+
+
+    <!-- FRAGMENT PROFILE -->
+    <!-- Header -->
+    <string name="account_title">TÀI KHOẢN</string>
+    <string name="profile_user_name">CAM TU</string>
+    <string name="profile_user_email">tuttc22411c@st.uel.edu.vn</string>
+
+    <!-- Orders -->
+    <string name="profile_my_orders">Đơn hàng của tôi</string>
+    <string name="profile_pending_confirm">Chờ xác nhận</string>
+    <string name="profile_pending_payment">Chờ thanh toán</string>
+    <string name="profile_shipping">Đang giao hàng</string>
+    <string name="profile_return_exchange">Trả/Đổi hàng</string>
+    <string name="profile_view_all_orders">Xem tất cả</string>
+
+    <!-- Account Info -->
+    <string name="profile_account_info">Thông tin tài khoản</string>
+    <string name="profile_personal_info">Thông tin cá nhân</string>
+    <string name="profile_my_reviews">Đánh giá của tôi</string>
+    <string name="profile_recently_viewed">Đã xem gần đây</string>
+    <string name="profile_my_voucher">Mã giảm giá của tôi</string>
+
+    <!-- Support -->
+    <string name="profile_support">Hỗ trợ</string>
+    <string name="profile_about_us">Về chúng tôi</string>
+    <string name="profile_customer_support_center">Trung tâm hỗ trợ khách hàng</string>
+    <string name="profile_introduce_saru">Giới thiệu về Saru</string>
+    <string name="profile_notifications">Thông báo</string>
+    <string name="profile_settings">Cài đặt</string>
+
+    <!-- ACTIVITY PROFILE EDIT -->
+    <!-- Header -->
+    <string name="profile_title">THÔNG TIN TÀI KHOẢN</string>
+    <string name="profile_back">Quay lại</string>
+    <string name="profile_edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="profile_image">Ảnh hồ sơ</string>
+
+    <!-- Personal Info -->
+    <string name="profile_personal_info_title">Thông tin cá nhân</string>
+    <string name="profile_customer_name_label">Tên khách hàng:</string>
+    <string name="profile_gender_label">Giới tính:</string>
+    <string name="profile_male">Nam</string>
+    <string name="profile_female">Nữ</string>
+    <string name="profile_phone_label">Số điện thoại:</string>
+    <string name="profile_dob_label">Ngày sinh:</string>
+    <string name="profile_email_label">Email:</string>
+    <string name="profile_password_label">Mật khẩu:</string>
+    <string name="profile_join_date_label">Ngày tham gia:</string>
+    <string name="profile_payment_method_label">Phương thức thanh toán:</string>
+
+    <!-- Shipping Address -->
+    <string name="profile_shipping_address_title">Địa chỉ giao hàng</string>
+    <string name="profile_address_label">Địa chỉ:</string>
+    <string name="profile_user_shipping">Trần Thị Cẩm Tú</string>
+    <string name="profile_user_address">Số 669, QL1, Phường 3, Phường Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh</string>
+    <string name="profile_add_address">Thêm địa chỉ</string>
+    <string name="profile_set_default_address">Đặt làm địa chỉ mặc định</string>
+    <string name="profile_save_info_button">Lưu</string>
+
+    <!-- ACTIVITY UPDATECARD -->
+    <string name="card_update_payment_info_title">CẬP NHẬT THÔNG TIN THANH TOÁN</string>
+    <string name="card_info_title">Thông tin thẻ</string>
+    <string name="card_type_label">Loại thẻ:</string>
+    <string name="card_type_prompt">Chọn loại thẻ</string>
+    <string name="card_select_bank_label">Chọn ngân hàng:</string>
+    <string name="card_select_bank_placeholder"></string>
+    <string name="card_number_label">Số thẻ:</string>
+    <string name="card_number_placeholder"></string>
+    <string name="card_cvv_label">CVV:</string>
+    <string name="card_cvv_placeholder"></string>
+    <string name="card_expiry_date_label">Ngày hết hạn:</string>
+    <string name="card_expiry_date_placeholder"></string>
+    <string name="card_save_info_button">Lưu thông tin</string>
+    <string name="update_success_message">Cập nhật thành công!</string>
+
+    <!-- Array for Spinner (Card Types) -->
+    <string-array name="card_types">
+        <item>Mastercard</item>
+        <item>Visa</item>
+        <item>JCB</item>
+        <item>American Express</item>
+    </string-array>
+
+    <!-- ORDER LIST -->
+    <string name="order_back_button_description">Nút quay lại</string>
+    <string name="order_detail_title">CHI TIẾT ĐƠN HÀNG</string>
+    <string name="order_tab_all">Tất cả</string>
+    <string name="order_tab_confirm">Chờ xác nhận</string>
+    <string name="order_tab_payment">Chờ thanh toán</string>
+    <string name="order_tab_shipping">Chờ giao hàng</string>
+    <string name="order_tab_complete">Đã giao</string>
+    <string name="order_code_label">Mã đơn hàng:</string>
+    <string name="order_code_value">SARU12345</string>
+    <string name="order_details_link">Xem chi tiết</string>
+    <string name="order_date_label">Ngày đặt hàng:</string>
+    <string name="order_date_value">20/11/2024</string>
+    <string name="order_status_label">Trạng thái:</string>
+    <string name="order_status_value">Đã giao</string>
+    <string name="order_product_count_value">2 sản phẩm</string>
+    <string name="order_products_label">Sản phẩm</string>
+    <string name="order_product_name_1">Rượu Mơ Mộc Châu - Mơ Ma Đao</string>
+    <string name="order_product_brand_1">Thương hiệu: xxxxxx</string>
+    <string name="order_product_quantity_1">x2</string>
+    <string name="order_product_price_1">400.000₫</string>
+    <string name="order_product_old_price_1"><strike>430.000₫</strike></string>
+    <string name="order_shipping_fee_label">Phí vận chuyển</string>
+    <string name="order_shipping_fee_value">20.000₫</string>
+    <string name="order_total_amount_label">Tổng cộng</string>
+    <string name="order_total_amount_value">420.000₫</string>
+    <string name="order_contact_shipping_title">Thông tin giao hàng</string>
+    <string name="order_contact_name_value">Nguyễn Văn A</string>
+    <string name="order_contact_phone_value">0901234567</string>
+    <string name="order_contact_address_value">123 đường ABC, Quận 1, TP. HCM</string>
+
+    <!-- ORDER DETAIL ACTION BUTTONS -->
+    <string name="order_cancel_order">Hủy đơn hàng</string>
+    <string name="order_write_review">Viết đánh giá</string>
+    <string name="order_request_return">Yêu cầu trả/đổi hàng</string>
+
+    <!-- REVIEWS -->
+    <string name="review_title">ĐÁNH GIÁ ĐƠN HÀNG</string>
+    <string name="order_product_label">Sản phẩm</string>
+    <string name="order_product_name">Rượu Mơ Mộc Châu - Mơ Ma Đao</string>
+    <string name="order_brand_label">Thương hiệu: %s</string>
+    <string name="order_brand_value">XXXXX</string>
+    <string name="order_quantity_label">x%s</string>
+    <string name="order_original_price">-%s</string>
+    <string name="order_discounted_price">%s</string>
+    <string name="review_rating_label">Đánh giá đơn hàng</string>
+    <string name="review_attach_media_label">Đính kèm ảnh/video</string>
+    <string name="review_write_review_label">Viết đánh giá</string>
+    <string name="review_write_review_hint">Nhập đánh giá của bạn tại đây</string>
+    <string name="review_submit_button">Gửi đánh giá</string>
+    <string name="review_submit_success">Gửi đánh giá thành công!</string>
+
+    <!-- RETURN REQUEST -->
+    <string name="return_request_title">YÊU CẦU TRẢ HÀNG</string>
+    <string name="return_request_label">Yêu cầu</string>
+    <string name="return_request_refunded">Đã hoàn tiền</string>
+    <string name="return_request_returned">Đã trả hàng</string>
+    <string name="return_reason_label">Lý do trả hàng/hoàn tiền</string>
+    <string name="return_reason_wrong_item">Giao sai sản phẩm (kích cỡ, màu sắc, ...)</string>
+    <string name="return_reason_not_as_expected">Sản phẩm không như mong đợi</string>
+    <string name="return_reason_not_meet_request">Sản phẩm không đúng yêu cầu</string>
+    <string name="return_reason_other">Khác:</string>
+    <string name="return_other_reason_hint">Nhập lý do khác</string>
+    <string name="return_amount_refunded_label">Số tiền hoàn:</string>
+    <string name="return_amount_refunded_value">0đ</string>
+    <string name="return_product_image_description">Ảnh sản phẩm</string>
+    <string name="return_submit_button">Gửi yêu cầu</string>
+    <string name="return_submit_success">Gửi yêu cầu thành công!</string>
+
+    <!-- CANCEL REQUEST -->
+    <string name="cancel_request_title">YÊU CẦU HỦY ĐƠN</string>
+    <string name="cancel_reason_label">Lý do hủy đơn</string>
+    <string name="cancel_reason_no_need">Tôi không còn nhu cầu</string>
+    <string name="cancel_reason_change_address">Tôi muốn thay đổi địa chỉ</string>
+    <string name="cancel_reason_not_meet_expectation">Sản phẩm không như kỳ vọng</string>
+    <string name="cancel_reason_other">Khác:</string>
+    <string name="cancel_other_reason_cancel_hint">Nhập lý do khác</string>
+    <string name="cancel_amount_refunded_label">Số tiền hoàn:</string>
+    <string name="cancel_amount_refunded_value">0đ</string>
+    <string name="cancel_submit_button">Gửi yêu cầu</string>
+    <string name="cancel_submit_success">Gửi yêu cầu thành công!</string>
+
+    <!-- CUSTOMER SUPPORT CENTER -->
+    <string name="customer_support_title">TRUNG TÂM HỖ TRỢ KHÁCH HÀNG</string>
+    <string name="cs_ask_question_label">Đặt câu hỏi</string>
+    <string name="cs_ask_question_hint">Nhập câu hỏi của bạn</string>
+    <string name="cs_contact_us_label">Liên hệ với chúng tôi</string>
+    <string name="cs_faqs_label">Câu hỏi thường gặp</string>
+    <string name="cs_faq_question_1">Chính sách đổi/trả của bạn là gì?</string>
+    <string name="cs_faq_answer_1">Bạn có thể trả lại bất kỳ sản phẩm nào trong vòng 14 ngày kể từ ngày mua.</string>
+    <string name="cs_faq_question_2">Làm sao để tôi theo dõi đơn hàng?</string>
+    <string name="cs_faq_answer_2">Khi đơn hàng được gửi, chúng tôi sẽ gửi email có mã vận đơn để bạn theo dõi trên trang web.</string>
+    <string name="cs_faq_question_3">Bạn có giao hàng quốc tế không?</string>
+    <string name="cs_faq_answer_3">Có, chúng tôi giao đến hầu hết các quốc gia. Phí vận chuyển có thể thay đổi tùy khu vực.</string>
+    <string name="cs_faq_question_4">Tôi có thể thay đổi địa chỉ giao hàng không?</string>
+    <string name="cs_faq_answer_4">Nếu đơn hàng chưa được gửi, hãy liên hệ bộ phận hỗ trợ để cập nhật địa chỉ.</string>
+    <string name="cs_faq_question_5">Chấp nhận những phương thức thanh toán nào?</string>
+    <string name="cs_faq_answer_5">Chúng tôi chấp nhận Visa, MasterCard, PayPal và chuyển khoản ngân hàng.</string>
+    <string name="cs_faq_question_6">Làm sao để tôi liên hệ bộ phận hỗ trợ?</string>
+    <string name="cs_faq_answer_6">Bạn có thể gửi email tới support@example.com hoặc gọi +123456789.</string>
+
+    <!-- LIVE CHAT -->
+    <string name="chat_button_description">Mở trò chuyện</string>
+    <string name="chat_title">TRÒ CHUYỆN TRỰC TUYẾN</string>
+    <string name="chat_hint">Nhập tin nhắn của bạn</string>
+    <string name="chat_bot_greeting">Xin chào! Tôi có thể giúp gì cho bạn hôm nay?</string>
+    <string name="chat_send_message">Gửi</string>
+
+    <!-- LANGUAGE -->
+    <string name="language_selection_title">CHỌN NGÔN NGỮ</string>
+    <string name="language_english">Tiếng Anh</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="submit_language_button">Xác nhận</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="language_current">Tiếng Việt</string>
+    <string name="bottom_nav_home">Trang chủ</string>
+    <string name="bottom_nav_product">Sản phẩm</string>
+    <string name="bottom_nav_compare">So sánh</string>
+    <string name="bottom_nav_account">Tài khoản</string>
+
+    <string name="title_onbroading">Chào đồng tửu!\nChào mừng đến với Saru!</string>
+    <string name="subtitle_onbroading">Khám phá rượu chuẩn, nguồn gốc rõ ràng tại Saru.</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="text_signup">Bạn mới đến?</string>
+    <string name="btn_signup">Đăng ký</string>
+    <string name="title_email">Email <font color="#FF0000">*</font> </string>
+    <string name="hint_email">Nhập email của bạn</string>
+    <string name="title_password">Mật khẩu <font color="#FF0000">*</font> </string>
+    <string name="hint_password">Nhập mật khẩu</string>
+    <string name="btn_forgot_password"><u>Quên mật khẩu?</u></string>
+    <string name="title_signup">ĐĂNG KÝ</string>
+    <string name="title_fullname">Họ và tên <font color="#FF0000">*</font> </string>
+    <string name="hint_fullname">Nhập họ và tên</string>
+    <string name="txt_disclaimer">Để tuân thủ quy định, chúng tôi cần <font color="#FF0000">xác minh danh tính</font> để bạn mua được các sản phẩm có cồn.</string>
+    <string name="title_id_card">CMND/CCCD <font color="#FF0000">*</font> </string>
+    <string name="upload_id_card">Tải CMND/CCCD</string>
+    <string name="title_face_verification">Xác thực khuôn mặt <font color="#FF0000">*</font> </string>
+    <string name="upload_face_verification">Xác thực khuôn mặt</string>
+    <string name="chk_agree"><font color="#FF0000">*</font> Tôi đã đọc và đồng ý với <a href="#">Điều khoản dịch vụ</a> &amp; <a href="#">Chính sách bảo mật</a> của Saru</string>
+    <string name="text_login">Đã có tài khoản?</string>
+    <string name="prompt_upload_id_card">Chạm để tải lên mặt trước CMND/CCCD</string>
+    <string name="btn_change_image">Đổi ảnh</string>
+    <string name="status_uploading">Đang tải...</string>
+    <string name="status_upload_success_id">Đã tải CMND/CCCD.</string>
+    <string name="status_error_upload_failed">Tải lên không thành công. Thử lại nhé.</string>
+    <string name="status_error_file_too_large">Ảnh lớn quá. Chọn ảnh nhỏ hơn nha.</string>
+    <string name="status_error_invalid_file">Chọn ảnh thôi bạn ơi.</string>
+    <string name="status_error_camera_permission">Cho phép Saru dùng camera nha.</string>
+    <string name="prompt_start_face_verification">Chạm để bắt đầu xác thực khuôn mặt.</string>
+    <string name="title_face_authentication">XÁC THỰC KHUÔN MẶT</string>
+    <string name="face_auth_initial_prompt">Saru đang nhận diện khuôn mặt, nhìn thẳng nha bạn...</string>
+    <string name="face_auth_success">Xác thực thành công!</string>
+    <string name="face_auth_failure_mismatch">Khuôn mặt không khớp với CMND/CCCD rồi!</string>
+    <string name="btn_scan_again">Quét lại</string>
+    <string name="btn_back_to_signup">Về trang đăng ký</string>
+    <string name="btn_greeting">Lai rai thôi!</string>
+    <string name="title_forgot_password">QUÊN MẬT KHẨU</string>
+    <string name="txt_input_email">Nhập email bạn dùng tạo tài khoản, Saru gửi mã xác thực để đặt lại mật khẩu nha.</string>
+    <string name="btn_continue">Tiếp tục</string>
+    <string name="txt_input_code">Saru đã gửi mã đến %s rồi đó. Nhập vô nha!</string>
+    <string name="txt_resend_code">Chưa thấy mã hả?</string>
+    <string name="btn_resend_code">Gửi lại mã</string>
+    <string name="txt_input_password">Nhập mật khẩu mới cho tài khoản %s nè!</string>
+    <string name="title_new_password">Mật khẩu mới <font color="#FF0000">*</font></string>
+    <string name="hint_new_password">Nhập mật khẩu mới</string>
+    <string name="title_confirm_password">Xác nhận mật khẩu <font color="#FF0000">*</font> </string>
+    <string name="hint_confirm_password">Nhập lại mật khẩu</string>
+
+    <string name="setting_allow_notifications">Cho phép thông báo</string>
+    <string name="title_customer_name_1">Tên Khách Hàng</string>
+
+
+    <string name="back">Quay lại</string>
+    <string name="logo">Saru Logo</string>
 </resources>
+
+
