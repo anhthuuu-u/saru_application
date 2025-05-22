@@ -101,7 +101,7 @@
                     android:background="@color/color_medium_gray" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/ic_back"
                     android:layout_width="60dp"
                     android:layout_height="56dp"
                     android:background="@color/color_medium_gray" />
