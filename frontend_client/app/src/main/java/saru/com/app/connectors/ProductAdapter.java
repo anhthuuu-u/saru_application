@@ -9,11 +9,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import saru.com.app.Homepage;
 import saru.com.app.ProductDetailActivity;
 import saru.com.app.R;
+import saru.com.app.models.CartItem;
+import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 import saru.com.app.models.ProductList;
 
@@ -44,6 +49,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Intent intent = new Intent(holder.itemView.getContext(), ProductDetailActivity.class);
             intent.putExtra("product", product);
             holder.itemView.getContext().startActivity(intent);
+        });
+        // Handle btnAddToCart click
+        holder.btnAddToCart.setOnClickListener(v -> {
+            Product p= productList.getProducts().get(holder.getAdapterPosition());
+            // Gửi sự kiện đến Homepage (cần context là Homepage)
+            if (v.getContext() instanceof Homepage) {
+                ((Homepage) v.getContext()).addToCart(p);
+            }
+            Toast.makeText(holder.itemView.getContext(), "Add " + p.getProductName() + " to cart sucessfully!", Toast.LENGTH_SHORT).show();
+        });
+
+        // Handle btnComparison click
+        holder.btnComparison.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), "Compare " + product.getProductName(), Toast.LENGTH_SHORT).show();
         });
     }
 
