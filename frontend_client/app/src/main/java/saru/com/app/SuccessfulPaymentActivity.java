@@ -36,14 +36,16 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(View view) {
-        super.onBackPressed();
+        Intent intent=new Intent(this,ProductCart.class);
+        startActivity(intent);
+
     }
 
     /**
      * 1. Xử lý sự kiện khi người dùng nhấn nút xem chi tiết đơn hàng
      */
     public void do_view_order_detail(View view) {
-        Intent intent = new Intent(this, TransactionEditAddressActivity.class);
+        Intent intent = new Intent(this, OrderDetailActivity.class);
         // Có thể truyền thêm thông tin đơn hàng qua intent nếu cần
         // intent.putExtra("order_id", orderId);
         startActivity(intent);
@@ -53,7 +55,7 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
      * 2. Xử lý sự kiện khi người dùng nhấn vào biểu tượng giỏ hàng
      */
     public void do_cart(View view) {
-        Intent intent = new Intent(this, TransactionEditAddressActivity.class);
+        Intent intent = new Intent(this, ProductCart.class);
         startActivity(intent);
     }
 
@@ -61,7 +63,7 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
      * 3. Xử lý sự kiện khi người dùng nhấn vào ảnh hoặc tên sản phẩm
      */
     public void do_view_product_detail(View view) {
-        Intent intent = new Intent(this, TransactionEditAddressActivity.class);
+        Intent intent = new Intent(this, ProductDetailActivity.class);
         startActivity(intent);
     }
 
@@ -78,7 +80,7 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
      * 5. Xử lý sự kiện khi người dùng nhấn nút so sánh sản phẩm
      */
     public void do_compare_product(View view) {
-        Intent intent = new Intent(this, TransactionEditAddressActivity.class);
+        Intent intent = new Intent(this, ProductComparison.class);
         startActivity(intent);
     }
 }
