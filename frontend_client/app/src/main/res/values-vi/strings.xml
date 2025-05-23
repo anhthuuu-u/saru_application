@@ -510,9 +510,9 @@
     <string name="logo">Saru Logo</string>
 
     <!-- backend faqs -->
-    <string name="api_base_url">http://10.0.2.2:4001</string> <!-- dùng IP LAN nếu chạy thật -->
+    <string name="api_base_url">http://10.0.2.2:4001</string>
     <string name="faq_title">Câu hỏi</string>
-    <string name="faq_load_error">Failed to load FAQs. Please thử lại.</string>
+    <string name="faq_load_error">Xin hãy thử lại</string>
 </resources>
 
 

@@ -32,7 +32,7 @@ public class CustomerSupportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_support);
         BASE_URL = getString(R.string.api_base_url);
-        loadFaqsFromServer(); // Gọi API FAQ động
+        loadFaqsFromServer();
 
         // Handle back to ActivityProfile
         ImageView backArrow = findViewById(R.id.ic_back_arrow);

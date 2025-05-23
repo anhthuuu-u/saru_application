@@ -18,7 +18,7 @@ async function connectDB() {
     await client.connect();
     const database = client.db('SaruData');
     faqCollection = database.collection('faqs');
-    console.log('✅ Kết nối MongoDB thành công');
+    console.log('Kết nối MongoDB thành công');
 }
 connectDB();
 
