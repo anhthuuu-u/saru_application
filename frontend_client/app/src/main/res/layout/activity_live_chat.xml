@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F2E8DA"
+    android:padding="12dp"
+    tools:context=".LiveChatActivity">
+
+    <!-- Header with back arrow and title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/ic_back_arrow"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:importantForAccessibility="no"
+            android:src="@mipmap/ic_back_arrow"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#B16628"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/title_customersupport_livechat"
+            android:textAlignment="center"
+            android:textColor="@color/color_authenciation"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Scrollable message container -->
+    <ScrollView
+        android:id="@+id/scroll_view_messages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:overScrollMode="ifContentScrolls"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/chat_messages_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <!-- Input message bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/img_add"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/ic_add"
+            tools:ignore="ContentDescription,HardcodedText" />
+
+        <EditText
+            android:id="@+id/input_message"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input_field"
+            android:fontFamily="@font/inter"
+            android:hint="@string/chat_hint"
+            android:importantForAutofill="no"
+            android:padding="8dp"
+            android:textSize="14sp"
+            tools:ignore="TextFields" />
+
+        <ImageView
+            android:id="@+id/img_send"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@string/chat_send_message"
+            android:src="@mipmap/ic_send" />
+    </LinearLayout>
+
+</LinearLayout>

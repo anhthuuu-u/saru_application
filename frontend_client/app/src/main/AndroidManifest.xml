@@ -24,10 +24,19 @@
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
+            android:name=".LiveChatActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".TransactionFaceAuthorizationCompletedActivity"
             android:exported="false" />
         <activity
-
             android:name=".TransactionEditPaymentMethodActivity"
             android:exported="false" />
         <activity
@@ -40,17 +49,13 @@
             android:name=".SuccessfulPaymentActivity"
             android:exported="false" />
         <activity
-
             android:name=".VouchersManagement"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".TransactionEditAddressActivity"
             android:exported="false" />
         <activity
             android:name=".TransactionCheckoutActivity"
-
             android:exported="false" />
         <activity
             android:name=".Notification_Popup_ConfirmationActivity"
@@ -71,22 +76,18 @@
             android:name=".Blog_ListActivity"
             android:exported="false" />
         <activity
-
             android:name=".Aboutus_locationActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Aboutus_SARUActivity"
             android:exported="false" />
         <activity
             android:name=".Homepage"
+
             android:exported="true"/>
-
         <activity
-
             android:name=".ProductCart"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".ProductComparison"
             android:exported="true" />
@@ -100,38 +101,30 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
-
         <activity
             android:name=".ProfileEditActivity"
             android:exported="true" />
-
         <activity
             android:name=".OrderListActivity"
             android:exported="true" />
-
         <activity
             android:name=".OrderDetailActivity"
             android:exported="true" />
-
         <activity
             android:name=".ProfileUpdateCardActivity"
             android:exported="true" />
-
         <activity
             android:name=".OrderReviewActivity"
             android:exported="true" />
-
         <activity
             android:name=".OrderRequestReturnActivity"
             android:exported="true" />
-
         <activity
             android:name=".OrderCancelActivity"
             android:exported="true" />
-
         <activity
             android:name=".CustomerSupportActivity"
-            android:exported="true" />
+            android:exported="true"/>
 
         <activity
             android:name=".LanguageSettingActivity"
@@ -141,9 +134,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+          
         <activity
-
             android:name=".FaceAuthenticationActivity"
             android:exported="false" />
         <activity
@@ -168,24 +160,18 @@
             android:name=".OnbroadingActivity"
             android:exported="false" />
         <activity
-
             android:name=".MainActivity"
             android:exported="false"/>
 
-
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I"
             android:value="AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

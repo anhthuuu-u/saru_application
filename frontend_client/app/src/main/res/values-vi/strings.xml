@@ -85,7 +85,7 @@
     <string name="title_product">Sản phẩm</string>
 
 <!--    Order Products-->
-    <string name="title_product_nam">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
+    <string name="title_product_name">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_1">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_2">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
     <string name="title_product_name_3">RƯỢU MƠ MÁ ĐÀO MỘC CHÂU</string>
@@ -441,6 +441,14 @@
     <string name="chat_hint">Nhập tin nhắn của bạn</string>
     <string name="chat_bot_greeting">Xin chào! Tôi có thể giúp gì cho bạn hôm nay?</string>
     <string name="chat_send_message">Gửi</string>
+    <string name="title_customersupport_livechat">LIVE CHAT</string>
+    <string name="option_take_photo">Chụp ảnh</string>
+    <string name="option_choose_gallery">Chọn ảnh có sẵn</string>
+    <string name="title_choose_image">Chọn ảnh</string>
+    <string name="error_create_file">Không thể tạo file ảnh</string>
+    <string name="error_camera_unavailable">Ứng dụng máy ảnh không khả dụng</string>
+    <string name="error_enter_message">Vui lòng nhập tin nhắn</string>
+
 
     <!-- LANGUAGE -->
     <string name="language_selection_title">CHỌN NGÔN NGỮ</string>
@@ -508,6 +516,7 @@
 
     <string name="back">Quay lại</string>
     <string name="logo">Saru Logo</string>
+
 </resources>
 
 
