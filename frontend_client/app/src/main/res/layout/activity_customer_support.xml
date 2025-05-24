@@ -101,10 +101,12 @@
                 android:textStyle="bold" />
 
             <!-- FAQ Items -->
-            <include layout="@layout/item_faq" android:id="@+id/faq_1"/>
-            <include layout="@layout/item_faq" android:id="@+id/faq_2"/>
-            <include layout="@layout/item_faq" android:id="@+id/faq_3"/>
-            <include layout="@layout/item_faq" android:id="@+id/faq_4"/>
+            <LinearLayout
+                android:id="@+id/faq_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"/>
 
         </LinearLayout>
     </ScrollView>
