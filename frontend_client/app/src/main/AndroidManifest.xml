@@ -83,7 +83,8 @@
             android:exported="false" />
         <activity
             android:name=".Homepage"
-            android:exported="true" />
+
+            android:exported="true"/>
         <activity
             android:name=".ProductCart"
             android:exported="true" />
@@ -127,7 +128,13 @@
 
         <activity
             android:name=".LanguageSettingActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+          
         <activity
             android:name=".FaceAuthenticationActivity"
             android:exported="false" />
@@ -154,7 +161,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false"/>
 
         <meta-data
             android:name="preloaded_fonts"
