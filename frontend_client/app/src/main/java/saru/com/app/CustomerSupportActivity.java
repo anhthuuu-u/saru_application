@@ -1,9 +1,9 @@
 package saru.com.app;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,13 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CustomerSupportActivity extends AppCompatActivity {
 
-    private LinearLayout chatBox;
-    private ImageView btnChat;
-
+    ImageView img_open_chat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_support);
+        addView();
+        addEvents();
 
         // Handle back to ActivityProfile
         ImageView backArrow = findViewById(R.id.ic_back_arrow);
@@ -35,20 +35,27 @@ public class CustomerSupportActivity extends AppCompatActivity {
                 R.id.faq_toggle_icon_1,
                 R.id.faq_divider_1
         );
+    }
 
-        // Chat button toggle
-        btnChat = findViewById(R.id.btn_open_chat);
-        chatBox = findViewById(R.id.chat_box);
+    private void addView() {
+        img_open_chat=findViewById(R.id.img_open_chat);
+    }
 
-        btnChat.setOnClickListener(v -> {
-            if (chatBox.getVisibility() == View.VISIBLE) {
-                chatBox.setVisibility(View.GONE);
-            } else {
-                chatBox.setVisibility(View.VISIBLE);
+    private void addEvents() {
+        img_open_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                openLiveChat();
             }
         });
     }
 
+    void openLiveChat()
+    {
+        Intent intent=new Intent(CustomerSupportActivity.this, LiveChatActivity.class);
+        startActivity(intent);
+    }
     private void setupFaqItem(int containerId, int answerId, int iconId, int dividerId) {
         LinearLayout container = findViewById(containerId);
         TextView answer = findViewById(answerId);
@@ -62,4 +69,5 @@ public class CustomerSupportActivity extends AppCompatActivity {
             icon.setImageResource(isVisible ? R.mipmap.ic_down_arrow : R.mipmap.ic_up_arrow);
         });
     }
+
 }

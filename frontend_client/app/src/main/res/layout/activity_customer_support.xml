@@ -111,7 +111,7 @@
 
     <!-- Chat Floating Button -->
     <ImageView
-        android:id="@+id/btn_open_chat"
+        android:id="@+id/img_open_chat"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
@@ -120,73 +120,73 @@
         android:contentDescription="@string/chat_button_description"
         android:scaleType="fitCenter" />
 
-    <LinearLayout
-        android:id="@+id/chat_box"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/bg_chat_box"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:elevation="8dp">
+<!--    &lt;!&ndash; Chat Box &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/chat_box"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="400dp"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_marginBottom="80dp"-->
+<!--        android:layout_marginEnd="80dp"-->
+<!--        android:background="@drawable/bg_chat_box"-->
+<!--        android:orientation="vertical"-->
+<!--        android:visibility="gone"-->
+<!--        android:elevation="8dp">-->
 
-        <!-- Chat Header -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#B16628"
-            android:gravity="center"
-            android:text="@string/chat_title"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:fontFamily="@font/inter_bold" />
+<!--        &lt;!&ndash; Chat Header &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:background="#B16628"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/chat_title"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:fontFamily="@font/inter_bold" />-->
 
-        <!-- Bot Message -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:orientation="horizontal">
+<!--        &lt;!&ndash; Messages Container &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/chat_messages_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="8dp"-->
+<!--            android:background="#FFFFFF" />-->
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@mipmap/img_saru_cup" />
-        </LinearLayout>
+<!--        &lt;!&ndash; Chat Input &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical">-->
 
-        <!-- Chat Input -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+<!--            <ImageView-->
+<!--                android:layout_width="32dp"-->
+<!--                android:layout_height="32dp"-->
+<!--                android:src="@mipmap/ic_add" />-->
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@mipmap/ic_add" />
+<!--            <EditText-->
+<!--                android:id="@+id/input_message"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_marginHorizontal="8dp"-->
+<!--                android:background="@drawable/bg_input_field"-->
+<!--                android:hint="@string/chat_hint"-->
+<!--                android:padding="8dp"-->
+<!--                android:textSize="14sp"-->
+<!--                android:fontFamily="@font/inter"-->
+<!--                android:focusable="true"-->
+<!--                android:focusableInTouchMode="true" />-->
 
-            <EditText
-                android:id="@+id/input_message"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="8dp"
-                android:background="@drawable/bg_input_field"
-                android:hint="@string/chat_hint"
-                android:padding="8dp"
-                android:textSize="14sp"
-                android:fontFamily="@font/inter" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@mipmap/ic_send"
-                android:contentDescription="@string/chat_send_message" />
-        </LinearLayout>
-    </LinearLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/img_send"-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:src="@mipmap/ic_send"-->
+<!--                android:contentDescription="@string/chat_send_message" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
 </FrameLayout>
