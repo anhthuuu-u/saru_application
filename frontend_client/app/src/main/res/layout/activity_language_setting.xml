@@ -50,7 +50,7 @@
 
                 <!-- English -->
                 <LinearLayout
-                    android:id="@+id/english_option"
+                    android:id="@+id/opt_english"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -59,20 +59,21 @@
                     android:focusable="true">
 
                     <TextView
+                        android:id="@+id/txt_english"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter"
                         android:text="@string/language_english"
-                        android:textSize="16sp"
                         android:textColor="#000000"
-                        android:fontFamily="@font/inter" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/english_check"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@mipmap/ic_check"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <!-- Divider -->
@@ -83,7 +84,7 @@
 
                 <!-- Vietnamese -->
                 <LinearLayout
-                    android:id="@+id/vietnamese_option"
+                    android:id="@+id/opt_vietnam"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -92,13 +93,14 @@
                     android:focusable="true">
 
                     <TextView
+                        android:id="@+id/txt_vietnam"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter"
                         android:text="@string/language_vietnamese"
-                        android:textSize="16sp"
                         android:textColor="#000000"
-                        android:fontFamily="@font/inter" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/vietnamese_check"
@@ -110,7 +112,7 @@
             </LinearLayout>
             <!-- Submit Button -->
             <Button
-                android:id="@+id/submit_language_button"
+                android:id="@+id/btn_submit_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
