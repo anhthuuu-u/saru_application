@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import saru.com.app.models.Voucher;
@@ -42,9 +44,10 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
 
         holder.voucherExpiry.setText("Sắp hết hạn: " + voucher.getExpiryDate());
 
-        // Xử lý nút "Lưu" (có thể thêm logic lưu voucher vào đây)
+        // Xử lý nút "Lưu"
         holder.voucherSaveButton.setOnClickListener(v -> {
-            // Thêm logic lưu voucher (ví dụ: lưu vào database)
+            Toast.makeText(holder.itemView.getContext(), "Save voucher sucessfully!!", Toast.LENGTH_SHORT).show();
+            // Thêm logic lưu voucher vào danh sách hoặc database nếu cần
         });
     }
 

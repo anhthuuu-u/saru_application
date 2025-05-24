@@ -1,5 +1,6 @@
 package saru.com.app;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +20,15 @@ import java.util.List;
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.connectors.VoucherAdapter;
+import saru.com.app.models.CartItem;
 import saru.com.app.models.CustomerReviews;
+import saru.com.app.models.ListCartItems;
+import saru.com.app.models.Product;
 import saru.com.app.models.VoucherList;
 
 public class Homepage extends AppCompatActivity {
+    private ListCartItems cartItems = new ListCartItems();
+    private TextView cartItemCountText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,12 @@ public class Homepage extends AppCompatActivity {
         RecyclerView recyclerViewForYou = findViewById(R.id.recycler_view_for_you);
         if (recyclerViewForYou == null) {
             throw new IllegalStateException("RecyclerView with ID 'recycler_view_for_you' not found in activity_homepage.xml");
+        }
+
+        // Tìm TextView cho số lượng giỏ hàng (thêm vào layout nếu chưa có)
+        cartItemCountText = findViewById(R.id.cart_item_count); // Giả định ID trong layout
+        if (cartItemCountText == null) {
+            throw new IllegalStateException("TextView with ID 'cart_item_count' not found in activity_homepage.xml");
         }
 
         // Khởi tạo ProductAdapter cho Super Sales
@@ -144,5 +156,19 @@ public class Homepage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    private void updateCartItemCount() {
+        int count = cartItems.getItemCount();
+        if (cartItemCountText != null) {
+            cartItemCountText.setText(String.valueOf(count));
+            cartItemCountText.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    // Phương thức để thêm sản phẩm vào giỏ hàng (gọi từ ProductAdapter)
+    public void addToCart(Product product) {
+        cartItems.addItem(new CartItem(product, 1));
+        updateCartItemCount();
     }
 }

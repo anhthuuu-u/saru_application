@@ -85,6 +85,17 @@
                 android:layout_weight="1"
                 android:backgroundTint="#00FFFFFF"
                 app:srcCompat="@mipmap/ic_cart" />
+            <TextView
+                android:id="@+id/cart_item_count"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/circle_background"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/btn_cart"
+                app:layout_constraintEnd_toEndOf="@id/btn_cart" />
         </LinearLayout>
 
         <!-- Banner -->
