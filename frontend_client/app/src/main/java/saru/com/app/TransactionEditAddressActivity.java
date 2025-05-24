@@ -56,15 +56,33 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open Google Maps for address selection
                 openGoogleMap();
             }
         });
-    }
 
-    public void onBackPressed(View view) {
-        // Handle back button click
-        finish();
+        // Back button listener
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // Cancel button listener
+        btnTransactionEditAddressCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCancelClick(v);
+            }
+        });
+
+        // Confirm button listener
+        btnTransactionEditAddressConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onConfirmClick(v);
+            }
+        });
     }
 
     public void onCancelClick(View view) {
@@ -81,7 +99,6 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
 
     private void openGoogleMap() {
         // Open Google Maps for address selection
-        // This would be implemented based on your app's requirements
         Toast.makeText(TransactionEditAddressActivity.this,
                 "Opening Google Maps...", Toast.LENGTH_SHORT).show();
 
@@ -92,35 +109,61 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
     }
 
     private void loadAddressData() {
-        // Check if we're editing an existing address
+        // Get address data from intent (passed from CheckoutActivity)
         Intent intent = getIntent();
-        if (intent.hasExtra("address_name")) {
-            edtCustomerName.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_name)));
-            edtPhoneNumber.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_phone_number)));
-            edtCustomerAddress.setText(intent.getStringExtra(String.valueOf(R.string.title_customer_address)));
+        if (intent != null) {
+            String name = intent.getStringExtra("address_name");
+            String phone = intent.getStringExtra("address_phone");
+            String address = intent.getStringExtra("address_full");
+
+            // Set the data to EditText fields if they exist
+            if (name != null && !name.isEmpty()) {
+                edtCustomerName.setText(name);
+            }
+            if (phone != null && !phone.isEmpty()) {
+                edtPhoneNumber.setText(phone);
+            }
+            if (address != null && !address.isEmpty()) {
+                edtCustomerAddress.setText(address);
+            }
         }
     }
 
     private boolean validateInputs() {
         boolean isValid = true;
 
-        if (edtCustomerName.getText().toString().trim().isEmpty()) {
+        // Validate customer name
+        String name = edtCustomerName.getText().toString().trim();
+        if (name.isEmpty()) {
             edtCustomerName.setError("Tên không được để trống");
+            edtCustomerName.requestFocus();
             isValid = false;
+        } else {
+            edtCustomerName.setError(null);
         }
 
+        // Validate phone number
         String phone = edtPhoneNumber.getText().toString().trim();
         if (phone.isEmpty()) {
             edtPhoneNumber.setError("Số điện thoại không được để trống");
+            if (isValid) edtPhoneNumber.requestFocus();
             isValid = false;
         } else if (!phone.matches("\\d{10,11}")) {
-            edtPhoneNumber.setError("Số điện thoại không hợp lệ");
+            edtPhoneNumber.setError("Số điện thoại không hợp lệ (10-11 chữ số)");
+            if (isValid) edtPhoneNumber.requestFocus();
             isValid = false;
+        } else {
+            edtPhoneNumber.setError(null);
         }
 
-        if (edtCustomerAddress.getText().toString().trim().isEmpty()) {
+        // Validate address
+        String address = edtCustomerAddress.getText().toString().trim();
+        if (address.isEmpty()) {
             edtCustomerAddress.setError("Địa chỉ không được để trống");
+            if (isValid) edtCustomerAddress.requestFocus();
             isValid = false;
+        } else {
+            edtCustomerAddress.setError(null);
         }
 
         return isValid;
@@ -131,16 +174,18 @@ public class TransactionEditAddressActivity extends AppCompatActivity {
         String phone = edtPhoneNumber.getText().toString().trim();
         String address = edtCustomerAddress.getText().toString().trim();
 
+        // Create intent to return data to CheckoutActivity
         Intent resultIntent = new Intent();
         resultIntent.putExtra("address_name", name);
         resultIntent.putExtra("address_phone", phone);
         resultIntent.putExtra("address_full", address);
 
+        // Set result and finish activity
         setResult(RESULT_OK, resultIntent);
 
-        Toast.makeText(this, "Đã lưu địa chỉ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Đã lưu địa chỉ thành công", Toast.LENGTH_SHORT).show();
 
-        // Return to previous activity
+        // Return to checkout activity
         finish();
     }
 }

@@ -1,6 +1,8 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -21,7 +23,7 @@ import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 
 public class ProductCart extends AppCompatActivity {
-
+    Button btnPayment;
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
     private ListCartItems listCartItems;
@@ -73,6 +75,15 @@ public class ProductCart extends AppCompatActivity {
             double total = listCartItems.calculateTotalPrice();
             Toast.makeText(this, "Total Payment: " + String.format("%.0f", total) + "đ", Toast.LENGTH_SHORT).show();
             // TODO: Implement payment logic
+        });
+
+        // Phần chỉnh sửa qua trang check out
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ProductCart.this, TransactionCheckoutActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Update total price initially
