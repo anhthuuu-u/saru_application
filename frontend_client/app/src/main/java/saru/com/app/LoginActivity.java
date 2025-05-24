@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // TextView đăng ký bên cạnh (textView4)
-        TextView textViewSignup = findViewById(R.id.textView4);
+        TextView textViewSignup = findViewById(R.id.txtBlogList_SeemoreInfo);
         if (textViewSignup != null) {
             textViewSignup.setOnClickListener(v -> {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);

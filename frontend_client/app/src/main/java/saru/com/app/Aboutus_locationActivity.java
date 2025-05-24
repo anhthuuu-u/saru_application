@@ -31,7 +31,7 @@ public class Aboutus_locationActivity extends AppCompatActivity implements OnMap
         setContentView(R.layout.activity_aboutus_location);
 
         // Xử lý nút quay lại
-        ImageView backButton = findViewById(R.id.ic_back);
+        ImageView backButton = findViewById(R.id.imgEachCatalog_Back);
         backButton.setOnClickListener(v -> finish());
 
         // Khởi tạo SupportMapFragment cho Lào Cai

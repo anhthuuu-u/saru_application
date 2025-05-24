@@ -87,21 +87,21 @@
                 android:layout_marginBottom="16dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imgBlog_CategoryNameInfo"
                     android:layout_width="59dp"
                     android:layout_height="56dp"
                     android:layout_marginEnd="8dp"
                     android:background="@color/color_medium_gray" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/imgBlog_CategoryNameTips"
                     android:layout_width="64dp"
                     android:layout_height="56dp"
                     android:layout_marginEnd="8dp"
                     android:background="@color/color_medium_gray" />
 
                 <ImageView
-                    android:id="@+id/ic_back"
+                    android:id="@+id/imgEachCatalog_Back"
                     android:layout_width="60dp"
                     android:layout_height="56dp"
                     android:background="@color/color_medium_gray" />
