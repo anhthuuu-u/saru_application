@@ -12,7 +12,9 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -81,7 +83,7 @@
             android:exported="true" />
         <activity
             android:name=".Aboutus_SARUActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Homepage"
             android:exported="true"/>
@@ -128,13 +130,7 @@
 
         <activity
             android:name=".LanguageSettingActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-          
+            android:exported="true" />
         <activity
             android:name=".FaceAuthenticationActivity"
             android:exported="false" />
@@ -162,16 +158,22 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"/>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I"
             android:value="AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDIKwoo6s586WAEbsOOcGYLSLvCM3jUu1o" />
+
+
     </application>
 
 </manifest>
