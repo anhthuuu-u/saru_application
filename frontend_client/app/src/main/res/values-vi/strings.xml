@@ -462,8 +462,8 @@
     <string name="bottom_nav_compare">So sánh</string>
     <string name="bottom_nav_account">Tài khoản</string>
 
-    <string name="title_onbroading">Chào đồng tửu!\nChào mừng đến với Saru!</string>
-    <string name="subtitle_onbroading">Khám phá rượu chuẩn, nguồn gốc rõ ràng tại Saru.</string>
+    <string name="title_onboarding">Chào đồng tửu!\nChào mừng đến với Saru!</string>
+    <string name="subtitle_onboarding">Khám phá rượu chuẩn, nguồn gốc rõ ràng tại Saru.</string>
     <string name="btn_login">Đăng nhập</string>
     <string name="text_signup">Bạn mới đến?</string>
     <string name="btn_signup">Đăng ký</string>

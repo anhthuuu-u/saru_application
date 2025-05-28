@@ -69,7 +69,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/italianno"
-                android:text="@string/title_onbroading"
+                android:text="@string/title_onboarding"
                 android:textAlignment="viewStart"
                 android:textColor="@color/color_golden_yellow"
                 android:textSize="36sp"

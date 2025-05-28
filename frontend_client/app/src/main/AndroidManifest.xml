@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Quyền camera cần thiết cho xác thực khuôn mặt -->
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
+        android:required="true" /> <uses-feature
+    android:name="android.hardware.camera.front"
+    android:required="true" /> <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -21,19 +18,25 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/img_saru_logo_white_bg"
-        android:roundIcon="@mipmap/img_saru_logo_white_bg"
+        android:label="@string/app_name" android:roundIcon="@mipmap/img_saru_logo_white_bg"
         android:supportsRtl="true"
         android:theme="@style/Theme.Client_app"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
+
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="true"> <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
         <activity
             android:name=".LiveChatActivity"
-            android:exported="true"/>
-
-
-        <activity
-            android:name=".TransactionFaceAuthorizationCompletedActivity"
-            android:exported="false" />
+            android:exported="true" /> <activity
+        android:name=".TransactionFaceAuthorizationCompletedActivity"
+        android:exported="false" />
         <activity
             android:name=".TransactionEditPaymentMethodActivity"
             android:exported="false" />
@@ -48,10 +51,9 @@
             android:exported="false" />
         <activity
             android:name=".VouchersManagement"
-            android:exported="true" />
-        <activity
-            android:name=".TransactionEditAddressActivity"
-            android:exported="false" />
+            android:exported="true" /> <activity
+        android:name=".TransactionEditAddressActivity"
+        android:exported="false" />
         <activity
             android:name=".TransactionCheckoutActivity"
             android:exported="false" />
@@ -66,75 +68,51 @@
             android:exported="false" />
         <activity
             android:name=".Blog_BlogDetailActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Blog_EachCatalogActivity"
-            android:exported="false" />
+            android:exported="true" /> <activity
+        android:name=".Blog_EachCatalogActivity"
+        android:exported="false" />
         <activity
             android:name=".Blog_ListActivity"
             android:exported="false" />
         <activity
             android:name=".Aboutus_locationActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Aboutus_SARUActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".Homepage"
-            android:exported="true"/>
-        <activity
-            android:name=".ProductCart"
-            android:exported="true" />
-        <activity
-            android:name=".ProductComparison"
-            android:exported="true" />
-        <activity
-            android:name=".ProductDetailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Client_app.NoActionBar" />
+            android:exported="true" /> <activity
+        android:name=".Aboutus_SARUActivity"
+        android:exported="true" /> <activity
+        android:name=".Homepage"
+        android:exported="true"/> <activity
+        android:name=".ProductCart"
+        android:exported="true" /> <activity
+        android:name=".ProductComparison"
+        android:exported="true"/> <activity
+        android:name=".ProductDetailActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Client_app.NoActionBar" />
         <activity
             android:name=".Products"
-            android:exported="true" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ProfileEditActivity"
-            android:exported="true" />
-        <activity
-            android:name=".OrderListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".OrderDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ProfileUpdateCardActivity"
-            android:exported="true" />
-        <activity
-            android:name=".OrderReviewActivity"
-            android:exported="true" />
-        <activity
-            android:name=".OrderRequestReturnActivity"
-            android:exported="true" />
-        <activity
-            android:name=".OrderCancelActivity"
-            android:exported="true" />
-        <activity
-            android:name=".CustomerSupportActivity"
-            android:exported="true"/>
-
-        <activity
-            android:name=".LanguageSettingActivity"
-            android:exported="true" />
-        <activity
-            android:name=".FaceAuthenticationActivity"
-            android:exported="false" />
+            android:exported="true"/> <activity
+        android:name=".ProfileActivity"
+        android:exported="true"/> <activity
+        android:name=".ProfileEditActivity"
+        android:exported="true" /> <activity
+        android:name=".OrderListActivity"
+        android:exported="true" /> <activity
+        android:name=".OrderDetailActivity"
+        android:exported="true" /> <activity
+        android:name=".ProfileUpdateCardActivity"
+        android:exported="true" /> <activity
+        android:name=".OrderReviewActivity"
+        android:exported="true" /> <activity
+        android:name=".OrderRequestReturnActivity"
+        android:exported="true" /> <activity
+        android:name=".OrderCancelActivity"
+        android:exported="true" /> <activity
+        android:name=".CustomerSupportActivity"
+        android:exported="true" /> <activity
+        android:name=".LanguageSettingActivity"
+        android:exported="true" /> <activity
+        android:name=".FaceAuthenticationActivity"
+        android:exported="false" />
         <activity
             android:name=".FogotPasswordCreateActivity"
             android:exported="false" />
@@ -152,29 +130,14 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".OnbroadingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false"/> <activity
+        android:name=".MainActivity"
+        android:exported="false"/>
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-        <meta-data
-            android:name="com.google.android.geo.AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I"
-            android:value="AIzaSyAYQ1tWXCFX722Y333hYbgcIXzVNRuEC8I" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
+        android:name="preloaded_fonts"
+        android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDIKwoo6s586WAEbsOOcGYLSLvCM3jUu1o" />
-
-
-    </application>
+            android:value="AIzaSyDIKwoo6s586WAEbsOOcGYLSLvCM3jUu1o" /> </application>
 
 </manifest>
