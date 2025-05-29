@@ -1,5 +1,6 @@
 package saru.com.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -15,12 +16,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.* ;
+import com.google.android.gms.maps.model.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity  implements OnMapReadyCallback {
-
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
     //Bottom Navigation
@@ -47,19 +47,33 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-           int id = item.getItemId();
+            int id = item.getItemId();
 
-           if (id == R.id.menu_home) {
-               Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.menu_product ){
-               Toast.makeText(MainActivity.this, "Product", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.menu_compare){
-               Toast.makeText(MainActivity.this, "Compare", Toast.LENGTH_SHORT).show();
+            if (id == R.id.menu_home) {
+                // Mở HomeActivity
+                Intent intent = new Intent(MainActivity.this, Homepage.class);
+                startActivity(intent);
+                return true;
+            } else if (id == R.id.menu_product) {
+                // Mở ProductActivity hoặc làm gì đó
+                Intent intent = new Intent(MainActivity.this, Products.class);
+                startActivity(intent);
+                return true;
+            } else if (id == R.id.menu_compare) {
+                // Mở CompareActivity
+                Intent intent = new Intent(MainActivity.this, ProductComparison.class);
+                startActivity(intent);
+                return true;
             } else if (id == R.id.menu_account) {
-               Toast.makeText(MainActivity.this, "Account", Toast.LENGTH_SHORT).show();
+                // Mở AccountActivity
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
             }
-            return true;
+
+            return false;
         });
+
     }
 
     public void onMapReady(GoogleMap googleMap) {

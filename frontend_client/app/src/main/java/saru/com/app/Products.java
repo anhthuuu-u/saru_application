@@ -25,8 +25,11 @@ import android.graphics.Rect;
 
 import saru.com.app.connectors.ProductAdapter;
 
-public class Products extends AppCompatActivity {
-
+public class Products extends BaseActivity {
+    @Override
+    protected int getSelectedMenuItemId() {
+        return R.id.menu_product; // Trả về ID của mục menu tương ứng
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +66,7 @@ public class Products extends AppCompatActivity {
                 finish(); // Kết thúc activity Products để không quay lại khi nhấn back
             });
         }
-
+        setupBottomNavigation(); // Gọi phương thức để thiết lập BottomNavigationView
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

@@ -37,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
             btnLogin.setOnClickListener(v -> {
                 // TODO: Thêm validate email, password trước khi navigate
 
-                // Đại đại navigate qua MainActivity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                // Đại đại navigate qua HomepageActivity
+                Intent intent = new Intent(LoginActivity.this, Homepage.class);
                 startActivity(intent);
                 finish(); // Đóng LoginActivity
             });

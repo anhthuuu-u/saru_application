@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class ProductComparison extends AppCompatActivity {
+public class ProductComparison extends BaseActivity {
+    @Override
+    protected int getSelectedMenuItemId() {
+        return R.id.menu_compare; // Trả về ID của mục menu tương ứng
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class ProductComparison extends AppCompatActivity {
             // TODO: Xóa tất cả sản phẩm đang so sánh
             // Ví dụ: Xóa dữ liệu trong TableLayout hoặc cập nhật lại UI
         });
+        setupBottomNavigation();
 
         // Handle window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {

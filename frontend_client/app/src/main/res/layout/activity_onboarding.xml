@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_authenciation"
-    tools:context=".OnbroadingActivity">
+    tools:context=".OnboardingActivity">
 
     <!-- Wrapping content in ScrollView for better handling of small screens -->
     <ScrollView
@@ -31,7 +31,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/italianno"
-                android:text="@string/title_onbroading"
+                android:text="@string/title_onboarding"
                 android:textAlignment="center"
                 android:textColor="@color/color_golden_yellow"
                 android:textSize="36sp"

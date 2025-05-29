@@ -1,22 +1,18 @@
 package saru.com.app;
 
-import android.view.View;
-import android.widget.ImageView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.connectors.VoucherAdapter;
@@ -26,15 +22,32 @@ import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 import saru.com.app.models.VoucherList;
 
-public class Homepage extends AppCompatActivity {
+public class Homepage extends BaseActivity {
     private ListCartItems cartItems = new ListCartItems();
     private TextView cartItemCountText;
+
+
+    @Override
+    protected int getSelectedMenuItemId() {
+        return R.id.menu_home; // Ensure this ID exists in your menu_bottom_nav.xml
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
+
+        // Setup bottom navigation
+        setupBottomNavigation();
+
+        // Xử lý window insets
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         // Tìm RecyclerView cho Super Sales
         RecyclerView recyclerViewSuperSales = findViewById(R.id.recycler_view_super_sales);
         if (recyclerViewSuperSales == null) {
@@ -91,18 +104,18 @@ public class Homepage extends AppCompatActivity {
         }
 
         // Khởi tạo danh sách CustomerReviews (ví dụ: dữ liệu tĩnh hoặc từ nguồn dữ liệu)
-                List<CustomerReviews> customerReviewsList = new ArrayList<>();
+        List<CustomerReviews> customerReviewsList = new ArrayList<>();
         // Thêm dữ liệu mẫu (thay bằng dữ liệu thực tế từ API hoặc cơ sở dữ liệu)
-                customerReviewsList.add(new CustomerReviews("John Doe", "Great product!", "Laptop", R.mipmap.ic_account));
-                customerReviewsList.add(new CustomerReviews("Jane Smith", "Very satisfied!", "Phone", R.mipmap.ic_account));
+        customerReviewsList.add(new CustomerReviews("John Doe", "Great product!", "Laptop", R.mipmap.ic_account));
+        customerReviewsList.add(new CustomerReviews("Jane Smith", "Very satisfied!", "Phone", R.mipmap.ic_account));
 
         // Khởi tạo CustomerReviewAdapter
-                CustomerReviewAdapter customerReviewAdapter = new CustomerReviewAdapter(customerReviewsList);
+        CustomerReviewAdapter customerReviewAdapter = new CustomerReviewAdapter(customerReviewsList);
 
         // Thiết lập LinearLayoutManager (có thể là ngang hoặc dọc tùy thiết kế)
-                LinearLayoutManager customerReviewsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewCustomerReviews.setLayoutManager(customerReviewsLayoutManager);
-                recyclerViewCustomerReviews.setAdapter(customerReviewAdapter);
+        LinearLayoutManager customerReviewsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewCustomerReviews.setLayoutManager(customerReviewsLayoutManager);
+        recyclerViewCustomerReviews.setAdapter(customerReviewAdapter);
 
         // Xử lý nút "View All" của Super Sales
         TextView textViewAllSuperSales = findViewById(R.id.txtViewAllSuperSales);
@@ -145,18 +158,15 @@ public class Homepage extends AppCompatActivity {
         if (icBack != null) {
             icBack.setOnClickListener(v -> {
                 // Quay lại Homepage (nếu đã ở Homepage thì không cần làm gì)
-                // Hoặc có thể gọi finish() nếu muốn thoát activity hiện tại
-                finish(); // Hoặc để trống nếu không cần hành động
+                // Hoặc có thể gọi finishAffinity() để thoát ứng dụng
+                finishAffinity(); // Thoát ứng dụng vì Homepage là màn hình chính
             });
         }
 
-        // Xử lý window insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Update cart count
+        updateCartItemCount();
     }
+
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     private void updateCartItemCount() {
         int count = cartItems.getItemCount();
