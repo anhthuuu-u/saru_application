@@ -14,4 +14,5 @@
     <color name="color_medium_gray">#969696</color>
     <color name="color_creamy_white">#F2E8DA</color>
     <color name="voucher_applied_color">#4CAF50</color>
+    <color name="product_comparison_table">#E2BF9E</color>
 </resources>
