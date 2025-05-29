@@ -13,8 +13,8 @@
     <dimen name="text_size_small">2sp</dimen>
     <dimen name="text_size_tiny">12sp</dimen>
     <dimen name="icon_size_large">23dp</dimen>
-    <dimen name="home_noti_icon_size">43dp</dimen>
-    <dimen name="home_icon_cart_size">43dp</dimen>
+    <dimen name="home_noti_icon_size">26dp</dimen>
+    <dimen name="home_icon_cart_size">45dp</dimen>
     <dimen name="icon_cart_size_large">21dp</dimen>
     <dimen name="filter_size_large">40dp</dimen>
     <dimen name="search_bar_height">33dp</dimen>

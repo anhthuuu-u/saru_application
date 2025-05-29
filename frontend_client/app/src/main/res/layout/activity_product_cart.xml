@@ -60,7 +60,7 @@
             android:id="@+id/btn_cart"
             android:layout_width="0dp"
             android:layout_height="@dimen/icon_cart_size_large"
-            android:paddingBottom="@dimen/padding_small"
+            android:layout_marginBottom="@dimen/padding_small3"
             android:padding="@dimen/padding_small"
             android:layout_marginTop="@dimen/padding_small"
             android:layout_weight="1.3"
