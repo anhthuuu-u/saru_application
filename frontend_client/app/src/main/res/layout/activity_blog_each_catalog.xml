@@ -67,7 +67,7 @@
                     android:layout_marginBottom="10dp"/>
 
                 <TextView
-                    android:id="@+id/txt_store_location"
+                    android:id="@+id/txtAboutus_StoreLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"

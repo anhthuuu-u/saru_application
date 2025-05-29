@@ -66,12 +66,8 @@
             android:exported="false" />
         <activity
             android:name=".Blog_BlogDetailActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
+
         <activity
             android:name=".Blog_EachCatalogActivity"
             android:exported="false" />
@@ -80,7 +76,12 @@
             android:exported="false" />
         <activity
             android:name=".Aboutus_locationActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Aboutus_SARUActivity"
             android:exported="true" />

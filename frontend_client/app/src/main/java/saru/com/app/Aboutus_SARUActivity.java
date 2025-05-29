@@ -20,7 +20,7 @@ public class Aboutus_SARUActivity extends AppCompatActivity {
         setContentView(R.layout.activity_aboutus);
 
         // Tìm TextView Store Location
-        TextView textViewStoreLocation = findViewById(R.id.txt_store_location);
+        TextView textViewStoreLocation = findViewById(R.id.txtAboutus_StoreLocation);
 
         // Xử lý sự kiện nhấn TextView
         textViewStoreLocation.setOnClickListener(v -> {

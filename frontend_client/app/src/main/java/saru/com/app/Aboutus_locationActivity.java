@@ -3,7 +3,9 @@ package saru.com.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,4 +100,5 @@ public class Aboutus_locationActivity extends AppCompatActivity implements OnMap
             mMapHCM.moveCamera(CameraUpdateFactory.newLatLngZoom(hcm, 15));
         }
     }
+
 }

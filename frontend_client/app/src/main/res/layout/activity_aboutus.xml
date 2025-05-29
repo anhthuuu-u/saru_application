@@ -52,7 +52,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_store_location"
+            android:id="@+id/txtAboutus_StoreLocation"
             android:clickable="true"
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground"
