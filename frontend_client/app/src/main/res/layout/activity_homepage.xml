@@ -35,77 +35,86 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00FFFFFF"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/btn_back_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#00FFFFFF"
-                    app:srcCompat="@mipmap/ic_back_arrow" />
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_small">
 
                 <ImageButton
                     android:id="@+id/btn_filter"
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/filter_size_large"
+                    android:layout_height="@dimen/filter_size_large"
+                    android:paddingLeft="@dimen/margin_small"
+                    android:paddingRight="@dimen/margin_small"
+                    android:layout_gravity="center_vertical"
                     android:backgroundTint="#00FFFFFF"
+                    android:scaleType="fitCenter"
+                    app:tint="#F8BC3B"
                     app:srcCompat="@mipmap/ic_menu" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/title_filter_product"
-                    android:textColor="@color/color_ochre"
-                    android:textSize="14sp" />
-
-                <EditText
+                <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_bar"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_height="@dimen/search_bar_height"
+                    android:layout_weight="9"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/rounded_border"
-                    android:hint="@string/title_search_bar"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textColorHint="@color/color_medium_gray"
-                    android:textSize="14sp" />
+                    app:queryHint="@string/title_search_bar"
+                    app:searchIcon="@mipmap/ic_search"
+                    app:searchHintIcon="@color/color_golden_yellow"
+                    android:paddingStart="@dimen/padding_small"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingEnd="@dimen/padding_standard" />
 
                 <ImageButton
                     android:id="@+id/btn_noti"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/margin_small"
+                    android:paddingRight="@dimen/margin_small"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/home_noti_icon_size"
+                    android:layout_weight="1.3"
+                    android:layout_gravity="center_vertical"
                     android:backgroundTint="#00FFFFFF"
-                    app:srcCompat="@mipmap/ic_noti" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@mipmap/ic_noti"
+                    app:tint="#F8BC3B" />
 
                 <ImageButton
                     android:id="@+id/btn_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:paddingLeft="@dimen/margin_small"
+                    android:paddingRight="@dimen/margin_small"
+                    android:layout_height="@dimen/home_icon_cart_size"
+                    android:layout_weight="1.3"
+                    android:layout_gravity="center_vertical"
                     android:backgroundTint="#00FFFFFF"
-                    app:srcCompat="@mipmap/ic_cart" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@mipmap/ic_cart"
+                    app:tint="#F8BC3B" />
 
                 <TextView
                     android:id="@+id/cart_item_count"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/cart_count_size"
+                    android:layout_height="@dimen/cart_count_size"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/circle_background"
                     android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_tiny"
                     android:visibility="gone" />
             </LinearLayout>
 
-            <!-- Banner -->
+            <!-- RecyclerView cho kết quả tìm kiếm -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_search_results"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
+                app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="8dp" />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -245,18 +254,25 @@
             </HorizontalScrollView>
 
             <!-- For You Section -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_view_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
 
                 <ImageView
                     android:id="@+id/imgSaruCupForYouSection"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@mipmap/img_saru_cup" />
+                    app:srcCompat="@mipmap/img_saru_cup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtForYou"
@@ -266,16 +282,20 @@
                     android:text="@string/title_homepage_foryou"
                     android:textColor="@color/color_dark_brown"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgSaruCupForYouSection"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp" />
 
                 <TextView
                     android:id="@+id/txtViewAllForYou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="235dp"
                     android:text="@string/Title_view_all"
-                    android:textColor="@color/color_dark_brown" />
-            </LinearLayout>
+                    android:textColor="@color/color_dark_brown"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_view_all"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_for_you"
@@ -284,18 +304,25 @@
                 android:layout_marginTop="8dp" />
 
             <!-- Super Sale Section -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_view_all_super_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
 
                 <ImageView
                     android:id="@+id/imgSaruCupSuperSaleSection"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@mipmap/img_saru_cup" />
+                    app:srcCompat="@mipmap/img_saru_cup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtSuperSalesTitle"
@@ -305,16 +332,20 @@
                     android:text="@string/Homepage_supersale_section"
                     android:textColor="@color/color_dark_brown"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgSaruCupSuperSaleSection"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp" />
 
                 <TextView
                     android:id="@+id/txtViewAllSuperSales"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="205dp"
                     android:text="@string/Title_view_all"
-                    android:textColor="@color/color_dark_brown" />
-            </LinearLayout>
+                    android:textColor="@color/color_dark_brown"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_view_all_super_sales"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_super_sales"
@@ -323,18 +354,25 @@
                 android:layout_marginTop="8dp" />
 
             <!-- Best Seller Section -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_view_all_best_seller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="19dp" />
 
                 <ImageView
                     android:id="@+id/imgSaruCupBestSellerSection"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@mipmap/img_saru_cup" />
+                    app:srcCompat="@mipmap/img_saru_cup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtBestSellerTitle"
@@ -344,16 +382,20 @@
                     android:text="@string/Homepage_BestSeller_section"
                     android:textColor="@color/color_dark_brown"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgSaruCupBestSellerSection"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp" />
 
                 <TextView
                     android:id="@+id/txtViewAllBestSeller"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="206dp"
                     android:text="@string/Title_view_all"
-                    android:textColor="@color/color_dark_brown" />
-            </LinearLayout>
+                    android:textColor="@color/color_dark_brown"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_view_all_best_seller"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_best_seller"
@@ -383,6 +425,7 @@
                     android:text="@string/Homepage_Customer_reviews"
                     android:textColor="@color/color_dark_brown"
                     android:textSize="18sp"
+                    android:layout_marginStart="8dp"
                     android:textStyle="bold" />
             </LinearLayout>
 

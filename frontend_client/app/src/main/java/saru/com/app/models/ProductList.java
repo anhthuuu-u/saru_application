@@ -56,6 +56,18 @@ public class ProductList {
                 4.6f,
                 "An infused apricot wine with a delightful balance of sweetness and tartness, sourced from the mountains of Vietnam."
         ));
+        products.add(new Product(
+                "Nang Mo Wine",
+                "220,000 VND",
+                "Mountain Essence",
+                "In Stock",
+                "18% ABV",
+                "550ml",
+                "Infused Wine",
+                "Apricots, Rice Wine",
+                4.6f,
+                "An infused apricot wine with a delightful balance of sweetness and tartness, sourced from the jungle of Vietnam."
+        ));
     }
 
     public List<Product> getProducts() {

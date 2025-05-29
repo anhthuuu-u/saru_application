@@ -522,6 +522,8 @@
     <string name="api_base_url">http://10.0.2.2:4001</string> <!-- dùng IP LAN nếu chạy thật -->
     <string name="faq_title">Frequently Asked Questions</string>
     <string name="faq_load_error">Failed to load FAQs. Please try again.</string>
+    <string name="title_best_selling_checkbox">Best Selling</string>
+    <string name="title_on_sale_checkbox">On Sale</string>
 
 </resources>
 

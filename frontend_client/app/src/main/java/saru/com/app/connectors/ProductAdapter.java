@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import saru.com.app.Homepage;
 import saru.com.app.ProductDetailActivity;
 import saru.com.app.R;
@@ -25,6 +28,7 @@ import saru.com.app.models.ProductList;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private final ProductList productList;
+    private List<Product> products;
 
     public ProductAdapter() {
         productList = new ProductList();
@@ -69,6 +73,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public int getItemCount() {
         return productList.getProducts().size();
+    }
+
+    public void updateData(List<Product> newProducts) {
+        this.products = newProducts != null ? newProducts : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public void filterProducts(String filterCategory, String filterSortBy, String filterBrand, String filterVolume, String filterWineType, Double filterPriceMin, Double filterPriceMax, boolean isBestSelling, boolean isOnSale) {
+
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {

@@ -74,6 +74,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Handle back button
         btnBack.setOnClickListener(v -> finish());
 
+        ImageButton btnCart = findViewById(R.id.btn_cart);
+        if (btnCart != null) {
+            btnCart.setOnClickListener(v -> {
+                Intent intent2 = new Intent(ProductDetailActivity.this, ProductCart.class);
+                startActivity(intent2);
+            });
+        }
+
         // Handle Add to Cart button (placeholder logic)
         addToCartButton.setOnClickListener(v -> {
             // Add to cart logic here

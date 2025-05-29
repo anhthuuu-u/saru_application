@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="item_spacing">10dp</dimen> <!-- Khoảng cách giữa các item -->
+    <dimen name="padding_standard">8dp</dimen>
+    <dimen name="padding_small">1dp</dimen>
+    <dimen name="padding_small2">1.5dp</dimen>
+    <dimen name="padding_small3">0.5dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="icon_size">30dp</dimen>
+    <dimen name="cart_count_size">20dp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_small">2sp</dimen>
+    <dimen name="text_size_tiny">12sp</dimen>
+    <dimen name="icon_size_large">23dp</dimen>
+    <dimen name="home_noti_icon_size">43dp</dimen>
+    <dimen name="home_icon_cart_size">43dp</dimen>
+    <dimen name="icon_cart_size_large">21dp</dimen>
+    <dimen name="filter_size_large">40dp</dimen>
+    <dimen name="search_bar_height">33dp</dimen>
+    <dimen name="search_hint_text_size">10sp</dimen>
+    <dimen name="margin_for_you_view_all">235sp</dimen>
+    <dimen name="filter_dialog_padding">15dp</dimen>
+    <dimen name="product_padding_left">20dp</dimen>
+    <dimen name="product_detail_padding_left">16dp</dimen>
+    <dimen name="product_detail_padding_right">1dp</dimen>
+    <dimen name="product_padding_right">2dp</dimen>
+    <dimen name="filter_icon_size">40dp</dimen>
+    <dimen name="payment_button_width">300dp</dimen>
+    <dimen name="comparison_button_width">150dp</dimen>
+    <dimen name="padding_big">150dp</dimen>
 </resources>
