@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_creamy_white"
+    android:fitsSystemWindows="true">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_small"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/btn_back_arrow"
+            android:layout_width="@dimen/filter_size_large"
+            android:layout_height="@dimen/filter_size_large"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            app:tint="@color/color_dark_brown"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@mipmap/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/products_title_page"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="@dimen/padding_standard"
+            android:layout_weight="4.5"
+            android:fontFamily="@font/inter_bold"
+            android:paddingLeft="@dimen/product_detail_padding_left"
+            android:paddingRight="@dimen/product_detail_padding_right"
+            android:text="@string/title_product_detail"
+            android:textAlignment="center"
+            android:textColor="@color/color_dark_brown"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btn_noti"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_weight="1.3"
+            android:padding="@dimen/padding_small"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/ic_noti"
+            app:tint="#F8BC3B" />
+
+        <ImageButton
+            android:id="@+id/btn_cart"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/icon_cart_size_large"
+            android:layout_marginBottom="@dimen/padding_small3"
+            android:padding="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_small"
+            android:layout_weight="1.3"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/ic_cart"
+            app:tint="#F8BC3B" />
+    </LinearLayout>
+
+    <!-- Product Detail Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/product_image"
+                android:layout_width="match_parent"
+                android:layout_height="208dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/color_medium_gray" />
+
+            <!-- Sub Images -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/imgBlog_CategoryNameInfo"
+                    android:layout_width="59dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/color_medium_gray" />
+
+                <ImageView
+                    android:id="@+id/imgBlog_CategoryNameTips"
+                    android:layout_width="64dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/color_medium_gray" />
+
+                <ImageView
+                    android:id="@+id/imgEachCatalog_Back"
+                    android:layout_width="60dp"
+                    android:layout_height="56dp"
+                    android:background="@color/color_medium_gray" />
+            </LinearLayout>
+
+            <!-- Product Name -->
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/title_product_name"
+                android:textColor="@color/color_espresso"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Product Brand -->
+            <TextView
+                android:id="@+id/product_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/title_product_brand"
+                android:textColor="@color/color_medium_gray"
+                android:textSize="16sp" />
+
+            <!-- Rating and Stock Status -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <RatingBar
+                    android:id="@+id/product_rating"
+                    style="?attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressTint="@color/color_ochre"
+                    android:rating="4.8"
+                    android:stepSize="0.1" />
+
+                <TextView
+                    android:id="@+id/stock_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_product_status"
+                    android:textColor="@color/color_espresso"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Product Price -->
+            <TextView
+                android:id="@+id/product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/title_product_price"
+                android:textColor="@color/color_terracotta"
+                android:textSize="24sp" />
+
+            <!-- Product Specifications (TableLayout) -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:stretchColumns="1">
+
+                <!-- Alcohol Strength -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="@string/title_product_alcohol"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/alcohol_strength"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19% ABV"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <!-- Net Content -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="@string/title_product_net"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/net_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="530ml"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <!-- Wine Type -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="@string/title_product_type"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/wine_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Infused Wine"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <!-- Ingredients -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="@string/title_product_ingredients"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ingredients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hoang Su Phi Blood Plum, Rice Wine"
+                        android:textColor="@color/color_espresso"
+                        android:textSize="16sp" />
+                </TableRow>
+            </TableLayout>
+
+            <!-- Product Description -->
+            <TextView
+                android:id="@+id/product_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/title_product_description"
+                android:textColor="@color/color_espresso"
+                android:textSize="16sp" />
+
+            <!-- Related Products Title -->
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/title_related_products"
+                android:textAlignment="center"
+                android:textColor="@color/color_terracotta"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- RecyclerView for Related Products (Horizontal Scroll) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="4dp" />
+
+            <!-- Add to Cart and Compare Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_to_cart_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/color_golden_yellow"
+                    app:cornerRadius="5dp"
+                    android:text="@string/title_add_to_cart"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/compare_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/color_golden_yellow"
+                    app:cornerRadius="5dp"
+                    android:text="@string/title_compare_button"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

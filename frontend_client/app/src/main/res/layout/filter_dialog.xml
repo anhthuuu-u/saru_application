@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_golden_yellow"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title Filter Product Dialog -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/filter_dialog_padding"
+                android:layout_marginBottom="16dp"
+                android:text="@string/title_filter_product_dialog"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <!-- Category -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/filter_product_dialog_category"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/dropdown_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/text_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/filter_product_dialog_category"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <!-- Price Range -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_dialog_price_range"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/edit_price_min"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Min"
+                android:inputType="number"
+                android:background="@drawable/rounded_border_filter_dialog"
+                android:padding="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_price_max"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Max"
+                android:inputType="number"
+                android:background="@drawable/rounded_border_filter_dialog"
+                android:padding="8dp"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Sort By -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_product_dialog_sort"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/dropdown_sort_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/text_sort_by"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_product_dialog_sort"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <!-- Brand -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_dialog_brand"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/dropdown_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/text_brand"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_filter_product_dialog_brand"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <!-- Volume -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_dialog_volume"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/dropdown_volume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/text_volume"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_filter_product_dialog_volume"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <!-- Wine Type -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_dialog_wine_type"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/dropdown_wine_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_filter_dialog"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/text_wine_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_filter_product_dialog_wine_type"
+                android:textColor="@color/color_dark_brown"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/color_dark_brown" />
+        </LinearLayout>
+
+        <!-- Others -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_filter_product_dialog_others"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/checkbox_best_selling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_best_selling_checkbox"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/checkbox_on_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/title_on_sale_checkbox"
+            android:textColor="@color/color_creamy_white"
+            android:textSize="18sp" />
+
+        <!-- Reset Filter and Apply Filter -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_border"
+            android:padding="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_apply_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_dark_brown"
+                android:paddingVertical="8dp"
+                android:text="@string/title_filter_product_apply"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_reset_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:text="@string/title_filter_product_reset"
+                android:textColor="@color/color_creamy_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

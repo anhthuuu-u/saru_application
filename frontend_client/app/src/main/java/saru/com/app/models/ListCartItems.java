@@ -1,0 +1,81 @@
+package saru.com.app.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListCartItems {
+    private List<CartItem> cartItems;
+
+    public ListCartItems() {
+        this.cartItems = new ArrayList<>();
+    }
+
+    // Thêm một CartItem
+    public void addItem(CartItem item) {
+        // Kiểm tra nếu sản phẩm đã tồn tại, tăng quantity
+        for (CartItem existingItem : cartItems) {
+            if (existingItem.getProduct().getProductName().equals(item.getProduct().getProductName())) {
+                existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
+                return;
+            }
+        }
+        cartItems.add(item);
+    }
+
+    // Xóa một CartItem theo index
+    public void removeItem(int index) {
+        if (index >= 0 && index < cartItems.size()) {
+            cartItems.remove(index);
+        }
+    }
+
+    // Cập nhật quantity của một CartItem
+    public void updateQuantity(int index, int newQuantity) {
+        if (index >= 0 && index < cartItems.size() && newQuantity >= 1) {
+            cartItems.get(index).setQuantity(newQuantity);
+        }
+    }
+
+    // Chọn tất cả hoặc bỏ chọn tất cả
+    public void setAllSelected(boolean selected) {
+        for (CartItem item : cartItems) {
+            item.setSelected(selected);
+        }
+    }
+
+    // Lấy danh sách CartItem
+    public List<CartItem> getCartItems() {
+        return new ArrayList<>(cartItems);
+    }
+
+    // Tính tổng giá của các mục được chọn
+    public double calculateTotalPrice() {
+        double total = 0;
+        for (CartItem item : cartItems) {
+            if (item.isSelected()) {
+                total += parsePrice(item.getProduct().getProductPrice()) * item.getQuantity();
+            }
+        }
+        return total;
+    }
+
+    // Chuyển chuỗi giá thành double
+    private double parsePrice(String price) {
+        String cleanedPrice = price.replace("đ", "").replace(".", "").trim();
+        try {
+            return Double.parseDouble(cleanedPrice);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    // Lấy số lượng mục trong giỏ hàng
+    public int getItemCount() {
+        return cartItems.size();
+    }
+
+    // Xóa toàn bộ giỏ hàng
+    public void clear() {
+        cartItems.clear();
+    }
+}

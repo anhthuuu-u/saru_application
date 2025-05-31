@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2E8DA">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:id="@+id/ic_back_arrow"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@mipmap/ic_back_arrow" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/language_selection_title"
+                    android:textColor="#B16628"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Language List -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_language_selector"
+                android:paddingHorizontal="16dp">
+
+                <!-- English -->
+                <LinearLayout
+                    android:id="@+id/opt_english"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/txt_english"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/language_english"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/english_check"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/ic_check"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <!-- Vietnamese -->
+                <LinearLayout
+                    android:id="@+id/opt_vietnam"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/txt_vietnam"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/language_vietnamese"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/vietnamese_check"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/ic_check"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/btn_submit_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="#FBBF24"
+                android:fontFamily="@font/inter_bold"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="12dp"
+                android:text="@string/submit_language_button"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

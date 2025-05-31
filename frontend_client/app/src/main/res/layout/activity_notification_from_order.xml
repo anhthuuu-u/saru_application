@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2E8DA"
+    android:orientation="vertical"
+    tools:context=".Notification_FromOrderActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgEachCatalog_Back"
+            android:layout_width="21dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="455dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_extrabold"
+            android:text="@string/title_notification_notification"
+            android:textAlignment="center"
+            android:textColor="#B16527"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F8F5F5">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="104dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/title_notification_system"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txtBlog_CategoryNameInfo"
+                    android:layout_width="196dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/title_notification_order"
+                    android:textColor="#F8BC3B"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtBlogList_SeemoreInfo"
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter"
+                android:text="@string/title_notification_discount" />
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="#F8BC3B"
+            android:fontFamily="@font/inter"
+            android:text="@string/title_notification_selectall"
+            android:textColor="#F8BC3B"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtAboutus_StoreLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter"
+            android:text="@string/title_notification_deleteall"
+            android:textColor="#F8BC3B"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="111dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#FDFBFB"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#F8BC3B"
+                android:fontFamily="@font/inter"
+                android:text="@string/title_notification_changepass"
+                android:textColor="#F8BC3B"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgBlog_CategoryNameInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/ic_trash_bin" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtBlog_CategoryNameTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/title_notification_message"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="@string/title_notification_time" />
+
+    </LinearLayout>
+
+</LinearLayout>

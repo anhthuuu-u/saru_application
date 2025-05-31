@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_creamy_white"
+    tools:context=".ProfileActivity">
+
+    <!-- ScrollView chứa nội dung -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- Header: Tài khoản -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@mipmap/ic_back_arrow"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/account_title"
+                    android:textAlignment="center"
+                    android:textColor="#B16628"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <!-- Avatar + Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@mipmap/img_circle"
+                    android:layout_marginEnd="12dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_user_name"
+                        android:textColor="#B16628"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_user_email"
+                        android:textColor="#B16628"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Section: My Orders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_section_top_rounded"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginBottom="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <!-- My Orders title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingVertical="4dp"
+                        android:text="@string/profile_my_orders"
+                        android:textColor="#FBBC05"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_view_all_orders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:paddingVertical="4dp"
+                        android:text="@string/profile_view_all_orders"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <!-- Horizontal List -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:weightSum="4">
+
+                    <!-- Item 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@string/profile_pending_confirm"
+                            android:src="@mipmap/img_pending_confirm_order" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_pending_confirm"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@string/profile_pending_payment"
+                            android:src="@mipmap/img_unpaid" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_pending_payment"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 3 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@string/profile_shipping"
+                            android:src="@mipmap/img_on_delivery" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_shipping"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 4 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@string/profile_return_exchange"
+                            android:src="@mipmap/img_exchange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_return_exchange"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Section: Account Information -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_section_top_rounded"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginBottom="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_account_info"
+                    android:textColor="#FBBC05"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingVertical="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:gravity="center"
+                    android:paddingVertical="8dp">
+
+                    <!-- Item 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/img_profile"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@mipmap/img_personal"
+                            android:contentDescription="@string/profile_personal_info" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_personal_info"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 4 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@mipmap/img_my_voucher"
+                            android:contentDescription="@string/profile_my_voucher" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:paddingTop="4dp"
+                            android:text="@string/profile_my_voucher"
+                            android:textColor="#FBBC05"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Section: Support -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_section_top_rounded"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginBottom="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="4dp"
+                    android:text="@string/profile_support"
+                    android:textColor="#FBBC05"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Item 1: About Us -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/img_aboutus"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/profile_about_us"
+                        android:src="@mipmap/ic_about_us"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:id="@+id/aboutus_page"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_about_us"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/nexttoaboutus"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
+
+                <!-- Item 2: Support Center -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_support"
+                        android:contentDescription="@string/profile_customer_support_center"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:id="@+id/tv_customer_support_center"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_customer_support_center"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        android:layout_marginStart="8dp"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
+
+                <!-- Item 4: Introduce Saru -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/imgforAboutSaru"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/profile_introduce_saru"
+                        android:src="@mipmap/ic_introduce_saru"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:id="@+id/txt_backtoaboutSaru"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_introduce_saru"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/img_backtoaboutSaru"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
+
+                <!-- Item 5: Notifications -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_noti"
+                        android:contentDescription="@string/profile_notifications"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_notifications"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        android:layout_marginStart="8dp"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
+
+                <!-- Item 6: Settings -->
+                <LinearLayout
+                    android:id="@+id/settings_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_setting"
+                        android:contentDescription="@string/profile_settings"
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_settings"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        android:layout_marginStart="8dp"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
+
+                <!-- Settings Content (Expandable) -->
+                <LinearLayout
+                    android:id="@+id/settings_expandable_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="16dp">
+
+                    <!-- Language -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_language_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/language"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/language_vietnamese"
+                            android:textColor="#999999"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- Notification toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/setting_allow_notifications"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switch_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="#3C2C26"
+                            android:trackTint="#DADADA" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <!-- BottomNavigationView -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/CustomBottomNavStyle"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_bottom_nav" />
+</androidx.constraintlayout.widget.ConstraintLayout>
