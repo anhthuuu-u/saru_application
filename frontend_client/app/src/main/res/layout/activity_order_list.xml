@@ -15,7 +15,7 @@
 
         <ImageView
             android:onClick="do_back"
-            android:id="@+id/imgBack"
+            android:id="@+id/ic_back_arrow"
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_back_arrow"

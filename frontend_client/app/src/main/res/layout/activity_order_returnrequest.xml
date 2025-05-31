@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F2E8DA"
     android:padding="12dp">
 
@@ -18,11 +19,12 @@
             android:gravity="center_vertical">
 
             <ImageView
+                android:onClick="do_back"
                 android:id="@+id/ic_back_arrow"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
                 android:src="@mipmap/ic_back_arrow"
-                android:layout_marginEnd="8dp" />
+                app:tint="@color/color_dark_brown" />
 
             <TextView
                 android:layout_width="339dp"
