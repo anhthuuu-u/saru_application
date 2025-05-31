@@ -32,10 +32,11 @@
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@mipmap/ic_back_arrow"
-                android:layout_marginEnd="8dp" />
+                android:id="@+id/imgBack"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/color_dark_brown" />
 
             <TextView
                 android:layout_width="0dp"
@@ -411,38 +412,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/profile_customer_support_center"
-                    android:textColor="#FBBC05"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@mipmap/ic_forward_arrow"
-                    android:layout_marginStart="8dp"
-                    app:tint="#FBBC05" />
-            </LinearLayout>
-
-            <!-- Item 4: Introduce Saru -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="8dp">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@mipmap/ic_introduce_saru"
-                    android:contentDescription="@string/profile_introduce_saru"
-                    android:layout_marginEnd="12dp"
-                    app:tint="#FBBC05" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/profile_introduce_saru"
                     android:textColor="#FBBC05"
                     android:textSize="14sp" />
 
