@@ -14,8 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ProfileActivity extends BaseActivity {
     ImageView img_aboutus;
-    ImageView nexttoaboutus,imgforAboutSaru,img_backtoaboutSaru;
-    TextView aboutus_page,txt_backtoaboutSaru;
+    ImageView nexttoaboutus,imgforAboutSaru,img_backtoaboutSaru,img_directNotifipage,img_directtoNotification;
+    TextView aboutus_page,txt_backtoaboutSaru,txt_directtonotificationpage;
     @Override
     protected int getSelectedMenuItemId() {
         return R.id.menu_account;
@@ -90,6 +90,10 @@ public class ProfileActivity extends BaseActivity {
         imgforAboutSaru=findViewById(R.id.imgforAboutSaru);
         img_backtoaboutSaru=findViewById(R.id.img_backtoaboutSaru);
         txt_backtoaboutSaru=findViewById(R.id.txt_backtoaboutSaru);
+
+        txt_directtonotificationpage=findViewById(R.id.txt_directtonotificationpage);
+        img_directNotifipage=findViewById(R.id.img_directNotifipage);
+        img_directtoNotification=findViewById(R.id.img_directtoNotification);
     }
     private void addEvents() {
 
@@ -133,6 +137,26 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
+        //chuyển hướng qua trang notification
+
+        txt_directtonotificationpage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNotification_Page();
+            }
+        });
+        img_directNotifipage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNotification_Page();
+            }
+        });
+        img_directtoNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNotification_Page();
+            }
+        });
     }
 
     void openAboutUs_SaruWine()
@@ -143,6 +167,12 @@ public class ProfileActivity extends BaseActivity {
     void openAboutUs_StoreLocation()
     {
         Intent intent=new Intent(ProfileActivity.this, Aboutus_locationActivity.class);
+        startActivity(intent);
+    }
+
+    void openNotification_Page()
+    {
+        Intent intent=new Intent(ProfileActivity.this, Notification_FromSettingActivity.class);
         startActivity(intent);
     }
 }

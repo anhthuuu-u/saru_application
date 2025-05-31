@@ -469,14 +469,16 @@
                     android:paddingVertical="8dp">
 
                     <ImageView
+                        android:id="@+id/img_directNotifipage"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        android:src="@mipmap/ic_noti"
-                        android:contentDescription="@string/profile_notifications"
                         android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/profile_notifications"
+                        android:src="@mipmap/ic_noti"
                         app:tint="#FBBC05" />
 
                     <TextView
+                        android:id="@+id/txt_directtonotificationpage"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -485,10 +487,11 @@
                         android:textSize="14sp" />
 
                     <ImageView
+                        android:id="@+id/img_directtoNotification"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        android:src="@mipmap/ic_forward_arrow"
                         android:layout_marginStart="8dp"
+                        android:src="@mipmap/ic_forward_arrow"
                         app:tint="#FBBC05" />
                 </LinearLayout>
 

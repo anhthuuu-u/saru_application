@@ -1,6 +1,7 @@
 package saru.com.app;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,24 +13,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Notification_FromOrderActivity extends AppCompatActivity {
+public class Notification_FromDiscountActivity extends AppCompatActivity {
     TextView txtNotification_system;
     TextView txtNotification_order;
     TextView txtNotification_discount;
     ImageView imgNotification_Back;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_notification_from_order);
-        addView();
-        addEvents();
+        setContentView(R.layout.activity_notification_from_discount);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        addView();
+        addEvents();
     }
     private void addView()
     {
@@ -37,26 +37,23 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
         txtNotification_discount=findViewById(R.id.txtNotification_discount);
         txtNotification_system=findViewById(R.id.txtNotification_system);
         imgNotification_Back=findViewById(R.id.imgNotification_Back);
-
-
     }
 
     void switchSystemTab()
     {
-        Intent intent=new Intent(Notification_FromOrderActivity.this, Notification_FromSettingActivity.class);
+        Intent intent=new Intent(Notification_FromDiscountActivity.this, Notification_FromSettingActivity.class);
         startActivity(intent);
     }
-    void switchDiscountTab()
+    void switchOrderTab()
     {
-        Intent intent=new Intent(Notification_FromOrderActivity.this, Notification_FromDiscountActivity.class);
+        Intent intent=new Intent(Notification_FromDiscountActivity.this, Notification_FromOrderActivity.class);
         startActivity(intent);
     }
     void switchProfileActivity()
     {
-        Intent intent=new Intent(Notification_FromOrderActivity.this, ProfileActivity.class);
+        Intent intent=new Intent(Notification_FromDiscountActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
-
 
     private void addEvents()
     {
@@ -66,10 +63,10 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
                 switchSystemTab();
             }
         });
-        txtNotification_discount.setOnClickListener(new View.OnClickListener() {
+        txtNotification_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchDiscountTab();
+                switchOrderTab();
             }
         });
         imgNotification_Back.setOnClickListener(new View.OnClickListener() {
