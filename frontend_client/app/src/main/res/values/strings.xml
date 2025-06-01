@@ -14,7 +14,7 @@
     <string name="title_product_detail">PRODUCT DETAILS\n</string>
     <string name="title_compare_button">Compare</string>
     <string name="title_product_description">Whether consumed straight or mixed, Peach Plum Wine is a versatile and satisfying drink for both beginners and experienced drinkers.</string>
-    <string name="title_related_products">Related Products</string>
+    <string name="title_related_products">RELATED PRODUCTS</string>
     <string name="title_DeliveryInformation_product_brand">Mam Distillery</string>
     <string name="title_product_status">In stock</string>
     <string name="title_product_alcohol">Alcohol Strenght</string>
@@ -42,18 +42,18 @@
     <string name="title_product_cart_price">Price: 400.000đ</string>
     <string name="title_product_cart_total_price">Total price: 400.000đ</string>
     <string name="title_product_cart_select_all">Select all</string>
-    <string name="title_product_cart_payment">Payment</string>
+    <string name="title_product_cart_payment">Make Payment</string>
     <string name="title_product_comparison_name">Peach Wine</string>
     <string name="Homepage_TayBac_Wine">Tay Bac Wine</string>
     <string name="Homepage_Accessories">Accessories</string>
     <string name="Homepage_Wine_Gift">Set wine gift</string>
     <string name="Homepage_CS">Customer Service</string>
     <string name="Homepage_Orders">Orders</string>
-    <string name="Homepage_supersale_section">Super Sale</string>
+    <string name="Homepage_supersale_section">SUPER SALE</string>
     <string name="Title_view_all">View all</string>
-    <string name="Homepage_BestSeller_section">Best Seller</string>
-    <string name="Homepage_Customer_reviews">Customer Reviews</string>
-    <string name="title_voucher_management">Vouchers</string>
+    <string name="Homepage_BestSeller_section">BEST SELLER</string>
+    <string name="Homepage_Customer_reviews">CUSTOMER REVIEWS</string>
+    <string name="title_voucher_management">VOUCHERS MANAGEMENT</string>
     <string name="Voucher_save_btn">Save</string>
     <string name="Voucher_description">Free ship for new customer</string>
     <string name="Voucher_value">Discount 200</string>
@@ -511,7 +511,7 @@
     <string name="hint_confirm_password">Enter your password again</string>
     <string name="back">Back</string>
     <string name="logo">Saru Logo</string>
-    <string name="title_homepage_foryou">For you</string>
+    <string name="title_homepage_foryou">FOR YOU</string>
     <string name="title_product_category">Ruou Tay Bac</string>
     <string name="title_customer_name_1">Customer Name</string>
     <string name="title_purchased_product">Purchased Product</string>
@@ -524,6 +524,63 @@
     <string name="faq_load_error">Failed to load FAQs. Please try again.</string>
     <string name="title_best_selling_checkbox">Best Selling</string>
     <string name="title_on_sale_checkbox">On Sale</string>
+
+    <!-- update 31.5 -->
+    <string name="product_cart_unit_price_label">Price:</string>
+    <string name="product_cart_total_label">Total:</string>
+    <string name="product_cart_currency">đ</string>
+    <string name="product_cart_total_amount_label">Total Amount:</string>
+    <string name="product_cart_payment_toast_label">Payment:</string>
+    <string name="product_cart_quantity">1</string>
+    <string name="minus_button_text">-</string>
+    <string name="plus_button_text">+</string>
+    <string name="delete_all_text">Delete All</string>
+    <string name="delete_all_noti">Delete sucessfully!</string>
+    <string name="back_to_products_button_text">Go Shopping</string>
+
+    <string name="voucher_item_title">Title of voucher</string>
+    <string name="voucher_item_description">Description of the voucher</string>
+    <string name="voucher_item_date">Expired date of the voucher</string>
+    <string name="voucher_item_ID">VoucherID</string>
+    <string name="voucher_item_expired_date">Expired Date:</string>
+    <string name="homepage_menu_welcome">Welcome</string>
+    <string name="homepage_menu_customer_name">John</string>
+    <string name="title_homepage">Homepage</string>
+    <string name="homepage_menu_product">Product</string>
+    <string name="homepage_menu_cart">Cart</string>
+    <string name="homepage_menu_blog">Blogs</string>
+    <string name="homepage_menu_faqs">FAQs</string>
+    <string name="homepage_menu_about_us">About Us</string>
+    <string name="homepage_menu_notification">Notification</string>
+
+    <string name="title_product_details_button">Product details</string>
+    <string name="title_customer_reviews_button">Customer reviews</string>
+
+    <string name="empty_cart_message">No product in cart!</string>
+    <string name="shop_now_button_text">Back to products page</string>
+
+    <!-- Chuỗi mới cho AlertDialog -->
+    <string name="dialog_delete_all_title">Delete selected products</string>
+    <string name="dialog_delete_all_message">Do you want to delete all selected products?</string>
+    <string name="dialog_delete_single_title">Delete product</string>
+    <string name="dialog_delete_single_message">Do you want to remove %1$s product?</string>
+    <string name="dialog_confirm_delete">Delete</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="toast_no_items_selected">Choose at least one item!</string>
+
+    <!-- Chuỗi mới cho Product Comparison -->
+    <string name="empty_comparison_message">No product in comparison!</string>
+    <string name="dialog_delete_all_comparison_title">Delete all products in comparison</string>
+    <string name="dialog_delete_all_comparison_message">Do you want to delete all products in comparison?</string>
+    <string name="dialog_delete_single_comparison_message">Do you want to remove %1$s product?</string>
+    <string name="delete_comparison_noti">Delete sucessfully!</string>
+    <string name="product_comparison_action">Action</string>
+
+    <string name="dialog_success_title">Success</string>
+    <string name="dialog_add_to_cart_success">Added to cart successfully!</string>
+    <string name="dialog_compare_success">Added to compare successfully!</string>
+    <string name="dialog_ok_button">OK</string>
+
 
 </resources>
 

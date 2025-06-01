@@ -34,6 +34,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
     public void onBindViewHolder(@NonNull VoucherViewHolder holder, int position) {
         Voucher voucher = voucherList.get(position);
         holder.voucherTitle.setText(voucher.getVoucherCode());
+        holder.voucherID.setText(voucher.getVoucherID());
 
         // Cắt description thành khoảng 50 ký tự
         String description = voucher.getDescription();
@@ -42,7 +43,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
         }
         holder.voucherDescription.setText(description);
 
-        holder.voucherExpiry.setText("Sắp hết hạn: " + voucher.getExpiryDate());
+        holder.voucherExpiry.setText("Expired Date: " + voucher.getExpiryDate());
 
         // Xử lý nút "Lưu"
         holder.voucherSaveButton.setOnClickListener(v -> {
@@ -63,6 +64,8 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
         TextView voucherExpiry;
         Button voucherSaveButton;
 
+        TextView voucherID;
+
         public VoucherViewHolder(@NonNull View itemView) {
             super(itemView);
             voucherIcon = itemView.findViewById(R.id.voucher_icon);
@@ -70,6 +73,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
             voucherDescription = itemView.findViewById(R.id.voucher_description);
             voucherExpiry = itemView.findViewById(R.id.voucher_expiry);
             voucherSaveButton = itemView.findViewById(R.id.voucher_save_button);
+            voucherID=itemView.findViewById(R.id.txtVoucherID);
         }
     }
 }

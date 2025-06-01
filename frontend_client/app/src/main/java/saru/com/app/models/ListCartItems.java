@@ -12,9 +12,12 @@ public class ListCartItems {
 
     // Thêm một CartItem
     public void addItem(CartItem item) {
+        if (item == null) {
+            return;
+        }
         // Kiểm tra nếu sản phẩm đã tồn tại, tăng quantity
         for (CartItem existingItem : cartItems) {
-            if (existingItem.getProduct().getProductName().equals(item.getProduct().getProductName())) {
+            if (existingItem.getName().equals(item.getName())) {
                 existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
                 return;
             }
@@ -53,20 +56,10 @@ public class ListCartItems {
         double total = 0;
         for (CartItem item : cartItems) {
             if (item.isSelected()) {
-                total += parsePrice(item.getProduct().getProductPrice()) * item.getQuantity();
+                total += item.getTotalPrice();
             }
         }
         return total;
-    }
-
-    // Chuyển chuỗi giá thành double
-    private double parsePrice(String price) {
-        String cleanedPrice = price.replace("đ", "").replace(".", "").trim();
-        try {
-            return Double.parseDouble(cleanedPrice);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
     }
 
     // Lấy số lượng mục trong giỏ hàng

@@ -32,6 +32,7 @@
     <string name="title_product_type">Loại rượu</string>
     <string name="title_product_ingredients">Thành phần</string>
     <string name="title_compare">So sánh</string>
+    <string name="product_comparison_action">Hành động</string>
     <string name="title_filter_product_dialog">Lọc sản phẩm</string>
     <string name="filter_product_dialog_category">Danh mục</string>
     <string name="title_filter_product_dialog_price_range">Khoảng giá</string>
@@ -526,6 +527,58 @@
     <!-- ctu update 29.5 -->
     <string name="title_best_selling_checkbox">Bán chạy</string>
     <string name="title_on_sale_checkbox">Đang khuyến mãi</string>
+
+    <string name="product_cart_unit_price_label">Giá:</string>
+    <string name="product_cart_total_label">Tổng cộng:</string>
+    <string name="product_cart_currency">đ</string>
+    <string name="product_cart_total_amount_label">Tổng số tiền:</string>
+    <string name="product_cart_payment_toast_label">Thanh toán:</string>
+    <string name="product_cart_quantity">1</string>
+    <string name="minus_button_text">-</string>
+    <string name="plus_button_text">+</string>
+    <string name="delete_all_text">Xóa tất cả</string>
+    <string name="delete_all_noti">Xóa thành công!</string>
+    <string name="back_to_products_button_text">Tiếp tục mua sắm</string>
+
+    <string name="voucher_item_title">Tiêu đề voucher</string>
+    <string name="voucher_item_description">Mô tả voucher</string>
+    <string name="voucher_item_date">Ngày hết hạn voucher</string>
+    <string name="voucher_item_ID">Mã voucher</string>
+    <string name="voucher_item_expired_date">Ngày hết hạn:</string>
+    <string name="homepage_menu_welcome">Chào mừng</string>
+    <string name="homepage_menu_customer_name">John</string>
+    <string name="title_homepage">Trang chủ</string>
+    <string name="homepage_menu_product">Sản phẩm</string>
+    <string name="homepage_menu_cart">Giỏ hàng</string>
+    <string name="homepage_menu_blog">Blog</string>
+    <string name="homepage_menu_faqs">Câu hỏi thường gặp</string>
+    <string name="homepage_menu_about_us">Về chúng tôi</string>
+    <string name="homepage_menu_notification">Thông báo</string>
+
+    <string name="title_product_details_button">Chi tiết sản phẩm</string>
+    <string name="title_customer_reviews_button">Đánh giá khách hàng</string>
+
+    <string name="empty_cart_message">Không có sản phẩm trong giỏ hàng!</string>
+    <string name="shop_now_button_text">Quay lại trang sản phẩm</string>
+
+    <string name="dialog_delete_all_title">Xóa các sản phẩm được chọn</string>
+    <string name="dialog_delete_all_message">Bạn có chắc muốn xóa %1$d sản phẩm đã chọn khỏi giỏ hàng?</string>
+    <string name="dialog_delete_single_title">Xóa sản phẩm</string>
+    <string name="dialog_delete_single_message">Bạn có chắc muốn xóa %1$s khỏi giỏ hàng?</string>
+    <string name="dialog_confirm_delete">Xóa</string>
+    <string name="dialog_cancel">Hủy</string>
+    <string name="toast_no_items_selected">Vui lòng chọn ít nhất một sản phẩm để xóa!</string>
+
+    <string name="empty_comparison_message">Danh sách so sánh của bạn hiện đang trống!</string>
+    <string name="dialog_delete_all_comparison_title">Xóa tất cả sản phẩm so sánh</string>
+    <string name="dialog_delete_all_comparison_message">Bạn có chắc muốn xóa tất cả %1$d sản phẩm khỏi danh sách so sánh?</string>
+    <string name="dialog_delete_single_comparison_message">Bạn có chắc muốn xóa %1$s khỏi danh sách so sánh?</string>
+    <string name="delete_comparison_noti">Đã xóa các sản phẩm so sánh!</string>
+
+    <string name="dialog_success_title">Thành công</string>
+    <string name="dialog_add_to_cart_success">Thêm vào giỏ hàng thành công!</string>
+    <string name="dialog_compare_success">Thêm vào so sánh thành công!</string>
+    <string name="dialog_ok_button">OK</string>
 </resources>
 
 

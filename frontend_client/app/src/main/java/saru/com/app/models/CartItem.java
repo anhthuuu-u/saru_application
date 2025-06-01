@@ -1,24 +1,25 @@
 package saru.com.app.models;
 
-import java.io.Serializable;
-
-public class CartItem implements Serializable {
-    private Product product;
+public class CartItem {
+    private String name;
+    private double price;
     private int quantity;
     private boolean selected;
 
-    public CartItem(Product product, int quantity) {
-        this.product = product;
+    public CartItem(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
         this.quantity = quantity;
         this.selected = false;
+
     }
 
-    public Product getProduct() {
-        return product;
+    public String getName() {
+        return name;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public double getPrice() {
+        return price;
     }
 
     public int getQuantity() {
@@ -29,11 +30,16 @@ public class CartItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public double getTotalPrice() {
+        return price * quantity;
     }
 
     public void setSelected(boolean selected) {
-        this.selected = selected;
+        this.selected = selected; // Lưu trạng thái chọn
     }
+
+    public boolean isSelected() {
+        return selected; // Trả về trạng thái chọn
+    }
+
 }

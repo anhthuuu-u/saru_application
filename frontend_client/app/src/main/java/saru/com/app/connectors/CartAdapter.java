@@ -1,27 +1,24 @@
 package saru.com.app.connectors;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
-
+import java.text.DecimalFormat;
 import saru.com.app.R;
 import saru.com.app.models.CartItem;
-import saru.com.app.models.Product;
+import saru.com.app.models.ListCartItems;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
-    private List<CartItem> cartItems;
+    private ListCartItems listCartItems;
     private Context context;
     private OnCartItemChangeListener listener;
 
@@ -29,9 +26,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         void onItemChanged();
     }
 
-    public CartAdapter(Context context, List<CartItem> cartItems, OnCartItemChangeListener listener) {
+    public CartAdapter(Context context, ListCartItems listCartItems, OnCartItemChangeListener listener) {
         this.context = context;
-        this.cartItems = cartItems;
+        this.listCartItems = listCartItems;
         this.listener = listener;
     }
 
@@ -45,99 +42,114 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CartItem cartItem = cartItems.get(position);
-        Product product = cartItem.getProduct();
+        CartItem cartItem = listCartItems.getCartItems().get(position);
+        DecimalFormat formatter = new DecimalFormat("#,###");
 
-        // Bind data to views
-        holder.productName.setText(product.getProductName());
-        holder.productPrice.setText("Đơn giá: " + product.getProductPrice());
-        double total = parsePrice(product.getProductPrice()) * cartItem.getQuantity();
-        holder.temporaryTotal.setText("Tổng: " + String.format("%.0f", total) + "đ");
+        Log.d("CartAdapter", "Binding item: " + cartItem.getName() +
+                ", Position: " + position +
+                ", Quantity: " + cartItem.getQuantity() +
+                ", Selected: " + cartItem.isSelected() +
+                ", Price: " + cartItem.getPrice());
+
+        holder.productName.setText(cartItem.getName());
+        holder.productPrice.setText(context.getString(R.string.product_cart_unit_price_label) + " " +
+                formatter.format(cartItem.getPrice()) +
+                context.getString(R.string.product_cart_currency));
+        holder.productTotal.setText(context.getString(R.string.product_cart_total_label) + " " +
+                formatter.format(cartItem.getTotalPrice()) +
+                context.getString(R.string.product_cart_currency));
+        holder.productQuantity.setText(String.valueOf(cartItem.getQuantity()));
         holder.itemCheckbox.setChecked(cartItem.isSelected());
-        holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
 
-        // Quantity selector listeners
+        holder.minusButton.setText(context.getString(R.string.minus_button_text));
         holder.minusButton.setOnClickListener(v -> {
             int qty = cartItem.getQuantity();
             if (qty > 1) {
-                cartItem.setQuantity(qty - 1);
-                holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-                double newTotal = parsePrice(product.getProductPrice()) * cartItem.getQuantity();
-                holder.temporaryTotal.setText("Tổng: " + String.format("%.0f", newTotal) + "đ");
-                if (listener != null) {
-                    listener.onItemChanged();
-                }
+                listCartItems.updateQuantity(position, qty - 1);
+                holder.productQuantity.setText(String.valueOf(cartItem.getQuantity()));
+                holder.productTotal.setText(context.getString(R.string.product_cart_total_label) + " " +
+                        formatter.format(cartItem.getTotalPrice()) +
+                        context.getString(R.string.product_cart_currency));
+                notifyListener();
+                Log.d("CartAdapter", "Decreased quantity for " + cartItem.getName() +
+                        " to " + cartItem.getQuantity() + ", New total: " + cartItem.getTotalPrice());
             }
         });
 
+        holder.plusButton.setText(context.getString(R.string.plus_button_text));
         holder.plusButton.setOnClickListener(v -> {
             int qty = cartItem.getQuantity();
-            cartItem.setQuantity(qty + 1);
-            holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-            double newTotal = parsePrice(product.getProductPrice()) * cartItem.getQuantity();
-            holder.temporaryTotal.setText("Tổng: " + String.format("%.0f", newTotal) + "đ");
-            if (listener != null) {
-                listener.onItemChanged();
-            }
+            listCartItems.updateQuantity(position, qty + 1);
+            holder.productQuantity.setText(String.valueOf(cartItem.getQuantity()));
+            holder.productTotal.setText(context.getString(R.string.product_cart_total_label) + " " +
+                    formatter.format(cartItem.getTotalPrice()) +
+                    context.getString(R.string.product_cart_currency));
+            notifyListener();
+            Log.d("CartAdapter", "Increased quantity for " + cartItem.getName() +
+                    " to " + cartItem.getQuantity() + ", New total: " + cartItem.getTotalPrice());
         });
 
-        // Checkbox listener
         holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             cartItem.setSelected(isChecked);
-            if (listener != null) {
-                listener.onItemChanged();
-            }
+            notifyListener();
+            Log.d("CartAdapter", "Checkbox changed for " + cartItem.getName() +
+                    ", Selected: " + isChecked);
         });
 
-        // Delete button listener
         holder.deleteButton.setOnClickListener(v -> {
-            cartItems.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartItems.size());
-            if (listener != null) {
-                listener.onItemChanged();
+            int positionToRemove = holder.getAdapterPosition();
+            if (positionToRemove != RecyclerView.NO_POSITION) {
+                CartItem itemToDelete = listCartItems.getCartItems().get(positionToRemove);
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.dialog_delete_single_title))
+                        .setMessage(context.getString(R.string.dialog_delete_single_message, itemToDelete.getName()))
+                        .setPositiveButton(context.getString(R.string.dialog_confirm_delete), (dialog, which) -> {
+                            Log.d("CartAdapter", "Deleting item: " + itemToDelete.getName() +
+                                    ", Position: " + positionToRemove);
+                            listCartItems.removeItem(positionToRemove);
+                            notifyItemRemoved(positionToRemove);
+                            notifyItemRangeChanged(positionToRemove, listCartItems.getItemCount());
+                            notifyListener();
+                        })
+                        .setNegativeButton(context.getString(R.string.dialog_cancel), null)
+                        .show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return cartItems.size();
+        int size = listCartItems != null ? listCartItems.getItemCount() : 0;
+        Log.d("CartAdapter", "Item count: " + size);
+        return size;
     }
 
-    private double parsePrice(String price) {
-        String cleanedPrice = price.replace("đ", "").replace(".", "").trim();
-        try {
-            return Double.parseDouble(cleanedPrice);
-        } catch (NumberFormatException e) {
-            return 0;
+    private void notifyListener() {
+        if (listener != null) {
+            listener.onItemChanged();
         }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox itemCheckbox;
-        ImageView productImage;
         TextView productName;
         TextView productPrice;
-        LinearLayout quantityLayout;
-        TextView temporaryTotal;
-        ImageButton deleteButton;
-        TextView quantityText;
+        TextView productQuantity;
+        TextView productTotal;
         Button minusButton;
         Button plusButton;
+        ImageButton deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemCheckbox = itemView.findViewById(R.id.item_checkbox);
-            productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
             productPrice = itemView.findViewById(R.id.product_price);
-            quantityLayout = itemView.findViewById(R.id.quantity_layout);
-            temporaryTotal = itemView.findViewById(R.id.temporary_total);
-            deleteButton = itemView.findViewById(R.id.delete_button);
-            quantityText = itemView.findViewById(R.id.quantity_text);
+            productQuantity = itemView.findViewById(R.id.product_cart_quantity);
+            productTotal = itemView.findViewById(R.id.temporary_total);
             minusButton = itemView.findViewById(R.id.minus_button);
             plusButton = itemView.findViewById(R.id.plus_button);
+            deleteButton = itemView.findViewById(R.id.delete_button);
         }
     }
 }

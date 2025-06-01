@@ -1,32 +1,44 @@
 package saru.com.app;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
+import saru.com.app.models.CustomerReviews;
 import saru.com.app.models.Product;
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
-import android.graphics.Rect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
+
+    private LinearLayout productDetailsContainer;
+    private RecyclerView recyclerCustomerReviews, recyclerViewProducts;
+    private TextView showProductDetails, showCustomerReviews;
+    private CustomerReviewAdapter customerReviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Tắt EdgeToEdge để kiểm tra, sau đó sẽ xử lý thủ công
-        // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
 
         // Bind views
@@ -43,7 +55,33 @@ public class ProductDetailActivity extends AppCompatActivity {
         ImageButton btnBack = findViewById(R.id.btn_back_arrow);
         Button addToCartButton = findViewById(R.id.add_to_cart_button);
         Button compareButton = findViewById(R.id.compare_button);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_products);
+        recyclerViewProducts = findViewById(R.id.recycler_view_products);
+        productDetailsContainer = findViewById(R.id.product_details_container);
+        recyclerCustomerReviews = findViewById(R.id.recycler_customer_reviews);
+        showProductDetails = findViewById(R.id.show_product_details);
+        showCustomerReviews = findViewById(R.id.show_customer_reviews);
+
+        // Kiểm tra null cho các view quan trọng
+        if (recyclerViewProducts == null) {
+            Log.e("ProductDetailActivity", "recycler_view_products not found in layout!");
+            return;
+        }
+        if (recyclerCustomerReviews == null) {
+            Log.e("ProductDetailActivity", "recycler_customer_reviews not found in layout!");
+            return;
+        }
+        if (productDetailsContainer == null) {
+            Log.e("ProductDetailActivity", "product_details_container not found in layout!");
+            return;
+        }
+        if (showProductDetails == null) {
+            Log.e("ProductDetailActivity", "show_product_details not found in layout!");
+            return;
+        }
+        if (showCustomerReviews == null) {
+            Log.e("ProductDetailActivity", "show_customer_reviews not found in layout!");
+            return;
+        }
 
         // Get product data from Intent
         Intent intent = getIntent();
@@ -51,29 +89,51 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Bind product data
         if (product != null) {
-            productName.setText(product.getProductName());
-            productBrand.setText(product.getProductBrand());
-            productRating.setRating(product.getCustomerRating());
-            stockStatus.setText(product.getStockStatus());
-            productPrice.setText(product.getProductPrice());
-            alcoholStrength.setText(product.getAlcoholStrength());
-            netContent.setText(product.getNetContent());
-            wineType.setText(product.getWineType());
-            ingredients.setText(product.getIngredients());
-            productDescription.setText(product.getProductDescription());
+            if (productName != null) productName.setText(product.getProductName());
+            if (productBrand != null) productBrand.setText(product.getProductBrand());
+            if (productRating != null) productRating.setRating(product.getCustomerRating());
+            if (stockStatus != null) stockStatus.setText(product.getStockStatus());
+            if (productPrice != null) productPrice.setText(product.getProductPrice());
+            if (alcoholStrength != null) alcoholStrength.setText(product.getAlcoholStrength());
+            if (netContent != null) netContent.setText(product.getNetContent());
+            if (wineType != null) wineType.setText(product.getWineType());
+            if (ingredients != null) ingredients.setText(product.getIngredients());
+            if (productDescription != null) productDescription.setText(product.getProductDescription());
         }
 
-        // Set up RecyclerView for Related Products (2 items per row, horizontal scroll)
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(new ProductAdapter());
-
-        // Thêm ItemDecoration để tạo khoảng trống giữa các item
+        // Set up RecyclerView for Related Products (Horizontal scroll)
+        recyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        recyclerViewProducts.setAdapter(new ProductAdapter());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
-        recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
+        recyclerViewProducts.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
+
+        // Set up RecyclerView for Customer Reviews
+        recyclerCustomerReviews.setLayoutManager(new LinearLayoutManager(this));
+        List<CustomerReviews> reviewsList = getSampleReviews();
+        customerReviewAdapter = new CustomerReviewAdapter(reviewsList);
+        recyclerCustomerReviews.setAdapter(customerReviewAdapter);
+
+        // Điều chỉnh chiều cao RecyclerView dựa trên số lượng item
+        adjustRecyclerViewHeight();
+
+        // Căn giữa các item trong RecyclerView
+        recyclerCustomerReviews.addItemDecoration(new CenterItemDecoration());
+
+        // Show Product Details by default
+        showProductDetails();
+
+        // Handle Product Details button click
+        showProductDetails.setOnClickListener(v -> showProductDetails());
+
+        // Handle Customer Reviews button click
+        showCustomerReviews.setOnClickListener(v -> showCustomerReviews());
 
         // Handle back button
-        btnBack.setOnClickListener(v -> finish());
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
+        // Handle Cart button
         ImageButton btnCart = findViewById(R.id.btn_cart);
         if (btnCart != null) {
             btnCart.setOnClickListener(v -> {
@@ -82,26 +142,120 @@ public class ProductDetailActivity extends AppCompatActivity {
             });
         }
 
-        // Handle Add to Cart button (placeholder logic)
-        addToCartButton.setOnClickListener(v -> {
-            // Add to cart logic here
-        });
+        // Handle Add to Cart button
+        if (addToCartButton != null) {
+            addToCartButton.setOnClickListener(v -> {
+                showSuccessDialog(getString(R.string.dialog_add_to_cart_success));
+            });
+        }
 
-        // Handle Compare button (placeholder logic)
-        compareButton.setOnClickListener(v -> {
-            // Compare logic here
-        });
+        // Handle Compare button
+        if (compareButton != null) {
+            compareButton.setOnClickListener(v -> {
+                showSuccessDialog(getString(R.string.dialog_compare_success));
+            });
+        }
 
-        // Xử lý insets để đảm bảo thanh công cụ hiển thị
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Handle window insets
+        View contentView = findViewById(android.R.id.content);
+        if (contentView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
     }
 
-    // Custom ItemDecoration để thêm khoảng trống
-    private static class ItemSpacingDecoration extends ItemDecoration {
+    // Hiển thị popup thông báo thành công
+    private void showSuccessDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_success_title))
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.dialog_ok_button), (dialog, which) -> dialog.dismiss())
+                .setCancelable(true)
+                .show();
+    }
+
+    // Hiển thị chi tiết sản phẩm và ẩn đánh giá khách hàng
+    private void showProductDetails() {
+        productDetailsContainer.setVisibility(View.VISIBLE);
+        recyclerCustomerReviews.setVisibility(View.GONE);
+        showProductDetails.setTextColor(getResources().getColor(R.color.color_golden_yellow));
+        showCustomerReviews.setTextColor(getResources().getColor(R.color.color_medium_gray));
+    }
+
+    // Hiển thị đánh giá khách hàng và ẩn chi tiết sản phẩm
+    private void showCustomerReviews() {
+        productDetailsContainer.setVisibility(View.GONE);
+        recyclerCustomerReviews.setVisibility(View.VISIBLE);
+        showCustomerReviews.setTextColor(getResources().getColor(R.color.color_golden_yellow));
+        showProductDetails.setTextColor(getResources().getColor(R.color.color_medium_gray));
+    }
+
+    // Điều chỉnh chiều cao RecyclerView dựa trên số lượng item
+    private void adjustRecyclerViewHeight() {
+        if (customerReviewAdapter == null || recyclerCustomerReviews == null) return;
+
+        int itemCount = customerReviewAdapter.getItemCount();
+        int maxVisibleItems = 3; // Số item tối đa hiển thị mà không cần cuộn
+
+        // Tạo một view mẫu để đo chiều cao của mỗi item
+        View sampleView = customerReviewAdapter.createViewHolder(recyclerCustomerReviews, 0).itemView;
+        sampleView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int itemHeight = sampleView.getMeasuredHeight();
+
+        // Tính chiều cao của RecyclerView
+        int totalHeight;
+        if (itemCount <= maxVisibleItems) {
+            totalHeight = itemHeight * itemCount; // Hiển thị hết tất cả item
+            recyclerCustomerReviews.setNestedScrollingEnabled(false); // Tắt cuộn nếu không cần
+        } else {
+            totalHeight = itemHeight * maxVisibleItems; // Hiển thị tối đa 3 item, còn lại cuộn
+            recyclerCustomerReviews.setNestedScrollingEnabled(true); // Bật cuộn
+        }
+
+        // Đặt chiều cao cho RecyclerView
+        ViewGroup.LayoutParams params = recyclerCustomerReviews.getLayoutParams();
+        params.height = totalHeight;
+        recyclerCustomerReviews.setLayoutParams(params);
+    }
+
+    // Dữ liệu mẫu cho Customer Reviews
+    private List<CustomerReviews> getSampleReviews() {
+        List<CustomerReviews> reviews = new ArrayList<>();
+        reviews.add(new CustomerReviews("Nguyen Van A", "Rượu rất ngon, hương vị đậm đà!", "Plum Wine", R.mipmap.ic_account));
+        reviews.add(new CustomerReviews("Tran Thi B", "Sản phẩm chất lượng, giao hàng nhanh.", "Plum Wine", R.mipmap.ic_account));
+        reviews.add(new CustomerReviews("Le Van C", "Hài lòng với trải nghiệm mua sắm!", "Plum Wine", R.mipmap.ic_account));
+        // Thêm dòng này để kiểm tra trường hợp có hơn 3 item
+        reviews.add(new CustomerReviews("Pham Thi D", "Sản phẩm tuyệt vời!", "Plum Wine", R.mipmap.ic_account));
+        return reviews;
+    }
+
+    // ItemDecoration để căn giữa các item
+    private static class CenterItemDecoration extends RecyclerView.ItemDecoration {
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int itemCount = parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
+            if (itemCount == 0) return;
+
+            // Tính toán khoảng cách để căn giữa
+            int parentWidth = parent.getWidth();
+            int itemWidth = view.getLayoutParams().width; // Chiều rộng của mỗi item
+            int totalItemsWidth = itemWidth * itemCount;
+            int remainingSpace = parentWidth - totalItemsWidth;
+
+            if (remainingSpace > 0) {
+                // Căn giữa bằng cách thêm padding đều hai bên
+                int offset = remainingSpace / (2 * itemCount);
+                outRect.left = offset;
+                outRect.right = offset;
+            }
+        }
+    }
+
+    // ItemDecoration để thêm khoảng trống cho Related Products
+    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
         public ItemSpacingDecoration(int spacing) {
@@ -115,34 +269,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             outRect.top = spacing;
             outRect.bottom = spacing;
 
-            // Điều chỉnh cho GridLayoutManager để không thêm khoảng cách dư thừa ở cạnh ngoài
-            if (parent.getLayoutManager() instanceof GridLayoutManager) {
-                GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
-                int position = parent.getChildAdapterPosition(view);
-                int spanCount = layoutManager.getSpanCount();
-
-                if (layoutManager.getOrientation() == GridLayoutManager.HORIZONTAL) {
-                    if (position < spanCount) {
-                        outRect.top = 0; // Không thêm khoảng cách ở hàng đầu tiên
-                    }
-                    if (position % spanCount == 0) {
-                        outRect.left = 0; // Không thêm khoảng cách ở cột đầu tiên bên trái
-                    }
-                    if (position % spanCount == spanCount - 1) {
-                        outRect.right = 0; // Không thêm khoảng cách ở cột cuối cùng bên phải
-                    }
-                } else {
-                    if (position % spanCount == 0) {
-                        outRect.left = 0; // Không thêm khoảng cách ở cột đầu tiên bên trái
-                    }
-                    if (position % spanCount == spanCount - 1) {
-                        outRect.right = 0; // Không thêm khoảng cách ở cột cuối cùng bên phải
-                    }
-                    if (position < spanCount) {
-                        outRect.top = 0; // Không thêm khoảng cách ở hàng đầu tiên
-                    }
-                }
+            int position = parent.getChildAdapterPosition(view);
+            if (position == 0) {
+                outRect.left = spacing;
             }
+            if (position == getItemCount(parent) - 1) {
+                outRect.right = spacing;
+            }
+        }
+
+        private int getItemCount(RecyclerView parent) {
+            return parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
         }
     }
 }
