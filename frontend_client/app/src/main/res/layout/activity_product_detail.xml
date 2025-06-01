@@ -130,7 +130,7 @@
                     android:background="@color/color_medium_gray" />
 
                 <ImageView
-                    android:id="@+id/imgEachCatalog_Back"
+                    android:id="@+id/imgBlogList_Back"
                     android:layout_width="60dp"
                     android:layout_height="56dp"
                     android:background="@color/color_medium_gray" />

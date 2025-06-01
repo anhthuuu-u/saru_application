@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- ScrollView chứa nội dung chính -->
     <ScrollView
@@ -24,11 +25,12 @@
                 android:layout_marginBottom="16dp">
 
                 <ImageView
+                    android:onClick="do_back"
                     android:id="@+id/ic_back_arrow"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/ic_back_arrow"
-                    android:layout_marginEnd="12dp" />
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_back_arrow"
+                    app:tint="@color/color_dark_brown" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -85,30 +87,30 @@
 
                 <ImageView
                     android:id="@+id/ic_fb"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginEnd="35dp"
                     android:src="@mipmap/ic_fb" />
 
                 <ImageView
                     android:id="@+id/ic_IG"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginEnd="35dp"
                     android:src="@mipmap/ic_ig" />
 
                 <ImageView
                     android:id="@+id/ic_gmail"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginEnd="35dp"
                     android:src="@mipmap/ic_mail" />
 
                 <ImageView
                     android:id="@+id/ic_telegram"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@mipmap/ic_phone" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/ic_tele" />
             </LinearLayout>
 
             <!-- FAQs -->

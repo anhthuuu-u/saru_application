@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -83,7 +83,7 @@ public class ProfileActivity extends BaseActivity {
         });
     }
     private void addView() {
-        img_aboutus=findViewById(R.id.img_aboutus);
+        img_aboutus=findViewById(R.id.nexttoaboutus);
         nexttoaboutus=findViewById(R.id.nexttoaboutus);
         aboutus_page=findViewById(R.id.aboutus_page);
 

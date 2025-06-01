@@ -29,7 +29,7 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
     }
     private void addView()
     {
-        imgDetailBlog_Back=findViewById(R.id.imgEachCatalog_Back);
+        imgDetailBlog_Back=findViewById(R.id.imgBlogList_Back);
     }
     void backToBlogList()
     {

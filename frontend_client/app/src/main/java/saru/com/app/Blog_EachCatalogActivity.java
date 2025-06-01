@@ -30,7 +30,7 @@ public class Blog_EachCatalogActivity extends AppCompatActivity {
     }
     private void addView()
     {
-        imgEachCatalog_Back=findViewById(R.id.imgEachCatalog_Back);
+        imgEachCatalog_Back=findViewById(R.id.imgBlogList_Back);
     }
     void backToBlogList()
     {

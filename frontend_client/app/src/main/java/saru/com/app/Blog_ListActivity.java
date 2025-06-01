@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class Blog_ListActivity extends AppCompatActivity {
     TextView txtBlog_CategoryNameInfo;
     TextView txtBlogList_SeemoreInfo;
-    ImageView imgBlog_CategoryNameInfo;
+    ImageView imgBlog_CategoryNameInfo, imgBlogList_Back;
 
     TextView txtBlog_BlogTitle;
     TextView txtBlog_BlogContent;
@@ -44,6 +44,13 @@ public class Blog_ListActivity extends AppCompatActivity {
         txtBlog_BlogContent = findViewById(R.id.txtBlog_BlogContent);
         txtBlogList_SeemoreBlog1 = findViewById(R.id.txtBlogList_SeemoreBlog1);
 
+        imgBlogList_Back= findViewById(R.id.imgBlogList_Back);
+    }
+
+    void openHomepage()
+    {
+        Intent intent=new Intent(Blog_ListActivity.this, Homepage.class);
+        startActivity(intent);
     }
     void openBlogDetail()
     {
@@ -57,6 +64,13 @@ public class Blog_ListActivity extends AppCompatActivity {
     }
     private void addEvents()
     {
+        imgBlogList_Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHomepage();
+            }
+        });
+
         imgBlog_CategoryNameInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

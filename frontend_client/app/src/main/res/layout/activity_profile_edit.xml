@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F2E8DA">
 
     <LinearLayout
@@ -22,11 +23,12 @@
             android:paddingEnd="16dp">
 
             <ImageView
+                android:onClick="do_back"
                 android:id="@+id/ic_back_arrow"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@mipmap/ic_back_arrow"
-                android:layout_marginEnd="8dp" />
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/color_dark_brown" />
 
             <TextView
                 android:layout_width="0dp"
@@ -447,28 +449,38 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Add Address Button -->
-        <Button
-            android:layout_width="wrap_content"
+        <!-- Wrap buttons in a vertical LinearLayout -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_add_address"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:backgroundTint="#FBBC05"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:layout_marginTop="16dp" />
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center">
 
-        <!-- Save information Button -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profile_save_info_button"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:backgroundTint="#FBBC05"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:layout_marginTop="16dp" />
+            <!-- Add Address Button -->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:padding="12dp"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/profile_add_address"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <!-- Save information Button -->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:backgroundTint="@color/color_golden_yellow"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/profile_save_info_button"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
