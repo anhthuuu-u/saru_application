@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -30,7 +34,8 @@ public class Homepage extends BaseActivity {
     private ListCartItems cartItems = new ListCartItems();
     private TextView cartItemCountText;
     private List<Product> products = new ArrayList<>();
-    private ProductAdapter searchResultsAdapter;
+
+    private DrawerLayout drawerLayout;
 
     RecyclerView recyclerViewSearchResults;
     SearchView searchBar;
@@ -45,6 +50,33 @@ public class Homepage extends BaseActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
+
+        // Khởi tạo DrawerLayout
+        drawerLayout = findViewById(R.id.drawer_layout);
+        if (drawerLayout == null) {
+            throw new IllegalStateException("DrawerLayout with ID 'drawer_layout' not found in activity_homepage.xml");
+        }
+
+        // Xử lý nút btn_filter để mở menu
+        ImageButton btnFilter = findViewById(R.id.btn_filter);
+        if (btnFilter == null) {
+            throw new IllegalStateException("ImageButton with ID 'btn_filter' not found in activity_homepage.xml");
+        }
+        btnFilter.setOnClickListener(v -> {
+            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        // Đóng menu khi nhấn ra ngoài
+        findViewById(R.id.main).setOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        // Thiết lập điều hướng cho các mục trong menu
+        setupMenuNavigation();
 
         // Setup bottom navigation
         setupBottomNavigation();
@@ -73,8 +105,6 @@ public class Homepage extends BaseActivity {
         if (recyclerViewForYou == null) {
             throw new IllegalStateException("RecyclerView with ID 'recycler_view_for_you' not found in activity_homepage.xml");
         }
-
-
 
         // Tìm TextView cho số lượng giỏ hàng (thêm vào layout nếu chưa có)
         cartItemCountText = findViewById(R.id.cart_item_count); // Giả định ID trong layout
@@ -209,6 +239,66 @@ public class Homepage extends BaseActivity {
         updateCartItemCount();
     }
 
+    private void setupMenuNavigation() {
+
+        // Ánh xạ các mục trong menu bằng ID của LinearLayout
+        LinearLayout homepageItem = findViewById(R.id.menu_item_homepage);
+        LinearLayout productItem = findViewById(R.id.menu_item_product);
+        LinearLayout cartItem = findViewById(R.id.menu_item_cart);
+        LinearLayout blogItem = findViewById(R.id.menu_item_blog);
+        LinearLayout faqsItem = findViewById(R.id.menu_item_faqs);
+        LinearLayout aboutUsItem = findViewById(R.id.menu_item_about_us);
+        LinearLayout notiItem = findViewById(R.id.menu_item_notification);
+
+        // Kiểm tra null để tránh crash
+        if (homepageItem == null || productItem == null || cartItem == null ||
+                blogItem == null || faqsItem == null || aboutUsItem == null || notiItem == null) {
+            Log.e("Homepage", "One or more menu items not found in homepage_menu.xml");
+            return;
+        }
+
+        // Xử lý sự kiện nhấn vào từng mục
+        homepageItem.setOnClickListener(v -> {
+            // Đã ở Homepage, chỉ đóng menu
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        productItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, Products.class);
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        cartItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, ProductCart.class);
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        blogItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, Blog_ListActivity.class); // Giả định class BlogActivity
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        faqsItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, CustomerSupportActivity.class); // Giả định class FAQsActivity
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        aboutUsItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, Aboutus_SARUActivity.class); // Giả định class AboutUsActivity
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        notiItem.setOnClickListener(v -> {
+            Intent intent = new Intent(Homepage.this, Notification_FromOrderActivity.class); // Giả định class NotificationsActivity
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+    }
 
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     private void updateCartItemCount() {
@@ -219,9 +309,4 @@ public class Homepage extends BaseActivity {
         }
     }
 
-    // Phương thức để thêm sản phẩm vào giỏ hàng (gọi từ ProductAdapter)
-    public void addToCart(Product product) {
-        cartItems.addItem(new CartItem(product, 1));
-        updateCartItemCount();
-    }
 }

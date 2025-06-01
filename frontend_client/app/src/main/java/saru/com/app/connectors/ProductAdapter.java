@@ -56,12 +56,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         });
         // Handle btnAddToCart click
         holder.btnAddToCart.setOnClickListener(v -> {
-            Product p= productList.getProducts().get(holder.getAdapterPosition());
             // Gửi sự kiện đến Homepage (cần context là Homepage)
-            if (v.getContext() instanceof Homepage) {
-                ((Homepage) v.getContext()).addToCart(p);
-            }
-            Toast.makeText(holder.itemView.getContext(), "Add " + p.getProductName() + " to cart sucessfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(holder.itemView.getContext(), "Add " + product.getProductName() + " to cart sucessfully!", Toast.LENGTH_SHORT).show();
         });
 
         // Handle btnComparison click
