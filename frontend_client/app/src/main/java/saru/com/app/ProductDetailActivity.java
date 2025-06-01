@@ -67,7 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(new ProductAdapter());
 
-        // Thêm ItemDecoration để tạo khoảng trống giữa các item
+        // Thêm ItemDecoration để tạo khoảng trống
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
 
@@ -115,34 +115,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             outRect.top = spacing;
             outRect.bottom = spacing;
 
-            // Điều chỉnh cho GridLayoutManager để không thêm khoảng cách dư thừa ở cạnh ngoài
-            if (parent.getLayoutManager() instanceof GridLayoutManager) {
-                GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
-                int position = parent.getChildAdapterPosition(view);
-                int spanCount = layoutManager.getSpanCount();
-
-                if (layoutManager.getOrientation() == GridLayoutManager.HORIZONTAL) {
-                    if (position < spanCount) {
-                        outRect.top = 0; // Không thêm khoảng cách ở hàng đầu tiên
-                    }
-                    if (position % spanCount == 0) {
-                        outRect.left = 0; // Không thêm khoảng cách ở cột đầu tiên bên trái
-                    }
-                    if (position % spanCount == spanCount - 1) {
-                        outRect.right = 0; // Không thêm khoảng cách ở cột cuối cùng bên phải
-                    }
-                } else {
-                    if (position % spanCount == 0) {
-                        outRect.left = 0; // Không thêm khoảng cách ở cột đầu tiên bên trái
-                    }
-                    if (position % spanCount == spanCount - 1) {
-                        outRect.right = 0; // Không thêm khoảng cách ở cột cuối cùng bên phải
-                    }
-                    if (position < spanCount) {
-                        outRect.top = 0; // Không thêm khoảng cách ở hàng đầu tiên
-                    }
-                }
+            int position = parent.getChildAdapterPosition(view);
+            if (position == 0) {
+                outRect.left = spacing; // Giữ khoảng cách trái cho item đầu tiên
             }
+            if (position == getItemCount(parent) - 1) {
+                outRect.right = spacing; // Giữ khoảng cách phải cho item cuối cùng
+            }
+        }
+
+        private int getItemCount(RecyclerView parent) {
+            return parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
         }
     }
 }

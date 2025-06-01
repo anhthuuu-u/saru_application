@@ -1,4 +1,5 @@
 package saru.com.app.connectors;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,9 +10,9 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
-import java.util.List;
 import saru.com.app.R;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.ListCartItems;
@@ -44,14 +45,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         CartItem cartItem = listCartItems.getCartItems().get(position);
         DecimalFormat formatter = new DecimalFormat("#,###");
 
-        // Log để debug
         Log.d("CartAdapter", "Binding item: " + cartItem.getName() +
                 ", Position: " + position +
                 ", Quantity: " + cartItem.getQuantity() +
                 ", Selected: " + cartItem.isSelected() +
                 ", Price: " + cartItem.getPrice());
 
-        // Bind dữ liệu
         holder.productName.setText(cartItem.getName());
         holder.productPrice.setText(context.getString(R.string.product_cart_unit_price_label) + " " +
                 formatter.format(cartItem.getPrice()) +
@@ -62,7 +61,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.productQuantity.setText(String.valueOf(cartItem.getQuantity()));
         holder.itemCheckbox.setChecked(cartItem.isSelected());
 
-        // Nút giảm số lượng
         holder.minusButton.setText(context.getString(R.string.minus_button_text));
         holder.minusButton.setOnClickListener(v -> {
             int qty = cartItem.getQuantity();
@@ -78,7 +76,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        // Nút tăng số lượng
         holder.plusButton.setText(context.getString(R.string.plus_button_text));
         holder.plusButton.setOnClickListener(v -> {
             int qty = cartItem.getQuantity();
@@ -92,7 +89,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     " to " + cartItem.getQuantity() + ", New total: " + cartItem.getTotalPrice());
         });
 
-        // Checkbox chọn mục
         holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             cartItem.setSelected(isChecked);
             notifyListener();
@@ -100,14 +96,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     ", Selected: " + isChecked);
         });
 
-        // Nút xóa mục
         holder.deleteButton.setOnClickListener(v -> {
-            Log.d("CartAdapter", "Deleting item: " + cartItem.getName() +
-                    ", Position: " + position);
-            listCartItems.removeItem(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, listCartItems.getItemCount());
-            notifyListener();
+            int positionToRemove = holder.getAdapterPosition();
+            if (positionToRemove != RecyclerView.NO_POSITION) {
+                CartItem itemToDelete = listCartItems.getCartItems().get(positionToRemove);
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.dialog_delete_single_title))
+                        .setMessage(context.getString(R.string.dialog_delete_single_message, itemToDelete.getName()))
+                        .setPositiveButton(context.getString(R.string.dialog_confirm_delete), (dialog, which) -> {
+                            Log.d("CartAdapter", "Deleting item: " + itemToDelete.getName() +
+                                    ", Position: " + positionToRemove);
+                            listCartItems.removeItem(positionToRemove);
+                            notifyItemRemoved(positionToRemove);
+                            notifyItemRangeChanged(positionToRemove, listCartItems.getItemCount());
+                            notifyListener();
+                        })
+                        .setNegativeButton(context.getString(R.string.dialog_cancel), null)
+                        .show();
+            }
         });
     }
 

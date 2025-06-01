@@ -189,6 +189,36 @@
                 android:textColor="@color/color_terracotta"
                 android:textSize="24sp" />
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="4dp">
+
+                <TextView
+                    android:id="@+id/show_product_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/title_product_details_button"
+                    android:textColor="@color/color_golden_yellow"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/show_customer_reviews"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/title_customer_reviews_button"
+                    android:textColor="@color/color_golden_yellow"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
             <!-- Product Specifications (TableLayout) -->
             <TableLayout
                 android:layout_width="match_parent"

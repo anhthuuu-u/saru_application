@@ -553,6 +553,29 @@
     <string name="homepage_menu_about_us">About Us</string>
     <string name="homepage_menu_notification">Notification</string>
 
+    <string name="title_product_details_button">Product details</string>
+    <string name="title_customer_reviews_button">Customer reviews</string>
+
+    <string name="empty_cart_message">No product in cart!</string>
+    <string name="shop_now_button_text">Back to products page</string>
+
+    <!-- Chuỗi mới cho AlertDialog -->
+    <string name="dialog_delete_all_title">Delete selected products</string>
+    <string name="dialog_delete_all_message">Do you want to delete all selected products?</string>
+    <string name="dialog_delete_single_title">Delete product</string>
+    <string name="dialog_delete_single_message">Do you want to remove %1$s product?</string>
+    <string name="dialog_confirm_delete">Delete</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="toast_no_items_selected">Choose at least one item!</string>
+
+    <!-- Chuỗi mới cho Product Comparison -->
+    <string name="empty_comparison_message">No product in comparison!</string>
+    <string name="dialog_delete_all_comparison_title">Delete all products in comparison</string>
+    <string name="dialog_delete_all_comparison_message">Do you want to delete all products in comparison?</string>
+    <string name="dialog_delete_single_comparison_message">Do you want to remove %1$s product?</string>
+    <string name="delete_comparison_noti">Delete sucessfully!</string>
+    <string name="product_comparison_action">Action</string>
+
 
 </resources>
 

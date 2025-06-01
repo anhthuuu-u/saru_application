@@ -5,10 +5,6 @@
     android:layout_height="310dp"
     app:cardBackgroundColor="@color/color_creamy_white"
     app:cardCornerRadius="5dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
     app:cardElevation="4dp">
 
     <LinearLayout
@@ -82,16 +78,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddToCart"
-                android:layout_width="102dp"
+                android:layout_width="0dp"
                 android:layout_height="37dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:backgroundTint="@color/color_golden_yellow"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/title_add_to_cart"
@@ -108,10 +100,6 @@
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/product_button"
                 android:backgroundTint="@color/color_golden_yellow"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:scaleType="centerInside"
                 app:srcCompat="@mipmap/ic_compare"
                 app:tint="@color/white"/>

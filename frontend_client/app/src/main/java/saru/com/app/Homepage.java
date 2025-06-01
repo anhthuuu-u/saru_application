@@ -1,6 +1,7 @@
 package saru.com.app;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -154,6 +155,10 @@ public class Homepage extends BaseActivity {
         recyclerViewSuperSales.setLayoutManager(superSalesLayoutManager);
         recyclerViewSuperSales.setAdapter(superSalesAdapter);
 
+        // Thêm ItemDecoration cho Super Sales
+        int superSalesSpacing = getResources().getDimensionPixelSize(R.dimen.item_spacing);
+        recyclerViewSuperSales.addItemDecoration(new ItemSpacingDecoration(superSalesSpacing));
+
         // Thiết lập LinearLayoutManager với hướng ngang cho Bestseller Section
         LinearLayoutManager bestsellerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewBestseller.setLayoutManager(bestsellerLayoutManager);
@@ -163,6 +168,10 @@ public class Homepage extends BaseActivity {
         LinearLayoutManager forYouLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewForYou.setLayoutManager(forYouLayoutManager);
         recyclerViewForYou.setAdapter(voucherAdapter);
+
+        // Thêm ItemDecoration cho Bestseller
+        int bestsellerSpacing = getResources().getDimensionPixelSize(R.dimen.item_spacing);
+        recyclerViewBestseller.addItemDecoration(new ItemSpacingDecoration(bestsellerSpacing));
 
         // Tìm RecyclerView cho Customer Reviews
         RecyclerView recyclerViewCustomerReviews = findViewById(R.id.recycler_customer_reviews);
@@ -306,6 +315,33 @@ public class Homepage extends BaseActivity {
         if (cartItemCountText != null) {
             cartItemCountText.setText(String.valueOf(count));
             cartItemCountText.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    // Custom ItemDecoration để thêm khoảng cách giữa các item
+    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
+        private final int spacing;
+
+        public ItemSpacingDecoration(int spacing) {
+            this.spacing = spacing;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view);
+            int itemCount = parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
+
+            outRect.left = spacing;
+            outRect.right = spacing;
+
+            // Loại bỏ khoảng cách ở item đầu tiên (bên trái)
+            if (position == 0) {
+                outRect.left = 0;
+            }
+            // Loại bỏ khoảng cách ở item cuối cùng (bên phải)
+            if (position == itemCount - 1) {
+                outRect.right = 0;
+            }
         }
     }
 
