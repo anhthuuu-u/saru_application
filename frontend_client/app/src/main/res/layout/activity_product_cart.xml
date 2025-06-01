@@ -221,7 +221,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#FFFFFF"
-                android:strokeColor="@color/color_golden_yellow"
                 app:strokeWidth="2dp"
                 app:strokeColor="@color/color_golden_yellow"
                 android:fontFamily="@font/inter_bold"

@@ -32,6 +32,7 @@
     <string name="title_product_type">Loại rượu</string>
     <string name="title_product_ingredients">Thành phần</string>
     <string name="title_compare">So sánh</string>
+    <string name="product_comparison_action">Hành động</string>
     <string name="title_filter_product_dialog">Lọc sản phẩm</string>
     <string name="filter_product_dialog_category">Danh mục</string>
     <string name="title_filter_product_dialog_price_range">Khoảng giá</string>
@@ -560,7 +561,6 @@
     <string name="empty_cart_message">Không có sản phẩm trong giỏ hàng!</string>
     <string name="shop_now_button_text">Quay lại trang sản phẩm</string>
 
-
     <string name="dialog_delete_all_title">Xóa các sản phẩm được chọn</string>
     <string name="dialog_delete_all_message">Bạn có chắc muốn xóa %1$d sản phẩm đã chọn khỏi giỏ hàng?</string>
     <string name="dialog_delete_single_title">Xóa sản phẩm</string>
@@ -574,6 +574,11 @@
     <string name="dialog_delete_all_comparison_message">Bạn có chắc muốn xóa tất cả %1$d sản phẩm khỏi danh sách so sánh?</string>
     <string name="dialog_delete_single_comparison_message">Bạn có chắc muốn xóa %1$s khỏi danh sách so sánh?</string>
     <string name="delete_comparison_noti">Đã xóa các sản phẩm so sánh!</string>
+
+    <string name="dialog_success_title">Thành công</string>
+    <string name="dialog_add_to_cart_success">Thêm vào giỏ hàng thành công!</string>
+    <string name="dialog_compare_success">Thêm vào so sánh thành công!</string>
+    <string name="dialog_ok_button">OK</string>
 </resources>
 
 

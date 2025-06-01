@@ -14,7 +14,7 @@
     <string name="title_product_detail">PRODUCT DETAILS\n</string>
     <string name="title_compare_button">Compare</string>
     <string name="title_product_description">Whether consumed straight or mixed, Peach Plum Wine is a versatile and satisfying drink for both beginners and experienced drinkers.</string>
-    <string name="title_related_products">Related Products</string>
+    <string name="title_related_products">RELATED PRODUCTS</string>
     <string name="title_DeliveryInformation_product_brand">Mam Distillery</string>
     <string name="title_product_status">In stock</string>
     <string name="title_product_alcohol">Alcohol Strenght</string>
@@ -525,7 +525,7 @@
     <string name="title_best_selling_checkbox">Best Selling</string>
     <string name="title_on_sale_checkbox">On Sale</string>
 
-    <!-- Chuỗi động cho giỏ hàng -->
+    <!-- update 31.5 -->
     <string name="product_cart_unit_price_label">Price:</string>
     <string name="product_cart_total_label">Total:</string>
     <string name="product_cart_currency">đ</string>
@@ -575,6 +575,11 @@
     <string name="dialog_delete_single_comparison_message">Do you want to remove %1$s product?</string>
     <string name="delete_comparison_noti">Delete sucessfully!</string>
     <string name="product_comparison_action">Action</string>
+
+    <string name="dialog_success_title">Success</string>
+    <string name="dialog_add_to_cart_success">Added to cart successfully!</string>
+    <string name="dialog_compare_success">Added to compare successfully!</string>
+    <string name="dialog_ok_button">OK</string>
 
 
 </resources>
