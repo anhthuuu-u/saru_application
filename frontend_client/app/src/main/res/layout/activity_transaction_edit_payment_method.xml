@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_creamy_white"
-    tools:context=".TransactionEditPaymentMethodActivity">
+    tools:context=".activities.TransactionEditPaymentMethodActivity">
 
     <LinearLayout
         android:id="@+id/top_bar"

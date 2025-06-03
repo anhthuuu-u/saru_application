@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_creamy_white"
-    tools:context=".ProductComparison">
+    tools:context=".activities.ProductComparison">
 
     <!-- Toolbar -->
     <LinearLayout
@@ -622,7 +622,7 @@
                         android:background="@null"
                         android:scaleType="centerInside"
                         app:srcCompat="@mipmap/ic_trash_bin"
-                        app:tint="@color/color_dark_brown" /> />
+                        app:tint="@color/color_dark_brown" />
                 </TableRow>
             </TableLayout>
 

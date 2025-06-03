@@ -580,6 +580,11 @@
     <string name="dialog_add_to_cart_success">Added to cart successfully!</string>
     <string name="dialog_compare_success">Added to compare successfully!</string>
     <string name="dialog_ok_button">OK</string>
+    <string name="confirm_exit_title">Exit</string>
+    <string name="confirm_exit_message">Want to exit?</string>
+    <string name="confirm_exit_yes">Yes</string>
+    <string name="confirm_exit_no">No</string>
+    <string name="title_login_save_login_infor">Save Infor</string>
 
 
 </resources>

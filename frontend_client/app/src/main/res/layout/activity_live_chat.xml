@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="#F2E8DA"
     android:padding="12dp"
-    tools:context=".LiveChatActivity">
+    tools:context=".activities.LiveChatActivity">
 
     <!-- Header with back arrow and title -->
     <LinearLayout

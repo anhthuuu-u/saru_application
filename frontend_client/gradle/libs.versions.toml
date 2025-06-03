@@ -1,5 +1,6 @@
 [versions]
-agp = "8.9.2"
+agp = "8.10.1"
+firebaseBom = "33.14.0"
 googlePlayServicesMaps = "18.2.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,10 +16,15 @@ playServicesMaps = "19.2.0"
 cameraView = "1.4.2"
 playServicesMapsVersion = "18.1.0"
 roundedimageview = "2.3.0"
+securityCryptoVersion = "1.1.0-alpha07"
 volley = "1.2.1"
+firebaseDatabase = "21.0.0"
+securityCrypto = "1.0.0"
 
 
 [libraries]
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -32,7 +38,10 @@ camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "
 play-services-maps-v1810 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 play-services-maps-v1820 = { module = "com.google.android.gms:play-services-maps", version.ref = "googlePlayServicesMaps" }
 roundedimageview = { module = "com.makeramen:roundedimageview", version.ref = "roundedimageview" }
+security-crypto-v110alpha07 = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 
 
 [plugins]

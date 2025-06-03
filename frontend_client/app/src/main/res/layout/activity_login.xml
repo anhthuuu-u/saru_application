@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_authenciation"
-    tools:context=".LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <!-- Custom Toolbar với nút Back và Logo -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,11 +116,12 @@
                 app:hintTextColor="@android:color/darker_gray">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtLoginEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
-                    android:background="@null"
                     android:padding="12dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray" />
@@ -164,16 +165,16 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtLoginPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:hint="@string/hint_password"
                     android:inputType="textPassword"
-                    android:background="@null"
                     android:padding="12dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray" />
             </com.google.android.material.textfield.TextInputLayout>
-
             <!-- Forgot Password -->
             <TextView
                 android:id="@+id/btn_forgot_password"
@@ -191,22 +192,48 @@
                 app:layout_constraintTop_toBottomOf="@id/passwordInputLayout" />
 
             <!-- Login Button -->
+
+            <CheckBox
+                android:id="@+id/chkSaveLoginInfor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/title_login_save_login_infor"
+                android:textSize="16sp"
+                android:textColor="@color/color_terracotta"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_forgot_password" />
+
+            <!-- Signup Links -->
+
             <Button
                 android:id="@+id/btn_complete_login"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="0dp"
                 android:backgroundTint="@color/color_golden_yellow"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/btn_login"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_forgot_password"
+                app:layout_constraintTop_toBottomOf="@id/chkSaveLoginInfor"
                 app:layout_constraintWidth_percent="0.8" />
 
-            <!-- Signup Links -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_complete_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btn_signup" />
+
             <TextView
                 android:id="@+id/btn_signup"
                 android:layout_width="wrap_content"
@@ -220,7 +247,7 @@
                 app:layout_constraintEnd_toStartOf="@id/txtBlogList_SeemoreInfo"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_complete_login" />
+                app:layout_constraintTop_toBottomOf="@id/progressBar" />
 
             <TextView
                 android:id="@+id/txtBlogList_SeemoreInfo"

@@ -579,6 +579,11 @@
     <string name="dialog_add_to_cart_success">Thêm vào giỏ hàng thành công!</string>
     <string name="dialog_compare_success">Thêm vào so sánh thành công!</string>
     <string name="dialog_ok_button">OK</string>
+    <string name="confirm_exit_title">Thoát</string>
+    <string name="confirm_exit_message">Muốn thoát à?</string>
+    <string name="confirm_exit_yes">Đúng rồi!</string>
+    <string name="confirm_exit_no">Không!</string>
+    <string name="title_login_save_login_infor">Lưu In4</string>
 </resources>
 
 

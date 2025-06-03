@@ -28,19 +28,19 @@
         android:theme="@style/Theme.Client_app"
         tools:targetApi="31">
         <activity
-            android:name=".Notification_PopUp_MessageActivity"
+            android:name=".activities.Notification_PopUp_MessageActivity"
             android:exported="false" />
         <activity
-            android:name=".Notification_FromDiscountActivity"
+            android:name=".activities.Notification_FromDiscountActivity"
             android:exported="false" />
         <activity
-            android:name=".Aboutus_locationActivity"
+            android:name=".activities.Aboutus_locationActivity"
             android:exported="false" />
         <activity
-            android:name=".Aboutus_SARUActivity"
+            android:name=".activities.Aboutus_SARUActivity"
             android:exported="true" />
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".activities.OnboardingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,119 +49,119 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LiveChatActivity"
+            android:name=".activities.LiveChatActivity"
             android:exported="true" />
         <activity
-            android:name=".TransactionFaceAuthorizationCompletedActivity"
+            android:name=".activities.TransactionFaceAuthorizationCompletedActivity"
             android:exported="false" />
         <activity
-            android:name=".TransactionEditPaymentMethodActivity"
+            android:name=".activities.TransactionEditPaymentMethodActivity"
             android:exported="false" />
         <activity
-            android:name=".TransactionFaceAuthorizationManualActivity"
+            android:name=".activities.TransactionFaceAuthorizationManualActivity"
             android:exported="false" />
         <activity
-            android:name=".TransactionFaceAuthorizationActivity"
+            android:name=".activities.TransactionFaceAuthorizationActivity"
             android:exported="false" />
         <activity
-            android:name=".SuccessfulPaymentActivity"
+            android:name=".activities.SuccessfulPaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".VouchersManagement"
+            android:name=".activities.VouchersManagement"
             android:exported="true" />
         <activity
-            android:name=".TransactionEditAddressActivity"
+            android:name=".activities.TransactionEditAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".TransactionCheckoutActivity"
+            android:name=".activities.TransactionCheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".Notification_Popup_ConfirmationActivity"
+            android:name=".activities.Notification_Popup_ConfirmationActivity"
             android:exported="false" />
         <activity
-            android:name=".Notification_FromOrderActivity"
+            android:name=".activities.Notification_FromOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".Notification_FromSettingActivity"
+            android:name=".activities.Notification_FromSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".Blog_BlogDetailActivity"
+            android:name=".activities.Blog_BlogDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".Blog_EachCatalogActivity"
+            android:name=".activities.Blog_EachCatalogActivity"
             android:exported="false" />
         <activity
-            android:name=".Blog_ListActivity"
+            android:name=".activities.Blog_ListActivity"
             android:exported="false" />
         <activity
-            android:name=".Homepage"
+            android:name=".activities.Homepage"
             android:exported="true" />
         <activity
-            android:name=".ProductCart"
+            android:name=".activities.ProductCart"
             android:exported="true" />
         <activity
-            android:name=".ProductComparison"
+            android:name=".activities.ProductComparison"
             android:exported="true" />
         <activity
-            android:name=".ProductDetailActivity"
+            android:name=".activities.ProductDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.Client_app.NoActionBar" />
         <activity
-            android:name=".Products"
+            android:name=".activities.Products"
             android:exported="true" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".ProfileEditActivity"
+            android:name=".activities.ProfileEditActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderListActivity"
+            android:name=".activities.OrderListActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderDetailActivity"
+            android:name=".activities.OrderDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".ProfileUpdateCardActivity"
+            android:name=".activities.ProfileUpdateCardActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderReviewActivity"
+            android:name=".activities.OrderReviewActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderRequestReturnActivity"
+            android:name=".activities.OrderRequestReturnActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderCancelActivity"
+            android:name=".activities.OrderCancelActivity"
             android:exported="true" />
         <activity
-            android:name=".CustomerSupportActivity"
+            android:name=".activities.CustomerSupportActivity"
             android:exported="true" />
         <activity
-            android:name=".LanguageSettingActivity"
+            android:name=".activities.LanguageSettingActivity"
             android:exported="true" />
         <activity
-            android:name=".FaceAuthenticationActivity"
+            android:name=".activities.FaceAuthenticationActivity"
             android:exported="false" />
         <activity
-            android:name=".FogotPasswordCreateActivity"
+            android:name=".activities.FogotPasswordCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".FogotPasswordOtpActivity"
+            android:name=".activities.FogotPasswordOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".GreetingActivity"
+            android:name=".activities.GreetingActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".activities.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="false" />
 
         <meta-data

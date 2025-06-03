@@ -17,11 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import saru.com.app.Homepage;
-import saru.com.app.ProductDetailActivity;
+import saru.com.app.activities.ProductDetailActivity;
 import saru.com.app.R;
-import saru.com.app.models.CartItem;
-import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 import saru.com.app.models.ProductList;
 

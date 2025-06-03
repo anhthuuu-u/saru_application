@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -35,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -42,6 +45,8 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.camera.view)
     implementation(libs.volley)
+    implementation(libs.firebase.database)
+    implementation(libs.security.crypto)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -49,4 +54,6 @@ dependencies {
     implementation(libs.play.services.maps.v1810)
     implementation (libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 }

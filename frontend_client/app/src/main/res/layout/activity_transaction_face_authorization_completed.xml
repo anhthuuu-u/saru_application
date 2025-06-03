@@ -7,7 +7,7 @@
     android:id="@+id/main"
     android:background="@color/color_creamy_white"
     android:orientation="vertical"
-    tools:context=".TransactionFaceAuthorizationCompletedActivity">
+    tools:context=".activities.TransactionFaceAuthorizationCompletedActivity">
 
     <!-- Header with Back Button and Title -->
     <LinearLayout
