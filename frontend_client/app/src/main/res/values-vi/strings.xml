@@ -421,20 +421,14 @@
     <string name="customer_support_title">TRUNG TÂM HỖ TRỢ KHÁCH HÀNG</string>
     <string name="cs_ask_question_label">Đặt câu hỏi</string>
     <string name="cs_ask_question_hint">Nhập câu hỏi của bạn</string>
+    <string name="submit_faq_button">Gửi</string>
     <string name="cs_contact_us_label">Liên hệ với chúng tôi</string>
     <string name="cs_faqs_label">Câu hỏi thường gặp</string>
-    <string name="cs_faq_question_1">Chính sách đổi/trả của bạn là gì?</string>
-    <string name="cs_faq_answer_1">Bạn có thể trả lại bất kỳ sản phẩm nào trong vòng 14 ngày kể từ ngày mua.</string>
-    <string name="cs_faq_question_2">Làm sao để tôi theo dõi đơn hàng?</string>
-    <string name="cs_faq_answer_2">Khi đơn hàng được gửi, chúng tôi sẽ gửi email có mã vận đơn để bạn theo dõi trên trang web.</string>
-    <string name="cs_faq_question_3">Bạn có giao hàng quốc tế không?</string>
-    <string name="cs_faq_answer_3">Có, chúng tôi giao đến hầu hết các quốc gia. Phí vận chuyển có thể thay đổi tùy khu vực.</string>
-    <string name="cs_faq_question_4">Tôi có thể thay đổi địa chỉ giao hàng không?</string>
-    <string name="cs_faq_answer_4">Nếu đơn hàng chưa được gửi, hãy liên hệ bộ phận hỗ trợ để cập nhật địa chỉ.</string>
-    <string name="cs_faq_question_5">Chấp nhận những phương thức thanh toán nào?</string>
-    <string name="cs_faq_answer_5">Chúng tôi chấp nhận Visa, MasterCard, PayPal và chuyển khoản ngân hàng.</string>
-    <string name="cs_faq_question_6">Làm sao để tôi liên hệ bộ phận hỗ trợ?</string>
-    <string name="cs_faq_answer_6">Bạn có thể gửi email tới support@example.com hoặc gọi +123456789.</string>
+    <string name="error_empty_question">Vui lòng nhập câu hỏi</string>
+    <string name="success_question_sent">Câu hỏi đã được gửi</string>
+    <string name="error_send_question">Lỗi khi gửi câu hỏi: %1$s</string>
+    <string name="error_load_faqs">Lỗi khi tải FAQs: %1$s</string>
+    <string name="firestore_questions_collection">customerquestions</string>
 
     <!-- LIVE CHAT -->
     <string name="chat_button_description">Mở trò chuyện</string>

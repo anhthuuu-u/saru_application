@@ -409,20 +409,14 @@
     <string name="customer_support_title">CUSTOMER SUPPORT CENTER</string>
     <string name="cs_ask_question_label">Ask a Question</string>
     <string name="cs_ask_question_hint">Enter your question</string>
+    <string name="submit_faq_button">Submit</string>
     <string name="cs_contact_us_label">Contact Us</string>
     <string name="cs_faqs_label">FAQs - Frequently Asked Questions</string>
-    <string name="cs_faq_question_1">What is your return policy?</string>
-    <string name="cs_faq_answer_1">You can return any item within 14 days of purchase.</string>
-    <string name="cs_faq_question_2">How can I track my order?</string>
-    <string name="cs_faq_answer_2">Once shipped, we’ll email you a tracking number you can use on our website.</string>
-    <string name="cs_faq_question_3">Do you ship internationally?</string>
-    <string name="cs_faq_answer_3">Yes, we ship to most countries. Shipping fees may apply based on location.</string>
-    <string name="cs_faq_question_4">Can I change my delivery address?</string>
-    <string name="cs_faq_answer_4">If your order hasn’t shipped yet, contact support to update your delivery details.</string>
-    <string name="cs_faq_question_5">Which payment methods are accepted?</string>
-    <string name="cs_faq_answer_5">We accept Visa, MasterCard, PayPal and bank transfers.</string>
-    <string name="cs_faq_question_6">How do I contact support?</string>
-    <string name="cs_faq_answer_6">You can email us at support@example.com or call us at +123456789.</string>
+    <string name="error_empty_question">Please enter a question</string>
+    <string name="success_question_sent">Question sent successfully</string>
+    <string name="error_send_question">Error sending question: %1$s</string>
+    <string name="error_load_faqs">Error loading FAQs: %1$s</string>
+    <string name="firestore_questions_collection">customerquestions</string>
 
     <!-- LIVE CHAT -->
     <string name="chat_button_description">Open chat</string>
