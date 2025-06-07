@@ -2,27 +2,44 @@ package saru.com.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import saru.com.app.R;
+import saru.com.app.connectors.BlogCategoryAdapter;
+import saru.com.app.connectors.BlogSuggestionAdapter;
+import saru.com.app.models.Blog;
+import saru.com.app.models.BlogCategory;
 
 public class Blog_ListActivity extends AppCompatActivity {
-    TextView txtBlog_CategoryNameInfo;
-    TextView txtBlogList_SeemoreInfo;
-    ImageView imgBlog_CategoryNameInfo, imgBlogList_Back;
 
-    TextView txtBlog_BlogTitle;
-    TextView txtBlog_BlogContent;
-    TextView txtBlogList_SeemoreBlog1;
-    ImageView imgBlog_Blog1;
+    private RecyclerView recyclerCategories, recyclerSuggestions;
+    private BlogCategoryAdapter adapter;
+    private BlogSuggestionAdapter blogSuggestionAdapter;
+    private List<BlogCategory> categoryList = new ArrayList<>();
+    private List<Blog> blogList = new ArrayList<>();
+    private Map<String, String> categoryMap = new HashMap<>();
+    private FirebaseFirestore db;
+    private ImageView imgBlogList_Back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,94 +47,70 @@ public class Blog_ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_blog_list);
         addView();
         addEvents();
+        loadData();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
+
     private void addView() {
-        imgBlog_CategoryNameInfo = findViewById(R.id.imgBlog_CategoryNameInfo);
-        txtBlog_CategoryNameInfo = findViewById(R.id.txtBlog_CategoryNameInfo);
-        txtBlogList_SeemoreInfo = findViewById(R.id.txtBlogList_SeemoreInfo);
+        db = FirebaseFirestore.getInstance();
 
-        imgBlog_Blog1 = findViewById(R.id.imgBlog_Blog1);
-        txtBlog_BlogTitle = findViewById(R.id.txtBlog_BlogTitle);
-        txtBlog_BlogContent = findViewById(R.id.txtBlog_BlogContent);
-        txtBlogList_SeemoreBlog1 = findViewById(R.id.txtBlogList_SeemoreBlog1);
+        recyclerCategories = findViewById(R.id.recyclerCategories);
+        recyclerCategories.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new BlogCategoryAdapter(this, categoryList);
+        recyclerCategories.setAdapter(adapter);
 
-        imgBlogList_Back= findViewById(R.id.imgBlogList_Back);
+        recyclerSuggestions = findViewById(R.id.recyclerSuggestions);
+        recyclerSuggestions.setLayoutManager(new LinearLayoutManager(this));
+        blogSuggestionAdapter = new BlogSuggestionAdapter(this, blogList, categoryMap);
+        recyclerSuggestions.setAdapter(blogSuggestionAdapter);
+
+        imgBlogList_Back = findViewById(R.id.ic_back_arrow);
     }
 
-    void openHomepage()
-    {
-        Intent intent=new Intent(Blog_ListActivity.this, Homepage.class);
-        startActivity(intent);
+    private void loadData() {
+        // Load danh mục trước
+        db.collection("blogcategories")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    categoryList.clear();
+                    categoryMap.clear();
+
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        BlogCategory category = doc.toObject(BlogCategory.class);
+                        if (category.getCateblogID() != null && category.getName() != null) {
+                            categoryList.add(category);
+                            categoryMap.put(category.getCateblogID(), category.getName());
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged();
+                    loadBlogs(); // gọi sau khi đã có map
+                })
+                .addOnFailureListener(e ->
+                        Log.e("Firestore", "Lỗi khi tải danh mục", e));
     }
-    void openBlogDetail()
-    {
-        Intent intent=new Intent(Blog_ListActivity.this, Blog_BlogDetailActivity.class);
-        startActivity(intent);
+
+    private void loadBlogs() {
+        db.collection("blogs")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    blogList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Blog blog = doc.toObject(Blog.class);
+                        blogList.add(blog);
+                    }
+                    blogSuggestionAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Lỗi khi tải blog: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-    void openEachCatalog()
-    {
-        Intent intent=new Intent(Blog_ListActivity.this, Blog_EachCatalogActivity.class);
-        startActivity(intent);
-    }
-    private void addEvents()
-    {
-        imgBlogList_Back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openHomepage();
-            }
-        });
 
-        imgBlog_CategoryNameInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEachCatalog();
-            }
-        });
-
-        txtBlog_CategoryNameInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEachCatalog();
-            }
-        });
-
-        txtBlogList_SeemoreInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEachCatalog();
-            }
-        });
-
-        txtBlog_BlogTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBlogDetail();
-            }
-        });
-        imgBlog_Blog1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBlogDetail();
-            }
-        });
-        txtBlog_BlogContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBlogDetail();
-            }
-        });
-        txtBlogList_SeemoreBlog1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBlogDetail();
-            }
-        });
-
+    private void addEvents() {
+        imgBlogList_Back.setOnClickListener(v -> startActivity(new Intent(Blog_ListActivity.this, Homepage.class)));
     }
 }

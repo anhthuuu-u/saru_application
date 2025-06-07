@@ -54,6 +54,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Thêm nút gửi sau EditText -->
             <EditText
                 android:id="@+id/ask_question_input"
                 android:layout_width="match_parent"
@@ -65,11 +66,30 @@
                 android:fontFamily="@font/inter"
                 android:layout_marginTop="8dp" />
 
+            <!-- Submit Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/btn_send_question"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_golden_yellow"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/submit_faq_button"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:layout_gravity="right"/>
+            </LinearLayout>
+
             <!-- Contact Us -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/inter_medium"
                 android:text="@string/cs_contact_us_label"
                 android:textColor="#000000"

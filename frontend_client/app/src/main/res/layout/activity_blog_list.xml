@@ -1,198 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F2E8DA"
-    tools:context=".activities.Blog_ListActivity">
+    android:background="@color/background_light"
+    android:padding="@dimen/blog_padding_standard">
 
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_medium">
 
         <ImageView
-            android:id="@+id/imgBlogList_Back"
-            android:layout_width="21dp"
+            android:id="@+id/ic_back_arrow"
+            android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@mipmap/ic_back_arrow" />
+            android:src="@mipmap/ic_back_arrow"
+            app:tint="@color/title_orange" />
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="455dp"
-            android:layout_height="38dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/title_blog_Blog"
             android:textAlignment="center"
-            android:textColor="#B16527"
-            android:textSize="16sp"
+            android:textColor="@color/title_orange"
+            android:textSize="@dimen/text_size_title"
             android:textStyle="bold"
-            android:typeface="sans" />
-
+            android:fontFamily="@font/inter_bold" />
     </LinearLayout>
 
+    <!-- Catalog Section -->
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_catalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:text="@string/title_blog_catalog"
-        android:textAlignment="viewStart"
-        android:textColor="#B16527"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/title_orange"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_medium" />
 
-    <LinearLayout
+    <!-- RecyclerView danh mục -->
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp">
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:layout_marginTop="@dimen/margin_medium">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
-            <ImageView
-                android:id="@+id/imgBlog_CategoryNameInfo"
-                android:layout_width="141dp"
-                android:layout_height="126dp"
-                app:srcCompat="@mipmap/img_taybacvillage" />
-
-            <TextView
-                android:id="@+id/txtBlog_CategoryNameInfo"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCategories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_blog_inforTayBacWine"
-                android:textColor="#85461F"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtBlogList_SeemoreInfo"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="@string/title_blog_seemore"
-                android:textColor="#85461F"
-                android:textSize="10sp"
-                android:textStyle="italic" />
-
-
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false" />
         </LinearLayout>
+    </HorizontalScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp">
-
-            <ImageView
-                android:id="@+id/imgBlog_CategoryNameTips"
-                android:layout_width="126dp"
-                android:layout_height="113dp"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/img_taybacvillage" />
-
-            <TextView
-                android:id="@+id/txtBlog_CategoryNameTips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="11dp"
-                android:text="@string/title_blog_tips"
-                android:textColor="#85461F"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtBlogList_SeemoreTips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/title_blog_seemore"
-                android:textColor="#85461F"
-                android:textSize="10sp"
-                android:textStyle="italic" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <!-- Suggestions for You Section -->
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView_suggestforyou"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="@string/title_blog_suggestfyou"
-        android:textColor="#B16527"
+        android:text="@string/title_blog_suggestforyou"
+        android:textColor="@color/title_orange"
+        android:textSize="@dimen/text_size_title"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="@dimen/margin_medium" />
 
-    <LinearLayout
+    <!-- RecyclerView cho danh sách blog -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSuggestions"
         android:layout_width="match_parent"
-        android:layout_height="109dp"
-        android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-
-        <ImageView
-            android:id="@+id/imgBlog_Blog1"
-            android:layout_width="157dp"
-            android:layout_height="72dp"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@mipmap/img_saru_cup" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtBlog_BlogCatalogName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_blog_blogcatalog"
-                android:textColor="#F8BC3B"
-                android:textSize="10sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/txtBlog_BlogTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/title_blog_blogtitle"
-                android:textColor="#F8BC3B"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtBlog_BlogContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_tight"
-                android:text="@string/title_blog_blogcontent"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/txtBlogList_SeemoreBlog1"
-                android:layout_width="247dp"
-                android:layout_height="wrap_content"
-                android:text="@string/title_blog_seemore"
-                android:textAlignment="textEnd"
-                android:textColor="#85461F"
-                android:textStyle="italic" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:clipToPadding="false"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:scrollbars="vertical" />
 </LinearLayout>

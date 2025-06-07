@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services")
+    id("com.google.gms.google-services") // Plugin Firebase
 }
 
 android {
@@ -36,8 +36,20 @@ android {
 }
 
 dependencies {
+    // Sử dụng BOM để quản lý phiên bản Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+
+    // Firebase dependencies (không cần chỉ định phiên bản vì đã có BOM)
+    implementation("com.google.firebase:firebase-firestore") // Firestore
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-auth")
+
+    // Thêm Glide để tải hình ảnh
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Các dependency khác
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -45,15 +57,12 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.camera.view)
     implementation(libs.volley)
-    implementation(libs.firebase.database)
     implementation(libs.security.crypto)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.roundedimageview)
     implementation(libs.play.services.maps.v1810)
-    implementation (libs.play.services.maps.v1820)
+    implementation(libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
 }

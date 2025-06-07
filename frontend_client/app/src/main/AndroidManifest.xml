@@ -92,7 +92,7 @@
             android:exported="false" />
         <activity
             android:name=".activities.Blog_ListActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.Homepage"
             android:exported="true" />
