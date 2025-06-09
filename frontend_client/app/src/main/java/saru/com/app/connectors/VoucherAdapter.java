@@ -7,12 +7,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import saru.com.app.R;
 import saru.com.app.models.Voucher;
 import java.util.List;
-import saru.com.app.R;
 
 public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherViewHolder> {
 
@@ -20,6 +19,11 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
 
     public VoucherAdapter(List<Voucher> voucherList) {
         this.voucherList = voucherList;
+    }
+
+    public void updateVouchers(List<Voucher> newVouchers) {
+        this.voucherList = newVouchers;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -36,7 +40,6 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
         holder.voucherTitle.setText(voucher.getVoucherCode());
         holder.voucherID.setText(voucher.getVoucherID());
 
-        // Cắt description thành khoảng 50 ký tự
         String description = voucher.getDescription();
         if (description.length() > 50) {
             description = description.substring(0, 47) + "...";
@@ -45,10 +48,8 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
 
         holder.voucherExpiry.setText("Expired Date: " + voucher.getExpiryDate());
 
-        // Xử lý nút "Lưu"
         holder.voucherSaveButton.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(), "Save voucher sucessfully!!", Toast.LENGTH_SHORT).show();
-            // Thêm logic lưu voucher vào danh sách hoặc database nếu cần
+            Toast.makeText(holder.itemView.getContext(), "Save voucher successfully!!", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -63,7 +64,6 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
         TextView voucherDescription;
         TextView voucherExpiry;
         Button voucherSaveButton;
-
         TextView voucherID;
 
         public VoucherViewHolder(@NonNull View itemView) {
@@ -73,7 +73,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
             voucherDescription = itemView.findViewById(R.id.voucher_description);
             voucherExpiry = itemView.findViewById(R.id.voucher_expiry);
             voucherSaveButton = itemView.findViewById(R.id.voucher_save_button);
-            voucherID=itemView.findViewById(R.id.txtVoucherID);
+            voucherID = itemView.findViewById(R.id.txtVoucherID);
         }
     }
 }

@@ -17,13 +17,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import saru.com.app.R;
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
+import saru.com.app.models.CustomerReviewList;
 import saru.com.app.models.CustomerReviews;
 import saru.com.app.models.Product;
 
@@ -36,6 +40,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerCustomerReviews, recyclerViewProducts;
     private TextView showProductDetails, showCustomerReviews;
     private CustomerReviewAdapter customerReviewAdapter;
+    private CustomerReviewList customerReviewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +115,19 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Set up RecyclerView for Customer Reviews
         recyclerCustomerReviews.setLayoutManager(new LinearLayoutManager(this));
-        List<CustomerReviews> reviewsList = getSampleReviews();
-        customerReviewAdapter = new CustomerReviewAdapter(reviewsList);
+        customerReviewList = new CustomerReviewList(); // Khởi tạo CustomerReviewList
+        customerReviewAdapter = new CustomerReviewAdapter(new ArrayList<>());
         recyclerCustomerReviews.setAdapter(customerReviewAdapter);
+
+        // Quan sát LiveData để tự động cập nhật UI cho Customer Reviews
+        customerReviewList.getReviews().observe(this, new Observer<List<CustomerReviews>>() {
+            @Override
+            public void onChanged(List<CustomerReviews> reviews) {
+                customerReviewAdapter.updateReviews(reviews);
+                customerReviewAdapter.notifyDataSetChanged();
+                adjustRecyclerViewHeight(); // Điều chỉnh chiều cao sau khi cập nhật dữ liệu
+            }
+        });
 
         // Điều chỉnh chiều cao RecyclerView dựa trên số lượng item
         adjustRecyclerViewHeight();
@@ -220,17 +235,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = recyclerCustomerReviews.getLayoutParams();
         params.height = totalHeight;
         recyclerCustomerReviews.setLayoutParams(params);
-    }
-
-    // Dữ liệu mẫu cho Customer Reviews
-    private List<CustomerReviews> getSampleReviews() {
-        List<CustomerReviews> reviews = new ArrayList<>();
-        reviews.add(new CustomerReviews("Nguyen Van A", "Rượu rất ngon, hương vị đậm đà!", "Plum Wine", R.mipmap.ic_account));
-        reviews.add(new CustomerReviews("Tran Thi B", "Sản phẩm chất lượng, giao hàng nhanh.", "Plum Wine", R.mipmap.ic_account));
-        reviews.add(new CustomerReviews("Le Van C", "Hài lòng với trải nghiệm mua sắm!", "Plum Wine", R.mipmap.ic_account));
-        // Thêm dòng này để kiểm tra trường hợp có hơn 3 item
-        reviews.add(new CustomerReviews("Pham Thi D", "Sản phẩm tuyệt vời!", "Plum Wine", R.mipmap.ic_account));
-        return reviews;
     }
 
     // ItemDecoration để căn giữa các item

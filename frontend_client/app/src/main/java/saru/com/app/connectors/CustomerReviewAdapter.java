@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import saru.com.app.R;
@@ -35,13 +37,22 @@ public class CustomerReviewAdapter extends RecyclerView.Adapter<CustomerReviewAd
         holder.txtReviewContent.setText(review.getReviewContent());
         holder.txtPurchasedProduct.setText("Purchased: " + review.getPurchasedProduct());
 
-        // Gán ảnh từ resource ID
-        holder.imgCustomer.setImageResource(review.getCustomerImage());
+        // Tải ảnh từ URL bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(review.getCustomerImage())
+                .placeholder(R.mipmap.img_saru_cup) // Thêm placeholder nếu có
+                .error(R.drawable.ic_account) // Thêm ảnh lỗi nếu có
+                .into(holder.imgCustomer);
     }
 
     @Override
     public int getItemCount() {
         return reviewsList != null ? reviewsList.size() : 0;
+    }
+
+    public void updateReviews(List<CustomerReviews> newReviews) {
+        this.reviewsList = newReviews;
+        notifyDataSetChanged();
     }
 
     public static class CustomerReviewViewHolder extends RecyclerView.ViewHolder {

@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -25,10 +26,12 @@ import saru.com.app.R;
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.connectors.VoucherAdapter;
+import saru.com.app.models.CustomerReviewList;
 import saru.com.app.models.CustomerReviews;
 import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 import saru.com.app.models.ProductList;
+import saru.com.app.models.Voucher;
 import saru.com.app.models.VoucherList;
 
 public class Homepage extends BaseActivity {
@@ -146,9 +149,10 @@ public class Homepage extends BaseActivity {
         // Khởi tạo ProductAdapter cho Bestseller Section
         ProductAdapter bestsellerAdapter = new ProductAdapter();
 
-        // Khởi tạo VoucherAdapter cho For You Section
+        // Khởi tạo VoucherList
         VoucherList voucherList = new VoucherList();
-        VoucherAdapter voucherAdapter = new VoucherAdapter(voucherList.getVouchers());
+        // Khởi tạo VoucherAdapter với danh sách rỗng ban đầu
+        VoucherAdapter voucherAdapter = new VoucherAdapter(new ArrayList<>());
 
         // Thiết lập LinearLayoutManager với hướng ngang cho Super Sales
         LinearLayoutManager superSalesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -169,29 +173,40 @@ public class Homepage extends BaseActivity {
         recyclerViewForYou.setLayoutManager(forYouLayoutManager);
         recyclerViewForYou.setAdapter(voucherAdapter);
 
+        // Quan sát LiveData để tự động cập nhật UI
+        voucherList.getVouchers().observe(this, new Observer<List<Voucher>>() {
+            @Override
+            public void onChanged(List<Voucher> vouchers) {
+                voucherAdapter.updateVouchers(vouchers);
+                voucherAdapter.notifyDataSetChanged();
+            }
+        });
+
         // Thêm ItemDecoration cho Bestseller
         int bestsellerSpacing = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerViewBestseller.addItemDecoration(new ItemSpacingDecoration(bestsellerSpacing));
 
-        // Tìm RecyclerView cho Customer Reviews
+        // Khởi tạo CustomerReviewList
+        CustomerReviewList customerReviewList = new CustomerReviewList();
+        CustomerReviewAdapter customerReviewAdapter = new CustomerReviewAdapter(new ArrayList<>());
+
+        // Thiết lập LinearLayoutManager cho Customer Reviews
+        LinearLayoutManager customerReviewsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerViewCustomerReviews = findViewById(R.id.recycler_customer_reviews);
         if (recyclerViewCustomerReviews == null) {
-            throw new IllegalStateException("RecyclerView with ID 'recycler_view_customer_reviews' not found in activity_homepage.xml");
+            throw new IllegalStateException("RecyclerView with ID 'recycler_customer_reviews' not found in activity_homepage.xml");
         }
-
-        // Khởi tạo danh sách CustomerReviews (ví dụ: dữ liệu tĩnh hoặc từ nguồn dữ liệu)
-        List<CustomerReviews> customerReviewsList = new ArrayList<>();
-        // Thêm dữ liệu mẫu (thay bằng dữ liệu thực tế từ API hoặc cơ sở dữ liệu)
-        customerReviewsList.add(new CustomerReviews("John Doe", "Great product!", "Laptop", R.mipmap.ic_account));
-        customerReviewsList.add(new CustomerReviews("Jane Smith", "Very satisfied!", "Phone", R.mipmap.ic_account));
-
-        // Khởi tạo CustomerReviewAdapter
-        CustomerReviewAdapter customerReviewAdapter = new CustomerReviewAdapter(customerReviewsList);
-
-        // Thiết lập LinearLayoutManager (có thể là ngang hoặc dọc tùy thiết kế)
-        LinearLayoutManager customerReviewsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewCustomerReviews.setLayoutManager(customerReviewsLayoutManager);
         recyclerViewCustomerReviews.setAdapter(customerReviewAdapter);
+
+        // Quan sát LiveData cho Customer Reviews
+        customerReviewList.getReviews().observe(this, new Observer<List<CustomerReviews>>() {
+            @Override
+            public void onChanged(List<CustomerReviews> reviews) {
+                customerReviewAdapter.updateReviews(reviews);
+                customerReviewAdapter.notifyDataSetChanged();
+            }
+        });
 
         // Xử lý sự kiện nhập liệu (chỉ log để kiểm tra, chưa lọc dữ liệu)
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
