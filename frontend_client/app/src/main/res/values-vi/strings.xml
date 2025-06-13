@@ -578,6 +578,12 @@
     <string name="confirm_exit_yes">Đúng rồi!</string>
     <string name="confirm_exit_no">Không!</string>
     <string name="title_login_save_login_infor">Lưu In4</string>
+    <string name="title_phone">Số điện thoại <font color="#FF0000">*</font></string>
+    <string name="txt_input_phone">Nhập số điện thoại đã đăng ký để nhận mã OTP</string>
+    <string name="hint_phone">Nhập SĐT vào đây</string>
+    <string name="get_otp">Nhận OTP</string>
+    <string name="hint_enter_otp">Nhập OTP</string>
+    <string name="btn_verify_otp">Xác minh OTP</string>
 </resources>
 
 
