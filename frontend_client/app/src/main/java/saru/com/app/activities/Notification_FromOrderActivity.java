@@ -47,7 +47,11 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
         notificationList = new ArrayList<>();
         addViews();
         fetchNotifications();
+        deleteNotifications();
         addEvents();
+    }
+
+    private void deleteNotifications() {
     }
 
     private void addViews() {

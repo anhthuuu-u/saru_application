@@ -732,7 +732,7 @@
 
 
                         <ImageView
-                            android:id="@+id/imgBlog_CategoryNameInfo"
+                            android:id="@+id/imgVoucher"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_weight="0"

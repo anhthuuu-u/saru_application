@@ -49,7 +49,11 @@ public class Notification_FromDiscountActivity extends AppCompatActivity {
         notificationList = new ArrayList<>();
         addViews();
         fetchNotifications();
+        deleteNotifications();
         addEvents();
+    }
+
+    private void deleteNotifications() {
     }
 
     private void addViews() {
