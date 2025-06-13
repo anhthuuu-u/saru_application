@@ -61,15 +61,15 @@ public class Blog_ListActivity extends AppCompatActivity {
 
         recyclerCategories = findViewById(R.id.recyclerCategories);
         recyclerCategories.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        adapter = new BlogCategoryAdapter(this, categoryList);
+        adapter = new BlogCategoryAdapter(this, categoryList); // Truyền Context và danh sách
         recyclerCategories.setAdapter(adapter);
 
         recyclerSuggestions = findViewById(R.id.recyclerSuggestions);
         recyclerSuggestions.setLayoutManager(new LinearLayoutManager(this));
-        blogSuggestionAdapter = new BlogSuggestionAdapter(this, blogList, categoryMap);
+        blogSuggestionAdapter = new BlogSuggestionAdapter(this, blogList, categoryMap); // Đảm bảo constructor khớp
         recyclerSuggestions.setAdapter(blogSuggestionAdapter);
 
-        imgBlogList_Back = findViewById(R.id.ic_back_arrow);
+        imgBlogList_Back = findViewById(R.id.ic_back_arrow); // Sửa ID cho đúng
     }
 
     private void loadData() {

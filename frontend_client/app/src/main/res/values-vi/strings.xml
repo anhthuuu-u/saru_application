@@ -386,6 +386,12 @@
     <string name="review_write_review_hint">Nhập đánh giá của bạn tại đây</string>
     <string name="review_submit_button">Gửi đánh giá</string>
     <string name="review_submit_success">Gửi đánh giá thành công!</string>
+    <string name="review_submit_error">Không gửi được đánh giá. Vui lòng thử lại.</string>
+    <string name="review_empty_error">Vui lòng nhập bình luận đánh giá.</string>
+    <string name="rating_empty_error">Vui lòng chọn xếp hạng.</string>
+    <string name="add_photo_button">Thêm ảnh</string>
+    <string name="max_images_error">Bạn chỉ có thể tải lên tối đa 3 hình ảnh.</string>
+    <string name="image_upload_error">Không tải được hình ảnh. Vui lòng thử lại.</string>
 
     <!-- RETURN REQUEST -->
     <string name="return_request_title">YÊU CẦU TRẢ HÀNG</string>

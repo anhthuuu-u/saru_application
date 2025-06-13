@@ -215,7 +215,7 @@
     <string name="title_blog_blogcontent">Content</string>
     <string name="title_blog_suggestfyou">Suggest for you</string>
     <string name="title_blogeachcatalog_blogcatalogname_infor">INFORMATION ABOUT TAY BAC WINE</string>
-    <string name="title_detailblog_titleblog">THE HEALTH BENEFITS OF TAY BAC WINE</string>
+    <string name="title_detailblog_titleblog">DETAIL</string>
     <string name="title_detailblog_datepost">Posting date</string>
     <string name="title_detailblog_view">View</string>
     <string name="title_detailblog_relatednews">Related news</string>
@@ -361,19 +361,25 @@
 
     <!-- REVIEWS -->
     <string name="review_title">ORDER REVIEW</string>
-    <string name="order_product_label">Product</string>
-    <string name="order_product_name">Mao Dao Moc Chau Plum Wine</string>
+    <string name="order_product_label">Products</string>
+    <string name="order_product_name">Product Name</string>
     <string name="order_brand_label">Brand: %s</string>
     <string name="order_brand_value">XXXXX</string>
     <string name="order_quantity_label">x%s</string>
     <string name="order_original_price">-%s</string>
     <string name="order_discounted_price">%s</string>
-    <string name="review_rating_label">Order Rating</string>
-    <string name="review_attach_media_label">Attach Photo/Video</string>
+    <string name="review_rating_label">Rating</string>
+    <string name="review_attach_media_label">Attach Media</string>
     <string name="review_write_review_label">Write Review</string>
-    <string name="review_write_review_hint">Write your review here</string>
-    <string name="review_submit_button">Submit review</string>
-    <string name="review_submit_success">Send review successful!</string>
+    <string name="review_write_review_hint">Write your review here...</string>
+    <string name="review_submit_button">Submit Review</string>
+    <string name="review_submit_success">Review submitted successfully!</string>
+    <string name="review_submit_error">Failed to submit review. Please try again.</string>
+    <string name="review_empty_error">Please enter a review comment.</string>
+    <string name="rating_empty_error">Please select a rating.</string>
+    <string name="add_photo_button">Add Photo</string>
+    <string name="max_images_error">You can only upload up to 3 images.</string>
+    <string name="image_upload_error">Failed to upload image. Please try again.</string>
 
     <!-- RETURN REQUEST -->
     <string name="return_request_title">RETURN REQUEST</string>

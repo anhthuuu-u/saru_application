@@ -19,7 +19,6 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:onClick="do_back"
                 android:id="@+id/ic_back_arrow"
                 android:layout_width="20dp"
                 android:layout_height="match_parent"
@@ -207,11 +206,16 @@
             android:textStyle="bold" />
 
         <!-- Rating Stars -->
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:src="@mipmap/ic_star_yellow" />
+            android:numStars="5"
+            android:stepSize="1"
+            android:progressTint="#FFC107"
+            android:scaleX="0.8"
+            android:scaleY="0.8" />
 
         <!-- Attach Media Label -->
         <TextView
@@ -227,25 +231,23 @@
 
         <!-- Media Attachment Placeholder -->
         <LinearLayout
-            android:id="@+id/media_placeholder"
+            android:id="@+id/layout_selected_images"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#F0F0F0"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:padding="8dp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_camera"
-                android:layout_marginEnd="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_media_play" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_add_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/color_golden_yellow"
+            android:text="@string/add_photo_button"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
 
         <!-- Write Review Label -->
         <TextView
