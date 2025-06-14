@@ -52,11 +52,12 @@
             android:paddingBottom="16dp">
 
             <ImageView
+                android:id="@+id/imgCustomerAva"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@mipmap/img_circle"
                 android:layout_marginEnd="12dp"
-                android:contentDescription="@string/profile_image" />
+                android:contentDescription="@string/profile_image"
+                android:src="@mipmap/img_circle" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -65,14 +66,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtCustomerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_user_name"
                     android:textColor="#B16628"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtCustomerEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_user_email"
@@ -83,19 +86,20 @@
 
         <!-- Personal Information -->
         <LinearLayout
+            android:id="@+id/LayoutPersonalInformation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_section_top_rounded"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_section_top_rounded"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingBottom="8dp">
 
                 <TextView
@@ -112,8 +116,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="16dp"
@@ -126,21 +130,22 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
-                    android:paddingStart="8dp" />
+                    android:paddingStart="8dp"
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Gender -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -161,6 +166,7 @@
                     android:paddingStart="8dp">
 
                     <RadioButton
+                        android:id="@+id/ckbMale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_male"
@@ -168,6 +174,7 @@
                         android:textSize="14sp" />
 
                     <RadioButton
+                        android:id="@+id/ckbFemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -181,8 +188,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -196,22 +203,23 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerPhone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
+                    android:inputType="phone"
                     android:paddingStart="8dp"
-                    android:inputType="phone" />
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Date of Birth -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -225,22 +233,23 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerBirth"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
+                    android:inputType="date"
                     android:paddingStart="8dp"
-                    android:inputType="date" />
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Email -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -254,22 +263,23 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerMail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
+                    android:inputType="textEmailAddress"
                     android:paddingStart="8dp"
-                    android:inputType="textEmailAddress" />
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Password -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -283,22 +293,23 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerPass"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
+                    android:inputType="textPassword"
                     android:paddingStart="8dp"
-                    android:inputType="textPassword" />
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Join Date -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -312,22 +323,23 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCustomerJoinDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="#B16628"
-                    android:textSize="14sp"
                     android:background="@null"
+                    android:inputType="date"
                     android:paddingStart="8dp"
-                    android:inputType="date" />
+                    android:textColor="#B16628"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Payment Method -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
@@ -344,8 +356,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:paddingStart="8dp"
                     android:background="@null"
+                    android:paddingStart="8dp"
                     android:textColor="#B16628"
                     android:textSize="14sp" />
 
@@ -379,21 +391,23 @@
 
         <!-- Shipping Address Content -->
         <LinearLayout
+            android:id="@+id/LayoutShippingAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_section_top_rounded"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_section_top_rounded"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txtCustomerFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -405,17 +419,18 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:src="@mipmap/ic_reload"/>
+                    android:src="@mipmap/ic_reload" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <TextView
+                    android:id="@+id/txtCustomerFullAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -428,8 +443,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingTop="8dp">
 
                 <RadioButton

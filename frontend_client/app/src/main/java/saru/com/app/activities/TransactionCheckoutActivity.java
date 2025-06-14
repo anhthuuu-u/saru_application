@@ -132,7 +132,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         imgBack = findViewById(R.id.imgBack);
         imgEditInfo = findViewById(R.id.imgEditInfo);
         imgEditInfoBank = findViewById(R.id.imgEditInfoBank);
-        txtCustomerName = findViewById(R.id.txtCustomerName);
+        txtCustomerName = findViewById(R.id.edtCustomerName);
         txtCustomerPhoneNumber = findViewById(R.id.txtCustomerPhoneNumber);
         txtCustomerAddress = findViewById(R.id.txtCustomerAddress);
         edtVoucherCode = findViewById(R.id.edtVoucherCode);

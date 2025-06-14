@@ -12,7 +12,7 @@ import saru.com.app.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private static final String TAG = "BaseActivity";
+    static final String TAG = "BaseActivity";
 
     // Abstract method to be implemented by subclasses to indicate which menu item is selected
     @IdRes // Ensures that the returned int is a resource ID

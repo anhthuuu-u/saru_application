@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.2"
 firebaseBom = "33.14.0"
+glideVersion = "4.16.0"
 googlePlayServicesMaps = "18.2.0"
 gradle = "8.9.3"
 junit = "4.13.2"
@@ -26,6 +27,7 @@ securityCrypto = "1.0.0"
 [libraries]
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

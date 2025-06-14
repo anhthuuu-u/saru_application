@@ -20,4 +20,5 @@
     <color name="text_brown">#85461F</color>
     <color name="card_background">#FFFFFF</color>
     <color name="highlight_yellow">#F8BC3B</color>
+    <color name="green">#008000</color>
 </resources>

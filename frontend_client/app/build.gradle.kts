@@ -65,4 +65,6 @@ dependencies {
     implementation(libs.play.services.maps.v1810)
     implementation(libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
+    implementation (libs.github.glide)
+
 }

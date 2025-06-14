@@ -53,7 +53,7 @@ public class CustomerReviewAdapter extends RecyclerView.Adapter<CustomerReviewAd
         public CustomerReviewViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCustomer = itemView.findViewById(R.id.imgCustomer);
-            txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
+            txtCustomerName = itemView.findViewById(R.id.edtCustomerName);
             txtReviewContent = itemView.findViewById(R.id.txtReviewContent);
             txtPurchasedProduct = itemView.findViewById(R.id.txtPurchasedProduct);
         }
