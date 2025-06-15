@@ -53,6 +53,7 @@ dependencies {
     //Dependency tải voucher
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
 
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
     // Các dependency khác
     implementation(libs.appcompat)
     implementation(libs.material)

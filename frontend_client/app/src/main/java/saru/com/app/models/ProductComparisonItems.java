@@ -3,41 +3,41 @@ package saru.com.app.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductComparisonItems {
-    private String name;
-    private String brand;
-    private String alcohol;
-    private String volume;
+public class ProductComparisonItems extends Product {
+    private String productName;
+    private String productBrand;
+    private String alcoholStrength;
+    private String netContent;
     private String wineType;
     private String ingredients;
-    private String taste;
-    private double price;
-    private int imageResId;
+    private String productTaste;
+    private double productPrice;
+    private String imageResId;
 
-    public ProductComparisonItems(String name, String brand, String alcohol, String volume,
-                                  String wineType, String ingredients, String taste,
-                                  double price, int imageResId) {
-        this.name = name;
-        this.brand = brand;
-        this.alcohol = alcohol;
-        this.volume = volume;
+    public ProductComparisonItems(String productName, String productBrand, String alcoholStrength, String netContent,
+                                  String wineType, String ingredients, String productTaste,
+                                  double productPrice, String imageResId) {
+        this.productName = productName;
+        this.productBrand = productBrand;
+        this.alcoholStrength = alcoholStrength;
+        this.netContent = netContent;
         this.wineType = wineType;
         this.ingredients = ingredients;
-        this.taste = taste;
-        this.price = price;
+        this.productTaste = productTaste;
+        this.productPrice = productPrice;
         this.imageResId = imageResId;
     }
 
     // Getters
-    public String getName() { return name; }
-    public String getBrand() { return brand; }
-    public String getAlcohol() { return alcohol; }
-    public String getVolume() { return volume; }
+    public String getProductName() { return productName; }
+    public String getProductBrand() { return productBrand; }
+    public String getAlcoholStrength() { return alcoholStrength; }
+    public String getNetContent() { return netContent; }
     public String getWineType() { return wineType; }
     public String getIngredients() { return ingredients; }
-    public String getTaste() { return taste; }
-    public double getPrice() { return price; }
-    public int getImageResId() { return imageResId; }
+    public String getProductTaste() { return productTaste; }
+    public double getProductPrice() { return productPrice; }
+    public String getImageResId() { return imageResId; }
 
     // Danh sách sản phẩm so sánh
     private static List<ProductComparisonItems> comparisonItems = new ArrayList<>();

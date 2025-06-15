@@ -19,12 +19,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 import saru.com.app.R;
+import saru.com.app.models.image;
 import saru.com.app.models.ProductComparisonItems;
 
 public class ProductComparison extends BaseActivity {
@@ -34,6 +37,7 @@ public class ProductComparison extends BaseActivity {
     private MaterialButton buttonClearAll;
     private ImageButton[] deleteButtons;
     private DecimalFormat formatter = new DecimalFormat("#,###");
+    private FirebaseFirestore db;
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -45,6 +49,9 @@ public class ProductComparison extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_comparison);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
         // Bind views
         comparisonTable = findViewById(R.id.comparison_table);
@@ -60,9 +67,6 @@ public class ProductComparison extends BaseActivity {
                 findViewById(R.id.delete_product_2),
                 findViewById(R.id.delete_product_3)
         };
-
-        // Thêm dữ liệu mẫu
-        initializeSampleData();
 
         // Cập nhật giao diện
         updateComparisonTable();
@@ -115,7 +119,7 @@ public class ProductComparison extends BaseActivity {
                     ProductComparisonItems item = items.get(index);
                     new AlertDialog.Builder(this)
                             .setTitle(getString(R.string.dialog_delete_single_title))
-                            .setMessage(getString(R.string.dialog_delete_single_comparison_message, item.getName()))
+                            .setMessage(getString(R.string.dialog_delete_single_comparison_message, item.getProductName()))
                             .setPositiveButton(getString(R.string.dialog_confirm_delete), (dialog, which) -> {
                                 ProductComparisonItems.removeItem(index);
                                 updateComparisonTable();
@@ -136,22 +140,6 @@ public class ProductComparison extends BaseActivity {
         });
 
         setupBottomNavigation();
-    }
-
-    private void initializeSampleData() {
-        // Xóa dữ liệu cũ để tránh trùng lặp
-        ProductComparisonItems.clear();
-        // Thêm dữ liệu mẫu
-        ProductComparisonItems.addItem(new ProductComparisonItems(
-                "Peach Wine", "Brand A", "12%", "750ml", "Fruit Wine",
-                "Peach, Sugar", "Sweet", 200000, R.mipmap.img_wine));
-        ProductComparisonItems.addItem(new ProductComparisonItems(
-                "Rice Wine", "Brand B", "15%", "500ml", "Grain Wine",
-                "Rice, Yeast", "Strong", 150000, R.mipmap.img_wine));
-        ProductComparisonItems.addItem(new ProductComparisonItems(
-                "Apple Wine", "Brand C", "10%", "700ml", "Fruit Wine",
-                "Apple, Honey", "Fruity", 180000, R.mipmap.img_wine));
-        Log.d("ProductComparison", "Added sample data: " + ProductComparisonItems.getItemCount() + " items");
     }
 
     private void updateComparisonTable() {
@@ -184,15 +172,27 @@ public class ProductComparison extends BaseActivity {
 
             if (i - 1 < items.size()) {
                 ProductComparisonItems item = items.get(i - 1);
-                imageView.setImageResource(item.getImageResId());
-                nameText.setText(item.getName());
-                brandText.setText(item.getBrand());
-                alcoholText.setText(item.getAlcohol());
-                volumeText.setText(item.getVolume());
+                // Load image using Glide
+                String imageUrl = item.getImageResId();
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(imageUrl)
+                            .placeholder(R.mipmap.img_saru_cup)
+                            .error(R.drawable.ic_ver_fail)
+                            .into(imageView);
+                } else {
+                    Log.e("ProductComparison", "No image URL for product: " + item.getProductName());
+                    imageView.setImageResource(R.drawable.ic_ver_fail);
+                }
+
+                nameText.setText(item.getProductName());
+                brandText.setText(item.getProductBrand());
+                alcoholText.setText(item.getAlcoholStrength());
+                volumeText.setText(item.getNetContent());
                 wineTypeText.setText(item.getWineType());
                 ingredientsText.setText(item.getIngredients());
-                tasteText.setText(item.getTaste());
-                priceText.setText(formatter.format(item.getPrice()) + getString(R.string.product_cart_currency));
+                tasteText.setText(item.getProductTaste());
+                priceText.setText(formatter.format(item.getProductPrice()) + getString(R.string.product_cart_currency));
                 deleteButton.setVisibility(View.VISIBLE);
             } else {
                 imageView.setImageDrawable(null);
