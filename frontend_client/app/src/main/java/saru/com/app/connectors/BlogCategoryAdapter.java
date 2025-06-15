@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -46,16 +47,18 @@ public class BlogCategoryAdapter extends RecyclerView.Adapter<BlogCategoryAdapte
                 .placeholder(R.mipmap.img_taybacvillage)
                 .into(holder.imgCategory);
 
-        View.OnClickListener clickListener = v -> {
-            Intent intent = new Intent(context, Blog_EachCatalogActivity.class);
-            intent.putExtra("cateblogID", category.getCateblogID());
-            context.startActivity(intent);
-        };
-
-        holder.itemView.setOnClickListener(clickListener);
-        holder.txtSeemore.setOnClickListener(clickListener);
-        holder.imgCategory.setOnClickListener(clickListener);
-        holder.txtCategoryName.setOnClickListener(clickListener);
+        holder.cardView.setOnClickListener(v -> {
+            if (category.getCateblogID() != null) {
+                v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction(() -> {
+                    Intent intent = new Intent(context, Blog_EachCatalogActivity.class);
+                    intent.putExtra("cateblogID", category.getCateblogID());
+                    context.startActivity(intent);
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
+                }).start();
+            } else {
+                android.util.Log.e("BlogCategoryAdapter", "cateblogID is null for category at position: " + position);
+            }
+        });
     }
 
     @Override
@@ -65,13 +68,14 @@ public class BlogCategoryAdapter extends RecyclerView.Adapter<BlogCategoryAdapte
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCategory;
-        TextView txtCategoryName, txtSeemore;
+        TextView txtCategoryName;
+        CardView cardView;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCategory = itemView.findViewById(R.id.imgCategory);
             txtCategoryName = itemView.findViewById(R.id.txtCategoryName);
-            txtSeemore = itemView.findViewById(R.id.txtSeemore);
+            cardView = itemView.findViewById(R.id.card_view); // Thêm CardView để áp dụng hiệu ứng
         }
     }
 }

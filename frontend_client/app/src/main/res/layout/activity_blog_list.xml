@@ -13,14 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/margin_medium">
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/ic_back_arrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@mipmap/ic_back_arrow"
-            app:tint="@color/title_orange" />
+            app:tint="@color/title_orange"
+            android:layout_marginStart="@dimen/margin_small" />
 
         <TextView
             android:layout_width="0dp"
@@ -31,7 +33,8 @@
             android:textColor="@color/title_orange"
             android:textSize="@dimen/text_size_title"
             android:textStyle="bold"
-            android:fontFamily="@font/inter_bold" />
+            android:fontFamily="@font/inter_bold"
+            android:layout_marginStart="@dimen/margin_medium" />
     </LinearLayout>
 
     <!-- Catalog Section -->
@@ -43,30 +46,25 @@
         android:textColor="@color/title_orange"
         android:textSize="@dimen/text_size_title"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/margin_medium" />
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_standard" />
 
-    <!-- RecyclerView danh mục -->
+    <!-- RecyclerView danh mục với HorizontalScrollView -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
+        android:scrollbarThumbVertical="@color/scrollbar_thumb"
+        android:overScrollMode="ifContentScrolls"
+        android:layout_marginTop="@dimen/margin_small">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerCategories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false" />
-        </LinearLayout>
+            android:paddingHorizontal="@dimen/margin_standard"
+            android:clipToPadding="false" />
     </HorizontalScrollView>
 
     <!-- Suggestions for You Section -->
@@ -78,17 +76,17 @@
         android:textColor="@color/title_orange"
         android:textSize="@dimen/text_size_title"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/margin_medium" />
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_standard" />
 
     <!-- RecyclerView cho danh sách blog -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSuggestions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_large"
         android:clipToPadding="false"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingHorizontal="@dimen/margin_standard"
         android:scrollbars="vertical" />
 </LinearLayout>

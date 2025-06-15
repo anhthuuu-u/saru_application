@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -91,7 +93,7 @@
             android:exported="true" />
         <activity
             android:name=".activities.Blog_EachCatalogActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.Blog_ListActivity"
             android:exported="true" />

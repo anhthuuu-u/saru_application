@@ -11,152 +11,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_marginLeft="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/imgBlogList_Back"
-            android:layout_width="21dp"
-            android:layout_height="24dp"
-            android:src="@mipmap/ic_back_arrow" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/color_dark_brown" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_extrabold"
+            android:layout_weight="1"
             android:text="@string/title_blogeachcatalog_blogcatalogname_infor"
-            android:textAlignment="center"
-            android:textColor="#B16527"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:textColor="#B16628"
+            android:fontFamily="@font/inter_bold"
             android:textStyle="bold"
-            android:typeface="sans" />
+            android:gravity="center" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView6"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBlogs"
         android:layout_width="match_parent"
-        android:layout_height="163dp"
-        app:srcCompat="@mipmap/img_blogeachcatalog_northwesttwo" />
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FDFAFA"
-                android:orientation="vertical"
-                android:layout_marginLeft="25dp">
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="150dp"
-                    android:layout_height="160dp"
-                    app:srcCompat="@mipmap/img_saru_cup"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/txtAboutus_StoreLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="@string/title_blog_blogtitle"
-                    android:textColor="#F8BC3B"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/title_blog_blogcontent"
-                    android:textSize="12sp"
-                    android:textStyle="italic" />
-
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="137dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_blog_seemore"
-                    android:textAlignment="textEnd"
-                    android:textColor="#B16628"
-                    android:textSize="10sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FDFAFA"
-                android:orientation="vertical"
-                android:layout_marginLeft="25dp">
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="150dp"
-                    android:layout_height="160dp"
-                    app:srcCompat="@mipmap/img_saru_cup"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="@string/title_blog_blogtitle"
-                    android:textColor="#F8BC3B"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/txtBlog_BlogCatalogName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/title_blog_blogcontent"
-                    android:textSize="12sp"
-                    android:textStyle="italic" />
-
-
-                <TextView
-                    android:id="@+id/txtBlog_BlogTitle"
-                    android:layout_width="137dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_blog_seemore"
-                    android:textAlignment="textEnd"
-                    android:textColor="#B16628"
-                    android:textSize="10sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:background="#F2E8DA" />
 
 </LinearLayout>

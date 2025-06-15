@@ -21,4 +21,6 @@
     <color name="card_background">#FFFFFF</color>
     <color name="highlight_yellow">#F8BC3B</color>
     <color name="green">#008000</color>
+    <color name="scrollbar_thumb">#B16628</color>
+
 </resources>

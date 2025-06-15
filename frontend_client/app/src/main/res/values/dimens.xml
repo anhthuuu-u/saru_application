@@ -45,4 +45,5 @@
     <dimen name="text_size_seemore">10sp</dimen>
     <dimen name="text_size_content">10sp</dimen>
     <dimen name="elevation_card">4dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 </resources>

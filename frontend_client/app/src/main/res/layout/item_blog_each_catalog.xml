@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_image"
+    android:padding="10dp"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="#D3D3D3"
+        android:contentDescription="Blog Image"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/txtAboutus_StoreLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Blog Title"
+        android:textColor="#F8BC3B"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="Blog content preview..."
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="6dp">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/title_blog_seemore"
+            android:textColor="#B16628"
+            android:textSize="10sp"
+            android:textStyle="italic" />
+    </LinearLayout>
+</LinearLayout>
