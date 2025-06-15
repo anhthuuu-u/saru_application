@@ -41,28 +41,27 @@ android {
 
 dependencies {
     // Sử dụng BOM để quản lý phiên bản Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
-
+    implementation(platform(libs.firebase.bom))
     // Firebase dependencies (không cần chỉ định phiên bản vì đã có BOM)
-    implementation("com.google.firebase:firebase-firestore") // Firestore
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-database")
-    implementation("com.google.firebase:firebase-auth")
-    implementation ("com.google.firebase:firebase-dynamic-links")
-    implementation ("com.google.firebase:firebase-analytics:22.1.0")
-    implementation("com.google.firebase:firebase-appcheck")
-    implementation("com.google.android.play:integrity:1.4.0")
+    implementation(libs.firebase.firestore) // Firestore
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.google.firebase.database)
+    implementation(libs.google.firebase.auth)
+    implementation (libs.google.firebase.dynamic.links)
+    implementation (libs.firebase.analytics)
+    implementation(libs.firebase.appcheck)
+    implementation(libs.integrity)
     debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
 
     // Thêm Glide để tải hình ảnh
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.github.glide)
     implementation(libs.play.services.safetynet)
     implementation(libs.firebase.appcheck.playintegrity)
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    annotationProcessor(libs.compiler)
 
     //Dependency tải voucher
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation(libs.lifecycle.livedata)
+    implementation (libs.viewpager2)
     // Các dependency khác
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -79,9 +78,7 @@ dependencies {
     implementation(libs.play.services.maps.v1810)
     implementation(libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
-
-    implementation (libs.github.glide)
-    implementation ("com.google.android.gms:play-services-auth:19.0.0")
+    implementation (libs.play.services.auth)
 
 
 }
