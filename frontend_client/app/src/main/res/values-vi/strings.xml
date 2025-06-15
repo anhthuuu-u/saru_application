@@ -579,6 +579,7 @@
     <string name="confirm_exit_no">Không!</string>
     <string name="title_login_save_login_infor">Lưu In4</string>
 
+
     <string name="title_Addaddress_AddnewAddress">Thêm địa chỉ mới</string>
     <string name="title_addaddress_RecipientName">Tên người nhận</string>
     <string name="title_addaddress_PhoneNumber">Số điện thoại</string>
@@ -609,6 +610,16 @@
     <string name="no_status_available">No Status available</string>
     <string name="error_loading_status">Error loading Status</string>
     <string name="no_status_id">No Status ID</string>
+
+    <string name="no_related_products">Không có sản phẩm liên quan</string>
+    <string name="error_loading_related_products">Lỗi - Không có sản phẩm liên quan</string>
+
+    <string name="title_phone">Số điện thoại <font color="#FF0000">*</font></string>
+    <string name="txt_input_phone">Nhập số điện thoại đã đăng ký để nhận mã OTP</string>
+    <string name="hint_phone">Nhập SĐT vào đây</string>
+    <string name="get_otp">Nhận OTP</string>
+    <string name="hint_enter_otp">Nhập OTP</string>
+    <string name="btn_verify_otp">Xác minh OTP</string>
 
 </resources>
 

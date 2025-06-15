@@ -17,8 +17,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
-        release {
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -44,15 +48,20 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-dynamic-links")
+    implementation ("com.google.firebase:firebase-analytics:22.1.0")
+    implementation("com.google.firebase:firebase-appcheck")
+    implementation("com.google.android.play:integrity:1.4.0")
+    debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
 
     // Thêm Glide để tải hình ảnh
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.play.services.safetynet)
+    implementation(libs.firebase.appcheck.playintegrity)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-
 
     //Dependency tải voucher
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
-
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
     // Các dependency khác
     implementation(libs.appcompat)
@@ -70,7 +79,9 @@ dependencies {
     implementation(libs.play.services.maps.v1810)
     implementation(libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
+
     implementation (libs.github.glide)
     implementation ("com.google.android.gms:play-services-auth:19.0.0")
+
 
 }

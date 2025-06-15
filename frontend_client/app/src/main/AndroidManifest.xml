@@ -145,13 +145,34 @@
             android:name=".activities.FaceAuthenticationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.FogotPasswordCreateActivity"
-            android:exported="false" />
+            android:name=".activities.ForgotPasswordCreateActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="saruapp.page.link"
+                    android:pathPrefix="/forgotpassword"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="saru.com.app"
+                    android:pathPrefix="/forgotpassword"/>
+            </intent-filter>
+
+        </activity>
         <activity
-            android:name=".activities.FogotPasswordOtpActivity"
+            android:name=".activities.ForgotPasswordOtpActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
+
             android:exported="false" />
         <activity
             android:name=".activities.GreetingActivity"
