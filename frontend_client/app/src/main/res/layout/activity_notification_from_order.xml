@@ -11,9 +11,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -24,8 +23,8 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="455dp"
-            android:layout_height="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/inter_extrabold"
             android:text="@string/title_notification_notification"
@@ -33,6 +32,11 @@
             android:textColor="#B16527"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -82,7 +86,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="53dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
         <CheckBox
@@ -100,64 +106,18 @@
             android:id="@+id/txtNotification_DeleteAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:fontFamily="@font/inter"
             android:text="@string/title_notification_deleteall"
             android:textColor="#F8BC3B"
             android:textStyle="bold" />
+
     </LinearLayout>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvNotification"
         android:layout_width="match_parent"
-        android:layout_height="111dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#FDFBFB"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:buttonTint="#F8BC3B"
-                android:fontFamily="@font/inter"
-                android:text="@string/title_notification_successfulldelivery"
-                android:textColor="#F8BC3B"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="21dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_trash_bin" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/inter"
-            android:text="@string/title_notification_message"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:text="@string/title_notification_time" />
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>

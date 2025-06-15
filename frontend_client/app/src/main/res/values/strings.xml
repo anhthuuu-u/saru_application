@@ -585,7 +585,7 @@
     <string name="confirm_exit_yes">Yes</string>
     <string name="confirm_exit_no">No</string>
     <string name="title_login_save_login_infor">Save Infor</string>
-<<<<<<< HEAD
+
     <string name="title_Addaddress_AddnewAddress">Add new address</string>
     <string name="title_addaddress_RecipientName">Recipient Name</string>
     <string name="title_addaddress_PhoneNumber">Phone Number</string>
@@ -626,7 +626,7 @@
     <string name="hint_enter_otp">Enter OTP</string>
     <string name="btn_verify_otp">Verify OTP</string>
 
-
+    <string name="title_noti_title">Noti Title</string>
 
 </resources>
 

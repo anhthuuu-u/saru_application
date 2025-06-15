@@ -19,16 +19,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import saru.com.app.R;
+import saru.com.app.models.Voucher;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TransactionCheckoutActivity extends AppCompatActivity {
 
     // Constants for activity result
     private static final int EDIT_ADDRESS_REQUEST = 1001;
-    private static final int EDIT_PAYMENT_METHOD_REQUEST = 1002; // Thêm constant mới
+    private static final int EDIT_PAYMENT_METHOD_REQUEST = 1002;
 
     // UI Components
     ImageView imgBack;
+    ImageView imgVoucher;
     ImageView imgEditInfo;
     ImageView imgEditInfoBank;
     TextView txtCustomerName;
@@ -49,7 +59,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     LinearLayout layoutCODDetails;
     LinearLayout layoutEWalletDetails;
 
-    // Thêm các TextView để hiển thị thông tin payment
+    // TextView for payment info
     TextView txtBankName;
     TextView txtCardNumber;
     TextView txtCardType;
@@ -65,17 +75,23 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private String customerPhone = "";
     private String customerAddress = "";
 
-    // Payment information variables - Thêm biến lưu thông tin payment
+    // Payment information variables
     private String bankName = "";
     private String cardNumber = "";
     private String cardType = "";
     private String cvv = "";
     private String expiryDate = "";
 
+    // Firestore instance
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_checkout);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
         // Initialize UI components
         addViews();
@@ -99,7 +115,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
         updateCustomerInfo();
         updatePaymentSummary();
-        updatePaymentInfo(); // Thêm method cập nhật thông tin payment
+        updatePaymentInfo();
     }
 
     private void updateCustomerInfo() {
@@ -109,11 +125,10 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     }
 
     private void updatePaymentSummary() {
-        // Update payment summary display
-        // Implementation depends on your UI layout
+        txtMerchandiseTotal.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", totalAmount));
+        txtTotalPayment.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", payableAmount));
     }
 
-    // Thêm method cập nhật thông tin payment
     private void updatePaymentInfo() {
         if (txtBankName != null) {
             txtBankName.setText(bankName.isEmpty() ? "Chưa có thông tin" : bankName);
@@ -144,6 +159,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         layoutBank = findViewById(R.id.layoutBank);
         layoutEWallet = findViewById(R.id.layoutEWallet);
 
+        imgVoucher = findViewById(R.id.imgVoucher);
+
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         txtTotalPayment = findViewById(R.id.txtTotalPayment);
         txtMerchandiseTotal = findViewById(R.id.txtMerchandiseTotal);
@@ -152,60 +169,32 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         layoutBankDetails = findViewById(R.id.layoutBankDetails);
         layoutEWalletDetails = findViewById(R.id.layoutEWalletDetails);
 
-        // Thêm initialization cho các TextView payment info
         txtBankName = findViewById(R.id.txtBankName);
         txtCardNumber = findViewById(R.id.txtCardNumber);
         txtCardType = findViewById(R.id.txtCardType);
     }
 
     private void addEvents() {
-        // Edit shipping info button
-        imgEditInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTransactionEditAddressActivity();
-            }
-        });
+        imgEditInfo.setOnClickListener(v -> openTransactionEditAddressActivity());
+        btnPlaceOrder.setOnClickListener(v -> openTransactionFaceAuthorizationActivity());
+        imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
+        imgVoucher.setOnClickListener(v -> openVouchersManagementActivity());
 
-        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTransactionFaceAuthorizationActivity();
-            }
-        });
-
-        imgEditInfoBank.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTransactionEditPaymentMethodActivity();
-            }
-        });
-
-        // Apply discount code button
         btnApplyVoucherCode.setOnClickListener(v -> {
-            if (btnApplyVoucherCode.getText().toString().equals(getString(R.string.title_voucher_apply))) {
-                String discountCode = edtVoucherCode.getText().toString().trim();
-                if (!discountCode.isEmpty()) {
-                    applyVoucherCode(discountCode);
-                } else {
-                    Toast.makeText(this, R.string.title_enter_voucher_code_message, Toast.LENGTH_SHORT).show();
-                }
+            String discountCode = edtVoucherCode.getText().toString().trim();
+            if (!discountCode.isEmpty()) {
+                applyVoucherCode(discountCode);
             } else {
-                String currentCode = edtVoucherCode.getText().toString().trim();
-                if (!currentCode.isEmpty()) {
-                    applyVoucherCode(currentCode);
-                } else {
-                    Toast.makeText(this, R.string.title_enter_voucher_code_message, Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, R.string.title_enter_voucher_code_message, Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Payment method selection
         layoutCOD.setOnClickListener(v -> {
             radCOD.setChecked(true);
             radBank.setChecked(false);
             radEWallet.setChecked(false);
             selectedPaymentMethod = "COD";
+            updatePaymentMethodDetails();
         });
 
         layoutBank.setOnClickListener(v -> {
@@ -213,6 +202,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
             radBank.setChecked(true);
             radEWallet.setChecked(false);
             selectedPaymentMethod = "BANK";
+            updatePaymentMethodDetails();
         });
 
         layoutEWallet.setOnClickListener(v -> {
@@ -220,9 +210,9 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
             radBank.setChecked(false);
             radEWallet.setChecked(true);
             selectedPaymentMethod = "EWALLET";
+            updatePaymentMethodDetails();
         });
 
-        // Radio button listeners
         radCOD.setOnClickListener(v -> {
             radBank.setChecked(false);
             radEWallet.setChecked(false);
@@ -245,100 +235,125 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         });
     }
 
-    // Handle result from both EditAddress and EditPaymentMethod activities
+    private void openVouchersManagementActivity() {
+        Intent intent = new Intent(TransactionCheckoutActivity.this, VouchersManagement.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == EDIT_ADDRESS_REQUEST && resultCode == RESULT_OK && data != null) {
-            // Get updated address information
             customerName = data.getStringExtra("address_name");
             customerPhone = data.getStringExtra("address_phone");
             customerAddress = data.getStringExtra("address_full");
-
-            // Update UI with new information
             updateCustomerInfo();
-
             Toast.makeText(this, "Thông tin địa chỉ đã được cập nhật", Toast.LENGTH_SHORT).show();
-        }
-        // Thêm xử lý cho payment method result
-        else if (requestCode == EDIT_PAYMENT_METHOD_REQUEST && resultCode == RESULT_OK && data != null) {
-            // Get updated payment information
+        } else if (requestCode == EDIT_PAYMENT_METHOD_REQUEST && resultCode == RESULT_OK && data != null) {
             bankName = data.getStringExtra("bank_name");
             cardNumber = data.getStringExtra("card_number");
             cardType = data.getStringExtra("card_type");
             cvv = data.getStringExtra("cvv");
             expiryDate = data.getStringExtra("expiry_date");
-
-            // Update UI with new payment information
             updatePaymentInfo();
-
             Toast.makeText(this, "Thông tin thanh toán đã được cập nhật", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void applyVoucherCode(String discountCode) {
-        boolean isValidCode = validateVoucherCode(discountCode);
+        validateVoucherCode(discountCode, (isValid, voucher) -> {
+            if (isValid && voucher != null) {
+                discountAmount = 50000; // Adjust discount based on Firestore data if needed
+                payableAmount = totalAmount - discountAmount;
+                updatePaymentSummary();
+                btnApplyVoucherCode.setText(R.string.title_applied);
+                btnApplyVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
+                edtVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
+                edtVoucherCode.setEnabled(true);
 
-        if (isValidCode) {
-            discountAmount = 50000;
-            payableAmount = totalAmount - discountAmount;
+                String currentAppliedCode = discountCode;
+                // Display voucher description in Toast
+                Toast.makeText(this, voucher.getDescription(), Toast.LENGTH_SHORT).show();
 
-            updatePaymentSummary();
-
-            btnApplyVoucherCode.setText(R.string.title_applied);
-            btnApplyVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
-            edtVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
-            edtVoucherCode.setEnabled(true);
-
-            String currentAppliedCode = discountCode;
-
-            Toast.makeText(this, R.string.title_voucher_applied_success, Toast.LENGTH_SHORT).show();
-
-            edtVoucherCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
+                edtVoucherCode.setOnFocusChangeListener((v, hasFocus) -> {
                     if (!hasFocus) {
                         String newCode = edtVoucherCode.getText().toString().trim();
                         if (!newCode.equals(currentAppliedCode) && !newCode.isEmpty()) {
                             resetVoucherButtonState();
                         }
                     }
-                }
-            });
+                });
 
-            edtVoucherCode.addTextChangedListener(new android.text.TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                edtVoucherCode.addTextChangedListener(new android.text.TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String newCode = s.toString().trim();
-                    if (!newCode.equals(currentAppliedCode)) {
-                        resetVoucherButtonState();
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        String newCode = s.toString().trim();
+                        if (!newCode.equals(currentAppliedCode)) {
+                            resetVoucherButtonState();
+                        }
                     }
-                }
 
-                @Override
-                public void afterTextChanged(android.text.Editable s) {}
-            });
-        } else {
-            Toast.makeText(this, R.string.title_invalid_voucher_code, Toast.LENGTH_SHORT).show();
-        }
+                    @Override
+                    public void afterTextChanged(android.text.Editable s) {}
+                });
+            } else {
+                Toast.makeText(this, R.string.title_invalid_voucher_code, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private boolean validateVoucherCode(String code) {
-        return !code.isEmpty();
+    private void validateVoucherCode(String code, VoucherValidationCallback callback) {
+        if (code.isEmpty()) {
+            callback.onValidationResult(false, null);
+            return;
+        }
+
+        db.collection("vouchers")
+                .whereEqualTo("voucherCode", code)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            // Voucher exists, check expiry date
+                            Voucher voucher = querySnapshot.getDocuments().get(0).toObject(Voucher.class);
+                            if (voucher != null && isVoucherValid(voucher)) {
+                                callback.onValidationResult(true, voucher);
+                            } else {
+                                callback.onValidationResult(false, null);
+                            }
+                        } else {
+                            callback.onValidationResult(false, null);
+                        }
+                    } else {
+                        Toast.makeText(this, "Error checking voucher: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        callback.onValidationResult(false, null);
+                    }
+                });
+    }
+
+    private boolean isVoucherValid(Voucher voucher) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date expiryDate = sdf.parse(voucher.getExpiryDate());
+            Date currentDate = new Date();
+            return expiryDate != null && !expiryDate.before(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void resetVoucherButtonState() {
         btnApplyVoucherCode.setText(R.string.title_voucher_apply);
         btnApplyVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.color_golden_yellow));
         edtVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.color_golden_yellow));
-
         discountAmount = 0;
         payableAmount = totalAmount;
-
         updatePaymentSummary();
     }
 
@@ -383,41 +398,36 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void do_edit_information(View view) {
 
-    }
+    public void do_edit_information(View view) {}
 
-    public void do_payment(View view) {
-
-    }
+    public void do_payment(View view) {}
 
     void openTransactionEditAddressActivity() {
         Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditAddressActivity.class);
-
-        // Pass current address information to edit activity
         intent.putExtra("address_name", customerName);
         intent.putExtra("address_phone", customerPhone);
         intent.putExtra("address_full", customerAddress);
-
         startActivityForResult(intent, EDIT_ADDRESS_REQUEST);
     }
 
-    // Cập nhật method để sử dụng startActivityForResult
     void openTransactionEditPaymentMethodActivity() {
         Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditPaymentMethodActivity.class);
-
-        // Pass current payment information to edit activity
         intent.putExtra("bank_name", bankName);
         intent.putExtra("card_number", cardNumber);
         intent.putExtra("card_type", cardType);
         intent.putExtra("cvv", cvv);
         intent.putExtra("expiry_date", expiryDate);
-
         startActivityForResult(intent, EDIT_PAYMENT_METHOD_REQUEST);
     }
 
     void openTransactionFaceAuthorizationActivity() {
         Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionFaceAuthorizationActivity.class);
         startActivity(intent);
+    }
+
+    // Callback interface for async Firestore validation
+    private interface VoucherValidationCallback {
+        void onValidationResult(boolean isValid, Voucher voucher);
     }
 }
