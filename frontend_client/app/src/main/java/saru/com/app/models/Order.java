@@ -5,29 +5,34 @@ public class Order {
     private String orderDate;
     private String orderStatus;
     private int totalProduct;
-    private double totalAmount;
+    private double totalValue;
 
 
-    public Order(String orderID, String orderDate, String orderStatus) {
-        this.orderID = orderID;
+    public Order(String orderDate, String orderID, String orderStatus, int totalProduct) {
         this.orderDate = orderDate;
+        this.orderID = orderID;
         this.orderStatus = orderStatus;
+        this.totalProduct = totalProduct;
     }
 
-    public Order(String orderID, String orderDate) {
+    public Order(String orderID, String orderDate,String orderStatus) {
         this.orderID = orderID;
         this.orderDate = orderDate;
+        this.orderStatus=orderStatus;
     }
 
     public Order() {
     }
 
-    public Order(String orderID, String orderDate, String orderStatus, int totalProduct, double totalAmount) {
+    public Order(String orderID, String orderDate, String orderStatus, int totalProduct, double totalValue) {
         this.orderID = orderID;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.totalProduct = totalProduct;
-        this.totalAmount = totalAmount;
+        this.totalValue = totalValue;
+    }
+
+    public Order(String orderID, String orderDate, String orderStatus, String ordertotalQuantity) {
     }
 
     public String getOrderID() {
@@ -62,12 +67,13 @@ public class Order {
         this.totalProduct = totalProduct;
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
+    public double gettotalValue() {
+        return totalValue;
     }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
+    public void settotalValue(double totalValue) {
+
+        this.totalValue = totalValue;
     }
 
 

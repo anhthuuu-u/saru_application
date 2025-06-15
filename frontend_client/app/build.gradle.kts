@@ -66,5 +66,6 @@ dependencies {
     implementation(libs.play.services.maps.v1820)
     implementation(libs.mongodb.driver.sync)
     implementation (libs.github.glide)
+    implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
 }

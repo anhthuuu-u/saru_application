@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F2E8DA"
+    tools:context=".activities.AddAddressActivity">
+    <ImageView
+        android:id="@+id/ic_back_arrow"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back_arrow"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/title_Addaddress_AddnewAddress"
+        android:textColor="#B16628"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edtCustomerName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/title_addaddress_RecipientName" />
+
+    <EditText
+        android:id="@+id/edtCustomerPhone2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/title_addaddress_PhoneNumber"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/edtCustomerAddress2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/title_addaddress_Address" />
+
+    <Button
+        android:id="@+id/btnSaveAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#B16628"
+        android:text="@string/profile_save_info_button"
+        android:textColor="#FFFFFF" />
+
+
+
+</LinearLayout>
