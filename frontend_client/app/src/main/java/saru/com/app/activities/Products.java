@@ -2,10 +2,9 @@ package saru.com.app.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,16 +22,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
-import android.graphics.Rect;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import saru.com.app.R;
 import saru.com.app.connectors.ProductAdapter;
+import saru.com.app.models.Product;
+import saru.com.app.models.productBrand;
+import saru.com.app.models.productCategory;
 
 public class Products extends BaseActivity {
     private ProductAdapter productAdapter;
-    // Lưu trữ adapter để sử dụng lại
-    SearchView searchBar;
+    private FirebaseFirestore db;
+    private SearchView searchBar;
+    private List<productCategory> categories;
+    private List<productBrand> brands;
+    private List<String> volumes;
+    private List<String> wineTypes;
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -45,13 +56,22 @@ public class Products extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_products);
 
+        db = FirebaseFirestore.getInstance();
+        categories = new ArrayList<>();
+        brands = new ArrayList<>();
+        volumes = new ArrayList<>();
+        wineTypes = new ArrayList<>();
+
         RecyclerView recyclerView = findViewById(R.id.recycler_view_products);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        productAdapter = new ProductAdapter(); // Khởi tạo adapter
+        productAdapter = new ProductAdapter();
         recyclerView.setAdapter(productAdapter);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
+
+        loadProducts(null);
+        loadFilterData();
 
         ImageButton btnFilter = findViewById(R.id.btn_filter);
         btnFilter.setOnClickListener(v -> showFilterDialog());
@@ -61,41 +81,31 @@ public class Products extends BaseActivity {
 
         ImageButton btnCart = findViewById(R.id.btn_cart);
         if (btnCart != null) {
-            btnCart.setOnClickListener(v -> {
-                Intent intent = new Intent(Products.this, ProductCart.class);
-                startActivity(intent);
-            });
+            btnCart.setOnClickListener(v -> startActivity(new Intent(Products.this, ProductCart.class)));
         }
 
         ImageButton btnBackArrow = findViewById(R.id.btn_back_arrow);
         if (btnBackArrow != null) {
             btnBackArrow.setOnClickListener(v -> {
-                Intent intent = new Intent(Products.this, Homepage.class);
-                startActivity(intent);
+                startActivity(new Intent(Products.this, Homepage.class));
                 finish();
             });
         }
-        // Tìm SearchView
+
         searchBar = findViewById(R.id.search_bar);
         if (searchBar == null) {
-            throw new IllegalStateException("SearchView with ID 'search_bar' not found in activity_homepage.xml");
+            throw new IllegalStateException("SearchView search_bar not found");
         }
-        Log.d("Homepage", "SearchView found");
+        Log.d("Products", "SearchView found");
 
-        // Cấu hình SearchView để không tự động focus khi mở activity
-        searchBar.setIconifiedByDefault(false); // Giữ SearchView luôn mở
-        searchBar.setFocusable(false); // Không cho phép focus tự động
-        searchBar.setFocusableInTouchMode(false); // Không focus khi chạm nếu không có sự kiện
-
-        // Xử lý sự kiện khi nhấn vào SearchView
-        searchBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchBar.setFocusable(true); // Cho phép focus khi nhấn
-                searchBar.setFocusableInTouchMode(true); // Cho phép focus khi chạm
-                searchBar.requestFocus(); // Focus chuột khi nhấn
-                Log.d("Homepage", "SearchView focused on click");
-            }
+        searchBar.setIconifiedByDefault(false);
+        searchBar.setFocusable(false);
+        searchBar.setFocusableInTouchMode(false);
+        searchBar.setOnClickListener(v -> {
+            searchBar.setFocusable(true);
+            searchBar.setFocusableInTouchMode(true);
+            searchBar.requestFocus();
+            Log.d("Products", "SearchView focused");
         });
 
         setupBottomNavigation();
@@ -106,11 +116,100 @@ public class Products extends BaseActivity {
         });
     }
 
+    private void loadProducts(Query query) {
+        if (query == null) {
+            query = db.collection("products");
+        }
+        query.get().addOnSuccessListener(querySnapshot -> {
+            List<Product> products = new ArrayList<>();
+            for (DocumentSnapshot doc : querySnapshot) {
+                Product product = doc.toObject(Product.class);
+                if (product != null) {
+                    String cateID = product.getCateID();
+                    if (cateID != null) {
+                        db.collection("productCategory").document(cateID).get()
+                                .addOnSuccessListener(categoryDoc -> {
+                                    productCategory category = categoryDoc.toObject(productCategory.class);
+                                    if (category != null) {
+                                        product.setCategory(category.getCateName()); // Giả định Product có phương thức setCategoryName
+                                    } else {
+                                        product.setCategory(getString(R.string.no_category_available));
+                                    }
+                                    products.add(product);
+                                    productAdapter.updateData(products);
+                                    Log.d("Products", "Product loaded with category: " + product.getCategory());
+                                })
+                                .addOnFailureListener(e -> {
+                                    product.setCategory(getString(R.string.error_loading_category));
+                                    products.add(product);
+                                    productAdapter.updateData(products);
+                                    Log.e("Products", "Error loading category for cateID: " + cateID, e);
+                                });
+                    } else {
+                        product.setCategory(getString(R.string.no_category_id));
+                        products.add(product);
+                        productAdapter.updateData(products);
+                        Log.w("Products", "No cateID for product: " + product.getProductID());
+                    }
+                }
+            }
+            productAdapter.updateData(products); // Cập nhật lần cuối
+            Log.d("Products", "Products loaded: " + products.size());
+        }).addOnFailureListener(e -> Log.e("Products", "Error loading products: " + e.getMessage()));
+    }
+
+    private void loadFilterData() {
+        // Load categories
+        db.collection("productCategory").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        categories.add(doc.toObject(productCategory.class));
+                    }
+                    Log.d("Products", "Categories loaded: " + categories.size());
+                })
+                .addOnFailureListener(e -> Log.e("Products", "Error loading categories: " + e.getMessage()));
+
+        // Load brands
+        db.collection("productBrand").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        brands.add(doc.toObject(productBrand.class));
+                    }
+                    Log.d("Products", "Brands loaded: " + brands.size());
+                })
+                .addOnFailureListener(e -> Log.e("Products", "Error loading brands: " + e.getMessage()));
+
+        // Load volumes
+        db.collection("products").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        String volume = doc.getString("netContent");
+                        if (volume != null && !volumes.contains(volume)) {
+                            volumes.add(volume);
+                        }
+                    }
+                    Log.d("Products", "Volumes loaded: " + volumes.size());
+                })
+                .addOnFailureListener(e -> Log.e("Products", "Error loading volumes: " + e.getMessage()));
+
+        // Load wineTypes
+        db.collection("products").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        String wineType = doc.getString("wineType");
+                        if (wineType != null && !wineTypes.contains(wineType)) {
+                            wineTypes.add(wineType);
+                        }
+                    }
+                    Log.d("Products", "WineTypes loaded: " + wineTypes.size());
+                })
+                .addOnFailureListener(e -> Log.e("Products", "Error loading wineTypes: " + e.getMessage()));
+    }
+
     private void showFilterDialog() {
         Dialog filterDialog = new Dialog(this, android.R.style.Theme_NoTitleBar);
         filterDialog.setContentView(R.layout.filter_dialog);
 
-        // Điều chỉnh kích thước dialog
         Window window = filterDialog.getWindow();
         if (window != null) {
             WindowManager.LayoutParams params = window.getAttributes();
@@ -123,7 +222,6 @@ public class Products extends BaseActivity {
 
         filterDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
-        // Khởi tạo các thành phần trong dialog
         LinearLayout dropdownCategory = filterDialog.findViewById(R.id.dropdown_category);
         TextView textCategory = filterDialog.findViewById(R.id.text_category);
         LinearLayout dropdownSortBy = filterDialog.findViewById(R.id.dropdown_sort_by);
@@ -141,141 +239,77 @@ public class Products extends BaseActivity {
         Button buttonApplyFilter = filterDialog.findViewById(R.id.button_apply_filter);
         TextView textResetFilter = filterDialog.findViewById(R.id.text_reset_filter);
 
-        // Danh sách tùy chọn
-        String[] categories = {"Tay Bac Wine", "Set wine gift", "Wine accessories"};
-        String[] sortOptions = {"Low to High", "High to Low"};
-        String[] brands = {"All", "Mầm Distillery", "Sauchua Spirit Sapa", "CamTa", "Rượu Zuji", "Việt Moutains", "Công Ty Rượu Vodka Cá Sấu"};
-        String[] volumes = {"All", "500ml", "350ml", "250ml"};
-        String[] wineTypes = {"Infused Wine", "Distilled Wine", "Fermented Wine"};
-
-        // Xử lý dropdown Category
         dropdownCategory.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownCategory);
-            Menu menu = popupMenu.getMenu();
-            for (String category : categories) {
-                menu.add(category);
+            for (productCategory category : categories) {
+                popupMenu.getMenu().add(category.getCateName());
             }
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 textCategory.setText(item.getTitle());
+                // Tìm cateID tương ứng
+                String cateID = categories.stream()
+                        .filter(c -> c.getCateName().equals(item.getTitle()))
+                        .findFirst()
+                        .map(productCategory::getCateID)
+                        .orElse(null);
+                Log.d("Products", "Selected category: " + item.getTitle() + ", cateID: " + cateID);
                 return true;
             });
-
-            popupMenu.getMenuInflater().inflate(R.menu.dummy_menu, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
-                View customView = getLayoutInflater().inflate(R.layout.popup_menu_item, null);
-                TextView textView = customView.findViewById(R.id.popup_menu_item_text);
-                textView.setText(item.getTitle());
-                item.setActionView(customView);
-            }
-
             popupMenu.show();
         });
 
-        // Xử lý dropdown Sort By
         dropdownSortBy.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownSortBy);
-            Menu menu = popupMenu.getMenu();
-            for (String sortOption : sortOptions) {
-                menu.add(sortOption);
-            }
-
+            popupMenu.getMenu().add(getString(R.string.sort_low_to_high));
+            popupMenu.getMenu().add(getString(R.string.sort_high_to_low));
             popupMenu.setOnMenuItemClickListener(item -> {
                 textSortBy.setText(item.getTitle());
                 return true;
             });
-
-            popupMenu.getMenuInflater().inflate(R.menu.dummy_menu, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
-                View customView = getLayoutInflater().inflate(R.layout.popup_menu_item, null);
-                TextView textView = customView.findViewById(R.id.popup_menu_item_text);
-                textView.setText(item.getTitle());
-                item.setActionView(customView);
-            }
-
             popupMenu.show();
         });
 
-        // Xử lý dropdown Brand
         dropdownBrand.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownBrand);
-            Menu menu = popupMenu.getMenu();
-            for (String brand : brands) {
-                menu.add(brand);
+            popupMenu.getMenu().add(getString(R.string.filter_all));
+            for (productBrand brand : brands) {
+                popupMenu.getMenu().add(brand.getBrandName());
             }
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 textBrand.setText(item.getTitle());
                 return true;
             });
-
-            popupMenu.getMenuInflater().inflate(R.menu.dummy_menu, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
-                View customView = getLayoutInflater().inflate(R.layout.popup_menu_item, null);
-                TextView textView = customView.findViewById(R.id.popup_menu_item_text);
-                textView.setText(item.getTitle());
-                item.setActionView(customView);
-            }
-
             popupMenu.show();
         });
 
-        // Xử lý dropdown Volume
         dropdownVolume.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownVolume);
-            Menu menu = popupMenu.getMenu();
+            popupMenu.getMenu().add(getString(R.string.filter_all));
             for (String volume : volumes) {
-                menu.add(volume);
+                popupMenu.getMenu().add(volume);
             }
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 textVolume.setText(item.getTitle());
                 return true;
             });
-
-            popupMenu.getMenuInflater().inflate(R.menu.dummy_menu, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
-                View customView = getLayoutInflater().inflate(R.layout.popup_menu_item, null);
-                TextView textView = customView.findViewById(R.id.popup_menu_item_text);
-                textView.setText(item.getTitle());
-                item.setActionView(customView);
-            }
-
             popupMenu.show();
         });
 
-        // Xử lý dropdown Wine Type
         dropdownWineType.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownWineType);
-            Menu menu = popupMenu.getMenu();
+            popupMenu.getMenu().add(getString(R.string.filter_all));
             for (String wineType : wineTypes) {
-                menu.add(wineType);
+                popupMenu.getMenu().add(wineType);
             }
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 textWineType.setText(item.getTitle());
                 return true;
             });
-
-            popupMenu.getMenuInflater().inflate(R.menu.dummy_menu, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
-                View customView = getLayoutInflater().inflate(R.layout.popup_menu_item, null);
-                TextView textView = customView.findViewById(R.id.popup_menu_item_text);
-                textView.setText(item.getTitle());
-                item.setActionView(customView);
-            }
-
             popupMenu.show();
         });
 
-        // Xử lý nút Apply Filter
         buttonApplyFilter.setOnClickListener(v -> {
-            // Lấy giá trị từ các thành phần
+            Query query = db.collection("products");
             String selectedCategory = textCategory.getText().toString().trim();
             String selectedSortBy = textSortBy.getText().toString().trim();
             String selectedBrand = textBrand.getText().toString().trim();
@@ -286,66 +320,95 @@ public class Products extends BaseActivity {
             boolean isBestSelling = checkboxBestSelling.isChecked();
             boolean isOnSale = checkboxOnSale.isChecked();
 
-            // Chuẩn bị các tham số lọc
-            String filterCategory = selectedCategory.isEmpty() ? null : selectedCategory;
-            String filterSortBy = selectedSortBy.isEmpty() ? null : selectedSortBy;
-            String filterBrand = selectedBrand.isEmpty() ? null : selectedBrand;
-            String filterVolume = selectedVolume.isEmpty() ? null : selectedVolume;
-            String filterWineType = selectedWineType.isEmpty() ? null : selectedWineType;
-            Double filterPriceMin = null;
-            try {
-                filterPriceMin = priceMin.isEmpty() ? null : Double.parseDouble(priceMin);
-            } catch (NumberFormatException e) {
-                filterPriceMin = null; // Bỏ qua nếu không hợp lệ
-            }
-            Double filterPriceMax = null;
-            try {
-                filterPriceMax = priceMax.isEmpty() ? null : Double.parseDouble(priceMax);
-            } catch (NumberFormatException e) {
-                filterPriceMax = null; // Bỏ qua nếu không hợp lệ
+            if (!selectedCategory.equals(getString(R.string.filter_product_dialog_category))) {
+                String cateID = categories.stream()
+                        .filter(c -> c.getCateName().equals(selectedCategory))
+                        .findFirst()
+                        .map(productCategory::getCateID)
+                        .orElse(null);
+                if (cateID != null) {
+                    query = query.whereEqualTo(getString(R.string.field_cateID), cateID);
+                    Log.d("Products", "Filtering by cateID: " + cateID);
+                } else {
+                    Log.w("Products", "No cateID found for category: " + selectedCategory);
+                }
             }
 
-            // Áp dụng logic lọc sản phẩm
-            productAdapter.filterProducts(
-                    filterCategory,
-                    filterSortBy,
-                    filterBrand,
-                    filterVolume,
-                    filterWineType,
-                    filterPriceMin,
-                    filterPriceMax,
-                    isBestSelling,
-                    isOnSale
-            );
+            if (!selectedBrand.equals(getString(R.string.title_filter_product_dialog_brand)) &&
+                    !selectedBrand.equals(getString(R.string.filter_all))) {
+                String brandID = brands.stream()
+                        .filter(b -> b.getBrandName().equals(selectedBrand))
+                        .findFirst()
+                        .map(productBrand::getBrandID)
+                        .orElse(null);
+                if (brandID != null) {
+                    query = query.whereEqualTo(getString(R.string.field_brandID), brandID);
+                }
+            }
 
-            // Đóng dialog sau khi áp dụng lọc
+            if (!selectedVolume.equals(getString(R.string.title_filter_product_dialog_volume)) &&
+                    !selectedVolume.equals(getString(R.string.filter_all))) {
+                query = query.whereEqualTo(getString(R.string.field_netContent), selectedVolume);
+            }
+
+            if (!selectedWineType.equals(getString(R.string.title_filter_product_dialog_wine_type)) &&
+                    !selectedWineType.equals(getString(R.string.filter_all))) {
+                query = query.whereEqualTo(getString(R.string.field_wineType), selectedWineType);
+            }
+
+            if (!priceMin.isEmpty()) {
+                try {
+                    double min = Double.parseDouble(priceMin);
+                    query = query.whereGreaterThanOrEqualTo(getString(R.string.field_productPrice), min);
+                } catch (NumberFormatException e) {
+                    Log.e("Products", "Invalid priceMin: " + priceMin);
+                }
+            }
+
+            if (!priceMax.isEmpty()) {
+                try {
+                    double max = Double.parseDouble(priceMax);
+                    query = query.whereLessThanOrEqualTo(getString(R.string.field_productPrice), max);
+                } catch (NumberFormatException e) {
+                    Log.e("Products", "Invalid priceMax: " + priceMax);
+                }
+            }
+
+            if (isBestSelling) {
+                query = query.whereEqualTo(getString(R.string.field_isBestSelling), true);
+            }
+
+            if (isOnSale) {
+                query = query.whereEqualTo(getString(R.string.field_isOnSale), true);
+            }
+
+            if (selectedSortBy.equals(getString(R.string.sort_low_to_high))) {
+                query = query.orderBy(getString(R.string.field_productPrice), Query.Direction.ASCENDING);
+            } else if (selectedSortBy.equals(getString(R.string.sort_high_to_low))) {
+                query = query.orderBy(getString(R.string.field_productPrice), Query.Direction.DESCENDING);
+            }
+
+            loadProducts(query);
             filterDialog.dismiss();
         });
 
-        // Xử lý nút Reset Filter
         textResetFilter.setOnClickListener(v -> {
-            // Đặt lại các trường về trạng thái ban đầu
-            textCategory.setText(getString(R.string.filter_product_dialog_category)); // Hiển thị lại "Category"
-            textSortBy.setText(getString(R.string.title_product_dialog_sort)); // Hiển thị lại "Sort By"
-            textBrand.setText(getString(R.string.title_filter_product_dialog_brand)); // Hiển thị lại "Brand"
-            textVolume.setText(getString(R.string.title_filter_product_dialog_volume)); // Hiển thị lại "Volume"
-            textWineType.setText(getString(R.string.title_filter_product_dialog_wine_type)); // Hiển thị lại "Wine Type"
-            editPriceMin.setText(""); // Reset giá trị min
-            editPriceMax.setText(""); // Reset giá trị max
-            checkboxBestSelling.setChecked(false); // Reset checkbox
-            checkboxOnSale.setChecked(false); // Reset checkbox
-            // Không đóng dialog, giữ mở để người dùng tiếp tục chỉnh sửa
+            textCategory.setText(getString(R.string.filter_product_dialog_category));
+            textSortBy.setText(getString(R.string.title_product_dialog_sort));
+            textBrand.setText(getString(R.string.title_filter_product_dialog_brand));
+            textVolume.setText(getString(R.string.title_filter_product_dialog_volume));
+            textWineType.setText(getString(R.string.title_filter_product_dialog_wine_type));
+            editPriceMin.setText("");
+            editPriceMax.setText("");
+            checkboxBestSelling.setChecked(false);
+            checkboxOnSale.setChecked(false);
         });
 
-        // Thêm logic đóng dialog khi nhấn ra ngoài
         filterDialog.setCanceledOnTouchOutside(true);
-
-        // Hiển thị dialog
         filterDialog.show();
     }
 
-    // Custom ItemDecoration để thêm khoảng trống
-    private static class ItemSpacingDecoration extends ItemDecoration {
+    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
         public ItemSpacingDecoration(int spacing) {

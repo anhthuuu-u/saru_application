@@ -18,7 +18,7 @@
             android:id="@+id/image_product"
             android:layout_width="190dp"
             android:layout_height="169dp"
-            android:background="@color/color_medium_gray" />
+            android:background="@color/white" />
 
         <!-- Thông tin sản phẩm -->
         <TextView

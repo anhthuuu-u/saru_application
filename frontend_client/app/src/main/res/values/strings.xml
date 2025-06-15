@@ -584,6 +584,37 @@
     <string name="title_addaddress_PhoneNumber">Phone Number</string>
     <string name="title_addaddress_Address">Address</string>
 
+    <string name="sort_low_to_high">Price: Low to High</string>
+    <string name="sort_high_to_low">Price: High to Low</string>
+    <string name="filter_all">All</string>
+    <string name="field_cateID">Category ID</string>
+    <string name="field_brandID">Brand ID</string>
+    <string name="field_netContent">Net Content</string>
+    <string name="field_wineType">Wine Type</string>
+    <string name="field_productPrice">Product Price</string>
+    <string name="field_isBestSelling">Best Selling</string>
+    <string name="field_isOnSale">On Sale</string>
+
+    <string name="currency_vnd">VND</string>
+    <string name="no_category_available">No category available</string>
+    <string name="error_loading_category">Error loading category</string>
+    <string name="no_category_id">No category ID</string>
+
+    <string name="no_brand_available">No brand available</string>
+    <string name="error_loading_brand">Error loading brand</string>
+    <string name="no_brand_id">No brand ID</string>
+
+    <string name="no_status_available">No Status available</string>
+    <string name="error_loading_status">Error loading Status</string>
+    <string name="no_status_id">No Status ID</string>
+
+    <string name="no_related_products">No related products</string>
+    <string name="error_loading_related_products">Error - No related products</string>
+
+
+
+
+
 
 </resources>
 

@@ -49,6 +49,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
+
+    //Dependency tải voucher
+    implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
+
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
     // Các dependency khác
     implementation(libs.appcompat)
     implementation(libs.material)

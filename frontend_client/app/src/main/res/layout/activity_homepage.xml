@@ -120,18 +120,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="383dp"
-                        android:layout_height="180dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@color/color_medium_gray"
-                        android:contentDescription="Banner 1" />
+                        <ImageView
+                            android:layout_width="380dp"
+                            android:layout_height="180dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@color/white"
+                            android:contentDescription="Banner 1" />
 
-                    <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="100dp"
-                        android:background="@color/color_medium_gray"
-                        android:contentDescription="Banner 2" />
+                        <ImageView
+                            android:layout_width="380dp"
+                            android:layout_height="180dp"
+                            android:background="@color/white"
+                            android:contentDescription="Banner 2" />
                     </LinearLayout>
                 </HorizontalScrollView>
 

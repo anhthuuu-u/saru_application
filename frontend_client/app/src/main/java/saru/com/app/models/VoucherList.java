@@ -1,22 +1,48 @@
 package saru.com.app.models;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VoucherList {
-    private List<Voucher> vouchers;
+    private final MutableLiveData<List<Voucher>> vouchersLiveData;
+    private final FirebaseFirestore db;
 
     public VoucherList() {
-        vouchers = new ArrayList<>();
-        vouchers.add(new Voucher("SARU1","GIẢM 200K", "[SALE NGAY ĐỒI] Trừ trực tiếp cho đơn từ 24 tháng tười, sử dụng Abbott...", "10-06-2025"));
-        vouchers.add(new Voucher("SARU2","GIẢM 100K", "[SALE NGAY ĐỒI] Trừ trực tiếp cho đơn từ 24 tháng tười, sử dụng Abbott...", "22-06-2025"));
-        vouchers.add(new Voucher("SARU3","GIẢM 60K", "[SALE NGAY ĐỒI] Trừ trực tiếp cho đơn từ 24 tháng tười, sử dụng Abbott, TPC...", "01-07-2025"));
-        vouchers.add(new Voucher("SARU4","FREESHIP 50K", "[SALE NGAY ĐỒI] Áp dụng đơn hàng online", "07-08-2025"));
-        vouchers.add(new Voucher("SARU5","FREESHIP 50K", "[THỨ 2 FREESHIP] Áp dụng đơn hàng online", "08-09-2025"));
-        vouchers.add(new Voucher("SARU6","FREESHIP 20K", "Áp dụng đơn hàng online", "22-12-2025"));
+        vouchersLiveData = new MutableLiveData<>();
+        db = FirebaseFirestore.getInstance();
+        loadVouchersFromFirestore();
     }
 
-    public List<Voucher> getVouchers() {
-        return vouchers;
+    private void loadVouchersFromFirestore() {
+        db.collection("vouchers")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Voucher> vouchers = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Voucher voucher = new Voucher(
+                                    document.getString("voucherID"),
+                                    document.getString("voucherCode"),
+                                    document.getString("description"),
+                                    document.getString("expiryDate")
+                            );
+                            vouchers.add(voucher);
+                        }
+                        vouchersLiveData.setValue(vouchers);
+                        Log.d("VoucherList", "Loaded " + vouchers.size() + " vouchers from Firestore");
+                    } else {
+                        Log.e("VoucherList", "Error loading vouchers: ", task.getException());
+                        vouchersLiveData.setValue(new ArrayList<>());
+                    }
+                });
+    }
+
+    public MutableLiveData<List<Voucher>> getVouchers() {
+        return vouchersLiveData;
     }
 }
