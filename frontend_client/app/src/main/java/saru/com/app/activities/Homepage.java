@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,7 +39,10 @@ public class Homepage extends BaseActivity {
     private TextView cartItemCountText;
     private FirebaseFirestore db;
 
+    private FirebaseAuth mAuth;
+
     private DrawerLayout drawerLayout;
+
     RecyclerView recyclerViewSearchResults;
     SearchView searchBar;
 
@@ -53,12 +57,14 @@ public class Homepage extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
 
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         if (drawerLayout == null) {
             throw new IllegalStateException("DrawerLayout not found");
         }
+
 
         ImageButton btnFilter = findViewById(R.id.btn_filter);
         if (btnFilter == null) {

@@ -164,8 +164,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="saru.com.app"
-                    android:pathPrefix="/forgotpassword"/>
+                    android:host="saru-application.firebaseapp.com"
+                    android:pathPrefix="/__/auth/action"/>
             </intent-filter>
 
         </activity>
