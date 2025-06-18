@@ -53,7 +53,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     LinearLayout layoutBank;
     LinearLayout layoutEWallet;
     Button btnPlaceOrder;
-    TextView txtTotalPayment;
+    TextView txtTotalPrice;
     TextView txtMerchandiseTotal;
     LinearLayout layoutBankDetails;
     LinearLayout layoutCODDetails;
@@ -126,7 +126,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
     private void updatePaymentSummary() {
         txtMerchandiseTotal.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", totalAmount));
-        txtTotalPayment.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", payableAmount));
+        txtTotalPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", payableAmount));
     }
 
     private void updatePaymentInfo() {
@@ -162,7 +162,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         imgVoucher = findViewById(R.id.imgVoucher);
 
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
-        txtTotalPayment = findViewById(R.id.txtTotalPayment);
+        txtTotalPrice = findViewById(R.id.txtTotalPrice);
         txtMerchandiseTotal = findViewById(R.id.txtMerchandiseTotal);
 
         layoutCODDetails = findViewById(R.id.layoutCODDetails);

@@ -183,7 +183,6 @@
 
 
                         <TextView
-                            android:id="@+id/txtShippingFee"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -212,7 +211,6 @@
 
 
                         <TextView
-                            android:id="@+id/txtMerchandiseTotal"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -230,7 +228,7 @@
 
 
                         <TextView
-                            android:id="@+id/txtMerchandiseTotalPrice"
+                            android:id="@+id/txtMerchandiseTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
@@ -655,7 +653,6 @@
 
 
                 <TextView
-                    android:id="@+id/txtTotalPayment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
