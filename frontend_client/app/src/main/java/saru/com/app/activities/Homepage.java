@@ -39,7 +39,11 @@ public class Homepage extends BaseActivity {
     private TextView cartItemCountText;
     private FirebaseFirestore db;
 
+
     private FirebaseAuth mAuth;
+
+    ImageView btn_noti;
+
 
     private DrawerLayout drawerLayout;
 
@@ -58,6 +62,15 @@ public class Homepage extends BaseActivity {
         setContentView(R.layout.activity_homepage);
 
         mAuth = FirebaseAuth.getInstance();
+
+        btn_noti=findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNotification();
+            }
+        });
+
         db = FirebaseFirestore.getInstance();
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -199,6 +212,11 @@ public class Homepage extends BaseActivity {
         updateCartItemCount();
     }
 
+    private void openNotification() {
+        Intent intent=new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
+    }
+
     private void loadSuperSales(ProductAdapter adapter) {
         db.collection("products")
                 .whereEqualTo("isOnSale", true)
@@ -267,6 +285,7 @@ public class Homepage extends BaseActivity {
             startActivity(new Intent(Homepage.this, Aboutus_SARUActivity.class));
             drawerLayout.closeDrawer(GravityCompat.START);
         });
+
         notiItem.setOnClickListener(v -> {
             startActivity(new Intent(Homepage.this, Notification_FromOrderActivity.class));
             drawerLayout.closeDrawer(GravityCompat.START);
