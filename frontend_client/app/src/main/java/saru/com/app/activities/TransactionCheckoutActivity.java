@@ -176,7 +176,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
     private void addEvents() {
         imgEditInfo.setOnClickListener(v -> openTransactionEditAddressActivity());
-        btnPlaceOrder.setOnClickListener(v -> openTransactionFaceAuthorizationActivity());
+        btnPlaceOrder.setOnClickListener(v -> openSuccessfulPaymentActivity());
         imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
         imgVoucher.setOnClickListener(v -> openVouchersManagementActivity());
 
@@ -421,8 +421,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         startActivityForResult(intent, EDIT_PAYMENT_METHOD_REQUEST);
     }
 
-    void openTransactionFaceAuthorizationActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionFaceAuthorizationActivity.class);
+    void openSuccessfulPaymentActivity() {
+        Intent intent = new Intent(TransactionCheckoutActivity.this, SuccessfulPaymentActivity.class);
         startActivity(intent);
     }
 
