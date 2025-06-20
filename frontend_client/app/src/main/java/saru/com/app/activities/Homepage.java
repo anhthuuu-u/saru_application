@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,6 +36,8 @@ import saru.com.app.models.Product;
 import saru.com.app.models.VoucherList;
 
 public class Homepage extends BaseActivity {
+    private static final String TAG = "Homepage"; // Added TAG
+
     private ListCartItems cartItems = new ListCartItems();
     private TextView cartItemCountText;
     private FirebaseFirestore db;
@@ -210,6 +213,18 @@ public class Homepage extends BaseActivity {
         }
 
         updateCartItemCount();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Log.d(TAG, "No user logged in, redirecting to LoginActivity");
+            Intent intent = new Intent(Homepage.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void openNotification() {

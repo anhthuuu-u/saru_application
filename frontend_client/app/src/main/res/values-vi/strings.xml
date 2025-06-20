@@ -626,6 +626,7 @@
     <string name="hint_enter_otp">Nhập OTP</string>
     <string name="btn_verify_otp">Xác minh OTP</string>
     <string name="title_noti_title">Tiêu đề thông báo</string>
+    <string name="profile_logout">Đăng xuất</string>
 
 </resources>
 

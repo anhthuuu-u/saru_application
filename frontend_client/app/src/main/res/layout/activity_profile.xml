@@ -591,6 +591,42 @@
                             android:trackTint="#DADADA" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <!-- Item 7: LOGOUT -->
+                <LinearLayout
+                    android:id="@+id/logout_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/img_logout"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/profile_logout"
+                        android:src="@mipmap/ic_logout"
+                        app:tint="#FBBC05" />
+
+                    <TextView
+                        android:id="@+id/txt_logout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/profile_logout"
+                        android:textColor="#FBBC05"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/img_logout_arrow"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@mipmap/ic_forward_arrow"
+                        app:tint="#FBBC05" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
