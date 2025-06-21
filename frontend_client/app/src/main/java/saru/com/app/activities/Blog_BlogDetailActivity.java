@@ -70,9 +70,9 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
             recyclerRelatedBlogs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             relatedAdapter = new RelatedBlogAdapter(this, relatedBlogList, categoryMap);
             recyclerRelatedBlogs.setAdapter(relatedAdapter);
-            recyclerRelatedBlogs.setMinimumHeight(150);
-            recyclerRelatedBlogs.setVisibility(View.VISIBLE); // Đảm bảo hiển thị
-            Log.d("Blog_Detail", "RecyclerView visibility: " + recyclerRelatedBlogs.getVisibility());
+            recyclerRelatedBlogs.setNestedScrollingEnabled(false);
+            recyclerRelatedBlogs.setVisibility(View.VISIBLE);
+            Log.d("Blog_Detail", "RecyclerView initialized with visibility: " + recyclerRelatedBlogs.getVisibility());
         } else {
             Log.e("Blog_Detail", "recyclerRelatedBlogs is null!");
         }
@@ -85,16 +85,21 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
     private void backToBlogList() {
         Intent intent = new Intent(Blog_BlogDetailActivity.this, Blog_ListActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void loadCategoryMap() {
         db.collection("blogcategories")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    categoryMap.clear();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         categoryMap.put(document.getId(), document.getString("name"));
                     }
                     Log.d("Blog_Detail", "Loaded " + categoryMap.size() + " categories");
+                    if (cateblogID != null) {
+                        txtCategoryName.setText(categoryMap.getOrDefault(cateblogID, "Không rõ danh mục"));
+                    }
                 })
                 .addOnFailureListener(e -> Log.e("Blog_Detail", "Failed to load categories: " + e.getMessage()));
     }
@@ -129,6 +134,8 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
                     });
         } else {
             Log.e("Blog_Detail", "blogID is null from Intent!");
+            Toast.makeText(this, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -158,7 +165,10 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
                     Log.d("Blog_Detail", "Total related blogs: " + relatedBlogList.size());
                     if (relatedBlogList.isEmpty()) {
                         Log.w("Blog_Detail", "No related blogs found for cateblogID: " + cateblogID);
+                        recyclerRelatedBlogs.setVisibility(View.GONE);
                         Toast.makeText(this, "Không có tin liên quan", Toast.LENGTH_SHORT).show();
+                    } else {
+                        recyclerRelatedBlogs.setVisibility(View.VISIBLE);
                     }
                     if (relatedAdapter != null) {
                         runOnUiThread(() -> {
@@ -171,7 +181,8 @@ public class Blog_BlogDetailActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Blog_Detail", "Failed to load related blogs: " + e.getMessage());
-                    Toast.makeText(this, "Lỗi khi tải tin liên quan: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Lỗi khi tải tin liên quan", Toast.LENGTH_SHORT).show();
+                    recyclerRelatedBlogs.setVisibility(View.GONE);
                 });
     }
 }

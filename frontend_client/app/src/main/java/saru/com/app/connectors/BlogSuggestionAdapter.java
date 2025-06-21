@@ -53,6 +53,13 @@ public class BlogSuggestionAdapter extends RecyclerView.Adapter<BlogSuggestionAd
                 .load(blog.getImageUrl() != null ? blog.getImageUrl() : R.mipmap.img_taybacvillage)
                 .placeholder(R.mipmap.img_taybacvillage)
                 .into(holder.imgBlogImage);
+
+        // Sự kiện click để mở Blog_BlogDetailActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Blog_BlogDetailActivity.class);
+            intent.putExtra("blogID", blog.getBlogID());
+            context.startActivity(intent);
+        });
     }
 
     @Override
