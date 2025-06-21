@@ -60,7 +60,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tab_confirm"
+                android:id="@+id/tab_confirming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -72,26 +72,26 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tab_payment"
+                android:id="@+id/tab_confirmed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingEnd="16dp"
-                android:text="@string/order_tab_payment"
+                android:text="@string/string_order_tab_confirmed"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tab_shipping"
+                android:id="@+id/tab_intransit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingEnd="16dp"
-                android:text="@string/order_tab_shipping"
+                android:text="@string/order_tab_intransit"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -104,6 +104,15 @@
                 android:gravity="center"
                 android:paddingEnd="16dp"
                 android:text="@string/order_tab_complete"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tab_canceled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_order_Canceled"
                 android:textColor="#000000"
                 android:textSize="16sp" />
         </LinearLayout>

@@ -71,6 +71,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtShowOrderCode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -100,6 +101,7 @@
                         android:textStyle="italic" />
 
                     <TextView
+                        android:id="@+id/txtShowOrderDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -131,6 +133,7 @@
                 android:textStyle="italic" />
 
             <TextView
+                android:id="@+id/txtShowStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -142,164 +145,15 @@
         </LinearLayout>
 
         <!-- Products Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_rounded_white"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_bold"
-                android:text="@string/order_products_label"
-                android:textColor="#FBBC05"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/rounded_image"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingStart="12dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="@string/order_product_name_1"
-                            android:textColor="#85461F"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_light"
-                            android:text="@string/order_product_brand_1"
-                            android:textColor="#85461F"
-                            android:textSize="8sp"
-                            android:textStyle="italic"
-                            android:layout_marginBottom="4dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/inter_light"
-                                android:text="@string/order_product_quantity_1"
-                                android:textColor="#85461F"
-                                android:textSize="8sp" />
-
-                            <TextView
-                                android:id="@+id/product_old_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter"
-                                android:fontWeight="400"
-                                android:text="@string/order_product_old_price_1"
-                                android:textColor="#FBBC05"
-                                android:textSize="8sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:fontFamily="@font/inter_bold"
-                                android:text="@string/order_product_price_1"
-                                android:textColor="#85461F"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#BBB3B3"
-                android:layout_marginTop="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/order_shipping_fee_label"
-                    android:textColor="#000000"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/order_shipping_fee_value"
-                    android:textColor="#85461F"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/order_total_amount_label"
-                    android:textColor="#000000"
-                    android:textSize="10sp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/order_total_amount_value"
-                    android:textColor="#85461F"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
 
         <!-- Contact Information Section -->
+
+        <ListView
+            android:id="@+id/lvOrderDetail"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_marginTop="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -316,38 +170,41 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_contact_shipping_title"
                 android:textColor="#FBBC05"
-                android:textSize="10sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <!-- Contact Name -->
             <TextView
+                android:id="@+id/txtShowName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_contact_name_value"
                 android:textColor="#000000"
-                android:layout_marginBottom="3dp"
-                android:textSize="10sp" />
+                android:textSize="16sp" />
 
             <!-- Contact Phone -->
             <TextView
+                android:id="@+id/txtShowPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/order_contact_phone_value"
-                android:layout_marginBottom="3dp"
                 android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textSize="14sp" />
 
             <!-- Contact Address -->
             <TextView
+                android:id="@+id/txtShowAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
                 android:layout_marginBottom="3dp"
+                android:fontFamily="@font/inter"
                 android:text="@string/order_contact_address_value"
                 android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <!-- Action Buttons Section -->
