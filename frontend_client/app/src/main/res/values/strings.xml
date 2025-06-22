@@ -339,7 +339,7 @@
     <string name="order_product_count_value">2 products</string>
     <string name="order_products_label">Products</string>
     <string name="order_product_name_1">MO MA DAO WINE - MOC CHAU</string>
-    <string name="order_product_brand_1">Brand: xxxxxx</string>
+    <string name="order_product_brand_1">Brand:</string>
     <string name="order_product_quantity_1">x2</string>
     <string name="order_product_price_1">400,000₫</string>
     <string name="order_product_old_price_1"><strike>430,000₫</strike></string>
@@ -589,6 +589,9 @@
     <string name="title_addaddress_RecipientName">Recipient Name</string>
     <string name="title_addaddress_PhoneNumber">Phone Number</string>
     <string name="title_addaddress_Address">Address</string>
+    <string name="string_order_tab_confirmed">Confirmed</string>
+    <string name="order_tab_intransit">In transit</string>
+    <string name="string_order_Canceled">Canceled</string>
 
     <string name="sort_low_to_high">Price: Low to High</string>
     <string name="sort_high_to_low">Price: High to Low</string>

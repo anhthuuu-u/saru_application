@@ -18,7 +18,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +35,23 @@ public class OrderListActivity extends AppCompatActivity {
     private ListView lvOrder;
     OrderAdapter orderAdapter;
     List<Order> orderList = new ArrayList<>();
+    List<Order> allOrders = new ArrayList<>(); // Lưu tất cả đơn hàng để lọc
 
     // UI elements
     TextView txtOrderID, txtOrderDate, txtTotalProduct, txtTotalValue;
-    Button  btnOrderStatus;
+    Button btnOrderStatus;
+    TextView tabAll, tabConfirming, tabConfirmed, tabInTransit, tabComplete, tabCanceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
 
-        lvOrder= findViewById(R.id.lvOrder);
+        lvOrder = findViewById(R.id.lvOrder);
 
         initializeFirebase();
         initializeViews();
+        setupTabListeners();
 
         ImageView backArrow = findViewById(R.id.ic_back_arrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -59,17 +61,14 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
 
-//        TextView orderDetailsLink = findViewById(R.id.tv_order_details);
-//        orderDetailsLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(OrderListActivity.this, OrderDetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-        // Fetch and display orders
-        fetchOrdersForUser();
+        // Lấy statusID từ Intent nếu có
+        String initialStatusID = getIntent().getStringExtra("statusID");
+        if (initialStatusID != null) {
+            filterOrdersByStatus(initialStatusID); // Áp dụng bộ lọc ngay khi khởi tạo
+        } else {
+            // Fetch and display all orders if no statusID is provided
+            fetchOrdersForUser();
+        }
     }
 
     private void initializeFirebase() {
@@ -85,7 +84,61 @@ public class OrderListActivity extends AppCompatActivity {
         if (txtTotalValue == null) {
             Log.e("OrderListActivity", "txtTotalValue is null");
         }
-        btnOrderStatus=findViewById(R.id.btnOrderStatus);
+        btnOrderStatus = findViewById(R.id.btnOrderStatus);
+        // Initialize tabs
+        tabAll = findViewById(R.id.tab_all);
+        tabConfirming = findViewById(R.id.tab_confirming);
+        tabConfirmed = findViewById(R.id.tab_confirmed);
+        tabInTransit = findViewById(R.id.tab_intransit);
+        tabComplete = findViewById(R.id.tab_complete);
+        tabCanceled = findViewById(R.id.tab_canceled);
+    }
+
+    private void setupTabListeners() {
+        tabAll.setOnClickListener(v -> filterOrdersByStatus(null)); // null để hiển thị tất cả
+        tabConfirming.setOnClickListener(v -> filterOrdersByStatus("0")); // Pending confirmation
+        tabConfirmed.setOnClickListener(v -> filterOrdersByStatus("1")); // Confirmed
+        tabInTransit.setOnClickListener(v -> filterOrdersByStatus("3")); // In transit
+        tabComplete.setOnClickListener(v -> filterOrdersByStatus("4")); // Delivery successful
+        tabCanceled.setOnClickListener(v -> filterOrdersByStatus("2")); // Canceled
+    }
+
+    private void filterOrdersByStatus(String statusID) {
+        orderList.clear();
+        if (statusID == null) {
+            // Hiển thị tất cả đơn hàng
+            orderList.addAll(allOrders);
+        } else {
+            // Lọc đơn hàng theo trạng thái
+            for (Order order : allOrders) {
+                if (order.getOrderStatus().equals(getStatusName(statusID))) {
+                    orderList.add(order);
+                }
+            }
+        }
+
+        if (orderList.isEmpty() && statusID != null) {
+            Toast.makeText(OrderListActivity.this, "No orders found for this status.", Toast.LENGTH_SHORT).show();
+        }
+
+        runOnUiThread(() -> {
+            if (orderAdapter == null) {
+                orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
+                lvOrder.setAdapter(orderAdapter);
+            }
+            orderAdapter.notifyDataSetChanged();
+        });
+    }
+
+    private String getStatusName(String statusID) {
+        switch (statusID) {
+            case "0": return "Pending confirmation";
+            case "1": return "Confirmed";
+            case "2": return "Canceled";
+            case "3": return "In transit";
+            case "4": return "Delivery successful";
+            default: return "";
+        }
     }
 
     private void fetchOrdersForUser() {
@@ -98,7 +151,6 @@ public class OrderListActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String customerID = task.getResult().getString("CustomerID");
                             if (customerID != null) {
-                                // Truy vấn và hiển thị đơn hàng khi dữ liệu đã sẵn sàng
                                 fetchCustomerOrders(customerID);
                             }
                         } else {
@@ -107,7 +159,6 @@ public class OrderListActivity extends AppCompatActivity {
                     });
         }
     }
-
 
     private void fetchCustomerOrders(String customerID) {
         db.collection("orders")
@@ -120,7 +171,6 @@ public class OrderListActivity extends AppCompatActivity {
                                 String orderID = document.getString("OrderID");
                                 String orderDate = document.getString("OrderDate");
 
-                                // Lấy OrderStatusID và kiểm tra kiểu dữ liệu
                                 Object orderStatusIDObj = document.get("OrderStatusID");
                                 String orderStatusID = null;
 
@@ -134,7 +184,6 @@ public class OrderListActivity extends AppCompatActivity {
                                     Log.e("OrderListActivity", "Unknown data type for OrderStatusID");
                                 }
 
-                                // Truy vấn trạng thái đơn hàng từ collection orderstatuses
                                 if (orderStatusID != null) {
                                     fetchOrderStatus(orderStatusID, orderID, orderDate);
                                 }
@@ -149,11 +198,6 @@ public class OrderListActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
-
-
 
     interface OnTotalCalculatedListener {
         void onTotalCalculated(double totalValue);
@@ -176,7 +220,6 @@ public class OrderListActivity extends AppCompatActivity {
                         Log.d("OrderListActivity", "ProductID: " + productID + " Price: " + productPrice + " Quantity: " + quantityObj);
                         Log.d("OrderListActivity", "Total Value so far: " + totalValue[0]);
 
-                        // Gọi callback khi hoàn tất
                         if (listener != null) {
                             listener.onTotalCalculated(totalValue[0]);
                         }
@@ -186,8 +229,6 @@ public class OrderListActivity extends AppCompatActivity {
                 });
     }
 
-
-
     private void fetchOrderStatus(String orderStatusID, String orderID, String orderDate) {
         db.collection("orderstatuses")
                 .document(orderStatusID)
@@ -196,10 +237,8 @@ public class OrderListActivity extends AppCompatActivity {
                     if (statusTask.isSuccessful()) {
                         String orderStatus = statusTask.getResult().getString("Status");
 
-                        // Log order status for debugging
                         Log.d("OrderListActivity", "OrderStatus for OrderID " + orderID + ": " + orderStatus);
 
-                        // Truy vấn và tính tổng số lượng sản phẩm từ collection orderdetails
                         fetchTotalProductQuantity(orderID, orderStatus, orderDate);
                     }
                 });
@@ -228,21 +267,27 @@ public class OrderListActivity extends AppCompatActivity {
                                 fetchProductPriceAndCalculateTotal(productID, quantityObj, totalValue, new OnTotalCalculatedListener() {
                                     @Override
                                     public void onTotalCalculated(double calculatedValue) {
-                                        totalValue[0] = calculatedValue; // Cập nhật tổng giá trị
+                                        totalValue[0] = calculatedValue;
                                     }
                                 });
                             }
                         }
 
-                        // Đợi một chút để đảm bảo tất cả callback hoàn tất (có thể cần cải thiện bằng CountDownLatch)
                         int finalTotalQuantity = totalQuantity;
                         new android.os.Handler().postDelayed(() -> {
                             Order order = new Order(orderID, orderDate, orderStatus, finalTotalQuantity, totalValue[0]);
-                            orderList.add(order);
+                            allOrders.add(order); // Lưu vào allOrders
+
+                            // Nếu chưa có orderList ban đầu, thêm vào để hiển thị
+                            if (orderList.isEmpty()) {
+                                orderList.add(order);
+                            }
 
                             runOnUiThread(() -> {
-                                orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
-                                lvOrder.setAdapter(orderAdapter);
+                                if (orderAdapter == null) {
+                                    orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
+                                    lvOrder.setAdapter(orderAdapter);
+                                }
                                 orderAdapter.notifyDataSetChanged();
 
                                 if (txtTotalValue != null) {
@@ -251,10 +296,8 @@ public class OrderListActivity extends AppCompatActivity {
                                     Log.e("OrderListActivity", "txtTotalValue is null when trying to set text");
                                 }
                             });
-                        }, 500); // Độ trễ 500ms, có thể cần điều chỉnh
+                        }, 500);
                     }
                 });
     }
-
-
 }

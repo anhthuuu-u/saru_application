@@ -116,7 +116,7 @@
                                 android:textSize="8sp" />
 
                             <TextView
-                                android:id="@+id/product_old_price"
+                                android:id="@+id/txtShowOriginPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"

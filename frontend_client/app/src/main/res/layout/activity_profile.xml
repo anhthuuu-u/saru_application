@@ -158,12 +158,14 @@
                         android:padding="8dp">
 
                         <ImageView
+                            android:id="@+id/imgconfirming"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:contentDescription="@string/profile_pending_confirm"
                             android:src="@mipmap/img_pending_confirm_order" />
 
                         <TextView
+                            android:id="@+id/txtconfirming"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -184,17 +186,19 @@
                         android:padding="8dp">
 
                         <ImageView
+                            android:id="@+id/imgconfirmed"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:contentDescription="@string/profile_pending_payment"
                             android:src="@mipmap/img_unpaid" />
 
                         <TextView
+                            android:id="@+id/txtconfirmed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:paddingTop="4dp"
-                            android:text="@string/profile_pending_payment"
+                            android:text="@string/string_order_tab_confirmed"
                             android:textColor="#FBBC05"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -210,17 +214,19 @@
                         android:padding="8dp">
 
                         <ImageView
+                            android:id="@+id/imgintransit"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:contentDescription="@string/profile_shipping"
                             android:src="@mipmap/img_on_delivery" />
 
                         <TextView
+                            android:id="@+id/txtintransit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:paddingTop="4dp"
-                            android:text="@string/profile_shipping"
+                            android:text="@string/order_tab_intransit"
                             android:textColor="#FBBC05"
                             android:textSize="12sp"
                             android:textStyle="bold" />

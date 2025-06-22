@@ -24,12 +24,14 @@ import saru.com.app.R;
 
 public class ProfileActivity extends BaseActivity {
     ImageView img_aboutus;
-    ImageView nexttoaboutus,imgforAboutSaru,img_backtoaboutSaru,img_directNotifipage,img_directtoNotification;
-    TextView aboutus_page,txt_backtoaboutSaru,txt_directtonotificationpage;
-
+    ImageView nexttoaboutus, imgforAboutSaru, img_backtoaboutSaru, img_directNotifipage, img_directtoNotification;
+    TextView aboutus_page, txt_backtoaboutSaru, txt_directtonotificationpage;
 
     ImageView imgCustomerAva;
     TextView txtCustomerName, txtCustomerEmail;
+
+    ImageView imgConfirming, imgConfirmed, imgIntransit;
+    TextView txtConfirming, txtConfirmed, txtIntransit;
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -204,23 +206,49 @@ public class ProfileActivity extends BaseActivity {
         txt_directtonotificationpage = findViewById(R.id.txt_directtonotificationpage);
         img_directNotifipage = findViewById(R.id.img_directNotifipage);
         img_directtoNotification = findViewById(R.id.img_directtoNotification);
+
+        // Initialize order status navigation elements
+        imgConfirming = findViewById(R.id.imgconfirming);
+        txtConfirming = findViewById(R.id.txtconfirming);
+        imgConfirmed = findViewById(R.id.imgconfirmed);
+        txtConfirmed = findViewById(R.id.txtconfirmed);
+        imgIntransit = findViewById(R.id.imgintransit);
+        txtIntransit = findViewById(R.id.txtintransit);
     }
 
     private void addEvents() {
-        //chuyển hướng qua about us
+        // Chuyển hướng qua about us
         img_aboutus.setOnClickListener(v -> openAboutUs_SaruWine());
         nexttoaboutus.setOnClickListener(v -> openAboutUs_SaruWine());
         aboutus_page.setOnClickListener(v -> openAboutUs_SaruWine());
 
-        //chuyển qua trang about Saru
+        // Chuyển qua trang about Saru
         imgforAboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
         img_backtoaboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
         txt_backtoaboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
 
-        //chuyển hướng qua trang notification
+        // Chuyển hướng qua trang notification
         txt_directtonotificationpage.setOnClickListener(v -> openNotification_Page());
         img_directNotifipage.setOnClickListener(v -> openNotification_Page());
         img_directtoNotification.setOnClickListener(v -> openNotification_Page());
+
+        // Chuyển đến OrderList với trạng thái Pending confirmation (OrderStatusID = 0)
+        imgConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
+        txtConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
+
+        // Chuyển đến OrderList với trạng thái Confirmed (OrderStatusID = 1)
+        imgConfirmed.setOnClickListener(v -> openOrderListWithStatus("1"));
+        txtConfirmed.setOnClickListener(v -> openOrderListWithStatus("1"));
+
+        // Chuyển đến OrderList với trạng thái In transit (OrderStatusID = 3)
+        imgIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
+        txtIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
+    }
+
+    private void openOrderListWithStatus(String statusID) {
+        Intent intent = new Intent(ProfileActivity.this, OrderListActivity.class);
+        intent.putExtra("statusID", statusID); // Truyền trạng thái để lọc đơn hàng
+        startActivity(intent);
     }
 
     void openAboutUs_SaruWine() {

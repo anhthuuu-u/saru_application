@@ -352,7 +352,7 @@
     <string name="order_product_count_value">2 sản phẩm</string>
     <string name="order_products_label">Sản phẩm</string>
     <string name="order_product_name_1">Rượu Mơ Mộc Châu - Mơ Ma Đao</string>
-    <string name="order_product_brand_1">Thương hiệu: xxxxxx</string>
+    <string name="order_product_brand_1">Thương hiệu:</string>
     <string name="order_product_quantity_1">x2</string>
     <string name="order_product_price_1">400.000₫</string>
     <string name="order_product_old_price_1"><strike>430.000₫</strike></string>
@@ -591,6 +591,7 @@
     <string name="title_addaddress_Address">Địa chỉ</string>
 
 
+
     <string name="sort_low_to_high">Price: Low to High</string>
     <string name="sort_high_to_low">Price: High to Low</string>
     <string name="filter_all">All</string>
@@ -626,6 +627,9 @@
     <string name="hint_enter_otp">Nhập OTP</string>
     <string name="btn_verify_otp">Xác minh OTP</string>
     <string name="title_noti_title">Tiêu đề thông báo</string>
+    <string name="string_order_tab_confirmed">Đã xác nhận</string>
+    <string name="order_tab_intransit">Đang vận chuyển</string>
+    <string name="string_order_Canceled">Đã hủy</string>
 
 </resources>
 
