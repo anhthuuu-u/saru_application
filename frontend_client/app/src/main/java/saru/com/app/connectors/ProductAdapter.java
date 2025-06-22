@@ -1,5 +1,6 @@
 package saru.com.app.connectors;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,15 +34,23 @@ import saru.com.app.models.productCategory;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> products;
+    private Context context;
+    private OnAddToCartListener onAddToCartListener;
     private FirebaseFirestore db;
     private final int placeholderResId;
     private final int errorResId;
 
-    public ProductAdapter() {
-        products = new ArrayList<>();
-        db = FirebaseFirestore.getInstance();
-        placeholderResId = R.mipmap.img_saru_cup;
-        errorResId = R.drawable.ic_ver_fail;
+    public interface OnAddToCartListener {
+        void onAddToCart(Product product);
+    }
+
+    public ProductAdapter(Context context, OnAddToCartListener listener) {
+        this.context = context;
+        this.onAddToCartListener = listener;
+        this.products = new ArrayList<>();
+        this.db = FirebaseFirestore.getInstance();
+        this.placeholderResId = R.mipmap.img_saru_cup;
+        this.errorResId = R.drawable.ic_ver_fail;
     }
 
     @NonNull
@@ -58,7 +67,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         // Load ảnh
         loadImage(holder, product);
 
-        // Loại bỏ load category nếu không cần (tuỳ bạn)
+        // Load danh mục
         loadCategory(holder, product);
 
         // Load các field khác
@@ -77,9 +86,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         // Add to cart
         holder.btnAddToCart.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(),
-                    holder.itemView.getContext().getString(R.string.dialog_add_to_cart_success),
-                    Toast.LENGTH_SHORT).show();
+            if (onAddToCartListener != null) {
+                onAddToCartListener.onAddToCart(product);
+            } else {
+                // Giữ Toast làm fallback nếu listener không được gán
+                Toast.makeText(holder.itemView.getContext(),
+                        holder.itemView.getContext().getString(R.string.dialog_add_to_cart_success),
+                        Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Compare
@@ -143,7 +157,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     productCategory category = documentSnapshot.toObject(productCategory.class);
                     if (category != null && category.getCateName() != null) {
                         holder.textProductCategory.setText(category.getCateName());
-                        product.setCategory(category.getCateName()); // Cập nhật vào model Product
+                        product.setCategory(category.getCateName());
                         Log.d("ProductAdapter", "Category loaded: " + category.getCateName() + " for cateID: " + product.getCateID());
                     } else {
                         Log.w("ProductAdapter", "No category data for cateID: " + product.getCateID());
@@ -167,7 +181,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 ? image.getProductImageCover() : "";
                         ProductComparisonItems comparisonItem = new ProductComparisonItems(
                                 product.getProductName(),
-                                "", // Không dùng productBrand nữa
+                                "",
                                 product.getAlcoholStrength(),
                                 product.getNetContent(),
                                 product.getWineType(),
@@ -185,7 +199,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                         Log.e("ProductAdapter", "Error loading image for comparison: " + product.getImageID(), e);
                         ProductComparisonItems comparisonItem = new ProductComparisonItems(
                                 product.getProductName(),
-                                "", // Không dùng productBrand nữa
+                                "",
                                 product.getAlcoholStrength(),
                                 product.getNetContent(),
                                 product.getWineType(),
@@ -203,7 +217,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Log.e("ProductAdapter", "imageID is null for comparison: " + product.getProductID());
             ProductComparisonItems comparisonItem = new ProductComparisonItems(
                     product.getProductName(),
-                    "", // Không dùng productBrand nữa
+                    "",
                     product.getAlcoholStrength(),
                     product.getNetContent(),
                     product.getWineType(),
@@ -234,7 +248,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView textProductName;
         RatingBar ratingBar;
         TextView textProductPrice;
-        TextView textProductCategory; // Giữ category nếu cần
+        TextView textProductCategory;
         Button btnAddToCart;
         ImageButton btnComparison;
 
@@ -244,7 +258,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textProductName = itemView.findViewById(R.id.text_product_name);
             ratingBar = itemView.findViewById(R.id.rating_bar);
             textProductPrice = itemView.findViewById(R.id.text_product_price);
-            textProductCategory = itemView.findViewById(R.id.txtProductCategory); // Giữ nếu cần
+            textProductCategory = itemView.findViewById(R.id.txtProductCategory);
             btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
             btnComparison = itemView.findViewById(R.id.btnComparison);
         }

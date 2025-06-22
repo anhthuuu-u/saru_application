@@ -82,6 +82,16 @@
             android:scaleType="fitCenter"
             app:srcCompat="@mipmap/ic_cart"
             app:tint="#F8BC3B" />
+        <TextView
+            android:id="@+id/cart_item_count"
+            android:layout_width="@dimen/cart_count_size"
+            android:layout_height="@dimen/cart_count_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/circle_background"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="10dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- ScrollView for Product Detail Content -->

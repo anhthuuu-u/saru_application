@@ -23,12 +23,7 @@
     <string name="title_product_ingredients">Ingredients</string>
     <string name="title_compare">Compare</string>
     <string name="title_filter_product_dialog">Filter Products</string>
-    <string name="filter_product_dialog_category">Category</string>
     <string name="title_filter_product_dialog_price_range">Price range</string>
-    <string name="title_product_dialog_sort">Sort By</string>
-    <string name="title_filter_product_dialog_brand">Brand</string>
-    <string name="title_filter_product_dialog_volume">Volume</string>
-    <string name="title_filter_product_dialog_wine_type">Wine Type</string>
     <string name="title_filter_product_dialog_others">Others</string>
     <string name="title_filter_product_apply">Apply Filter</string>
     <string name="title_filter_product_reset">Reset Filter</string>
@@ -605,9 +600,6 @@
     <string name="field_isOnSale">On Sale</string>
 
     <string name="currency_vnd">VND</string>
-    <string name="no_category_available">No category available</string>
-    <string name="error_loading_category">Error loading category</string>
-    <string name="no_category_id">No category ID</string>
 
     <string name="no_brand_available">No brand available</string>
     <string name="error_loading_brand">Error loading brand</string>
@@ -629,7 +621,39 @@
     <string name="btn_verify_otp">Verify OTP</string>
 
     <string name="title_noti_title">Noti Title</string>
+
     <string name="profile_logout">Logout</string>
+
+    <string name="delete_item_noti">Delete successfull!</string>
+    <string name="no_search_results">No result</string>
+
+    <string name="filter_data_not_ready">Dữ liệu bộ lọc chưa sẵn sàng, vui lòng thử lại</string>
+    <string name="invalid_price_min">Giá tối thiểu không hợp lệ</string>
+    <string name="invalid_price_max">Giá tối đa không hợp lệ</string>
+    <string name="error_loading_filter_data">Lỗi khi tải dữ liệu bộ lọc</string>
+
+    <string name="filter_product_dialog_category">Category</string>
+    <string name="title_product_dialog_sort">Sort By</string>
+    <string name="title_filter_product_dialog_brand">Brand</string>
+    <string name="title_filter_product_dialog_volume">Volume</string>
+    <string name="title_filter_product_dialog_wine_type">Wine Type</string>
+    <string name="no_category_available">No category available</string>
+    <string name="error_loading_category">Error loading category</string>
+    <string name="no_category_id">No category ID</string>
+
+    <string name="CateID">Category ID</string>
+    <string name="brandID">Brand ID</string>
+    <string name="netContent">Net Content</string>
+    <string name="wineType">Wine Type</string>
+    <string name="productPrice">Product Price</string>
+    <string name="isBestSelling">Best Selling</string>
+    <string name="isOnSale">On Sale</string>
+    <string name="login_required">Please login to add to cart</string>
+    <string name="error_adding_to_cart">Error adding to cart</string>
+    <string name="google_play_services_unavailable">Google Play Services is not available</string>
+    <string name="added_to_cart">Added %1$s to cart successfully!</string>
+
+
 
 </resources>
 

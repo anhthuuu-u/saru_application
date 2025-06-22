@@ -21,6 +21,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +41,8 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
     private LinearLayout emptyCartLayout;
     private TextView txtDeleteAll;
     private LinearLayout bottomSectionLayout;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -43,6 +50,10 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_cart);
+
+        // Khởi tạo Firebase
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -62,17 +73,16 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         cartAdapter = new CartAdapter(this, listCartItems, this);
         recyclerView.setAdapter(cartAdapter);
 
-        // Thêm dữ liệu mẫu
-        List<CartItem> sampleItems = getSampleCartItems();
-        Log.d("ProductCart", "Sample items size: " + (sampleItems != null ? sampleItems.size() : "null"));
-        if (sampleItems != null) {
-            for (CartItem item : sampleItems) {
-                listCartItems.addItem(item);
-            }
-        } else {
-            Log.e("ProductCart", "getSampleCartItems() returned null");
+        // Kiểm tra đăng nhập
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập để xem giỏ hàng", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
         }
-        Log.d("ProductCart", "Cart items size after adding: " + listCartItems.getCartItems().size());
+
+        // Tải dữ liệu từ Firestore
+        loadCartFromFirestore();
 
         // Cập nhật giao diện dựa trên trạng thái giỏ hàng
         updateCartVisibility();
@@ -99,6 +109,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         });
 
         // Sự kiện xóa tất cả
+        // Sự kiện xóa tất cả
         txtDeleteAll.setOnClickListener(v -> {
             List<CartItem> selectedItems = new ArrayList<>();
             for (CartItem item : listCartItems.getCartItems()) {
@@ -114,9 +125,18 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                     .setTitle(getString(R.string.dialog_delete_all_title))
                     .setMessage(getString(R.string.dialog_delete_all_message, selectedItems.size()))
                     .setPositiveButton(getString(R.string.dialog_confirm_delete), (dialog, which) -> {
+                        String accountID = auth.getCurrentUser().getUid();
                         for (CartItem item : selectedItems) {
                             int position = listCartItems.getCartItems().indexOf(item);
                             if (position != -1) {
+                                db.collection("carts").document(accountID).collection("items")
+                                        .document(item.getProductID()) // Cập nhật để dùng productID
+                                        .delete()
+                                        .addOnSuccessListener(aVoid -> Log.d("ProductCart", "Deleted item: " + item.getProductName()))
+                                        .addOnFailureListener(e -> {
+                                            Log.e("ProductCart", "Error deleting item: " + e.getMessage());
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                        });
                                 listCartItems.removeItem(position);
                                 cartAdapter.notifyItemRemoved(position);
                                 cartAdapter.notifyItemRangeChanged(position, listCartItems.getItemCount());
@@ -130,7 +150,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                     .show();
         });
 
-        // Sự kiện nút quay lại trang sản phẩm từ bottom_section_layout
+        // Sự kiện nút quay lại trang sản phẩm
         Button backToProductsButton = findViewById(R.id.back_to_products_button);
         backToProductsButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProductCart.this, Products.class);
@@ -138,7 +158,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
             finish();
         });
 
-        // Sự kiện nút mua sắm ngay từ empty_cart_layout
+        // Sự kiện nút mua sắm ngay
         Button shopNowButton = findViewById(R.id.shop_now_button);
         shopNowButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProductCart.this, Products.class);
@@ -149,22 +169,41 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         updateTotalPrice();
     }
 
-    private List<CartItem> getSampleCartItems() {
-        List<CartItem> sampleItems = new ArrayList<>();
-        try {
-            sampleItems.add(new CartItem("Peach Wine", 200000, 1));
-            sampleItems.add(new CartItem("Rice Wine", 150000, 2));
-            sampleItems.add(new CartItem("Apple Wine", 180000, 1));
-            sampleItems.add(new CartItem("Apricot Wine", 220000, 1));
-            sampleItems.add(new CartItem("Nang Mo Wine", 220000, 1));
-            sampleItems.add(new CartItem("Hoang Su Phi Blood Plum Wine", 392000, 1));
-            sampleItems.add(new CartItem("Hoang Su Phi Blood Plum Wine", 392000, 1));
-            sampleItems.add(new CartItem("Hoang Su Phi Blood Plum Wine", 392000, 1));
-            Log.d("ProductCart", "Added 8 sample items to getSampleCartItems");
-        } catch (Exception e) {
-            Log.e("ProductCart", "Error adding sample items: " + e.getMessage());
-        }
-        return sampleItems;
+    private void loadCartFromFirestore() {
+        String accountID = auth.getCurrentUser().getUid();
+        db.collection("carts").document(accountID).collection("items")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    listCartItems.clear();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        String productID = doc.getString("productID");
+                        if (productID == null) {
+                            Log.e("ProductCart", "Null ProductID in Firestore document: " + doc.getId());
+                            FirebaseCrashlytics.getInstance().recordException(new Exception("Null ProductID in Firestore: " + doc.getId()));
+                            continue;
+                        }
+                        CartItem item = new CartItem(
+                                productID,
+                                accountID,
+                                doc.getLong("timestamp") != null ? doc.getLong("timestamp") : 0L,
+                                doc.getString("productName") != null ? doc.getString("productName") : "Unknown",
+                                doc.getDouble("productPrice") != null ? doc.getDouble("productPrice") : 0.0,
+                                doc.getString("imageID") != null ? doc.getString("imageID") : "",
+                                doc.getLong("quantity") != null ? doc.getLong("quantity").intValue() : 1,
+                                doc.getBoolean("selected") != null ? doc.getBoolean("selected") : false
+                        );
+                        listCartItems.addItem(item);
+                    }
+                    cartAdapter.notifyDataSetChanged();
+                    updateCartVisibility();
+                    updateTotalPrice();
+                    Log.d("ProductCart", "Loaded " + listCartItems.getItemCount() + " items from Firestore");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProductCart", "Error loading cart: " + e.getMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Toast.makeText(this, "Lỗi khi tải giỏ hàng", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void updateTotalPrice() {
@@ -174,7 +213,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
     }
 
     private void updateCartVisibility() {
-        int itemCount = listCartItems.getCartItems().size();
+        int itemCount = listCartItems.getItemCount();
         Log.d("ProductCart", "Cart items count: " + itemCount);
         if (itemCount == 0) {
             emptyCartLayout.setVisibility(View.VISIBLE);

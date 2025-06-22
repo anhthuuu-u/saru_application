@@ -628,11 +628,32 @@
     <string name="btn_verify_otp">Xác minh OTP</string>
     <string name="title_noti_title">Tiêu đề thông báo</string>
 
+
     <string name="string_order_tab_confirmed">Đã xác nhận</string>
     <string name="order_tab_intransit">Đang vận chuyển</string>
     <string name="string_order_Canceled">Đã hủy</string>
 
     <string name="profile_logout">Đăng xuất</string>
+
+
+    <string name="no_search_results">Không tìm thấy sản phẩm tương ứng</string>
+    <string name="delete_item_noti">Đã xóa thành công!</string>
+
+    <string name="filter_data_not_ready">Dữ liệu bộ lọc chưa sẵn sàng, vui lòng thử lại</string>
+    <string name="invalid_price_min">Giá tối thiểu không hợp lệ</string>
+    <string name="invalid_price_max">Giá tối đa không hợp lệ</string>
+    <string name="error_loading_filter_data">Lỗi khi tải dữ liệu bộ lọc</string>
+    <string name="CateID">Category ID</string>
+    <string name="brandID">Brand ID</string>
+    <string name="netContent">Net Content</string>
+    <string name="wineType">Wine Type</string>
+    <string name="productPrice">Product Price</string>
+    <string name="isBestSelling">Best Selling</string>
+    <string name="isOnSale">On Sale</string>
+    <string name="login_required">Please login to add to cart</string>
+    <string name="error_adding_to_cart">Error adding to cart</string>
+    <string name="google_play_services_unavailable">Google Play Services is not available</string>
+    <string name="added_to_cart">Added %1$s to cart successfully!</string>
 
 
 </resources>
