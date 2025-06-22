@@ -51,6 +51,7 @@ dependencies {
     implementation (libs.firebase.analytics)
     implementation(libs.firebase.appcheck)
     implementation(libs.integrity)
+    implementation(libs.core)
     debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
 
     // Thêm Glide để tải hình ảnh

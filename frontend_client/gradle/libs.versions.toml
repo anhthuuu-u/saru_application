@@ -34,6 +34,7 @@ firebaseDatabase = "21.0.0"
 securityCrypto = "1.0.0"
 playServicesSafetynet = "18.1.0"
 firebaseAppcheckPlayintegrity = "18.0.0"
+core = "1.16.0"
 
 
 [libraries]
@@ -76,6 +77,7 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 play-services-safetynet = { group = "com.google.android.gms", name = "play-services-safetynet", version.ref = "playServicesSafetynet" }
 firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "firebase-appcheck-playintegrity", version.ref = "firebaseAppcheckPlayintegrity" }
+core = { group = "androidx.core", name = "core", version.ref = "core" }
 
 
 [plugins]

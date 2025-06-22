@@ -2,48 +2,68 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="180dp"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:background="@color/white"> <!-- Thêm background để kiểm tra -->
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgRelatedArticle"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:background="@color/black"
-            android:contentDescription="Related Article Image" />
+            android:layout_height="120dp">
+
+            <ImageView
+                android:id="@+id/imgRelatedBlog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/img_taybacvillage"
+                android:contentDescription="Related Blog Image"
+                android:clipToOutline="true"
+                android:background="@drawable/rounded_image_background" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_overlay_small" />
+
+        </FrameLayout>
 
         <TextView
-            android:id="@+id/txtRelatedTitle"
+            android:id="@+id/txtRelatedBlogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/highlight_yellow"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Test Title" /> <!-- Thêm text mặc định để kiểm tra -->
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#F8BC3B"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtRelatedCategory"
+            android:id="@+id/txtRelatedBlogCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            android:textColor="@color/highlight_yellow"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Test Category" /> <!-- Thêm text mặc định để kiểm tra -->
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/category_background"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:textColor="#B16628"
+            android:textSize="12sp" />
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>
