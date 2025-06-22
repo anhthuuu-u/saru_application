@@ -47,8 +47,6 @@ public class SuccessfulPaymentActivity extends AppCompatActivity {
      */
     public void do_view_order_detail(View view) {
         Intent intent = new Intent(this, OrderDetailActivity.class);
-        // Có thể truyền thêm thông tin đơn hàng qua intent nếu cần
-        // intent.putExtra("order_id", orderId);
         startActivity(intent);
     }
 

@@ -3,6 +3,7 @@ package saru.com.app.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
     TextView txtNotification_system, txtNotification_order, txtNotification_discount;
     ImageView imgNotification_Back;
     ListView lvNotification;
+    CheckBox chkNotification_SelectAll;
     NotificationAdapter adapter;
     FirebaseFirestore db;
     ArrayList<Notification> notificationList;
@@ -47,25 +49,23 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
         notificationList = new ArrayList<>();
         addViews();
         fetchNotifications();
-        deleteNotifications();
         addEvents();
-    }
-
-    private void deleteNotifications() {
     }
 
     private void addViews() {
         txtNotification_order = findViewById(R.id.txtNotification_order);
-        txtNotification_discount = findViewById(R.id.txtNotification_discount);
         txtNotification_system = findViewById(R.id.txtNotification_system);
+        txtNotification_discount = findViewById(R.id.txtNotification_discount);
         imgNotification_Back = findViewById(R.id.imgNotification_Back);
         lvNotification = findViewById(R.id.lvNotification);
+        chkNotification_SelectAll = findViewById(R.id.chkNotification_SelectAll);
         TextView emptyView = new TextView(this);
         emptyView.setText("No notifications available");
         emptyView.setTextSize(16);
         emptyView.setGravity(android.view.Gravity.CENTER);
         lvNotification.setEmptyView(emptyView);
         adapter = new NotificationAdapter(this, R.layout.item_notification);
+        adapter.setOnSelectionChangedListener(this::updateSelectAllCheckbox);
         lvNotification.setAdapter(adapter);
     }
 
@@ -89,7 +89,7 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
                                 notification.setAccountID(document.getString("accountID") != null ? document.getString("accountID") : "");
                                 notification.setNotiID(document.getString("notiID") != null ? document.getString("notiID") : "");
                                 notification.setNoti_content(document.getString("noti_content") != null ? document.getString("noti_content") : "No content");
-                                notification.setNotiTime(document.getTimestamp("notiTime")); // Sử dụng Timestamp trực tiếp
+                                notification.setNotiTime(document.getTimestamp("notiTime"));
                                 notification.setId(document.getId());
                                 notificationList.add(notification);
                             }
@@ -99,11 +99,46 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
                             Log.d("Adapter", "Adapter item count: " + adapter.getCount());
                             Log.d("ListView", "ListView item count: " + lvNotification.getCount());
                         }
+                        updateSelectAllCheckbox();
                     } else {
                         Toast.makeText(this, "Error fetching notifications: " + task.getException(), Toast.LENGTH_SHORT).show();
                         Log.e("Firestore", "Error: ", task.getException());
                     }
                 });
+    }
+
+    private void deleteNotifications() {
+        ArrayList<Notification> selectedNotifications = adapter.getSelectedNotifications();
+        if (selectedNotifications.isEmpty()) {
+            Toast.makeText(this, "No notifications selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (Notification notification : selectedNotifications) {
+            db.collection("notifications").document(notification.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        notificationList.remove(notification);
+                        adapter.remove(notification);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(this, "Notification deleted", Toast.LENGTH_SHORT).show();
+                        updateSelectAllCheckbox();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Error deleting notification: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
+        adapter.selectAll(false); // Clear selections after deletion
+    }
+
+    private void updateSelectAllCheckbox() {
+        int total = adapter.getCount();
+        int selected = adapter.getSelectedNotifications().size();
+        chkNotification_SelectAll.setOnCheckedChangeListener(null); // Prevent recursive calls
+        chkNotification_SelectAll.setChecked(total > 0 && selected == total);
+        chkNotification_SelectAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            adapter.selectAll(isChecked);
+        });
     }
 
     void switchSystemTab() {
@@ -125,5 +160,8 @@ public class Notification_FromOrderActivity extends AppCompatActivity {
         txtNotification_system.setOnClickListener(v -> switchSystemTab());
         txtNotification_discount.setOnClickListener(v -> switchDiscountTab());
         imgNotification_Back.setOnClickListener(v -> switchProfileActivity());
+        chkNotification_SelectAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            adapter.selectAll(isChecked);
+        });
     }
 }
