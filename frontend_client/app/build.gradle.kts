@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services") // Plugin Firebase
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -52,6 +53,7 @@ dependencies {
     implementation(libs.firebase.appcheck)
     implementation(libs.integrity)
     debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
+    implementation(libs.firebase.crashlytics)
 
     // Thêm Glide để tải hình ảnh
     implementation(libs.github.glide)
@@ -75,8 +77,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.roundedimageview)
-    implementation(libs.play.services.maps.v1810)
-    implementation(libs.play.services.maps.v1820)
+    implementation(libs.play.services.maps)
     implementation(libs.mongodb.driver.sync)
     implementation (libs.play.services.auth)
 

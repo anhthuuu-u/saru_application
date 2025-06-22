@@ -1,5 +1,9 @@
 package saru.com.app.models;
 
+import android.util.Log;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,48 +14,50 @@ public class ListCartItems {
         this.cartItems = new ArrayList<>();
     }
 
-    // Thêm một CartItem
     public void addItem(CartItem item) {
-        if (item == null) {
+        if (item == null || item.getProductID() == null || item.getAccountID() == null) {
+            Log.e("ListCartItems", "Cannot add null CartItem or item with null ProductID/AccountID");
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Null CartItem or ProductID/AccountID in addItem"));
             return;
         }
-        // Kiểm tra nếu sản phẩm đã tồn tại, tăng quantity
+
         for (CartItem existingItem : cartItems) {
-            if (existingItem.getName().equals(item.getName())) {
+            if (existingItem.getProductID() != null && existingItem.getProductID().equals(item.getProductID())) {
                 existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
+                Log.d("ListCartItems", "Updated quantity for " + item.getProductName() + " to " + existingItem.getQuantity());
                 return;
             }
         }
         cartItems.add(item);
+        Log.d("ListCartItems", "Added new item: " + item.getProductName());
     }
 
-    // Xóa một CartItem theo index
     public void removeItem(int index) {
         if (index >= 0 && index < cartItems.size()) {
-            cartItems.remove(index);
+            CartItem item = cartItems.remove(index);
+            Log.d("ListCartItems", "Removed item: " + item.getProductName());
         }
     }
 
-    // Cập nhật quantity của một CartItem
     public void updateQuantity(int index, int newQuantity) {
         if (index >= 0 && index < cartItems.size() && newQuantity >= 1) {
-            cartItems.get(index).setQuantity(newQuantity);
+            CartItem item = cartItems.get(index);
+            item.setQuantity(newQuantity);
+            Log.d("ListCartItems", "Updated quantity for " + item.getProductName() + " to " + newQuantity);
         }
     }
 
-    // Chọn tất cả hoặc bỏ chọn tất cả
     public void setAllSelected(boolean selected) {
         for (CartItem item : cartItems) {
             item.setSelected(selected);
         }
+        Log.d("ListCartItems", "Set all items selected: " + selected);
     }
 
-    // Lấy danh sách CartItem
     public List<CartItem> getCartItems() {
         return new ArrayList<>(cartItems);
     }
 
-    // Tính tổng giá của các mục được chọn
     public double calculateTotalPrice() {
         double total = 0;
         for (CartItem item : cartItems) {
@@ -62,13 +68,12 @@ public class ListCartItems {
         return total;
     }
 
-    // Lấy số lượng mục trong giỏ hàng
     public int getItemCount() {
         return cartItems.size();
     }
 
-    // Xóa toàn bộ giỏ hàng
     public void clear() {
         cartItems.clear();
+        Log.d("ListCartItems", "Cleared all items");
     }
 }

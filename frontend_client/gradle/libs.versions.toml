@@ -35,6 +35,8 @@ securityCrypto = "1.0.0"
 playServicesSafetynet = "18.1.0"
 firebaseAppcheckPlayintegrity = "18.0.0"
 
+firebaseCrashlytics = "19.0.3"
+
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
@@ -46,6 +48,8 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 
 firebase-dynamic-links = { module = "com.google.firebase:firebase-dynamic-links", version.ref = "firebaseDynamicLinks" }
 

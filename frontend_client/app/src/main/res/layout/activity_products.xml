@@ -79,6 +79,16 @@
             android:scaleType="fitCenter"
             app:srcCompat="@mipmap/ic_cart"
             app:tint="#F8BC3B" />
+        <TextView
+            android:id="@+id/cart_item_count"
+            android:layout_width="@dimen/cart_count_size"
+            android:layout_height="@dimen/cart_count_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/circle_background"
+            android:gravity="top"
+            android:textColor="@android:color/white"
+            android:textSize="10dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- Thanh tìm kiếm -->
@@ -146,6 +156,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="56dp"
+        android:layout_marginTop="8dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@+id/search_toolbar_layout"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"

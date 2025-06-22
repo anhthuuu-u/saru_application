@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -24,26 +25,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import saru.com.app.R;
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.connectors.ProductImageAdapter;
+import saru.com.app.models.CartItem;
 import saru.com.app.models.CustomerReviewList;
+import saru.com.app.models.ListCartItems;
 import saru.com.app.models.image;
 import saru.com.app.models.Product;
 import saru.com.app.models.ProductComparisonItems;
 import saru.com.app.models.productBrand;
 import saru.com.app.models.productStatus;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity implements ProductAdapter.OnAddToCartListener {
 
     private LinearLayout productDetailsContainer;
     private RecyclerView recyclerCustomerReviews, recyclerViewProducts, recyclerViewImages;
@@ -53,14 +62,21 @@ public class ProductDetailActivity extends AppCompatActivity {
     private CustomerReviewList customerReviewList;
     private ProductImageAdapter imageAdapter;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private Product currentProduct;
+    private TextView cartItemCountText;
+    private ListCartItems cartItems = new ListCartItems();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        // Khởi tạo Firebase
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
+        // Khởi tạo views
         TextView productName = findViewById(R.id.product_name);
         TextView productBrand = findViewById(R.id.product_brand);
         RatingBar productRating = findViewById(R.id.product_rating);
@@ -82,35 +98,44 @@ public class ProductDetailActivity extends AppCompatActivity {
         showProductDetails = findViewById(R.id.show_product_details);
         showCustomerReviews = findViewById(R.id.show_customer_reviews);
 
+        // Kiểm tra null cho views
         if (recyclerViewProducts == null || recyclerViewImages == null || viewPagerImages == null ||
                 recyclerCustomerReviews == null || productDetailsContainer == null ||
                 showProductDetails == null || showCustomerReviews == null) {
             Log.e("ProductDetailActivity", "View not found");
+            Toast.makeText(this, "Lỗi giao diện", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
 
+        // Lấy dữ liệu sản phẩm từ Intent
         Intent intent = getIntent();
-        Product product = (Product) intent.getSerializableExtra("product");
+        currentProduct = (Product) intent.getSerializableExtra("product");
 
-        if (product != null) {
-            loadProductDetails(product, productName, productBrand, productRating, stockStatus, productPrice,
+        if (currentProduct != null) {
+            loadProductDetails(currentProduct, productName, productBrand, productRating, stockStatus, productPrice,
                     alcoholStrength, netContent, wineType, ingredients, productDescription);
-            loadImages(product.getImageID());
-            loadRelatedProducts(product.getCateID());
+            loadImages(currentProduct.getImageID());
+            loadRelatedProducts(currentProduct.getCateID());
+        } else {
+            Log.e("ProductDetailActivity", "No product data received");
+            Toast.makeText(this, "Lỗi tải sản phẩm", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
 
         // Setup ViewPager2
         ImagePagerAdapter pagerAdapter = new ImagePagerAdapter();
         viewPagerImages.setAdapter(pagerAdapter);
 
-        // Setup RecyclerView for thumbnail images
+        // Setup RecyclerView cho thumbnail images
         imageAdapter = new ProductImageAdapter();
         recyclerViewImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewImages.setAdapter(imageAdapter);
         int spacingInPixels2 = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerViewImages.addItemDecoration(new ItemSpacingDecoration(spacingInPixels2));
 
-        // Sync ViewPager2 with RecyclerView
+        // Đồng bộ ViewPager2 với RecyclerView
         viewPagerImages.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -119,15 +144,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        // Trong onCreate của ProductDetailActivity.java
-        recyclerViewProducts = findViewById(R.id.recycler_view_products);
-        if (recyclerViewProducts == null) {
-            Log.e("ProductDetailActivity", "recycler_view_products not found in layout");
-            return;
-        }
-
         // Setup related products
-        ProductAdapter relatedProductsAdapter = new ProductAdapter();
+        ProductAdapter relatedProductsAdapter = new ProductAdapter(this, this);
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewProducts.setAdapter(relatedProductsAdapter);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
@@ -149,6 +167,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         recyclerCustomerReviews.addItemDecoration(new CenterItemDecoration());
         showProductDetails();
 
+        // Sự kiện nhấn nút
         showProductDetails.setOnClickListener(v -> showProductDetails());
         showCustomerReviews.setOnClickListener(v -> showCustomerReviews());
 
@@ -162,510 +181,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
         if (addToCartButton != null) {
-            addToCartButton.setOnClickListener(v -> showSuccessDialog(getString(R.string.dialog_add_to_cart_success)));
+            addToCartButton.setOnClickListener(v -> onAddToCart(currentProduct)); // Gọi onAddToCart
         }
 
         if (compareButton != null) {
-            compareButton.setOnClickListener(v -> {
-                if (product != null && product.getImageID() != null) {
-                    db.collection("image").document(product.getImageID()).get()
-                            .addOnSuccessListener(documentSnapshot -> {
-                                image image = documentSnapshot.toObject(image.class);
-                                String imageUrl = (image != null && image.getProductImageCover() != null)
-                                        ? image.getProductImageCover() : "";
-                                if (product.getBrandID() != null) {
-                                    db.collection("productBrand").document(product.getBrandID()).get()
-                                            .addOnSuccessListener(brandSnapshot -> {
-                                                productBrand brand = brandSnapshot.toObject(productBrand.class);
-                                                String brandName = (brand != null) ? brand.getBrandName() : "";
-                                                if (product.getProductStatusID() != null) {
-                                                    db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                            .addOnSuccessListener(statusSnapshot -> {
-                                                                productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                                String statusText = (status != null) ? status.getProductStatus() : "";
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        brandName,
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        imageUrl
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            })
-                                                            .addOnFailureListener(e -> {
-                                                                Log.e("ProductDetailActivity", "Error loading status for comparison: " + e.getMessage());
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        brandName,
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        imageUrl
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            });
-                                                } else {
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            brandName,
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            imageUrl
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                }
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                Log.e("ProductDetailActivity", "Error loading brand for comparison: " + e.getMessage());
-                                                if (product.getProductStatusID() != null) {
-                                                    db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                            .addOnSuccessListener(statusSnapshot -> {
-                                                                productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                                String statusText = (status != null) ? status.getProductStatus() : "";
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        "",
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        imageUrl
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            })
-                                                            .addOnFailureListener(e2 -> {
-                                                                Log.e("ProductDetailActivity", "Error loading status for comparison: " + e2.getMessage());
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        "",
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        imageUrl
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            });
-                                                } else {
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            imageUrl
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                }
-                                            });
-                                } else {
-                                    if (product.getProductStatusID() != null) {
-                                        db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                .addOnSuccessListener(statusSnapshot -> {
-                                                    productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                    String statusText = (status != null) ? status.getProductStatus() : "";
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            imageUrl
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    Log.e("ProductDetailActivity", "Error loading status for comparison: " + e.getMessage());
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            imageUrl
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                });
-                                    } else {
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                "",
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                imageUrl
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    }
-                                }
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("ProductDetailActivity", "Error loading image for comparison: " + product.getImageID(), e);
-                                if (product.getBrandID() != null) {
-                                    db.collection("productBrand").document(product.getBrandID()).get()
-                                            .addOnSuccessListener(brandSnapshot -> {
-                                                productBrand brand = brandSnapshot.toObject(productBrand.class);
-                                                String brandName = (brand != null) ? brand.getBrandName() : "";
-                                                if (product.getProductStatusID() != null) {
-                                                    db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                            .addOnSuccessListener(statusSnapshot -> {
-                                                                productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                                String statusText = (status != null) ? status.getProductStatus() : "";
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        brandName,
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        ""
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            })
-                                                            .addOnFailureListener(e2 -> {
-                                                                Log.e("ProductDetailActivity", "Error loading status for comparison: " + e2.getMessage());
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        brandName,
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        ""
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            });
-                                                } else {
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            brandName,
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                }
-                                            })
-                                            .addOnFailureListener(e2 -> {
-                                                Log.e("ProductDetailActivity", "Error loading brand for comparison: " + e2.getMessage());
-                                                if (product.getProductStatusID() != null) {
-                                                    db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                            .addOnSuccessListener(statusSnapshot -> {
-                                                                productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                                String statusText = (status != null) ? status.getProductStatus() : "";
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        "",
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        ""
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            })
-                                                            .addOnFailureListener(e3 -> {
-                                                                Log.e("ProductDetailActivity", "Error loading status for comparison: " + e3.getMessage());
-                                                                ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                                        product.getProductName(),
-                                                                        "",
-                                                                        product.getAlcoholStrength(),
-                                                                        product.getNetContent(),
-                                                                        product.getWineType(),
-                                                                        product.getIngredients(),
-                                                                        product.getProductTaste(),
-                                                                        product.getProductPrice(),
-                                                                        ""
-                                                                );
-                                                                ProductComparisonItems.addItem(comparisonItem);
-                                                                showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                            });
-                                                } else {
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                }
-                                            });
-                                } else {
-                                    if (product.getProductStatusID() != null) {
-                                        db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                .addOnSuccessListener(statusSnapshot -> {
-                                                    productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                    String statusText = (status != null) ? status.getProductStatus() : "";
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                })
-                                                .addOnFailureListener(e2 -> {
-                                                    Log.e("ProductDetailActivity", "Error loading status for comparison: " + e2.getMessage());
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                });
-                                    } else {
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                "",
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                ""
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    }
-                                }
-                            });
-                } else {
-                    Log.e("ProductDetailActivity", "imageID is null for comparison");
-                    if (product != null && product.getBrandID() != null) {
-                        db.collection("productBrand").document(product.getBrandID()).get()
-                                .addOnSuccessListener(brandSnapshot -> {
-                                    productBrand brand = brandSnapshot.toObject(productBrand.class);
-                                    String brandName = (brand != null) ? brand.getBrandName() : "";
-                                    if (product.getProductStatusID() != null) {
-                                        db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                .addOnSuccessListener(statusSnapshot -> {
-                                                    productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                    String statusText = (status != null) ? status.getProductStatus() : "";
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            brandName,
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    Log.e("ProductDetailActivity", "Error loading status for comparison: " + e.getMessage());
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            brandName,
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                });
-                                    } else {
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                brandName,
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                ""
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e("ProductDetailActivity", "Error loading brand for comparison: " + e.getMessage());
-                                    if (product.getProductStatusID() != null) {
-                                        db.collection("productStatus").document(product.getProductStatusID()).get()
-                                                .addOnSuccessListener(statusSnapshot -> {
-                                                    productStatus status = statusSnapshot.toObject(productStatus.class);
-                                                    String statusText = (status != null) ? status.getProductStatus() : "";
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                })
-                                                .addOnFailureListener(e2 -> {
-                                                    Log.e("ProductDetailActivity", "Error loading status for comparison: " + e2.getMessage());
-                                                    ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                            product.getProductName(),
-                                                            "",
-                                                            product.getAlcoholStrength(),
-                                                            product.getNetContent(),
-                                                            product.getWineType(),
-                                                            product.getIngredients(),
-                                                            product.getProductTaste(),
-                                                            product.getProductPrice(),
-                                                            ""
-                                                    );
-                                                    ProductComparisonItems.addItem(comparisonItem);
-                                                    showSuccessDialog(getString(R.string.dialog_compare_success));
-                                                });
-                                    } else {
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                "",
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                ""
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    }
-                                });
-                    } else {
-                        if (product != null && product.getProductStatusID() != null) {
-                            db.collection("productStatus").document(product.getProductStatusID()).get()
-                                    .addOnSuccessListener(statusSnapshot -> {
-                                        productStatus status = statusSnapshot.toObject(productStatus.class);
-                                        String statusText = (status != null) ? status.getProductStatus() : "";
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                "",
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                ""
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e("ProductDetailActivity", "Error loading status for comparison: " + e.getMessage());
-                                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                                product.getProductName(),
-                                                "",
-                                                product.getAlcoholStrength(),
-                                                product.getNetContent(),
-                                                product.getWineType(),
-                                                product.getIngredients(),
-                                                product.getProductTaste(),
-                                                product.getProductPrice(),
-                                                ""
-                                        );
-                                        ProductComparisonItems.addItem(comparisonItem);
-                                        showSuccessDialog(getString(R.string.dialog_compare_success));
-                                    });
-                        } else {
-                            ProductComparisonItems comparisonItem = new ProductComparisonItems(
-                                    product.getProductName(),
-                                    "",
-                                    product.getAlcoholStrength(),
-                                    product.getNetContent(),
-                                    product.getWineType(),
-                                    product.getIngredients(),
-                                    product.getProductTaste(),
-                                    product.getProductPrice(),
-                                    ""
-                            );
-                            ProductComparisonItems.addItem(comparisonItem);
-                            showSuccessDialog(getString(R.string.dialog_compare_success));
-                        }
-                    }
-                }
-            });
+            compareButton.setOnClickListener(v -> handleCompare(currentProduct));
         }
 
+        // Xử lý WindowInsets
         View contentView = findViewById(android.R.id.content);
         if (contentView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
@@ -674,6 +197,184 @@ public class ProductDetailActivity extends AppCompatActivity {
                 return insets;
             });
         }
+    }
+
+    @Override
+    public void onAddToCart(Product product) {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            return;
+        }
+
+        if (product == null || product.getProductID() == null) {
+            Log.e("ProductDetailActivity", "Cannot add null Product or Product with null ProductID");
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Null Product or ProductID in onAddToCart"));
+            Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String accountID = auth.getCurrentUser().getUid();
+        checkPlayServices(() -> onAddToCartInternal(product, accountID));
+    }
+
+    private void checkPlayServices(Runnable firebaseAction) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode == ConnectionResult.SUCCESS) {
+            firebaseAction.run();
+        } else {
+            Log.e("Homepage", "Google Play Services not available");
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available"));
+            Toast.makeText(this, "Google Play Services không khả dụng", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void onAddToCartInternal(Product product, String accountID) {
+        CartItem cartItem = new CartItem(
+                product.getProductID(),
+                accountID,
+                System.currentTimeMillis(),
+                product.getProductName() != null ? product.getProductName() : "Unknown",
+                product.getProductPrice(),
+                product.getImageID() != null ? product.getImageID() : "",
+                1,
+                false
+        );
+
+        Map<String, Object> cartItemMap = new HashMap<>();
+        cartItemMap.put("productID", cartItem.getProductID());
+        cartItemMap.put("AccountID", cartItem.getAccountID());
+        cartItemMap.put("timestamp", cartItem.getTimestamp());
+        cartItemMap.put("productName", cartItem.getProductName());
+        cartItemMap.put("productPrice", cartItem.getProductPrice());
+        cartItemMap.put("imageID", cartItem.getImageID());
+        cartItemMap.put("quantity", cartItem.getQuantity());
+        cartItemMap.put("selected", cartItem.isSelected());
+
+        db.collection("carts").document(accountID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        db.collection("carts").document(accountID).set(new HashMap<>())
+                                .addOnSuccessListener(aVoid -> Log.d("Homepage", "Created cart document for: " + accountID))
+                                .addOnFailureListener(e -> {
+                                    Log.e("Homepage", "Error creating cart document: " + e.getMessage());
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                });
+                    }
+
+                    db.collection("carts").document(accountID).collection("items").document(product.getProductID())
+                            .get()
+                            .addOnSuccessListener(itemSnapshot -> {
+                                if (itemSnapshot.exists()) {
+                                    long currentQuantity = itemSnapshot.getLong("quantity");
+                                    cartItemMap.put("quantity", currentQuantity + 1);
+                                    cartItem.setQuantity((int) currentQuantity + 1);
+                                }
+                                db.collection("carts").document(accountID).collection("items").document(product.getProductID())
+                                        .set(cartItemMap)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("Homepage", "Added/Updated to cart: " + product.getProductName());
+                                            Toast.makeText(this, "Đã thêm " + product.getProductName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                            cartItems.addItem(cartItem);
+                                            updateCartItemCount();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("Homepage", "Error adding to cart: " + e.getMessage());
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                        });
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Homepage", "Error checking cart item: " + e.getMessage());
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                                Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Homepage", "Error checking cart document: " + e.getMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void updateCartItemCount() {
+        int count = cartItems.getItemCount();
+        if (cartItemCountText != null) {
+            cartItemCountText.setText(String.valueOf(count));
+            cartItemCountText.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        }
+    }
+
+
+
+    private void handleCompare(Product product) {
+        if (product.getImageID() != null) {
+            db.collection("image").document(product.getImageID()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        image image = documentSnapshot.toObject(image.class);
+                        String imageUrl = (image != null && image.getProductImageCover() != null)
+                                ? image.getProductImageCover() : "";
+                        loadBrandForComparison(product, imageUrl);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProductDetailActivity", "Error loading image for comparison: " + product.getImageID(), e);
+                        loadBrandForComparison(product, "");
+                    });
+        } else {
+            Log.e("ProductDetailActivity", "imageID is null for comparison");
+            loadBrandForComparison(product, "");
+        }
+    }
+
+    private void loadBrandForComparison(Product product, String imageUrl) {
+        if (product.getBrandID() != null) {
+            db.collection("productBrand").document(product.getBrandID()).get()
+                    .addOnSuccessListener(brandSnapshot -> {
+                        productBrand brand = brandSnapshot.toObject(productBrand.class);
+                        String brandName = (brand != null) ? brand.getBrandName() : "";
+                        loadStatusForComparison(product, imageUrl, brandName);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProductDetailActivity", "Error loading brand for comparison: " + e.getMessage());
+                        loadStatusForComparison(product, imageUrl, "");
+                    });
+        } else {
+            loadStatusForComparison(product, imageUrl, "");
+        }
+    }
+
+    private void loadStatusForComparison(Product product, String imageUrl, String brandName) {
+        if (product.getProductStatusID() != null) {
+            db.collection("productStatus").document(product.getProductStatusID()).get()
+                    .addOnSuccessListener(statusSnapshot -> {
+                        productStatus status = statusSnapshot.toObject(productStatus.class);
+                        String statusText = (status != null) ? status.getProductStatus() : "";
+                        addToComparison(product, imageUrl, brandName, statusText);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProductDetailActivity", "Error loading status for comparison: " + e.getMessage());
+                        addToComparison(product, imageUrl, brandName, "");
+                    });
+        } else {
+            addToComparison(product, imageUrl, brandName, "");
+        }
+    }
+
+    private void addToComparison(Product product, String imageUrl, String brandName, String statusText) {
+        ProductComparisonItems comparisonItem = new ProductComparisonItems(
+                product.getProductName(),
+                brandName,
+                product.getAlcoholStrength(),
+                product.getNetContent(),
+                product.getWineType(),
+                product.getIngredients(),
+                product.getProductTaste(),
+                product.getProductPrice(),
+                imageUrl
+        );
+        ProductComparisonItems.addItem(comparisonItem);
+        showSuccessDialog(getString(R.string.dialog_compare_success));
     }
 
     private void loadProductDetails(Product product, TextView productName, TextView productBrand,
@@ -737,28 +438,27 @@ public class ProductDetailActivity extends AppCompatActivity {
                         productStatus status = documentSnapshot.toObject(saru.com.app.models.productStatus.class);
                         if (status != null) {
                             stockStatus.setText(status.getProductStatus());
-                            // Đặt màu chữ dựa trên productStatusColor
                             try {
                                 stockStatus.setTextColor(android.graphics.Color.parseColor(status.getProductStatusColor()));
                             } catch (IllegalArgumentException e) {
-                                stockStatus.setTextColor(getResources().getColor(android.R.color.black)); // Fallback màu mặc định
+                                stockStatus.setTextColor(getResources().getColor(android.R.color.black));
                                 Log.w("ProductDetailActivity", "Invalid color format: " + status.getProductStatusColor());
                             }
                             Log.d("ProductDetailActivity", "Status loaded for productStatusID: " + product.getProductStatusID());
                         } else {
                             stockStatus.setText(getString(R.string.no_status_available));
-                            stockStatus.setTextColor(getResources().getColor(android.R.color.black)); // Fallback màu mặc định
+                            stockStatus.setTextColor(getResources().getColor(android.R.color.black));
                             Log.w("ProductDetailActivity", "No status data for productStatusID: " + product.getProductStatusID());
                         }
                     })
                     .addOnFailureListener(e -> {
                         stockStatus.setText(getString(R.string.error_loading_status));
-                        stockStatus.setTextColor(getResources().getColor(android.R.color.black)); // Fallback màu mặc định
+                        stockStatus.setTextColor(getResources().getColor(android.R.color.black));
                         Log.e("ProductDetailActivity", "Error loading status: " + e.getMessage());
                     });
         } else if (stockStatus != null) {
             stockStatus.setText(getString(R.string.no_status_id));
-            stockStatus.setTextColor(getResources().getColor(android.R.color.black)); // Fallback màu mặc định
+            stockStatus.setTextColor(getResources().getColor(android.R.color.black));
             Log.w("ProductDetailActivity", "productStatusID is null for product: " + product.getProductID());
         }
     }
@@ -829,8 +529,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<Product> products = new ArrayList<>();
-                    String currentProductID = getIntent().getSerializableExtra("product") != null
-                            ? ((Product) getIntent().getSerializableExtra("product")).getProductID() : null;
+                    String currentProductID = currentProduct != null ? currentProduct.getProductID() : null;
 
                     if (querySnapshot.isEmpty()) {
                         Log.w("ProductDetailActivity", "No documents found for CateID: " + cateID);
