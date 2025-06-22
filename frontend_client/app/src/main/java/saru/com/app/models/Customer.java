@@ -24,10 +24,10 @@ public class Customer implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Customer(String name, String email) {
+    public Customer(String name, String email, String customerId) {
         this._id = UUID.randomUUID().toString();
         this.AccountID = "acc_" + UUID.randomUUID().toString().substring(0, 8);
-        this.CustomerID = "cus_" + UUID.randomUUID().toString().substring(0, 8);
+        this.CustomerID = customerId; // Use provided CustomerID
         this.name = name;
         this.CustomerEmail = email;
         this.createdAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).format(new java.util.Date());

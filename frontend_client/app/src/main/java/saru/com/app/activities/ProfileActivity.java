@@ -1,6 +1,8 @@
 package saru.com.app.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import saru.com.app.R;
 
 public class ProfileActivity extends BaseActivity {
+    private static final String TAG = "ProfileActivity"; // Added TAG constant
+
     ImageView img_aboutus;
     ImageView nexttoaboutus, imgforAboutSaru, img_backtoaboutSaru, img_directNotifipage, img_directtoNotification;
     TextView aboutus_page, txt_backtoaboutSaru, txt_directtonotificationpage;
@@ -30,11 +35,17 @@ public class ProfileActivity extends BaseActivity {
     ImageView imgCustomerAva;
     TextView txtCustomerName, txtCustomerEmail;
 
+
     ImageView imgConfirming, imgConfirmed, imgIntransit;
     TextView txtConfirming, txtConfirmed, txtIntransit;
 
+    LinearLayout logoutSection; // Added logoutSection field
+    TextView txtLogout;
+    ImageView imgLogout, imgLogoutArrow;
+
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -207,6 +218,7 @@ public class ProfileActivity extends BaseActivity {
         img_directNotifipage = findViewById(R.id.img_directNotifipage);
         img_directtoNotification = findViewById(R.id.img_directtoNotification);
 
+
         // Initialize order status navigation elements
         imgConfirming = findViewById(R.id.imgconfirming);
         txtConfirming = findViewById(R.id.txtconfirming);
@@ -214,6 +226,12 @@ public class ProfileActivity extends BaseActivity {
         txtConfirmed = findViewById(R.id.txtconfirmed);
         imgIntransit = findViewById(R.id.imgintransit);
         txtIntransit = findViewById(R.id.txtintransit);
+
+        logoutSection = findViewById(R.id.logout_section); // Initialize logoutSection
+        txtLogout = findViewById(R.id.txt_logout);
+        imgLogout = findViewById(R.id.img_logout);
+        imgLogoutArrow = findViewById(R.id.img_logout_arrow);
+
     }
 
     private void addEvents() {
@@ -232,6 +250,7 @@ public class ProfileActivity extends BaseActivity {
         img_directNotifipage.setOnClickListener(v -> openNotification_Page());
         img_directtoNotification.setOnClickListener(v -> openNotification_Page());
 
+
         // Chuyển đến OrderList với trạng thái Pending confirmation (OrderStatusID = 0)
         imgConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
         txtConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
@@ -249,6 +268,13 @@ public class ProfileActivity extends BaseActivity {
         Intent intent = new Intent(ProfileActivity.this, OrderListActivity.class);
         intent.putExtra("statusID", statusID); // Truyền trạng thái để lọc đơn hàng
         startActivity(intent);
+
+        //chuyển hướng Logout
+        logoutSection.setOnClickListener(v -> logout()); // Added logoutSection listener
+        txtLogout.setOnClickListener(v -> logout());
+        imgLogout.setOnClickListener(v -> logout());
+        imgLogoutArrow.setOnClickListener(v -> logout());
+
     }
 
     void openAboutUs_SaruWine() {
@@ -264,6 +290,30 @@ public class ProfileActivity extends BaseActivity {
     void openNotification_Page() {
         Intent intent = new Intent(ProfileActivity.this, Notification_FromSettingActivity.class);
         startActivity(intent);
+    }
+
+    private void logout() {
+        Log.d(TAG, "Showing logout dialog");
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to log out?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Log.d(TAG, "User confirmed logout");
+                    SharedPreferences prefs = getSharedPreferences("saru_app_prefs", MODE_PRIVATE);
+                    prefs.edit().clear().apply();
+                    Log.d(TAG, "SharedPreferences cleared");
+                    mAuth.signOut();
+                    Log.d(TAG, "Firebase user signed out");
+                    Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Log.d(TAG, "Starting LoginActivity");
+                    startActivity(intent);
+                    finish();
+                    Log.d(TAG, "ProfileActivity finished");
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override

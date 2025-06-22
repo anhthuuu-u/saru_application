@@ -629,6 +629,7 @@
     <string name="btn_verify_otp">Verify OTP</string>
 
     <string name="title_noti_title">Noti Title</string>
+    <string name="profile_logout">Logout</string>
 
 </resources>
 

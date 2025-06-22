@@ -17,7 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,51 +86,80 @@ public class SignupActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     String userId = mAuth.getCurrentUser().getUid();
-                                    String customerId = db.collection("customers").document().getId();
                                     String accountId = "acc_" + userId.substring(0, 8);
 
-                                    // Create customer document
-                                    Map<String, Object> customerMap = new HashMap<>();
-                                    customerMap.put("CustomerName", name);
-                                    customerMap.put("CustomerAvatar", "");
-                                    customerMap.put("CustomerID", customerId);
-                                    customerMap.put("CustomerPhone", "");
-                                    customerMap.put("CustomerBirth", "");
-                                    customerMap.put("Sex", "");
-                                    customerMap.put("ReceiveEmail", false);
-                                    customerMap.put("MemberID", "");
-                                    // Remove CustomerAdd, CustomerAddress; use addresses subcollection if needed
+                                    // Generate CustomerID using transaction
+                                    db.runTransaction(new Transaction.Function<String>() {
+                                        @Override
+                                        public String apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                                            DocumentReference counterRef = db.collection("metadata").document("customer_counter");
+                                            DocumentSnapshot counterSnapshot = transaction.get(counterRef);
 
-                                    // Create account document
-                                    Map<String, Object> accountMap = new HashMap<>();
-                                    accountMap.put("CustomerEmail", email);
-                                    accountMap.put("CustomerID", customerId);
-                                    accountMap.put("AccountID", accountId);
-                                    accountMap.put("User UID", userId);
+                                            long lastNumber = 0;
+                                            if (counterSnapshot.exists()) {
+                                                lastNumber = counterSnapshot.getLong("lastCustomerNumber") != null ? counterSnapshot.getLong("lastCustomerNumber") : 0;
+                                            }
 
+                                            String customerId = "cus" + (lastNumber + 1);
+                                            DocumentReference customerRef = db.collection("customers").document(customerId);
+                                            DocumentSnapshot customerSnapshot = transaction.get(customerRef);
 
-                                    // Write to customers collection
-                                    db.collection("customers").document(customerId).set(customerMap)
-                                            .addOnSuccessListener(aVoid -> {
-                                                Log.d("SignupActivity", "Customer document created: " + customerId);
-                                                // Write to accounts collection
-                                                db.collection("accounts").document(userId).set(accountMap)
-                                                        .addOnSuccessListener(aVoid1 -> {
-                                                            Log.d("SignupActivity", "Account document created: " + userId);
-                                                            Toast.makeText(SignupActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(SignupActivity.this, Homepage.class);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        })
-                                                        .addOnFailureListener(e -> {
-                                                            Log.e("SignupActivity", "Error creating account document: ", e);
-                                                            Toast.makeText(SignupActivity.this, "Failed to create account: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                        });
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                Log.e("SignupActivity", "Error creating customer document: ", e);
-                                                Toast.makeText(SignupActivity.this, "Failed to create customer: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            });
+                                            if (customerSnapshot.exists()) {
+                                                throw new FirebaseFirestoreException("Customer ID already exists", FirebaseFirestoreException.Code.ABORTED);
+                                            }
+
+                                            // Update counter
+                                            Map<String, Object> counterData = new HashMap<>();
+                                            counterData.put("lastCustomerNumber", lastNumber + 1);
+                                            transaction.set(counterRef, counterData);
+
+                                            return customerId;
+                                        }
+                                    }).addOnSuccessListener(customerId -> {
+                                        // Create customer document
+                                        Map<String, Object> customerMap = new HashMap<>();
+                                        customerMap.put("CustomerName", name);
+                                        customerMap.put("CustomerAvatar", "");
+                                        customerMap.put("CustomerID", customerId);
+                                        customerMap.put("CustomerPhone", "");
+                                        customerMap.put("CustomerBirth", "");
+                                        customerMap.put("Sex", "");
+                                        customerMap.put("ReceiveEmail", false);
+                                        customerMap.put("MemberID", "");
+
+                                        // Create account document
+                                        Map<String, Object> accountMap = new HashMap<>();
+                                        accountMap.put("CustomerEmail", email);
+                                        accountMap.put("CustomerID", customerId);
+                                        accountMap.put("AccountID", accountId);
+                                        accountMap.put("User UID", userId);
+
+                                        // Write to customers collection
+                                        db.collection("customers").document(customerId).set(customerMap)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Log.d("SignupActivity", "Customer document created: " + customerId);
+                                                    // Write to accounts collection
+                                                    db.collection("accounts").document(userId).set(accountMap)
+                                                            .addOnSuccessListener(aVoid1 -> {
+                                                                Log.d("SignupActivity", "Account document created: " + userId);
+                                                                Toast.makeText(SignupActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(SignupActivity.this, Homepage.class);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            })
+                                                            .addOnFailureListener(e -> {
+                                                                Log.e("SignupActivity", "Error creating account document: ", e);
+                                                                Toast.makeText(SignupActivity.this, "Failed to create account: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            });
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Log.e("SignupActivity", "Error creating customer document: ", e);
+                                                    Toast.makeText(SignupActivity.this, "Failed to create customer: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                });
+                                    }).addOnFailureListener(e -> {
+                                        Log.e("SignupActivity", "Error generating customer ID: ", e);
+                                        Toast.makeText(SignupActivity.this, "Failed to generate customer ID: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
                                 } else {
                                     Log.e("SignupActivity", "Sign up failed: ", task.getException());
                                     Toast.makeText(SignupActivity.this, "Sign up failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
