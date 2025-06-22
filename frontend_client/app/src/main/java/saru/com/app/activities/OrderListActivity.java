@@ -61,8 +61,14 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
 
-        // Fetch and display orders
-        fetchOrdersForUser();
+        // Lấy statusID từ Intent nếu có
+        String initialStatusID = getIntent().getStringExtra("statusID");
+        if (initialStatusID != null) {
+            filterOrdersByStatus(initialStatusID); // Áp dụng bộ lọc ngay khi khởi tạo
+        } else {
+            // Fetch and display all orders if no statusID is provided
+            fetchOrdersForUser();
+        }
     }
 
     private void initializeFirebase() {
@@ -116,6 +122,10 @@ public class OrderListActivity extends AppCompatActivity {
         }
 
         runOnUiThread(() -> {
+            if (orderAdapter == null) {
+                orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
+                lvOrder.setAdapter(orderAdapter);
+            }
             orderAdapter.notifyDataSetChanged();
         });
     }
@@ -267,11 +277,17 @@ public class OrderListActivity extends AppCompatActivity {
                         new android.os.Handler().postDelayed(() -> {
                             Order order = new Order(orderID, orderDate, orderStatus, finalTotalQuantity, totalValue[0]);
                             allOrders.add(order); // Lưu vào allOrders
-                            orderList.add(order); // Thêm vào orderList để hiển thị ban đầu
+
+                            // Nếu chưa có orderList ban đầu, thêm vào để hiển thị
+                            if (orderList.isEmpty()) {
+                                orderList.add(order);
+                            }
 
                             runOnUiThread(() -> {
-                                orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
-                                lvOrder.setAdapter(orderAdapter);
+                                if (orderAdapter == null) {
+                                    orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
+                                    lvOrder.setAdapter(orderAdapter);
+                                }
                                 orderAdapter.notifyDataSetChanged();
 
                                 if (txtTotalValue != null) {
