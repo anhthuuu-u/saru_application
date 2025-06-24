@@ -262,18 +262,18 @@ public class ProfileActivity extends BaseActivity {
         // Chuyển đến OrderList với trạng thái In transit (OrderStatusID = 3)
         imgIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
         txtIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
-    }
-
-    private void openOrderListWithStatus(String statusID) {
-        Intent intent = new Intent(ProfileActivity.this, OrderListActivity.class);
-        intent.putExtra("statusID", statusID); // Truyền trạng thái để lọc đơn hàng
-        startActivity(intent);
 
         //chuyển hướng Logout
         logoutSection.setOnClickListener(v -> logout()); // Added logoutSection listener
         txtLogout.setOnClickListener(v -> logout());
         imgLogout.setOnClickListener(v -> logout());
         imgLogoutArrow.setOnClickListener(v -> logout());
+    }
+
+    private void openOrderListWithStatus(String statusID) {
+        Intent intent = new Intent(ProfileActivity.this, OrderListActivity.class);
+        intent.putExtra("statusID", statusID); // Truyền trạng thái để lọc đơn hàng
+        startActivity(intent);
 
     }
 
