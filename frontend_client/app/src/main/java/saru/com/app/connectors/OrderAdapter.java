@@ -1,9 +1,7 @@
 package saru.com.app.connectors;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Locale;
 
 import saru.com.app.R;
 import saru.com.app.activities.OrderDetailActivity;
@@ -29,12 +26,11 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         this.orderList = orderList;
     }
 
-    @SuppressLint("DefaultLocale")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.order_item, null);
+            convertView = inflater.inflate(R.layout.order_item, parent, false);
         }
 
         Order order = orderList.get(position);
@@ -46,18 +42,16 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         TextView txtTotalValue = convertView.findViewById(R.id.txtTotalValue);
         TextView tvOrderDetails = convertView.findViewById(R.id.tv_order_details);
 
-        // Set the order details and total value
-        txtOrderID.setText(order.getOrderID());
-        txtOrderDate.setText(order.getOrderDate());
-        btnOrderStatus.setText(order.getOrderStatus());
+        txtOrderID.setText(order.getOrderID() != null ? order.getOrderID() : "Unknown");
+        txtOrderDate.setText(order.getOrderDate() != null ? order.getOrderDate() : "Unknown");
+        btnOrderStatus.setText(order.getOrderStatus() != null ? order.getOrderStatus() : "Unknown");
         txtTotalProduct.setText(String.valueOf(order.getTotalProduct()));
-        txtTotalValue.setText(String.format("%.0f", order.gettotalValue()));
 
-        // Set onClick listener for order details
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        txtTotalValue.setText(formatter.format(order.gettotalValue()) + " VNĐ");
+
         tvOrderDetails.setOnClickListener(v -> {
-            // Create an Intent to open the OrderDetailActivity
             Intent intent = new Intent(context, OrderDetailActivity.class);
-            // Pass the order ID to the next activity to fetch the details
             intent.putExtra("ORDER_ID", order.getOrderID());
             context.startActivity(intent);
         });
@@ -65,4 +59,3 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         return convertView;
     }
 }
-

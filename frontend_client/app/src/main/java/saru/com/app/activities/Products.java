@@ -660,7 +660,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         filterDialog.show();
     }
 
-    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
+    static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
         public ItemSpacingDecoration(int spacing) {

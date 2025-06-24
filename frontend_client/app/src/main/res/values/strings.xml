@@ -73,15 +73,11 @@
     <string name="title_brand_name">Hua Quang Han</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
-    <string name="title_product_1_price">400.000 đ</string>
-    <string name="title_product_2_price">200.000 đ</string>
-    <string name="title_product_3_price">400.000 đ</string>
-    <string name="title_quantity_2">x2</string>
-    <string name="title_quantity_1">x1</string>
+    <string name="title_total_item">xx</string>
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Shipping Fee:</string>
     <string name="title_merchandise_total">Merchandise Total</string>
-    <string name="title_item_quantity">(x items)</string>
+    <string name="title_item_quantity">Items</string>
     <string name="title_delivery_time">Time to delivery</string>
     <string name="title_expected_delivery">Expected Delivery ngày tháng năm</string>
 

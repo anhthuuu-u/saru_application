@@ -102,13 +102,24 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         // Sự kiện nút thanh toán
         Button paymentButton = findViewById(R.id.payment_button);
         paymentButton.setOnClickListener(v -> {
+            List<CartItem> selectedItems = new ArrayList<>();
+            for (CartItem item : listCartItems.getCartItems()) {
+                if (item.isSelected()) {
+                    selectedItems.add(item);
+                }
+            }
+            if (selectedItems.isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_no_items_selected), Toast.LENGTH_SHORT).show();
+                return;
+            }
             double total = listCartItems.calculateTotalPrice();
-            Toast.makeText(this, getString(R.string.product_cart_payment_toast_label) + " " + String.format("%.0f", total) + getString(R.string.product_cart_currency), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.product_cart_payment_toast_label) + " " +
+                    String.format("%.0f", total) + getString(R.string.product_cart_currency), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProductCart.this, TransactionCheckoutActivity.class);
+            intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
             startActivity(intent);
         });
 
-        // Sự kiện xóa tất cả
         // Sự kiện xóa tất cả
         txtDeleteAll.setOnClickListener(v -> {
             List<CartItem> selectedItems = new ArrayList<>();
@@ -130,7 +141,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                             int position = listCartItems.getCartItems().indexOf(item);
                             if (position != -1) {
                                 db.collection("carts").document(accountID).collection("items")
-                                        .document(item.getProductID()) // Cập nhật để dùng productID
+                                        .document(item.getProductID())
                                         .delete()
                                         .addOnSuccessListener(aVoid -> Log.d("ProductCart", "Deleted item: " + item.getProductName()))
                                         .addOnFailureListener(e -> {
@@ -198,11 +209,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                     updateCartVisibility();
                     updateTotalPrice();
                     Log.d("ProductCart", "Loaded " + listCartItems.getItemCount() + " items from Firestore");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ProductCart", "Error loading cart: " + e.getMessage());
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    Toast.makeText(this, "Lỗi khi tải giỏ hàng", Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -219,15 +219,6 @@
 
 
                         <TextView
-                            android:id="@+id/txtItemQuantity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/title_item_quantity"
-                            android:textSize="10sp" />
-
-
-                        <TextView
                             android:id="@+id/txtMerchandiseTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -683,23 +674,22 @@
 
 
                 <TextView
-                    android:id="@+id/txtTotalSaved"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:text="@string/title_total_saved"
+                    android:text="@string/title_item_quantity"
                     android:textAlignment="textEnd"
                     android:textSize="10sp" />
 
 
                 <TextView
-                    android:id="@+id/txtSavedPrice"
+                    android:id="@+id/txtTotalItemQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/inter"
-                    android:text="@string/title_saved_price"
+                    android:text="@string/title_total_item"
                     android:textAlignment="textEnd"
                     android:textColor="#F4B907"
                     android:textSize="10sp" />

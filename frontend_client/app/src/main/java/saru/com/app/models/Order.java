@@ -75,6 +75,4 @@ public class Order {
 
         this.totalValue = totalValue;
     }
-
-
 }
