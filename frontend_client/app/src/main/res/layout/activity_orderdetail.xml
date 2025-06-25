@@ -148,6 +148,16 @@
 
         <!-- Contact Information Section -->
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/order_products_label"
+            android:layout_marginTop="20dp"
+            android:textColor="#FBBC05"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <ListView
             android:id="@+id/lvOrderDetail"
             android:layout_width="match_parent"

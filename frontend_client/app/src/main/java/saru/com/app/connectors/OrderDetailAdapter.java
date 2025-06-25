@@ -40,39 +40,42 @@ public class OrderDetailAdapter extends ArrayAdapter<OrderDetail> {
         TextView txtProductName = convertView.findViewById(R.id.txtShowProductName);
         TextView txtQuantity = convertView.findViewById(R.id.txtShowQuantity);
         TextView txtPrice = convertView.findViewById(R.id.txtShowPriceAfterDiscount);
-        TextView txtOriginPrice = convertView.findViewById(R.id.txtShowOriginPrice); // Price before discount (Origin Price)
+        TextView txtOriginPrice = convertView.findViewById(R.id.txtShowOriginPrice);
         TextView txtBrand = convertView.findViewById(R.id.txtShowBrand);
         ImageView imgProductImage = convertView.findViewById(R.id.imgProductImage);
 
+        // Set product details
         txtProductName.setText(orderDetail.getProductName());
         txtQuantity.setText(String.valueOf(orderDetail.getQuantity()));
-//        txtPrice.setText(String.format(Locale.getDefault(), "%.0f", orderDetail.getPrice()));
-        txtBrand.setText(orderDetail.getBrand());
+        txtBrand.setText(orderDetail.getBrand() != null ? orderDetail.getBrand() : "Unknown");
 
-
-        // Check if voucherID is present
-        String voucherID = orderDetail.getVoucherID(); // Assuming getVoucherID() method exists
-        if (voucherID != null && !voucherID.isEmpty()) {
-            // If voucherID exists, show the origin price
-            double originPrice = orderDetail.getPrice(); // Original price of the product
-            txtOriginPrice.setText(String.format(Locale.getDefault(), "%,.0f", originPrice));
-            txtOriginPrice.setVisibility(View.VISIBLE); // Ensure the price is visible
-        } else {
-            // If no voucherID, hide the origin price TextView
-            txtOriginPrice.setVisibility(View.GONE); // Hide the origin price TextView
-        }
+        // Format prices using Vietnamese currency
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
         // Calculate total price (product price * quantity)
         double totalPrice = orderDetail.getPrice() * orderDetail.getQuantity();
-        txtPrice.setText(String.format(Locale.getDefault(), "%,.0f", totalPrice)); // Format as currency or normal number
+        txtPrice.setText(formatter.format(totalPrice));
+
+        // Handle voucher logic
+        String voucherID = orderDetail.getVoucherID();
+        if (voucherID != null && !voucherID.isEmpty()) {
+            // Assume original price is stored in a field or calculated (e.g., price before discount)
+            // For simplicity, using the same price as original price (adjust if you have a separate field)
+            double originPrice = orderDetail.getPrice(); // Replace with actual original price if available
+            txtOriginPrice.setText(formatter.format(originPrice * orderDetail.getQuantity()));
+            txtOriginPrice.setVisibility(View.VISIBLE);
+        } else {
+            txtOriginPrice.setVisibility(View.GONE);
+        }
+
         // Load the product image using Glide
         String imageUrl = orderDetail.getProductImageCover();
-        if (imageUrl != null) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
-                    .load(imageUrl)  // Use the image URL from Firestore
-                    .into(imgProductImage);  // Load into the ImageView
+                    .load(imageUrl)
+                    .into(imgProductImage);
         }
+
         return convertView;
     }
 }
-

@@ -648,7 +648,8 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
-
+    <string name="title_confirm_payment">Confirm Payment</string>
+    <string name="title_confirm_payment_message">Please take attention that the product are not available for who under 18, do you want to place order?</string>
 
 
 </resources>

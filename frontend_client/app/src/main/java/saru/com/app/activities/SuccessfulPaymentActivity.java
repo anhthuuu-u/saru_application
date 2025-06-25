@@ -173,7 +173,7 @@ public class SuccessfulPaymentActivity extends AppCompatActivity implements Prod
     public void do_view_order_detail(View view) {
         Intent intent = new Intent(this, OrderListActivity.class);
         // Truyền statusID = "4" để hiển thị các đơn hàng đã hoàn thành
-        intent.putExtra("statusID", "4"); // "4" = Delivery successful (completed)
+        intent.putExtra("statusID", "0"); // "4" = Delivery successful (completed)
 
         // Nếu có order ID hiện tại, có thể truyền thêm để highlight
         if (currentOrderId != null) {

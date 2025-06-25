@@ -1,11 +1,9 @@
 package saru.com.app.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,17 +29,13 @@ public class OrderListActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private ListView lvOrder;
-    OrderAdapter orderAdapter;
-    List<Order> orderList = new ArrayList<>();
-    List<Order> allOrders = new ArrayList<>(); // Lưu tất cả đơn hàng để lọc
-
-    // UI elements
-    TextView txtOrderID, txtOrderDate, txtTotalProduct, txtTotalValue;
-    Button btnOrderStatus;
-    TextView tabAll, tabConfirming, tabConfirmed, tabInTransit, tabComplete, tabCanceled;
-
-    // Biến để lưu order ID cần highlight (nếu có)
+    private OrderAdapter orderAdapter;
+    private List<Order> orderList = new ArrayList<>();
+    private List<Order> allOrders = new ArrayList<>();
     private String highlightOrderId;
+
+    // UI elements for tabs
+    private TextView tabAll, tabConfirming, tabConfirmed, tabInTransit, tabComplete, tabCanceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +51,11 @@ public class OrderListActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.ic_back_arrow);
         backArrow.setOnClickListener(v -> finish());
 
-        // Lấy thông tin từ Intent
         String initialStatusID = getIntent().getStringExtra("statusID");
         highlightOrderId = getIntent().getStringExtra("highlightOrderId");
 
         if (initialStatusID != null) {
             highlightTab(initialStatusID);
-            // Load tất cả orders trước, sau đó filter
             fetchOrdersForUser(() -> filterOrdersByStatus(initialStatusID));
         } else {
             fetchOrdersForUser(null);
@@ -71,10 +63,7 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
     private void highlightTab(String statusID) {
-        // Reset all tabs
         resetAllTabs();
-
-        // Highlight the selected tab
         switch (statusID) {
             case "0":
                 tabConfirming.setBackgroundResource(R.drawable.tab_selected_background);
@@ -112,15 +101,6 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        txtOrderID = findViewById(R.id.txtOrderID);
-        txtOrderDate = findViewById(R.id.txtOrderDate);
-        txtTotalProduct = findViewById(R.id.txtTotalProduct);
-        txtTotalValue = findViewById(R.id.txtTotalValue);
-        if (txtTotalValue == null) {
-            Log.e("OrderListActivity", "txtTotalValue is null");
-        }
-        btnOrderStatus = findViewById(R.id.btnOrderStatus);
-        // Initialize tabs
         tabAll = findViewById(R.id.tab_all);
         tabConfirming = findViewById(R.id.tab_confirming);
         tabConfirmed = findViewById(R.id.tab_confirmed);
@@ -170,10 +150,8 @@ public class OrderListActivity extends AppCompatActivity {
     private void filterOrdersByStatus(String statusID) {
         orderList.clear();
         if (statusID == null) {
-            // Hiển thị tất cả đơn hàng
             orderList.addAll(allOrders);
         } else {
-            // Lọc đơn hàng theo trạng thái
             String targetStatus = getStatusName(statusID);
             for (Order order : allOrders) {
                 if (order.getOrderStatus().equals(targetStatus)) {
@@ -183,16 +161,10 @@ public class OrderListActivity extends AppCompatActivity {
         }
 
         if (orderList.isEmpty() && statusID != null) {
-            Toast.makeText(OrderListActivity.this, "Không tìm thấy đơn hàng nào cho trạng thái này.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không tìm thấy đơn hàng nào cho trạng thái này.", Toast.LENGTH_SHORT).show();
         }
 
-        runOnUiThread(() -> {
-            if (orderAdapter == null) {
-                orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
-                lvOrder.setAdapter(orderAdapter);
-            }
-            orderAdapter.notifyDataSetChanged();
-        });
+        updateUI();
     }
 
     private String getStatusName(String statusID) {
@@ -206,7 +178,6 @@ public class OrderListActivity extends AppCompatActivity {
         }
     }
 
-    // Interface callback để biết khi nào load orders xong
     interface OnOrdersLoadedCallback {
         void onOrdersLoaded();
     }
@@ -230,9 +201,15 @@ public class OrderListActivity extends AppCompatActivity {
                             Log.e("OrderListActivity", "Error fetching user account: " + task.getException());
                             Toast.makeText(this, "Lỗi khi tải thông tin tài khoản.", Toast.LENGTH_SHORT).show();
                         }
+                        if (callback != null) {
+                            callback.onOrdersLoaded();
+                        }
                     });
         } else {
             Toast.makeText(this, "Vui lòng đăng nhập để xem đơn hàng.", Toast.LENGTH_SHORT).show();
+            if (callback != null) {
+                callback.onOrdersLoaded();
+            }
         }
     }
 
@@ -243,12 +220,12 @@ public class OrderListActivity extends AppCompatActivity {
                 .addOnCompleteListener(orderTask -> {
                     if (orderTask.isSuccessful()) {
                         if (!orderTask.getResult().isEmpty()) {
+                            allOrders.clear(); // Clear previous orders
                             AtomicInteger pendingOrders = new AtomicInteger(orderTask.getResult().size());
 
                             for (DocumentSnapshot document : orderTask.getResult()) {
                                 String orderID = document.getString("OrderID");
                                 String orderDate = document.getString("OrderDate");
-
                                 Object orderStatusIDObj = document.get("OrderStatusID");
                                 String orderStatusID = null;
 
@@ -265,7 +242,6 @@ public class OrderListActivity extends AppCompatActivity {
                                 if (orderStatusID != null) {
                                     fetchOrderStatus(orderStatusID, orderID, orderDate, () -> {
                                         if (pendingOrders.decrementAndGet() == 0) {
-                                            // Tất cả orders đã load xong
                                             if (callback != null) {
                                                 callback.onOrdersLoaded();
                                             }
@@ -280,15 +256,15 @@ public class OrderListActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            Log.e("OrderListActivity", "No orders found for CustomerID: " + customerID);
-                            Toast.makeText(OrderListActivity.this, "Không tìm thấy đơn hàng nào.", Toast.LENGTH_SHORT).show();
+                            Log.d("OrderListActivity", "No orders found for CustomerID: " + customerID);
+                            Toast.makeText(this, "Không tìm thấy đơn hàng nào.", Toast.LENGTH_SHORT).show();
                             if (callback != null) {
                                 callback.onOrdersLoaded();
                             }
                         }
                     } else {
                         Log.e("OrderListActivity", "Error fetching orders: " + orderTask.getException());
-                        Toast.makeText(OrderListActivity.this, "Lỗi khi tải danh sách đơn hàng.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Lỗi khi tải danh sách đơn hàng.", Toast.LENGTH_SHORT).show();
                         if (callback != null) {
                             callback.onOrdersLoaded();
                         }
@@ -307,16 +283,10 @@ public class OrderListActivity extends AppCompatActivity {
                 .addOnCompleteListener(productTask -> {
                     if (productTask.isSuccessful()) {
                         Double productPrice = productTask.getResult().getDouble("productPrice");
-
                         if (productPrice != null && quantityObj != null) {
                             int quantity = (quantityObj instanceof Long) ? ((Long) quantityObj).intValue() : (Integer) quantityObj;
-                            double value = productPrice * quantity;
-                            totalValue[0] += value;
+                            totalValue[0] += productPrice * quantity;
                         }
-
-                        Log.d("OrderListActivity", "ProductID: " + productID + " Price: " + productPrice + " Quantity: " + quantityObj);
-                        Log.d("OrderListActivity", "Total Value so far: " + totalValue[0]);
-
                         if (listener != null) {
                             listener.onTotalCalculated(totalValue[0]);
                         }
@@ -336,91 +306,148 @@ public class OrderListActivity extends AppCompatActivity {
                 .addOnCompleteListener(statusTask -> {
                     if (statusTask.isSuccessful()) {
                         String orderStatus = statusTask.getResult().getString("Status");
-                        Log.d("OrderListActivity", "OrderStatus for OrderID " + orderID + ": " + orderStatus);
-                        fetchTotalProductQuantity(orderID, orderStatus, orderDate, onCompleted);
+                        fetchTotalProductQuantity(orderID, orderStatus != null ? orderStatus : "Unknown", orderDate, onCompleted);
                     } else {
                         Log.e("OrderListActivity", "Error fetching order status: " + statusTask.getException());
-                        if (onCompleted != null) {
-                            onCompleted.run();
-                        }
+                        fetchTotalProductQuantity(orderID, "Unknown", orderDate, onCompleted);
                     }
                 });
     }
 
     private void fetchTotalProductQuantity(String orderID, String orderStatus, String orderDate, Runnable onCompleted) {
-        db.collection("orderdetails")
-                .whereEqualTo("OrderID", orderID)
+        db.collection("orders")
+                .document(orderID)
                 .get()
-                .addOnCompleteListener(detailsTask -> {
-                    if (detailsTask.isSuccessful()) {
-                        int totalQuantity = 0;
-                        final double[] totalValue = {0.0};
+                .addOnCompleteListener(orderTask -> {
+                    if (orderTask.isSuccessful()) {
+                        DocumentSnapshot orderDoc = orderTask.getResult();
+                        if (orderDoc != null && orderDoc.exists()) {
+                            Long totalProductLong = orderDoc.getLong("totalProduct");
+                            Double totalValue = orderDoc.getDouble("totalAmount"); // Assuming totalAmount is stored as the total value
+                            int totalProduct = totalProductLong != null ? totalProductLong.intValue() : 0;
 
-                        List<DocumentSnapshot> details = detailsTask.getResult().getDocuments();
-                        if (details.isEmpty()) {
-                            // Không có chi tiết đơn hàng, tạo order với giá trị mặc định
+                            if (totalProduct > 0 && totalValue != null) {
+                                // Use the values directly from the orders document
+                                Order order = new Order(orderID, orderDate, orderStatus, totalProduct, totalValue);
+                                allOrders.add(order);
+                                if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                    orderList.add(0, order);
+                                } else {
+                                    orderList.add(order);
+                                }
+                                updateUI();
+                                if (onCompleted != null) {
+                                    onCompleted.run();
+                                }
+                            } else {
+                                // Fallback to calculate from orderdetails if totalProduct or totalValue is missing
+                                db.collection("orderdetails")
+                                        .whereEqualTo("OrderID", orderID)
+                                        .get()
+                                        .addOnCompleteListener(detailsTask -> {
+                                            if (detailsTask.isSuccessful()) {
+                                                int calculatedTotalQuantity = 0;
+                                                final double[] calculatedTotalValue = {0.0};
+                                                List<DocumentSnapshot> details = detailsTask.getResult().getDocuments();
+
+                                                if (details.isEmpty()) {
+                                                    Order order = new Order(orderID, orderDate, orderStatus, 0, 0.0);
+                                                    allOrders.add(order);
+                                                    if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                                        orderList.add(0, order);
+                                                    } else {
+                                                        orderList.add(order);
+                                                    }
+                                                    updateUI();
+                                                    if (onCompleted != null) {
+                                                        onCompleted.run();
+                                                    }
+                                                    return;
+                                                }
+
+                                                AtomicInteger pendingProducts = new AtomicInteger(details.size());
+
+                                                for (DocumentSnapshot document : details) {
+                                                    Object quantityObj = document.get("Quantity");
+                                                    String productID = document.getString("ProductID");
+
+                                                    if (quantityObj != null) {
+                                                        calculatedTotalQuantity += (quantityObj instanceof Long) ? ((Long) quantityObj).intValue() : (Integer) quantityObj;
+                                                    }
+
+                                                    if (productID != null) {
+                                                        int finalTotalQuantity = calculatedTotalQuantity;
+                                                        fetchProductPriceAndCalculateTotal(productID, quantityObj, calculatedTotalValue, calculatedValue -> {
+                                                            if (pendingProducts.decrementAndGet() == 0) {
+                                                                Order order = new Order(orderID, orderDate, orderStatus, finalTotalQuantity, calculatedTotalValue[0]);
+                                                                allOrders.add(order);
+                                                                if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                                                    orderList.add(0, order);
+                                                                } else {
+                                                                    orderList.add(order);
+                                                                }
+                                                                updateUI();
+                                                                if (onCompleted != null) {
+                                                                    onCompleted.run();
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        if (pendingProducts.decrementAndGet() == 0) {
+                                                            Order order = new Order(orderID, orderDate, orderStatus, calculatedTotalQuantity, calculatedTotalValue[0]);
+                                                            allOrders.add(order);
+                                                            if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                                                orderList.add(0, order);
+                                                            } else {
+                                                                orderList.add(order);
+                                                            }
+                                                            updateUI();
+                                                            if (onCompleted != null) {
+                                                                onCompleted.run();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                Log.e("OrderListActivity", "Error fetching order details: " + detailsTask.getException());
+                                                Order order = new Order(orderID, orderDate, orderStatus, 0, 0.0);
+                                                allOrders.add(order);
+                                                if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                                    orderList.add(0, order);
+                                                } else {
+                                                    orderList.add(order);
+                                                }
+                                                updateUI();
+                                                if (onCompleted != null) {
+                                                    onCompleted.run();
+                                                }
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.e("OrderListActivity", "Order document does not exist for orderID: " + orderID);
                             Order order = new Order(orderID, orderDate, orderStatus, 0, 0.0);
                             allOrders.add(order);
+                            if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                                orderList.add(0, order);
+                            } else {
+                                orderList.add(order);
+                            }
                             updateUI();
                             if (onCompleted != null) {
                                 onCompleted.run();
                             }
-                            return;
-                        }
-
-                        AtomicInteger pendingProducts = new AtomicInteger(details.size());
-
-                        for (DocumentSnapshot document : details) {
-                            Object quantityObj = document.get("Quantity");
-                            String productID = document.getString("ProductID");
-
-                            if (quantityObj instanceof Long) {
-                                totalQuantity += ((Long) quantityObj).intValue();
-                            } else if (quantityObj instanceof Integer) {
-                                totalQuantity += (Integer) quantityObj;
-                            }
-
-                            if (productID != null) {
-                                int finalTotalQuantity = totalQuantity;
-                                fetchProductPriceAndCalculateTotal(productID, quantityObj, totalValue, calculatedValue -> {
-                                    if (pendingProducts.decrementAndGet() == 0) {
-                                        // Tất cả products đã tính xong
-                                        Order order = new Order(orderID, orderDate, orderStatus, finalTotalQuantity, totalValue[0]);
-                                        allOrders.add(order);
-
-                                        // Nếu đây là order cần highlight, thêm vào đầu danh sách
-                                        if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
-                                            orderList.add(0, order);
-                                        } else if (orderList.isEmpty()) {
-                                            orderList.add(order);
-                                        }
-
-                                        updateUI();
-                                        if (onCompleted != null) {
-                                            onCompleted.run();
-                                        }
-                                    }
-                                });
-                            } else {
-                                if (pendingProducts.decrementAndGet() == 0) {
-                                    Order order = new Order(orderID, orderDate, orderStatus, totalQuantity, totalValue[0]);
-                                    allOrders.add(order);
-
-                                    if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
-                                        orderList.add(0, order);
-                                    } else if (orderList.isEmpty()) {
-                                        orderList.add(order);
-                                    }
-
-                                    updateUI();
-                                    if (onCompleted != null) {
-                                        onCompleted.run();
-                                    }
-                                }
-                            }
                         }
                     } else {
-                        Log.e("OrderListActivity", "Error fetching order details: " + detailsTask.getException());
+                        Log.e("OrderListActivity", "Error fetching order: " + orderTask.getException());
+                        Order order = new Order(orderID, orderDate, orderStatus, 0, 0.0);
+                        allOrders.add(order);
+                        if (highlightOrderId != null && highlightOrderId.equals(orderID)) {
+                            orderList.add(0, order);
+                        } else {
+                            orderList.add(order);
+                        }
+                        updateUI();
                         if (onCompleted != null) {
                             onCompleted.run();
                         }
@@ -433,8 +460,9 @@ public class OrderListActivity extends AppCompatActivity {
             if (orderAdapter == null) {
                 orderAdapter = new OrderAdapter(OrderListActivity.this, orderList);
                 lvOrder.setAdapter(orderAdapter);
+            } else {
+                orderAdapter.notifyDataSetChanged();
             }
-            orderAdapter.notifyDataSetChanged();
         });
     }
 }

@@ -137,7 +137,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         txtBankName = findViewById(R.id.txtBankName);
         txtCardNumber = findViewById(R.id.txtCardNumber);
         txtCardType = findViewById(R.id.txtCardType);
-        btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         txtMerchandiseTotal = findViewById(R.id.txtMerchandiseTotal);
         txtTotalPrice = findViewById(R.id.txtTotalPrice);
         txtTotalItemQuantity = findViewById(R.id.txtTotalItemQuantity);
@@ -153,7 +152,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         imgEditInfo.setOnClickListener(v -> openTransactionEditAddressActivity());
         imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
         imgVoucher.setOnClickListener(v -> openVouchersManagementActivity());
-        btnPlaceOrder.setOnClickListener(v -> openSuccessfulPaymentActivity());
 
         btnApplyVoucherCode.setOnClickListener(v -> {
             String discountCode = edtVoucherCode.getText().toString().trim();
@@ -254,15 +252,18 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
     private void updateSummary() {
         totalAmount = 0.0;
+        int totalItemQuantity = 0; // Biến để lưu tổng số lượng items
+
         for (CartItem item : selectedItems) {
             totalAmount += item.getTotalPrice();
+            totalItemQuantity += item.getQuantity(); // Tính tổng số lượng items
         }
         payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
 
         DecimalFormat formatter = new DecimalFormat("#,###");
         txtMerchandiseTotal.setText(formatter.format(totalAmount + SHIPPING_FEE) + getString(R.string.product_cart_currency));
         txtTotalPrice.setText(formatter.format(payableAmount) + getString(R.string.product_cart_currency));
-        txtTotalItemQuantity.setText(String.valueOf(selectedItems.size()));
+        txtTotalItemQuantity.setText(String.valueOf(totalItemQuantity)); // Hiển thị tổng số lượng items
     }
 
     private void updateCustomerInfo() {
@@ -314,8 +315,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
                     Map<String, Object> order = new HashMap<>();
                     String orderId = db.collection("orders").document().getId();
                     order.put("OrderID", orderId);
-                    order.put("CustomerID", customerID); // Use CustomerID
-                    order.put("items", selectedItems);
+                    order.put("CustomerID", customerID);
                     order.put("totalAmount", payableAmount);
                     order.put("totalProduct", totalProduct);
                     order.put("paymentMethod", selectedPaymentMethod);
@@ -328,6 +328,18 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
                     // Add order to 'orders' collection
                     batch.set(db.collection("orders").document(orderId), order);
+
+                    // Add order details to 'orderdetails' collection
+                    for (CartItem item : selectedItems) {
+                        Map<String, Object> orderDetail = new HashMap<>();
+                        orderDetail.put("OrderID", orderId);
+                        orderDetail.put("ProductID", item.getProductID());
+                        orderDetail.put("Quantity", item.getQuantity());
+                        // Optionally add VoucherID if applicable
+                        // orderDetail.put("VoucherID", item.getVoucherID() != null ? item.getVoucherID() : "");
+                        String orderDetailId = db.collection("orderdetails").document().getId();
+                        batch.set(db.collection("orderdetails").document(orderDetailId), orderDetail);
+                    }
 
                     // Remove selected items from cart
                     for (CartItem item : selectedItems) {
@@ -342,6 +354,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(this, SuccessfulPaymentActivity.class);
                                 intent.putExtra("orderId", orderId);
+                                // Pass statusID to highlight the correct tab
+                                intent.putExtra("statusID", "0"); // Pending confirmation
                                 startActivity(intent);
                                 finish();
                             })
@@ -359,7 +373,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private void applyVoucherCode(String discountCode) {
         validateVoucherCode(discountCode, (isValid, voucher) -> {
             if (isValid && voucher != null) {
-                discountAmount = 50000; // Adjust based on Firestore voucher data
+                discountAmount = 20000; // Adjust based on Firestore voucher data
                 payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
                 updateSummary();
                 btnApplyVoucherCode.setText(R.string.title_applied);
@@ -465,6 +479,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         }
     }
 
+    //Hỏi xem có thoát khoi trang thanh toán không
     public void do_back(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         Resources res = getResources();
@@ -472,6 +487,20 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         builder.setMessage(R.string.title_confirm_exit_message);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setPositiveButton(R.string.title_confirm_exit_message_yes, (dialog, which) -> finish());
+        builder.setNegativeButton(R.string.title_confirm_exit_message_no, (dialog, which) -> dialog.cancel());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    //Hỏi xem có chắc thanh toán hay không
+    public void do_payment(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Resources res = getResources();
+        builder.setTitle(R.string.title_confirm_payment);
+        builder.setMessage(R.string.title_confirm_payment_message);
+        builder.setIcon(R.mipmap.img_saru_cup);
+        builder.setPositiveButton(R.string.title_confirm_exit_message_yes, (dialog, which) -> openSuccessfulPaymentActivity());
         builder.setNegativeButton(R.string.title_confirm_exit_message_no, (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);
