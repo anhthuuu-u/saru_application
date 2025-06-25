@@ -44,6 +44,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-firestore-ktx:24.9.1")
 
     // Thêm Glide để tải hình ảnh
     implementation("com.github.bumptech.glide:glide:4.16.0")

@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import saru.com.app.R;
 import saru.com.app.connectors.AddressAdapter;
@@ -67,6 +71,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             if (userUID != null) {
                 fetchUserProfile(userUID);
+                fetchPaymentMethods(userUID);
             } else {
                 Log.d("ProfileEditActivity", "User not logged in.");
                 Toast.makeText(ProfileEditActivity.this, "User not logged in", Toast.LENGTH_SHORT).show();
@@ -135,6 +140,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
             if (userUID != null) {
                 fetchUserProfile(userUID); // Refresh the profile data
+                fetchPaymentMethods(userUID);
             } else {
                 Log.e("ProfileEditActivity", "userUID is null in onActivityResult");
             }
@@ -171,7 +177,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (edtCustomerPass == null) Log.e("ProfileEditActivity", "edtCustomerPass is null");
 
         edtCustomerJoinDate = findViewById(R.id.edtCustomerJoinDate);
-        if (edtCustomerJoinDate == null) Log.e("ProfileEditActivity", "edtCustomerJoinDate is null");
+        if (edtCustomerJoinDate == null)
+            Log.e("ProfileEditActivity", "edtCustomerJoinDate is null");
 
         ckbMale = findViewById(R.id.ckbMale);
         if (ckbMale == null) Log.e("ProfileEditActivity", "ckbMale is null");
@@ -180,10 +187,12 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (ckbFemale == null) Log.e("ProfileEditActivity", "ckbFemale is null");
 
         txtCustomerFullName = findViewById(R.id.txtCustomerFullName);
-        if (txtCustomerFullName == null) Log.e("ProfileEditActivity", "txtCustomerFullName is null");
+        if (txtCustomerFullName == null)
+            Log.e("ProfileEditActivity", "txtCustomerFullName is null");
 
         txtCustomerFullAddress = findViewById(R.id.txtCustomerFullAddress);
-        if (txtCustomerFullAddress == null) Log.e("ProfileEditActivity", "txtCustomerFullAddress is null");
+        if (txtCustomerFullAddress == null)
+            Log.e("ProfileEditActivity", "txtCustomerFullAddress is null");
 
         lvAddresses = findViewById(R.id.lvAddresses);
         if (lvAddresses == null) Log.e("ProfileEditActivity", "lvAddresses is null");
@@ -325,4 +334,88 @@ public class ProfileEditActivity extends AppCompatActivity {
             Log.e("ProfileEditActivity", "Error fetching customer data: ", e);
         }
     }
+
+    private void fetchPaymentMethods(String customerID) {
+        Log.d("ProfileEditActivity", "Fetching payment methods for CustomerID: " + customerID);
+
+        // Create a list to hold the payment method names
+        List<String> paymentMethodsList = new ArrayList<>();
+
+        // We will dynamically check for payment collections, instead of assuming max 5 payment methods.
+        int i = 1;
+
+        // Start loading payment methods asynchronously
+        loadPaymentMethod(i, customerID, paymentMethodsList);
+    }
+
+    private void loadPaymentMethod(int i, String customerID, List<String> paymentMethodsList) {
+        String paymentCollectionName = "payment0" + i;  // Check for payment01, payment02, payment03, ...
+
+        db.collection("paymentofcustomer")
+                .document(customerID)
+                .collection(paymentCollectionName)
+                .get()
+                .addOnCompleteListener(paymentTask -> {
+                    if (paymentTask.isSuccessful()) {
+                        if (!paymentTask.getResult().isEmpty()) {
+                            // Fetch PaymentMethodID if document exists
+                            DocumentSnapshot paymentDoc = paymentTask.getResult().getDocuments().get(0);
+                            if (paymentDoc != null) {
+                                String paymentMethodID = paymentDoc.getString("PaymentMethodID");
+                                fetchPaymentMethodName(paymentMethodID, paymentMethodsList);
+                            }
+                        } else {
+                            // No more payment methods, populate spinner
+                            populateSpinner(paymentMethodsList);
+                        }
+                        // Proceed to next collection
+                        loadPaymentMethod(i + 1, customerID, paymentMethodsList);
+                    } else {
+                        Log.e("ProfileEditActivity", "Error fetching payment details for collection " + paymentCollectionName + ": " + paymentTask.getException());
+                        populateSpinner(paymentMethodsList); // Populate even in case of error
+                    }
+                });
+    }
+
+    private void fetchPaymentMethodName(String paymentMethodID, List<String> paymentMethodsList) {
+        db.collection("paymentmethods")
+                .document(paymentMethodID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            String paymentMethod = documentSnapshot.getString("PaymentMethod");
+                            if (paymentMethod != null) {
+                                paymentMethodsList.add(paymentMethod);
+                            } else {
+                                Log.e("ProfileEditActivity", "Payment method name is missing for " + paymentMethodID);
+                            }
+                        } else {
+                            Log.e("ProfileEditActivity", "No document found for PaymentMethodID: " + paymentMethodID);
+                        }
+                    } else {
+                        Log.e("ProfileEditActivity", "Error fetching payment method name: " + task.getException());
+                    }
+                });
+    }
+
+
+    private void populateSpinner(List<String> paymentMethodsList) {
+        Log.d("ProfileEditActivity", "Populating spinner with payment methods");
+
+        if (paymentMethodsList.isEmpty()) {
+            Log.e("ProfileEditActivity", "No payment methods to populate spinner with.");
+        } else {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileEditActivity.this,
+                    android.R.layout.simple_spinner_item, paymentMethodsList);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // Tìm Spinner và gán adapter vào nó
+            Spinner paymentMethodSpinner = findViewById(R.id.paymentMethod);
+            paymentMethodSpinner.setAdapter(adapter);
+        }
+    }
+
+
 }
