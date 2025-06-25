@@ -1,0 +1,5 @@
+<!-- res/drawable/tab_selected_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFD700" /> <!-- Golden yellow or your preferred color -->
+    <corners android:radius="4dp" />
+</shape>

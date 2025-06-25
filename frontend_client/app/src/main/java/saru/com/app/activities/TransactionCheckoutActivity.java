@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,89 +19,95 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
-import saru.com.app.R;
-import saru.com.app.models.Voucher;
-
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import saru.com.app.R;
+import saru.com.app.connectors.CheckoutAdapter;
+import saru.com.app.models.CartItem;
+import saru.com.app.models.Voucher;
 
 public class TransactionCheckoutActivity extends AppCompatActivity {
-
-    // Constants for activity result
     private static final int EDIT_ADDRESS_REQUEST = 1001;
     private static final int EDIT_PAYMENT_METHOD_REQUEST = 1002;
+    private static final double SHIPPING_FEE = 20000.0;
 
     // UI Components
-    ImageView imgBack;
-    ImageView imgVoucher;
-    ImageView imgEditInfo;
-    ImageView imgEditInfoBank;
-    TextView txtCustomerName;
-    TextView txtCustomerPhoneNumber;
-    TextView txtCustomerAddress;
-    EditText edtVoucherCode;
-    Button btnApplyVoucherCode;
-    RadioButton radCOD;
-    RadioButton radBank;
-    RadioButton radEWallet;
-    LinearLayout layoutCOD;
-    LinearLayout layoutBank;
-    LinearLayout layoutEWallet;
-    Button btnPlaceOrder;
-    TextView txtTotalPrice;
-    TextView txtMerchandiseTotal;
-    LinearLayout layoutBankDetails;
-    LinearLayout layoutCODDetails;
-    LinearLayout layoutEWalletDetails;
-
-    // TextView for payment info
-    TextView txtBankName;
-    TextView txtCardNumber;
-    TextView txtCardType;
+    private ImageView imgBack, imgVoucher, imgEditInfo, imgEditInfoBank;
+    private TextView txtCustomerName, txtCustomerPhoneNumber, txtCustomerAddress;
+    private EditText edtVoucherCode;
+    private Button btnApplyVoucherCode, btnPlaceOrder;
+    private RadioButton radCOD, radBank, radEWallet;
+    private LinearLayout layoutCOD, layoutBank, layoutEWallet;
+    private LinearLayout layoutCODDetails, layoutBankDetails, layoutEWalletDetails;
+    private TextView txtBankName, txtCardNumber, txtCardType;
+    private TextView txtMerchandiseTotal, txtTotalPrice, txtTotalItemQuantity;
+    private RecyclerView recyclerProductCheckout;
+    private CheckoutAdapter checkoutAdapter;
 
     // Data variables
-    private double totalAmount = 1020000;
-    private double discountAmount = 0;
-    private double payableAmount = 1020000;
+    private double totalAmount = 0.0;
+    private double discountAmount = 0.0;
+    private double payableAmount = 0.0;
     private String selectedPaymentMethod = "COD";
-
-    // Address information variables
     private String customerName = "";
     private String customerPhone = "";
     private String customerAddress = "";
-
-    // Payment information variables
     private String bankName = "";
     private String cardNumber = "";
     private String cardType = "";
     private String cvv = "";
     private String expiryDate = "";
+    private List<CartItem> selectedItems = new ArrayList<>();
 
-    // Firestore instance
+    // Firebase
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_checkout);
 
-        // Initialize Firestore
+        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         // Initialize UI components
         addViews();
 
+        // Get selected items from Intent
+        selectedItems = getIntent().getParcelableArrayListExtra("selectedItems");
+        if (selectedItems == null) {
+            selectedItems = new ArrayList<>();
+        }
+
+        // Set up RecyclerView with initial data
+        checkoutAdapter.updateData(selectedItems);
+        updateSummary();
+
         // Set up listeners
         addEvents();
 
-        // Set initial data
-        setupInitialData();
+        // Load selected cart items from Firestore to sync
+        loadSelectedCartItems();
+
+        // Set window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -108,45 +115,11 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         });
     }
 
-    private void setupInitialData() {
-        customerName = getString(R.string.title_customer_name);
-        customerPhone = getString(R.string.title_customer_phone_number);
-        customerAddress = getString(R.string.title_customer_address);
-
-        updateCustomerInfo();
-        updatePaymentSummary();
-        updatePaymentInfo();
-    }
-
-    private void updateCustomerInfo() {
-        txtCustomerName.setText(customerName);
-        txtCustomerPhoneNumber.setText(customerPhone);
-        txtCustomerAddress.setText(customerAddress);
-    }
-
-    private void updatePaymentSummary() {
-        txtMerchandiseTotal.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", totalAmount));
-        txtTotalPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", payableAmount));
-    }
-
-    private void updatePaymentInfo() {
-        if (txtBankName != null) {
-            txtBankName.setText(bankName.isEmpty() ? "Chưa có thông tin" : bankName);
-        }
-        if (txtCardNumber != null) {
-            String maskedCardNumber = cardNumber.isEmpty() ? "Chưa có thông tin" :
-                    "**** **** **** " + cardNumber.substring(Math.max(0, cardNumber.length() - 4));
-            txtCardNumber.setText(maskedCardNumber);
-        }
-        if (txtCardType != null) {
-            txtCardType.setText(cardType.isEmpty() ? "Chưa có thông tin" : cardType);
-        }
-    }
-
     private void addViews() {
         imgBack = findViewById(R.id.imgBack);
         imgEditInfo = findViewById(R.id.imgEditInfo);
         imgEditInfoBank = findViewById(R.id.imgEditInfoBank);
+        imgVoucher = findViewById(R.id.imgVoucher);
         txtCustomerName = findViewById(R.id.edtCustomerName);
         txtCustomerPhoneNumber = findViewById(R.id.txtCustomerPhoneNumber);
         txtCustomerAddress = findViewById(R.id.txtCustomerAddress);
@@ -158,25 +131,25 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         layoutCOD = findViewById(R.id.layoutCOD);
         layoutBank = findViewById(R.id.layoutBank);
         layoutEWallet = findViewById(R.id.layoutEWallet);
-
-        imgVoucher = findViewById(R.id.imgVoucher);
-
-        btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
-        txtTotalPrice = findViewById(R.id.txtTotalPrice);
-        txtMerchandiseTotal = findViewById(R.id.txtMerchandiseTotal);
-
         layoutCODDetails = findViewById(R.id.layoutCODDetails);
         layoutBankDetails = findViewById(R.id.layoutBankDetails);
         layoutEWalletDetails = findViewById(R.id.layoutEWalletDetails);
-
         txtBankName = findViewById(R.id.txtBankName);
         txtCardNumber = findViewById(R.id.txtCardNumber);
         txtCardType = findViewById(R.id.txtCardType);
+        txtMerchandiseTotal = findViewById(R.id.txtMerchandiseTotal);
+        txtTotalPrice = findViewById(R.id.txtTotalPrice);
+        txtTotalItemQuantity = findViewById(R.id.txtTotalItemQuantity);
+        recyclerProductCheckout = findViewById(R.id.recyclerProductCheckout);
+
+        // Initialize RecyclerView
+        recyclerProductCheckout.setLayoutManager(new LinearLayoutManager(this));
+        checkoutAdapter = new CheckoutAdapter(this, selectedItems);
+        recyclerProductCheckout.setAdapter(checkoutAdapter);
     }
 
     private void addEvents() {
         imgEditInfo.setOnClickListener(v -> openTransactionEditAddressActivity());
-        btnPlaceOrder.setOnClickListener(v -> openSuccessfulPaymentActivity());
         imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
         imgVoucher.setOnClickListener(v -> openVouchersManagementActivity());
 
@@ -235,47 +208,180 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         });
     }
 
-    private void openVouchersManagementActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, VouchersManagement.class);
-        startActivity(intent);
+    private void loadSelectedCartItems() {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập để tiếp tục", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        String accountID = auth.getCurrentUser().getUid();
+        db.collection("carts").document(accountID).collection("items")
+                .whereEqualTo("selected", true)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Log.e("TransactionCheckout", "Error loading selected items: " + error.getMessage());
+                        Toast.makeText(this, "Lỗi khi tải sản phẩm giao dịch", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    selectedItems.clear();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        String productID = doc.getString("productID");
+                        if (productID == null) {
+                            Log.e("TransactionCheckout", "Null ProductID in Firestore document: " + doc.getId());
+                            continue;
+                        }
+                        CartItem item = new CartItem(
+                                productID,
+                                accountID,
+                                doc.getLong("timestamp") != null ? doc.getLong("timestamp") : 0L,
+                                doc.getString("productName") != null ? doc.getString("productName") : "Unknown",
+                                doc.getDouble("productPrice") != null ? doc.getDouble("productPrice") : 0.0,
+                                doc.getString("imageID") != null ? doc.getString("imageID") : "",
+                                doc.getLong("quantity") != null ? doc.getLong("quantity").intValue() : 1,
+                                true
+                        );
+                        selectedItems.add(item);
+                    }
+                    checkoutAdapter.updateData(selectedItems);
+                    updateSummary();
+                    Log.d("TransactionCheckout", "Loaded " + selectedItems.size() + " selected items");
+                });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void updateSummary() {
+        totalAmount = 0.0;
+        int totalItemQuantity = 0; // Biến để lưu tổng số lượng items
 
-        if (requestCode == EDIT_ADDRESS_REQUEST && resultCode == RESULT_OK && data != null) {
-            customerName = data.getStringExtra("address_name");
-            customerPhone = data.getStringExtra("address_phone");
-            customerAddress = data.getStringExtra("address_full");
-            updateCustomerInfo();
-            Toast.makeText(this, "Thông tin địa chỉ đã được cập nhật", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == EDIT_PAYMENT_METHOD_REQUEST && resultCode == RESULT_OK && data != null) {
-            bankName = data.getStringExtra("bank_name");
-            cardNumber = data.getStringExtra("card_number");
-            cardType = data.getStringExtra("card_type");
-            cvv = data.getStringExtra("cvv");
-            expiryDate = data.getStringExtra("expiry_date");
-            updatePaymentInfo();
-            Toast.makeText(this, "Thông tin thanh toán đã được cập nhật", Toast.LENGTH_SHORT).show();
+        for (CartItem item : selectedItems) {
+            totalAmount += item.getTotalPrice();
+            totalItemQuantity += item.getQuantity(); // Tính tổng số lượng items
         }
+        payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
+
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        txtMerchandiseTotal.setText(formatter.format(totalAmount + SHIPPING_FEE) + getString(R.string.product_cart_currency));
+        txtTotalPrice.setText(formatter.format(payableAmount) + getString(R.string.product_cart_currency));
+        txtTotalItemQuantity.setText(String.valueOf(totalItemQuantity)); // Hiển thị tổng số lượng items
+    }
+
+    private void updateCustomerInfo() {
+        txtCustomerName.setText(customerName);
+        txtCustomerPhoneNumber.setText(customerPhone);
+        txtCustomerAddress.setText(customerAddress);
+    }
+
+    private void updatePaymentInfo() {
+        if (txtBankName != null) {
+            txtBankName.setText(bankName.isEmpty() ? "Chưa có thông tin" : bankName);
+        }
+        if (txtCardNumber != null) {
+            String maskedCardNumber = cardNumber.isEmpty() ? "Chưa có thông tin" :
+                    "**** **** **** " + cardNumber.substring(Math.max(0, cardNumber.length() - 4));
+            txtCardNumber.setText(maskedCardNumber);
+        }
+        if (txtCardType != null) {
+            txtCardType.setText(cardType.isEmpty() ? "Chưa có thông tin" : cardType);
+        }
+    }
+
+    void openSuccessfulPaymentActivity() {
+        if (selectedItems.isEmpty()) {
+            Toast.makeText(this, "Vui lòng chọn ít nhất một sản phẩm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String accountID = auth.getCurrentUser().getUid();
+        WriteBatch batch = db.batch();
+
+        // Calculate total product quantity
+        long totalProduct = selectedItems.stream().mapToLong(CartItem::getQuantity).sum();
+
+        // Format order date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String orderDate = sdf.format(new Date());
+
+        // Fetch CustomerID from accounts collection
+        db.collection("accounts").document(accountID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String customerID = documentSnapshot.getString("CustomerID");
+                    if (customerID == null) {
+                        Toast.makeText(this, "Không tìm thấy CustomerID", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Prepare order data
+                    Map<String, Object> order = new HashMap<>();
+                    String orderId = db.collection("orders").document().getId();
+                    order.put("OrderID", orderId);
+                    order.put("CustomerID", customerID);
+                    order.put("totalAmount", payableAmount);
+                    order.put("totalProduct", totalProduct);
+                    order.put("paymentMethod", selectedPaymentMethod);
+                    order.put("customerName", customerName);
+                    order.put("customerPhone", customerPhone);
+                    order.put("customerAddress", customerAddress);
+                    order.put("OrderDate", orderDate);
+                    order.put("OrderStatusID", "0"); // Pending confirmation
+                    order.put("timestamp", System.currentTimeMillis());
+
+                    // Add order to 'orders' collection
+                    batch.set(db.collection("orders").document(orderId), order);
+
+                    // Add order details to 'orderdetails' collection
+                    for (CartItem item : selectedItems) {
+                        Map<String, Object> orderDetail = new HashMap<>();
+                        orderDetail.put("OrderID", orderId);
+                        orderDetail.put("ProductID", item.getProductID());
+                        orderDetail.put("Quantity", item.getQuantity());
+                        // Optionally add VoucherID if applicable
+                        // orderDetail.put("VoucherID", item.getVoucherID() != null ? item.getVoucherID() : "");
+                        String orderDetailId = db.collection("orderdetails").document().getId();
+                        batch.set(db.collection("orderdetails").document(orderDetailId), orderDetail);
+                    }
+
+                    // Remove selected items from cart
+                    for (CartItem item : selectedItems) {
+                        batch.delete(db.collection("carts").document(accountID)
+                                .collection("items").document(item.getProductID()));
+                    }
+
+                    // Commit batch
+                    batch.commit()
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("TransactionCheckout", "Order placed successfully: " + orderId);
+                                Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(this, SuccessfulPaymentActivity.class);
+                                intent.putExtra("orderId", orderId);
+                                // Pass statusID to highlight the correct tab
+                                intent.putExtra("statusID", "0"); // Pending confirmation
+                                startActivity(intent);
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("TransactionCheckout", "Error placing order: " + e.getMessage());
+                                Toast.makeText(this, "Lỗi khi đặt hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TransactionCheckout", "Error fetching CustomerID: " + e.getMessage());
+                    Toast.makeText(this, "Lỗi khi lấy thông tin tài khoản", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void applyVoucherCode(String discountCode) {
         validateVoucherCode(discountCode, (isValid, voucher) -> {
             if (isValid && voucher != null) {
-                discountAmount = 50000; // Adjust discount based on Firestore data if needed
-                payableAmount = totalAmount - discountAmount;
-                updatePaymentSummary();
+                discountAmount = 20000; // Adjust based on Firestore voucher data
+                payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
+                updateSummary();
                 btnApplyVoucherCode.setText(R.string.title_applied);
                 btnApplyVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
                 edtVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.voucher_applied_color));
-                edtVoucherCode.setEnabled(true);
-
-                String currentAppliedCode = discountCode;
-                // Display voucher description in Toast
                 Toast.makeText(this, voucher.getDescription(), Toast.LENGTH_SHORT).show();
 
+                String currentAppliedCode = discountCode;
                 edtVoucherCode.setOnFocusChangeListener((v, hasFocus) -> {
                     if (!hasFocus) {
                         String newCode = edtVoucherCode.getText().toString().trim();
@@ -317,10 +423,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            // Voucher exists, check expiry date
-                            Voucher voucher = querySnapshot.getDocuments().get(0).toObject(Voucher.class);
+                        if (task.getResult() != null && !task.getResult().isEmpty()) {
+                            Voucher voucher = task.getResult().getDocuments().get(0).toObject(Voucher.class);
                             if (voucher != null && isVoucherValid(voucher)) {
                                 callback.onValidationResult(true, voucher);
                             } else {
@@ -353,8 +457,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         btnApplyVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.color_golden_yellow));
         edtVoucherCode.setBackgroundTintList(getResources().getColorStateList(R.color.color_golden_yellow));
         discountAmount = 0;
-        payableAmount = totalAmount;
-        updatePaymentSummary();
+        payableAmount = totalAmount + SHIPPING_FEE;
+        updateSummary();
     }
 
     private void updatePaymentMethodDetails() {
@@ -375,36 +479,36 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         }
     }
 
+    //Hỏi xem có thoát khoi trang thanh toán không
     public void do_back(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TransactionCheckoutActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         Resources res = getResources();
         builder.setTitle(R.string.title_confirm_exit);
         builder.setMessage(R.string.title_confirm_exit_message);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setPositiveButton(R.string.title_confirm_exit_message_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        builder.setNegativeButton(R.string.title_confirm_exit_message_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setPositiveButton(R.string.title_confirm_exit_message_yes, (dialog, which) -> finish());
+        builder.setNegativeButton(R.string.title_confirm_exit_message_no, (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
-
-    public void do_edit_information(View view) {}
-
-    public void do_payment(View view) {}
+    //Hỏi xem có chắc thanh toán hay không
+    public void do_payment(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Resources res = getResources();
+        builder.setTitle(R.string.title_confirm_payment);
+        builder.setMessage(R.string.title_confirm_payment_message);
+        builder.setIcon(R.mipmap.img_saru_cup);
+        builder.setPositiveButton(R.string.title_confirm_exit_message_yes, (dialog, which) -> openSuccessfulPaymentActivity());
+        builder.setNegativeButton(R.string.title_confirm_exit_message_no, (dialog, which) -> dialog.cancel());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
 
     void openTransactionEditAddressActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditAddressActivity.class);
+        Intent intent = new Intent(this, TransactionEditAddressActivity.class);
         intent.putExtra("address_name", customerName);
         intent.putExtra("address_phone", customerPhone);
         intent.putExtra("address_full", customerAddress);
@@ -412,7 +516,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     }
 
     void openTransactionEditPaymentMethodActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, TransactionEditPaymentMethodActivity.class);
+        Intent intent = new Intent(this, TransactionEditPaymentMethodActivity.class);
         intent.putExtra("bank_name", bankName);
         intent.putExtra("card_number", cardNumber);
         intent.putExtra("card_type", cardType);
@@ -421,12 +525,31 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         startActivityForResult(intent, EDIT_PAYMENT_METHOD_REQUEST);
     }
 
-    void openSuccessfulPaymentActivity() {
-        Intent intent = new Intent(TransactionCheckoutActivity.this, SuccessfulPaymentActivity.class);
+    void openVouchersManagementActivity() {
+        Intent intent = new Intent(this, VouchersManagement.class);
         startActivity(intent);
     }
 
-    // Callback interface for async Firestore validation
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_ADDRESS_REQUEST && resultCode == RESULT_OK && data != null) {
+            customerName = data.getStringExtra("address_name");
+            customerPhone = data.getStringExtra("address_phone");
+            customerAddress = data.getStringExtra("address_full");
+            updateCustomerInfo();
+            Toast.makeText(this, "Thông tin địa chỉ đã được cập nhật", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == EDIT_PAYMENT_METHOD_REQUEST && resultCode == RESULT_OK && data != null) {
+            bankName = data.getStringExtra("bank_name");
+            cardNumber = data.getStringExtra("card_number");
+            cardType = data.getStringExtra("card_type");
+            cvv = data.getStringExtra("cvv");
+            expiryDate = data.getStringExtra("expiry_date");
+            updatePaymentInfo();
+            Toast.makeText(this, "Thông tin thanh toán đã được cập nhật", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private interface VoucherValidationCallback {
         void onValidationResult(boolean isValid, Voucher voucher);
     }
