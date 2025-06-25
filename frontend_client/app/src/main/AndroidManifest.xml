@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -91,7 +93,7 @@
             android:exported="true" />
         <activity
             android:name=".activities.Blog_EachCatalogActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.Blog_ListActivity"
             android:exported="true" />
@@ -145,13 +147,34 @@
             android:name=".activities.FaceAuthenticationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.FogotPasswordCreateActivity"
-            android:exported="false" />
+            android:name=".activities.ForgotPasswordCreateActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="saruapp.page.link"
+                    android:pathPrefix="/forgotpassword"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="saru-application.firebaseapp.com"
+                    android:pathPrefix="/__/auth/action"/>
+            </intent-filter>
+
+        </activity>
         <activity
-            android:name=".activities.FogotPasswordOtpActivity"
+            android:name=".activities.ForgotPasswordOtpActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
+
             android:exported="false" />
         <activity
             android:name=".activities.GreetingActivity"

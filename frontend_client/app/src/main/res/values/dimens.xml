@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="item_spacing">10dp</dimen> <!-- Khoảng cách giữa các item -->
+    <dimen name="item_spacing">0dp</dimen> <!-- Khoảng cách giữa các item -->
     <dimen name="padding_standard">8dp</dimen>
     <dimen name="padding_small">1dp</dimen>
     <dimen name="padding_small2">1.5dp</dimen>
@@ -45,4 +45,5 @@
     <dimen name="text_size_seemore">10sp</dimen>
     <dimen name="text_size_content">10sp</dimen>
     <dimen name="elevation_card">4dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 </resources>

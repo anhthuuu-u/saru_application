@@ -6,12 +6,12 @@ public class CustomerReviews {
     private String customerName;
     private String reviewContent;
     private String purchasedProduct;
-    private int customerImage;
+    private String customerImage;
 
     public CustomerReviews() {
     }
 
-    public CustomerReviews(String customerName, String reviewContent, String purchasedProduct, int customerImage) {
+    public CustomerReviews(String customerName, String reviewContent, String purchasedProduct, String customerImage) {
         this.customerName = customerName;
         this.reviewContent = reviewContent;
         this.purchasedProduct = purchasedProduct;
@@ -42,11 +42,11 @@ public class CustomerReviews {
         this.purchasedProduct = purchasedProduct;
     }
 
-    public int getCustomerImage() {
+    public String getCustomerImage() {
         return customerImage;
     }
 
-    public void setCustomerImage(int customerImage) {
+    public void setCustomerImage(String customerImage) {
         this.customerImage = customerImage;
     }
 }

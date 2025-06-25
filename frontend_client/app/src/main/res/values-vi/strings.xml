@@ -93,7 +93,7 @@
     <string name="title_brand">Thương hiệu:</string>
     <string name="title_brand_name_3">xxxxxxxxxxxx</string>
     <string name="title_brand_name_2">yyyyyyyyyyy</string>
-    <string name="title_brand_name_1">zzzzzzzzzzzzzzzz</string>
+    <string name="title_brand_name">Hua Quang Han</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
     <string name="title_product_1_price">400.000 đ</string>
@@ -101,7 +101,6 @@
     <string name="title_product_3_price">400.000 đ</string>
     <string name="title_quantity_2">x2</string>
     <string name="title_quantity_1">x1</string>
-    <string name="title_product_price_original_1">460.000 đ</string>
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Phí vận chuyển:</string>
     <string name="title_merchandise_total">Tổng số tiền</string>
@@ -386,6 +385,12 @@
     <string name="review_write_review_hint">Nhập đánh giá của bạn tại đây</string>
     <string name="review_submit_button">Gửi đánh giá</string>
     <string name="review_submit_success">Gửi đánh giá thành công!</string>
+    <string name="review_submit_error">Không gửi được đánh giá. Vui lòng thử lại.</string>
+    <string name="review_empty_error">Vui lòng nhập bình luận đánh giá.</string>
+    <string name="rating_empty_error">Vui lòng chọn xếp hạng.</string>
+    <string name="add_photo_button">Thêm ảnh</string>
+    <string name="max_images_error">Bạn chỉ có thể tải lên tối đa 3 hình ảnh.</string>
+    <string name="image_upload_error">Không tải được hình ảnh. Vui lòng thử lại.</string>
 
     <!-- RETURN REQUEST -->
     <string name="return_request_title">YÊU CẦU TRẢ HÀNG</string>
@@ -578,13 +583,79 @@
     <string name="confirm_exit_yes">Đúng rồi!</string>
     <string name="confirm_exit_no">Không!</string>
     <string name="title_login_save_login_infor">Lưu In4</string>
+
+
     <string name="title_Addaddress_AddnewAddress">Thêm địa chỉ mới</string>
     <string name="title_addaddress_RecipientName">Tên người nhận</string>
     <string name="title_addaddress_PhoneNumber">Số điện thoại</string>
     <string name="title_addaddress_Address">Địa chỉ</string>
+
+
+
+    <string name="sort_low_to_high">Price: Low to High</string>
+    <string name="sort_high_to_low">Price: High to Low</string>
+    <string name="filter_all">All</string>
+    <string name="field_cateID">Category ID</string>
+    <string name="field_brandID">Brand ID</string>
+    <string name="field_netContent">Net Content</string>
+    <string name="field_wineType">Wine Type</string>
+    <string name="field_productPrice">Product Price</string>
+    <string name="field_isBestSelling">Best Selling</string>
+    <string name="field_isOnSale">On Sale</string>
+
+
+    <string name="currency_vnd">VND</string>
+    <string name="no_category_available">No category available</string>
+    <string name="error_loading_category">Error loading category</string>
+    <string name="no_category_id">No category ID</string>
+
+    <string name="no_brand_available">No brand available</string>
+    <string name="error_loading_brand">Error loading brand</string>
+    <string name="no_brand_id">No brand ID</string>
+
+    <string name="no_status_available">No Status available</string>
+    <string name="error_loading_status">Error loading Status</string>
+    <string name="no_status_id">No Status ID</string>
+
+    <string name="no_related_products">Không có sản phẩm liên quan</string>
+    <string name="error_loading_related_products">Lỗi - Không có sản phẩm liên quan</string>
+
+    <string name="title_phone">Số điện thoại <font color="#FF0000">*</font></string>
+    <string name="txt_input_phone">Nhập số điện thoại đã đăng ký để nhận mã OTP</string>
+    <string name="hint_phone">Nhập SĐT vào đây</string>
+    <string name="get_otp">Nhận OTP</string>
+    <string name="hint_enter_otp">Nhập OTP</string>
+    <string name="btn_verify_otp">Xác minh OTP</string>
+    <string name="title_noti_title">Tiêu đề thông báo</string>
+
+
     <string name="string_order_tab_confirmed">Đã xác nhận</string>
     <string name="order_tab_intransit">Đang vận chuyển</string>
     <string name="string_order_Canceled">Đã hủy</string>
+
+    <string name="profile_logout">Đăng xuất</string>
+
+
+    <string name="no_search_results">Không tìm thấy sản phẩm tương ứng</string>
+    <string name="delete_item_noti">Đã xóa thành công!</string>
+
+    <string name="filter_data_not_ready">Dữ liệu bộ lọc chưa sẵn sàng, vui lòng thử lại</string>
+    <string name="invalid_price_min">Giá tối thiểu không hợp lệ</string>
+    <string name="invalid_price_max">Giá tối đa không hợp lệ</string>
+    <string name="error_loading_filter_data">Lỗi khi tải dữ liệu bộ lọc</string>
+    <string name="CateID">Category ID</string>
+    <string name="brandID">Brand ID</string>
+    <string name="netContent">Net Content</string>
+    <string name="wineType">Wine Type</string>
+    <string name="productPrice">Product Price</string>
+    <string name="isBestSelling">Best Selling</string>
+    <string name="isOnSale">On Sale</string>
+    <string name="login_required">Please login to add to cart</string>
+    <string name="error_adding_to_cart">Error adding to cart</string>
+    <string name="google_play_services_unavailable">Google Play Services is not available</string>
+    <string name="added_to_cart">Added %1$s to cart successfully!</string>
+
+
 </resources>
 
 

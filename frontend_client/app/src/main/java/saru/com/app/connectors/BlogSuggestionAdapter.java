@@ -1,6 +1,7 @@
 package saru.com.app.connectors;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import saru.com.app.R;
+import saru.com.app.activities.Blog_BlogDetailActivity;
 import saru.com.app.models.Blog;
 
 public class BlogSuggestionAdapter extends RecyclerView.Adapter<BlogSuggestionAdapter.BlogViewHolder> {
@@ -39,17 +41,25 @@ public class BlogSuggestionAdapter extends RecyclerView.Adapter<BlogSuggestionAd
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         Blog blog = blogList.get(position);
-        holder.txtBlogTitle.setText(blog.getTitle());
-        holder.txtBlogContent.setText(blog.getContent().length() > 100
+        holder.txtBlogTitle.setText(blog.getTitle() != null ? blog.getTitle() : "No Title");
+        holder.txtBlogContent.setText(blog.getContent() != null && blog.getContent().length() > 100
                 ? blog.getContent().substring(0, 100) + "..."
-                : blog.getContent());
+                : (blog.getContent() != null ? blog.getContent() : "No Content"));
 
         String categoryName = categoryMap.getOrDefault(blog.getCateblogID(), "Không rõ danh mục");
         holder.txtCategoryName.setText(categoryName);
 
         Glide.with(context)
-                .load(blog.getImageUrl())
+                .load(blog.getImageUrl() != null ? blog.getImageUrl() : R.mipmap.img_taybacvillage)
+                .placeholder(R.mipmap.img_taybacvillage)
                 .into(holder.imgBlogImage);
+
+        // Sự kiện click để mở Blog_BlogDetailActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Blog_BlogDetailActivity.class);
+            intent.putExtra("blogID", blog.getBlogID());
+            context.startActivity(intent);
+        });
     }
 
     @Override

@@ -23,12 +23,7 @@
     <string name="title_product_ingredients">Ingredients</string>
     <string name="title_compare">Compare</string>
     <string name="title_filter_product_dialog">Filter Products</string>
-    <string name="filter_product_dialog_category">Category</string>
     <string name="title_filter_product_dialog_price_range">Price range</string>
-    <string name="title_product_dialog_sort">Sort By</string>
-    <string name="title_filter_product_dialog_brand">Brand</string>
-    <string name="title_filter_product_dialog_volume">Volume</string>
-    <string name="title_filter_product_dialog_wine_type">Wine Type</string>
     <string name="title_filter_product_dialog_others">Others</string>
     <string name="title_filter_product_apply">Apply Filter</string>
     <string name="title_filter_product_reset">Reset Filter</string>
@@ -75,7 +70,7 @@
     <string name="title_brand">Brand:</string>
     <string name="title_brand_name_3">xxxxxxxxxxxx</string>
     <string name="title_brand_name_2">yyyyyyyyyyy</string>
-    <string name="title_brand_name_1">zzzzzzzzzzzzzzzz</string>
+    <string name="title_brand_name">Hua Quang Han</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
     <string name="title_product_1_price">400.000 đ</string>
@@ -83,7 +78,6 @@
     <string name="title_product_3_price">400.000 đ</string>
     <string name="title_quantity_2">x2</string>
     <string name="title_quantity_1">x1</string>
-    <string name="title_product_price_original_1">460.000 đ</string>
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Shipping Fee:</string>
     <string name="title_merchandise_total">Merchandise Total</string>
@@ -215,7 +209,7 @@
     <string name="title_blog_blogcontent">Content</string>
     <string name="title_blog_suggestfyou">Suggest for you</string>
     <string name="title_blogeachcatalog_blogcatalogname_infor">INFORMATION ABOUT TAY BAC WINE</string>
-    <string name="title_detailblog_titleblog">THE HEALTH BENEFITS OF TAY BAC WINE</string>
+    <string name="title_detailblog_titleblog">DETAIL</string>
     <string name="title_detailblog_datepost">Posting date</string>
     <string name="title_detailblog_view">View</string>
     <string name="title_detailblog_relatednews">Related news</string>
@@ -361,19 +355,25 @@
 
     <!-- REVIEWS -->
     <string name="review_title">ORDER REVIEW</string>
-    <string name="order_product_label">Product</string>
-    <string name="order_product_name">Mao Dao Moc Chau Plum Wine</string>
+    <string name="order_product_label">Products</string>
+    <string name="order_product_name">Product Name</string>
     <string name="order_brand_label">Brand: %s</string>
     <string name="order_brand_value">XXXXX</string>
     <string name="order_quantity_label">x%s</string>
     <string name="order_original_price">-%s</string>
     <string name="order_discounted_price">%s</string>
-    <string name="review_rating_label">Order Rating</string>
-    <string name="review_attach_media_label">Attach Photo/Video</string>
+    <string name="review_rating_label">Rating</string>
+    <string name="review_attach_media_label">Attach Media</string>
     <string name="review_write_review_label">Write Review</string>
-    <string name="review_write_review_hint">Write your review here</string>
-    <string name="review_submit_button">Submit review</string>
-    <string name="review_submit_success">Send review successful!</string>
+    <string name="review_write_review_hint">Write your review here...</string>
+    <string name="review_submit_button">Submit Review</string>
+    <string name="review_submit_success">Review submitted successfully!</string>
+    <string name="review_submit_error">Failed to submit review. Please try again.</string>
+    <string name="review_empty_error">Please enter a review comment.</string>
+    <string name="rating_empty_error">Please select a rating.</string>
+    <string name="add_photo_button">Add Photo</string>
+    <string name="max_images_error">You can only upload up to 3 images.</string>
+    <string name="image_upload_error">Failed to upload image. Please try again.</string>
 
     <!-- RETURN REQUEST -->
     <string name="return_request_title">RETURN REQUEST</string>
@@ -579,6 +579,7 @@
     <string name="confirm_exit_yes">Yes</string>
     <string name="confirm_exit_no">No</string>
     <string name="title_login_save_login_infor">Save Infor</string>
+
     <string name="title_Addaddress_AddnewAddress">Add new address</string>
     <string name="title_addaddress_RecipientName">Recipient Name</string>
     <string name="title_addaddress_PhoneNumber">Phone Number</string>
@@ -586,6 +587,72 @@
     <string name="string_order_tab_confirmed">Confirmed</string>
     <string name="order_tab_intransit">In transit</string>
     <string name="string_order_Canceled">Canceled</string>
+
+    <string name="sort_low_to_high">Price: Low to High</string>
+    <string name="sort_high_to_low">Price: High to Low</string>
+    <string name="filter_all">All</string>
+    <string name="field_cateID">Category ID</string>
+    <string name="field_brandID">Brand ID</string>
+    <string name="field_netContent">Net Content</string>
+    <string name="field_wineType">Wine Type</string>
+    <string name="field_productPrice">Product Price</string>
+    <string name="field_isBestSelling">Best Selling</string>
+    <string name="field_isOnSale">On Sale</string>
+
+    <string name="currency_vnd">VND</string>
+
+    <string name="no_brand_available">No brand available</string>
+    <string name="error_loading_brand">Error loading brand</string>
+    <string name="no_brand_id">No brand ID</string>
+
+    <string name="no_status_available">No Status available</string>
+    <string name="error_loading_status">Error loading Status</string>
+    <string name="no_status_id">No Status ID</string>
+
+    <string name="no_related_products">No related products</string>
+    <string name="error_loading_related_products">Error - No related products</string>
+
+
+    <string name="title_phone">Phone <font color="#FF0000">*</font></string>
+    <string name="txt_input_phone">Please enter the phone number you used to create your account, and we will send you a verification code to reset your password.</string>
+    <string name="hint_phone">Please enter your phone number</string>
+    <string name="get_otp">Get OTP</string>
+    <string name="hint_enter_otp">Enter OTP</string>
+    <string name="btn_verify_otp">Verify OTP</string>
+
+    <string name="title_noti_title">Noti Title</string>
+
+    <string name="profile_logout">Logout</string>
+
+    <string name="delete_item_noti">Delete successfull!</string>
+    <string name="no_search_results">No result</string>
+
+    <string name="filter_data_not_ready">Dữ liệu bộ lọc chưa sẵn sàng, vui lòng thử lại</string>
+    <string name="invalid_price_min">Giá tối thiểu không hợp lệ</string>
+    <string name="invalid_price_max">Giá tối đa không hợp lệ</string>
+    <string name="error_loading_filter_data">Lỗi khi tải dữ liệu bộ lọc</string>
+
+    <string name="filter_product_dialog_category">Category</string>
+    <string name="title_product_dialog_sort">Sort By</string>
+    <string name="title_filter_product_dialog_brand">Brand</string>
+    <string name="title_filter_product_dialog_volume">Volume</string>
+    <string name="title_filter_product_dialog_wine_type">Wine Type</string>
+    <string name="no_category_available">No category available</string>
+    <string name="error_loading_category">Error loading category</string>
+    <string name="no_category_id">No category ID</string>
+
+    <string name="CateID">Category ID</string>
+    <string name="brandID">Brand ID</string>
+    <string name="netContent">Net Content</string>
+    <string name="wineType">Wine Type</string>
+    <string name="productPrice">Product Price</string>
+    <string name="isBestSelling">Best Selling</string>
+    <string name="isOnSale">On Sale</string>
+    <string name="login_required">Please login to add to cart</string>
+    <string name="error_adding_to_cart">Error adding to cart</string>
+    <string name="google_play_services_unavailable">Google Play Services is not available</string>
+    <string name="added_to_cart">Added %1$s to cart successfully!</string>
+
 
 
 </resources>

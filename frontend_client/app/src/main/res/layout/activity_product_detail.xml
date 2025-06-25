@@ -82,6 +82,16 @@
             android:scaleType="fitCenter"
             app:srcCompat="@mipmap/ic_cart"
             app:tint="#F8BC3B" />
+        <TextView
+            android:id="@+id/cart_item_count"
+            android:layout_width="@dimen/cart_count_size"
+            android:layout_height="@dimen/cart_count_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/circle_background"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="10dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- ScrollView for Product Detail Content -->
@@ -98,43 +108,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Product Image -->
-            <ImageView
-                android:id="@+id/product_image"
+            android:padding="8dp">
+            <!-- Image Section -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager_images"
                 android:layout_width="match_parent"
-                android:layout_height="208dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/color_medium_gray" />
+                android:layout_height="300dp"
+                android:layout_marginBottom="8dp" />
 
-            <!-- Sub Images -->
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:id="@+id/imgBlog_CategoryNameInfo"
-                    android:layout_width="59dp"
-                    android:layout_height="56dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/color_medium_gray" />
-
-                <ImageView
-                    android:id="@+id/imgBlog_CategoryNameTips"
-                    android:layout_width="64dp"
-                    android:layout_height="56dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/color_medium_gray" />
-
-                <ImageView
-                    android:id="@+id/imgBlogList_Back"
-                    android:layout_width="60dp"
-                    android:layout_height="56dp"
-                    android:background="@color/color_medium_gray" />
-            </LinearLayout>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <!-- Product Name -->
             <TextView
@@ -391,6 +379,16 @@
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:nestedScrollingEnabled="true" />
+                <TextView
+                    android:id="@+id/no_related_products_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_related_products"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:textColor="@color/color_medium_gray"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_products" />
             </LinearLayout>
 
         </LinearLayout>

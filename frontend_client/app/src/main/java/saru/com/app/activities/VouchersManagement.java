@@ -8,11 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import saru.com.app.R;
 import saru.com.app.connectors.VoucherAdapter;
+import saru.com.app.models.Voucher;
 import saru.com.app.models.VoucherList;
 
 public class VouchersManagement extends AppCompatActivity {
@@ -28,8 +33,6 @@ public class VouchersManagement extends AppCompatActivity {
 
         // Khởi tạo RecyclerView
         recyclerViewVouchers = findViewById(R.id.recycler_view_vouchers);
-
-        // Kiểm tra null để tránh lỗi
         if (recyclerViewVouchers == null) {
             throw new IllegalStateException("RecyclerView with ID recycler_view_vouchers not found in layout");
         }
@@ -37,30 +40,29 @@ public class VouchersManagement extends AppCompatActivity {
         // Khởi tạo VoucherList
         voucherList = new VoucherList();
 
-        // Khởi tạo VoucherAdapter
-        voucherAdapter = new VoucherAdapter(voucherList.getVouchers());
-
-        // Cài đặt RecyclerView
+        // Khởi tạo VoucherAdapter với danh sách rỗng ban đầu
+        voucherAdapter = new VoucherAdapter(new ArrayList<>());
         recyclerViewVouchers.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewVouchers.setAdapter(voucherAdapter);
 
-        // Thông báo adapter cập nhật dữ liệu
-        voucherAdapter.notifyDataSetChanged();
+        // Quan sát LiveData để tự động cập nhật UI
+        voucherList.getVouchers().observe(this, new Observer<List<Voucher>>() {
+            @Override
+            public void onChanged(List<Voucher> vouchers) {
+                voucherAdapter.updateVouchers(vouchers);
+                voucherAdapter.notifyDataSetChanged();
+            }
+        });
+
         // Xử lý nút btn_back_arrow
         ImageButton btnBackArrow = findViewById(R.id.btn_back_arrow);
         if (btnBackArrow != null) {
             btnBackArrow.setOnClickListener(v -> {
                 Intent intent = new Intent(VouchersManagement.this, Homepage.class);
                 startActivity(intent);
-                finish(); // Kết thúc activity Products để không quay lại khi nhấn back
+                finish();
             });
         }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Xử lý window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

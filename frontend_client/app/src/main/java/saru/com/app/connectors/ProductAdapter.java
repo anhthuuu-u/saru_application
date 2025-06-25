@@ -1,6 +1,8 @@
 package saru.com.app.connectors;
 
+import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +16,41 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import saru.com.app.activities.ProductDetailActivity;
 import saru.com.app.R;
+import saru.com.app.activities.ProductDetailActivity;
+import saru.com.app.models.image;
 import saru.com.app.models.Product;
-import saru.com.app.models.ProductList;
+import saru.com.app.models.ProductComparisonItems;
+import saru.com.app.models.productCategory;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-    private final ProductList productList;
     private List<Product> products;
+    private Context context;
+    private OnAddToCartListener onAddToCartListener;
+    private FirebaseFirestore db;
+    private final int placeholderResId;
+    private final int errorResId;
 
-    public ProductAdapter() {
-        productList = new ProductList();
+    public interface OnAddToCartListener {
+        void onAddToCart(Product product);
+    }
+
+    public ProductAdapter(Context context, OnAddToCartListener listener) {
+        this.context = context;
+        this.onAddToCartListener = listener;
+        this.products = new ArrayList<>();
+        this.db = FirebaseFirestore.getInstance();
+        this.placeholderResId = R.mipmap.img_saru_cup;
+        this.errorResId = R.drawable.ic_ver_fail;
     }
 
     @NonNull
@@ -40,41 +62,185 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.getProducts().get(position);
+        Product product = products.get(position);
+
+        // Load ảnh
+        loadImage(holder, product);
+
+        // Load danh mục
+        loadCategory(holder, product);
+
+        // Load các field khác
         holder.textProductName.setText(product.getProductName());
-        holder.textProductPrice.setText(product.getProductPrice());
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        holder.textProductPrice.setText(formatter.format(product.getProductPrice()) + " " +
+                holder.itemView.getContext().getString(R.string.currency_vnd));
         holder.ratingBar.setRating(product.getCustomerRating());
 
-        // Handle click event to navigate to ProductDetailActivity
+        // Navigate to ProductDetailActivity
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), ProductDetailActivity.class);
             intent.putExtra("product", product);
             holder.itemView.getContext().startActivity(intent);
         });
-        // Handle btnAddToCart click
+
+        // Add to cart
         holder.btnAddToCart.setOnClickListener(v -> {
-            // Gửi sự kiện đến Homepage (cần context là Homepage)
-            Toast.makeText(holder.itemView.getContext(), "Add " + product.getProductName() + " to cart sucessfully!", Toast.LENGTH_SHORT).show();
+            if (onAddToCartListener != null) {
+                onAddToCartListener.onAddToCart(product);
+            } else {
+                // Giữ Toast làm fallback nếu listener không được gán
+                Toast.makeText(holder.itemView.getContext(),
+                        holder.itemView.getContext().getString(R.string.dialog_add_to_cart_success),
+                        Toast.LENGTH_SHORT).show();
+            }
         });
 
-        // Handle btnComparison click
+        // Compare
         holder.btnComparison.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(), "Compare " + product.getProductName(), Toast.LENGTH_SHORT).show();
+            loadImageForComparison(holder, product);
         });
+    }
+
+    private void loadImage(ProductViewHolder holder, Product product) {
+        if (product.getImageID() == null || product.getImageID().isEmpty()) {
+            Log.w("ProductAdapter", "imageID is null or empty for product: " + product.getProductID());
+            Glide.with(holder.itemView.getContext())
+                    .load(errorResId)
+                    .into(holder.imageProduct);
+            return;
+        }
+
+        Log.d("ProductAdapter", "Attempting to load image for imageID: " + product.getImageID());
+        db.collection("image").document(product.getImageID()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        image image = documentSnapshot.toObject(image.class);
+                        if (image != null && image.getProductImageCover() != null && !image.getProductImageCover().isEmpty()) {
+                            Log.d("ProductAdapter", "Image loaded for imageID: " + product.getImageID() +
+                                    ", URL: " + image.getProductImageCover());
+                            Glide.with(holder.itemView.getContext())
+                                    .load(image.getProductImageCover())
+                                    .placeholder(placeholderResId)
+                                    .error(errorResId)
+                                    .into(holder.imageProduct);
+                        } else {
+                            Log.w("ProductAdapter", "No valid productImageCover for imageID: " + product.getImageID());
+                            Glide.with(holder.itemView.getContext())
+                                    .load(errorResId)
+                                    .into(holder.imageProduct);
+                        }
+                    } else {
+                        Log.w("ProductAdapter", "Image document does not exist for imageID: " + product.getImageID());
+                        Glide.with(holder.itemView.getContext())
+                                .load(errorResId)
+                                .into(holder.imageProduct);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProductAdapter", "Error loading image for imageID: " + product.getImageID(), e);
+                    Glide.with(holder.itemView.getContext())
+                            .load(errorResId)
+                            .into(holder.imageProduct);
+                });
+    }
+
+    private void loadCategory(ProductViewHolder holder, Product product) {
+        if (product.getCateID() == null || product.getCateID().isEmpty()) {
+            Log.e("ProductAdapter", "cateID is null or empty for product: " + product.getProductID());
+            holder.textProductCategory.setText(
+                    holder.itemView.getContext().getString(R.string.no_category_id));
+            return;
+        }
+        db.collection("productCategory").document(product.getCateID()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    productCategory category = documentSnapshot.toObject(productCategory.class);
+                    if (category != null && category.getCateName() != null) {
+                        holder.textProductCategory.setText(category.getCateName());
+                        product.setCategory(category.getCateName());
+                        Log.d("ProductAdapter", "Category loaded: " + category.getCateName() + " for cateID: " + product.getCateID());
+                    } else {
+                        Log.w("ProductAdapter", "No category data for cateID: " + product.getCateID());
+                        holder.textProductCategory.setText(
+                                holder.itemView.getContext().getString(R.string.no_category_available));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProductAdapter", "Error loading category for cateID: " + product.getCateID(), e);
+                    holder.textProductCategory.setText(
+                            holder.itemView.getContext().getString(R.string.error_loading_category));
+                });
+    }
+
+    private void loadImageForComparison(ProductViewHolder holder, Product product) {
+        if (product.getImageID() != null) {
+            db.collection("image").document(product.getImageID()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        image image = documentSnapshot.toObject(image.class);
+                        String imageUrl = (image != null && image.getProductImageCover() != null)
+                                ? image.getProductImageCover() : "";
+                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
+                                product.getProductName(),
+                                "",
+                                product.getAlcoholStrength(),
+                                product.getNetContent(),
+                                product.getWineType(),
+                                product.getIngredients(),
+                                product.getProductTaste(),
+                                product.getProductPrice(),
+                                imageUrl
+                        );
+                        ProductComparisonItems.addItem(comparisonItem);
+                        Toast.makeText(holder.itemView.getContext(),
+                                holder.itemView.getContext().getString(R.string.dialog_compare_success),
+                                Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProductAdapter", "Error loading image for comparison: " + product.getImageID(), e);
+                        ProductComparisonItems comparisonItem = new ProductComparisonItems(
+                                product.getProductName(),
+                                "",
+                                product.getAlcoholStrength(),
+                                product.getNetContent(),
+                                product.getWineType(),
+                                product.getIngredients(),
+                                product.getProductTaste(),
+                                product.getProductPrice(),
+                                ""
+                        );
+                        ProductComparisonItems.addItem(comparisonItem);
+                        Toast.makeText(holder.itemView.getContext(),
+                                holder.itemView.getContext().getString(R.string.dialog_compare_success),
+                                Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Log.e("ProductAdapter", "imageID is null for comparison: " + product.getProductID());
+            ProductComparisonItems comparisonItem = new ProductComparisonItems(
+                    product.getProductName(),
+                    "",
+                    product.getAlcoholStrength(),
+                    product.getNetContent(),
+                    product.getWineType(),
+                    product.getIngredients(),
+                    product.getProductTaste(),
+                    product.getProductPrice(),
+                    ""
+            );
+            ProductComparisonItems.addItem(comparisonItem);
+            Toast.makeText(holder.itemView.getContext(),
+                    holder.itemView.getContext().getString(R.string.dialog_compare_success),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return productList.getProducts().size();
+        return products.size();
     }
 
     public void updateData(List<Product> newProducts) {
-        this.products = newProducts != null ? newProducts : new ArrayList<>();
+        this.products = newProducts != null ? new ArrayList<>(newProducts) : new ArrayList<>();
         notifyDataSetChanged();
-    }
-
-    public void filterProducts(String filterCategory, String filterSortBy, String filterBrand, String filterVolume, String filterWineType, Double filterPriceMin, Double filterPriceMax, boolean isBestSelling, boolean isOnSale) {
-
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -82,6 +248,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView textProductName;
         RatingBar ratingBar;
         TextView textProductPrice;
+        TextView textProductCategory;
         Button btnAddToCart;
         ImageButton btnComparison;
 
@@ -91,6 +258,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textProductName = itemView.findViewById(R.id.text_product_name);
             ratingBar = itemView.findViewById(R.id.rating_bar);
             textProductPrice = itemView.findViewById(R.id.text_product_price);
+            textProductCategory = itemView.findViewById(R.id.txtProductCategory);
             btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
             btnComparison = itemView.findViewById(R.id.btnComparison);
         }
