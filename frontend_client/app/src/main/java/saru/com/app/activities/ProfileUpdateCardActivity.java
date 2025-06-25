@@ -105,6 +105,7 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         paymentMethod.put("CardNumber", cardNumber);
         paymentMethod.put("CVV", cvv);
         paymentMethod.put("ExpiryDate", expiryDate);
+        paymentMethod.put("CardType", cardType);
 
         // Kiểm tra và xác định collection payment0X phù hợp
         determinePaymentCollection(userUID, paymentMethod);
@@ -133,12 +134,13 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
     }
 
     private void proceedWithPaymentCollection(String userUID, Map<String, Object> paymentMethod) {
-        final int[] nextPaymentIndex = {1};
-        CountDownLatch latch = new CountDownLatch(5);
+        final int[] nextPaymentIndex = {1}; // Bắt đầu từ payment01
+        CountDownLatch latch = new CountDownLatch(5); // Đảm bảo chờ cho tất cả các collection hoàn thành
 
         for (int i = 1; i <= 5; i++) {
             final int currentIndex = i;
-            String paymentCollection = "payment0" + String.format("%02d", currentIndex);
+            String paymentCollection = "payment" + String.format("%02d", currentIndex); // payment01, payment02, payment03...
+
             db.collection("paymentofcustomer")
                     .document(userUID)
                     .collection(paymentCollection)
@@ -147,10 +149,12 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
                         try {
                             if (task.isSuccessful()) {
                                 if (task.getResult().isEmpty() && nextPaymentIndex[0] == currentIndex) {
+                                    // Nếu collection trống, tạo collection mới
                                     createPaymentCollection(userUID, paymentCollection, paymentMethod);
                                     latch.countDown();
-                                    return;
+                                    return; // Dừng lại khi đã tạo thành công
                                 } else if (!task.getResult().isEmpty()) {
+                                    // Nếu có collection rồi, chuyển sang collection tiếp theo
                                     nextPaymentIndex[0] = currentIndex + 1;
                                 }
                             }
@@ -160,12 +164,15 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
                     });
         }
 
+        // Sau khi kiểm tra xong, nếu có collection tiếp theo thì tạo
         new Thread(() -> {
             try {
-                latch.await();
+                latch.await(); // Đợi cho tất cả các kiểm tra hoàn thành
+
                 runOnUiThread(() -> {
                     if (nextPaymentIndex[0] <= 5) {
-                        String paymentCollection = "payment0" + String.format("%02d", nextPaymentIndex[0]);
+                        // Tạo collection tiếp theo nếu chưa đạt giới hạn
+                        String paymentCollection = "payment" + String.format("%02d", nextPaymentIndex[0]);
                         createPaymentCollection(userUID, paymentCollection, paymentMethod);
                     } else {
                         Toast.makeText(this, "Maximum 5 payment methods allowed", Toast.LENGTH_SHORT).show();
@@ -177,11 +184,16 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+
     private void createPaymentCollection(String userUID, String paymentCollection, Map<String, Object> paymentMethod) {
+        // Sử dụng PaymentMethodID làm tên tài liệu, không phải "PaymentMethodID"
+        String paymentMethodID = paymentMethod.get("PaymentMethodID").toString();
+
         db.collection("paymentofcustomer")
                 .document(userUID)
                 .collection(paymentCollection)
-                .document("PaymentMethodID")
+                .document(paymentMethodID) // Tạo tài liệu với tên là PaymentMethodID
                 .set(paymentMethod)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("ProfileUpdateCardActivity", "Payment method saved successfully to " + paymentCollection);
@@ -197,6 +209,7 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
                     Toast.makeText(ProfileUpdateCardActivity.this, "Error saving payment method: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
+
     private void fetchUserData(String userUID) {
         // Lấy CustomerID từ bảng "accounts"
         DocumentReference accountRef = FirebaseFirestore.getInstance().collection("accounts").document(userUID);

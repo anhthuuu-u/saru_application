@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -40,6 +41,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private List<String> paymentMethodsList;
 
     // UI elements
     ImageView imgCustomerAva;
@@ -71,7 +73,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             if (userUID != null) {
                 fetchUserProfile(userUID);
-                fetchPaymentMethods(userUID);
+                fetchPaymentMethods(userUID);  // Fetch payment methods for the user
             } else {
                 Log.d("ProfileEditActivity", "User not logged in.");
                 Toast.makeText(ProfileEditActivity.this, "User not logged in", Toast.LENGTH_SHORT).show();
@@ -337,19 +339,14 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void fetchPaymentMethods(String customerID) {
         Log.d("ProfileEditActivity", "Fetching payment methods for CustomerID: " + customerID);
-
-        // Create a list to hold the payment method names
-        List<String> paymentMethodsList = new ArrayList<>();
-
-        // We will dynamically check for payment collections, instead of assuming max 5 payment methods.
-        int i = 1;
-
-        // Start loading payment methods asynchronously
-        loadPaymentMethod(i, customerID, paymentMethodsList);
+        paymentMethodsList = new ArrayList<>(); // Reset the list
+        loadPaymentMethod(1, customerID, paymentMethodsList, new AtomicBoolean(false));
     }
 
-    private void loadPaymentMethod(int i, String customerID, List<String> paymentMethodsList) {
-        String paymentCollectionName = "payment0" + i;  // Check for payment01, payment02, payment03, ...
+    private void loadPaymentMethod(int i, String customerID, List<String> paymentMethodsList, AtomicBoolean isComplete) {
+        if (isComplete.get()) return; // Stop if already completed
+
+        String paymentCollectionName = "payment0" + i;
 
         db.collection("paymentofcustomer")
                 .document(customerID)
@@ -358,48 +355,55 @@ public class ProfileEditActivity extends AppCompatActivity {
                 .addOnCompleteListener(paymentTask -> {
                     if (paymentTask.isSuccessful()) {
                         if (!paymentTask.getResult().isEmpty()) {
-                            // Fetch PaymentMethodID if document exists
                             DocumentSnapshot paymentDoc = paymentTask.getResult().getDocuments().get(0);
                             if (paymentDoc != null) {
                                 String paymentMethodID = paymentDoc.getString("PaymentMethodID");
-                                fetchPaymentMethodName(paymentMethodID, paymentMethodsList);
+
+                                if ("1".equals(paymentMethodID)) { // Internet Banking
+                                    String cardType = paymentDoc.getString("CardType");
+                                    String bank = paymentDoc.getString("Bank");
+                                    paymentMethodsList.add(cardType + " - " + bank);
+                                } else if ("0".equals(paymentMethodID)) { // Cash
+                                    paymentMethodsList.add("Cash");
+                                } else {
+                                    String paymentMethodName = paymentDoc.getString("PaymentMethod");
+                                    paymentMethodsList.add(paymentMethodName);
+                                }
                             }
+                            // Move to the next collection
+                            loadPaymentMethod(i + 1, customerID, paymentMethodsList, isComplete);
                         } else {
-                            // No more payment methods, populate spinner
+                            // No more payment methods, mark as complete and populate spinner
+                            isComplete.set(true);
                             populateSpinner(paymentMethodsList);
                         }
-                        // Proceed to next collection
-                        loadPaymentMethod(i + 1, customerID, paymentMethodsList);
                     } else {
                         Log.e("ProfileEditActivity", "Error fetching payment details for collection " + paymentCollectionName + ": " + paymentTask.getException());
+                        isComplete.set(true);
                         populateSpinner(paymentMethodsList); // Populate even in case of error
                     }
                 });
     }
 
-    private void fetchPaymentMethodName(String paymentMethodID, List<String> paymentMethodsList) {
-        db.collection("paymentmethods")
-                .document(paymentMethodID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot.exists()) {
-                            String paymentMethod = documentSnapshot.getString("PaymentMethod");
-                            if (paymentMethod != null) {
-                                paymentMethodsList.add(paymentMethod);
-                            } else {
-                                Log.e("ProfileEditActivity", "Payment method name is missing for " + paymentMethodID);
-                            }
-                        } else {
-                            Log.e("ProfileEditActivity", "No document found for PaymentMethodID: " + paymentMethodID);
-                        }
-                    } else {
-                        Log.e("ProfileEditActivity", "Error fetching payment method name: " + task.getException());
-                    }
-                });
-    }
 
+
+    private void saveSelectedPaymentMethod(String selectedMethod) {
+        // Check if the method is not "Cash"
+        if (!"Cash".equals(selectedMethod)) {
+            String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+            if (userUID != null) {
+                db.collection("paymentofcustomer")
+                        .document(userUID)
+                        .update("selectedPaymentMethod", selectedMethod)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("ProfileEditActivity", "Payment method saved successfully: " + selectedMethod);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("ProfileEditActivity", "Error saving payment method: " + e.getMessage());
+                        });
+            }
+        }
+    }
 
     private void populateSpinner(List<String> paymentMethodsList) {
         Log.d("ProfileEditActivity", "Populating spinner with payment methods");
@@ -411,11 +415,56 @@ public class ProfileEditActivity extends AppCompatActivity {
                     android.R.layout.simple_spinner_item, paymentMethodsList);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            // Tìm Spinner và gán adapter vào nó
             Spinner paymentMethodSpinner = findViewById(R.id.paymentMethod);
             paymentMethodSpinner.setAdapter(adapter);
+
+            // Set the selected payment method based on Firestore value
+            String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+            if (userUID != null) {
+                db.collection("paymentofcustomer")
+                        .document(userUID)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String selectedPaymentMethod = documentSnapshot.getString("selectedPaymentMethod");
+                                if (selectedPaymentMethod != null) {
+                                    // Check if the selected method exists in the list
+                                    int selectedPosition = paymentMethodsList.indexOf(selectedPaymentMethod);
+                                    if (selectedPosition != -1) {
+                                        paymentMethodSpinner.setSelection(selectedPosition); // Set the selected method in the spinner
+                                    }
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Log.e("ProfileEditActivity", "Error fetching selected payment method: " + e.getMessage()));
+            }
+
+            paymentMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    String selectedMethod = paymentMethodsList.get(position);
+                    Log.d("ProfileEditActivity", "Selected payment method: " + selectedMethod);
+
+                    // Save the selected payment method
+                    saveSelectedPaymentMethod(selectedMethod);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // Do nothing
+                }
+            });
         }
     }
 
 
+
+
+
 }
+
+
+
+
+
+

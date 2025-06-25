@@ -471,7 +471,7 @@
         <ListView
             android:id="@+id/lvAddresses"
             android:layout_width="match_parent"
-            android:layout_height="223dp" />
+            android:layout_height="221dp" />
 
 
             <!-- Add Address Button -->
