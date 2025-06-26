@@ -12,6 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity
+            android:name=".AddEditFAQActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FAQsManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEditVoucherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PromotionsManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEditBlogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BlogDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BlogsManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddEditOrderActivity"
             android:exported="false" />
         <activity
@@ -28,8 +49,8 @@
             android:exported="false" />
         <activity
             android:name=".MessageActivity"
-            android:theme="@style/Theme.Saru"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Saru" />
         <activity
             android:name=".AddEditProductActivity"
             android:exported="false" />

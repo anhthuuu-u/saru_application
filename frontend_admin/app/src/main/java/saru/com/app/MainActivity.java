@@ -57,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
                 case "Customer Management":
                     startActivity(new Intent(this, CustomerManagementActivity.class));
                     break;
+                case "Blogs":
+                    startActivity(new Intent(this, BlogsManagementActivity.class));
+                    break;
+                case "Promotions":
+                    startActivity(new Intent(this, PromotionsManagementActivity.class));
+                    break;
+                case "FAQs":
+                    startActivity(new Intent(this, FAQsManagementActivity.class));
+                    break;
+
                 default:
                     Toast.makeText(this, "Feature: " + title + " not implemented yet", Toast.LENGTH_SHORT).show();
                     break;

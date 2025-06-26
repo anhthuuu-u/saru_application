@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/txtVoucherDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voucher Description"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtVoucherCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voucher Code"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txtVoucherExpiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Expiry Date"
+        android:textSize="12sp" />
+
+</LinearLayout>
