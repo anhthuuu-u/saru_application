@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add/Edit Product"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_placeholder" />
+
+        <Button
+            android:id="@+id/btnSelectImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Select Image" />
+
+        <EditText
+            android:id="@+id/edtProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtProductID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product ID"
+            android:inputType="text" />
+
+        <Spinner
+            android:id="@+id/spinnerCateID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerBrandID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/edtCustomerRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Customer Rating (0-5)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/edtIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingredients"
+            android:inputType="textMultiLine" />
+
+        <CheckBox
+            android:id="@+id/chkBestSelling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best Selling"
+            android:layout_marginTop="8dp" />
+
+        <CheckBox
+            android:id="@+id/chkOnSale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On Sale" />
+
+        <EditText
+            android:id="@+id/edtNetContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Net Content (e.g., 750ml)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Description"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/edtProductPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Price"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/edtProductStatusID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Status ID"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtWineType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wine Type (optional)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtAlcoholStrength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Alcohol Strength (e.g., 19%)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtProductTaste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Taste (optional)"
+            android:inputType="textMultiLine" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
