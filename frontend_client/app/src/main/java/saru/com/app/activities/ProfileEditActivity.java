@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +44,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private List<String> paymentMethodsList;
+    private String customerID; // Store the correct customerID
 
     // UI elements
     ImageView imgCustomerAva;
@@ -52,7 +54,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     ListView lvAddresses;
     private List<Address> addressList = new ArrayList<>();
     private AddressAdapter addressAdapter;
-    private Spinner paymentMethodSpinner; // Reference to the Spinner
+    private Spinner paymentMethodSpinner;
 
     private static final int REQUEST_CODE_ADD_ADDRESS = 1;
 
@@ -106,25 +108,13 @@ public class ProfileEditActivity extends AppCompatActivity {
             Button btnAddAddress = findViewById(R.id.btnAddAddress);
             if (btnAddAddress != null) {
                 btnAddAddress.setOnClickListener(v -> {
-                    if (userUID != null) {
-                        db.collection("accounts").document(userUID).get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    String customerID = documentSnapshot.getString("CustomerID");
-                                    if (customerID != null) {
-                                        Intent intent = new Intent(ProfileEditActivity.this, AddAddressActivity.class);
-                                        intent.putExtra("customerID", customerID);
-                                        startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
-                                    } else {
-                                        Log.e("ProfileEditActivity", "customerID is null");
-                                        Toast.makeText(ProfileEditActivity.this, "Failed to get customer ID", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e("ProfileEditActivity", "Error fetching customer ID: ", e);
-                                    Toast.makeText(ProfileEditActivity.this, "Error loading data", Toast.LENGTH_SHORT).show();
-                                });
+                    if (userUID != null && customerID != null) {
+                        Intent intent = new Intent(ProfileEditActivity.this, AddAddressActivity.class);
+                        intent.putExtra("customerID", customerID);
+                        startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
                     } else {
-                        Log.e("ProfileEditActivity", "userUID is null in btnAddAddress click");
+                        Log.e("ProfileEditActivity", "userUID or customerID is null in btnAddAddress click: userUID=" + userUID + ", customerID=" + customerID);
+                        Toast.makeText(ProfileEditActivity.this, "Failed to get customer ID", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -142,11 +132,36 @@ public class ProfileEditActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_ADDRESS && resultCode == RESULT_OK && data != null) {
             String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
-            if (userUID != null) {
-                fetchUserProfile(userUID);
-                fetchPaymentMethods(userUID);
+            if (userUID != null && customerID != null) {
+                Log.d("ProfileEditActivity", "Received result from AddAddressActivity");
+                String addressId = data.getStringExtra("addressId");
+                String name = data.getStringExtra("name");
+                String phone = data.getStringExtra("phone");
+                String address = data.getStringExtra("address");
+
+                if (addressId != null) {
+                    // Update the specific address in the list
+                    for (int i = 0; i < addressList.size(); i++) {
+                        if (addressList.get(i).getId() != null && addressList.get(i).getId().equals(addressId)) {
+                            addressList.get(i).setName(name);
+                            addressList.get(i).setPhone(phone);
+                            addressList.get(i).setAddress(address);
+                            Log.d("ProfileEditActivity", "Updated address at position " + i + " with ID: " + addressId);
+                            break;
+                        }
+                    }
+                    if (addressAdapter != null) {
+                        addressAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(lvAddresses);
+                        Log.d("ProfileEditActivity", "Adapter notified after edit");
+                    }
+                } else {
+                    // For new addresses, rely on the full refresh
+                    Log.d("ProfileEditActivity", "No addressId, performing full refresh");
+                    fetchUserProfile(userUID);
+                }
             } else {
-                Log.e("ProfileEditActivity", "userUID is null in onActivityResult");
+                Log.e("ProfileEditActivity", "userUID or customerID is null in onActivityResult: userUID=" + userUID + ", customerID=" + customerID);
             }
         }
     }
@@ -181,8 +196,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (edtCustomerPass == null) Log.e("ProfileEditActivity", "edtCustomerPass is null");
 
         edtCustomerJoinDate = findViewById(R.id.edtCustomerJoinDate);
-        if (edtCustomerJoinDate == null)
-            Log.e("ProfileEditActivity", "edtCustomerJoinDate is null");
+        if (edtCustomerJoinDate == null) Log.e("ProfileEditActivity", "edtCustomerJoinDate is null");
 
         ckbMale = findViewById(R.id.ckbMale);
         if (ckbMale == null) Log.e("ProfileEditActivity", "ckbMale is null");
@@ -191,12 +205,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (ckbFemale == null) Log.e("ProfileEditActivity", "ckbFemale is null");
 
         txtCustomerFullName = findViewById(R.id.txtCustomerFullName);
-        if (txtCustomerFullName == null)
-            Log.e("ProfileEditActivity", "txtCustomerFullName is null");
+        if (txtCustomerFullName == null) Log.e("ProfileEditActivity", "txtCustomerFullName is null");
 
         txtCustomerFullAddress = findViewById(R.id.txtCustomerFullAddress);
-        if (txtCustomerFullAddress == null)
-            Log.e("ProfileEditActivity", "txtCustomerFullAddress is null");
+        if (txtCustomerFullAddress == null) Log.e("ProfileEditActivity", "txtCustomerFullAddress is null");
 
         lvAddresses = findViewById(R.id.lvAddresses);
         if (lvAddresses == null) Log.e("ProfileEditActivity", "lvAddresses is null");
@@ -210,7 +222,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         paymentMethodSpinner = findViewById(R.id.paymentMethod);
         if (paymentMethodSpinner == null) Log.e("ProfileEditActivity", "paymentMethodSpinner is null");
 
-        addressAdapter = new AddressAdapter(this, addressList);
+        addressAdapter = new AddressAdapter(this, addressList, null); // Initialize with null customerID, will be set later
         if (lvAddresses != null) {
             lvAddresses.setAdapter(addressAdapter);
         } else {
@@ -233,10 +245,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                     if (edtCustomerMail != null) edtCustomerMail.setText(email);
                     if (edtCustomerPass != null) edtCustomerPass.setText(password);
 
-                    String customerID = task.getResult().getString("CustomerID");
+                    customerID = task.getResult().getString("CustomerID"); // Store the correct customerID
                     if (customerID != null) {
                         Log.d("ProfileEditActivity", "Fetched CustomerID: " + customerID);
                         fetchCustomerData(customerID);
+                        if (addressAdapter != null) {
+                            addressAdapter.setCustomerID(customerID); // Set customerID for AddressAdapter
+                        }
                     } else {
                         Log.e("ProfileEditActivity", "CustomerID is missing.");
                         Toast.makeText(ProfileEditActivity.this, "CustomerID is missing", Toast.LENGTH_SHORT).show();
@@ -268,7 +283,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             customerRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    addressList.clear();
+                    addressList.clear(); // Clear the list to avoid duplicates
 
                     String name = task.getResult().getString("CustomerName");
                     Object phoneObject = task.getResult().get("CustomerPhone");
@@ -291,10 +306,12 @@ public class ProfileEditActivity extends AppCompatActivity {
                     }
                     if (address != null && txtCustomerFullAddress != null) {
                         txtCustomerFullAddress.setText(address);
-                        addressList.add(new Address(name, phone, address)); // Thêm địa chỉ chính
+                        // Add the main address with a default status
+                        addressList.add(new Address(null, name, phone, address, true));
+                        Log.d("ProfileEditActivity", "Added main address: " + name + ", " + phone + ", " + address);
                     }
 
-                    // Lấy tất cả địa chỉ từ subcollection 'addresses'
+                    // Fetch all addresses from subcollection 'addresses'
                     db.collection("customers").document(customerID)
                             .collection("addresses")
                             .get()
@@ -304,12 +321,19 @@ public class ProfileEditActivity extends AppCompatActivity {
                                         String addrName = document.getString("name");
                                         String addrPhone = document.getString("phone");
                                         String addrAddress = document.getString("address");
+                                        boolean isDefault = document.getBoolean("isDefault") != null && document.getBoolean("isDefault");
+                                        String docId = document.getId();
                                         if (addrName != null && addrPhone != null && addrAddress != null) {
-                                            addressList.add(new Address(addrName, addrPhone, addrAddress));
+                                            addressList.add(new Address(docId, addrName, addrPhone, addrAddress, isDefault));
+                                            Log.d("ProfileEditActivity", "Added subcollection address: " + addrName + ", " + addrPhone + ", " + addrAddress + ", isDefault: " + isDefault);
                                         }
                                     }
                                     if (addressAdapter != null) {
                                         addressAdapter.notifyDataSetChanged();
+                                        setListViewHeightBasedOnChildren(lvAddresses); // Set dynamic height
+                                        Log.d("ProfileEditActivity", "Adapter notified, addressList size: " + addressList.size());
+                                    } else {
+                                        Log.e("ProfileEditActivity", "addressAdapter is null");
                                     }
                                 } else {
                                     Log.e("ProfileEditActivity", "Error fetching addresses: " + addressTask.getException());
@@ -576,5 +600,100 @@ public class ProfileEditActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    public void showAddressContextMenu(final int position) {
+        Log.d("ProfileEditActivity", "Showing context menu for position: " + position);
+        String[] options = {"Delete", "Edit"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select an option")
+                .setItems(options, (dialog, which) -> {
+                    Address selectedAddress = addressList.get(position);
+                    if (which == 0) { // Delete
+                        showDeleteConfirmation(selectedAddress, position);
+                    } else if (which == 1) { // Edit
+                        navigateToEdit(selectedAddress);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void showDeleteConfirmation(Address address, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete this address?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    deleteAddress(address, position);
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setCancelable(true);
+        builder.create().show();
+    }
+
+    private void deleteAddress(Address address, int position) {
+        if (customerID != null) {
+            if (address.getId() == null) {
+                // This is the main address (no document ID)
+                addressList.remove(position);
+                addressAdapter.notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(lvAddresses);
+                Toast.makeText(this, "Main address removed from list", Toast.LENGTH_SHORT).show();
+            } else {
+                // This is a subcollection address
+                db.collection("customers").document(customerID)
+                        .collection("addresses")
+                        .document(address.getId())
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("ProfileEditActivity", "Address deleted successfully: " + address.getId());
+                            addressList.remove(position);
+                            addressAdapter.notifyDataSetChanged();
+                            setListViewHeightBasedOnChildren(lvAddresses);
+                            Toast.makeText(ProfileEditActivity.this, "Address deleted", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("ProfileEditActivity", "Error deleting address: " + e.getMessage());
+                            Toast.makeText(ProfileEditActivity.this, "Error deleting address", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        } else {
+            Log.e("ProfileEditActivity", "customerID is null in deleteAddress");
+            Toast.makeText(this, "Error: Customer ID not found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void navigateToEdit(Address address) {
+        if (customerID != null) {
+            Intent intent = new Intent(ProfileEditActivity.this, AddAddressActivity.class);
+            intent.putExtra("customerID", customerID); // Use the stored customerID
+            intent.putExtra("addressId", address.getId()); // Pass document ID if it exists
+            intent.putExtra("name", address.getName());
+            intent.putExtra("phone", address.getPhone());
+            intent.putExtra("address", address.getAddress());
+            intent.putExtra("isEdit", true); // Flag to indicate edit mode
+            startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
+        } else {
+            Log.e("ProfileEditActivity", "customerID is null in navigateToEdit");
+            Toast.makeText(this, "Error: Customer ID not found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setListViewHeightBasedOnChildren(ListView listView) {
+        if (listView == null || addressAdapter == null) return;
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+
+        for (int i = 0; i < addressAdapter.getCount(); i++) {
+            View listItem = addressAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (addressAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
