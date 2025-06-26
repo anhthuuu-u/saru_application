@@ -65,7 +65,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
             txtTotalAmount = itemView.findViewById(R.id.txtTotalAmount);
             txtOrderStatus = itemView.findViewById(R.id.txtOrderStatus);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
+//            btnEdit = itemView.findViewById(R.id.btnEdit);
         }
     }
 }

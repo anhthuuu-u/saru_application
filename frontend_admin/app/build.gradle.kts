@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
     implementation ("com.github.bumptech.glide:glide:4.16.0")

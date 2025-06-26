@@ -85,6 +85,33 @@
     <string name="voucher_code_prefix">Code: %s</string>
     <string name="voucher_expiry_prefix">Expires: %s</string>
 
+    <!-- Strings cho Product Management -->
+    <string name="title_product_management">Product Management</string>
+    <string name="title_add">Add</string>
+    <string name="title_search_products_hint">Search Products</string>
+    <string name="title_select_category_description">Select a category to view its description</string>
+    <string name="title_add_edit_product">Add/Edit Product</string>
+    <string name="title_add_product">Add Product</string>
+    <string name="title_edit_product">Edit Product</string>
+    <string name="title_select_image">Select Image</string>
+    <string name="product_image_cover_description">Product Cover Image</string>
+    <string name="title_product_name_hint">Product Name</string>
+    <string name="title_product_id_hint">Product ID</string>
+    <string name="title_category">Category</string>
+    <string name="title_brand">Brand</string>
+    <string name="title_customer_rating_hint">Customer Rating (e.g., 4.5)</string>
+    <string name="title_ingredients_hint">Ingredients</string>
+    <string name="title_net_content_hint">Net Content (e.g., 750ml)</string>
+    <string name="title_product_description_hint">Product Description</string>
+    <string name="title_product_price_hint">Product Price</string>
+    <string name="title_product_status_id_hint">Product Status ID</string>
+    <string name="title_wine_type_hint">Wine Type (optional)</string>
+    <string name="title_alcohol_strength_hint">Alcohol Strength (e.g., 19%)</string>
+    <string name="title_product_taste_hint">Product Taste (optional)</string>
+    <string name="title_best_selling">Best Selling</string>
+    <string name="title_on_sale">On Sale</string>
+    <string name="product_image_description">Product Image</string>
+
     <!-- Các chuỗi xác nhận dùng chung -->
     <string name="confirm_delete_title">Confirm Delete</string>
     <string name="confirm_delete_message">Are you sure you want to delete "%1$s"?</string>
@@ -93,6 +120,7 @@
     <string name="voucher_description">Voucher description</string>
     <string name="voucher_code">Code</string>
     <string name="voucher_expire">expired date</string>
+    <string name="title_product_status">Product Status</string>
 
 
 </resources>

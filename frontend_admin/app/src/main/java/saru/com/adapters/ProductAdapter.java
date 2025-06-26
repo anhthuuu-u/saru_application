@@ -1,5 +1,7 @@
 package saru.com.adapters;
 
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,20 +9,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import com.squareup.picasso.Picasso;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.Target;
 import saru.com.app.R;
 import saru.com.models.Product;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private List<Product> productList;
-    private Map<String, String> brandMap;
-    private OnProductClickListener editListener;
-    private OnProductClickListener deleteListener;
+    private HashMap<String, String> categoryMap;
+    private HashMap<String, String> brandMap;
+    private final OnProductClickListener editListener;
+    private final OnProductClickListener deleteListener;
 
     public interface OnProductClickListener {
         void onClick(Product product);
@@ -30,17 +38,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.productList = productList;
         this.editListener = editListener;
         this.deleteListener = deleteListener;
+        this.categoryMap = new HashMap<>();
         this.brandMap = new HashMap<>();
     }
 
-    public void setBrandMap(Map<String, String> brandMap) {
+    public void setCategoryMap(HashMap<String, String> categoryMap) {
+        this.categoryMap = categoryMap;
+    }
+
+    public void setBrandMap(HashMap<String, String> brandMap) {
         this.brandMap = brandMap;
-        notifyDataSetChanged();
     }
 
     public void updateList(List<Product> newList) {
-        productList.clear();
-        productList.addAll(newList);
+        this.productList = newList;
         notifyDataSetChanged();
     }
 
@@ -55,19 +66,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.txtProductName.setText(product.getProductName());
-        holder.txtProductPrice.setText(String.format("Price: %.2f", product.getProductPrice()));
-        String typeText = product.getWineType() != null ? product.getWineType() : "Accessory";
-        if (product.getAlcoholStrength() != null && !product.getAlcoholStrength().isEmpty()) {
-            typeText += " (" + product.getAlcoholStrength() + ")";
-        }
-        holder.txtProductType.setText(typeText);
-        String brandName = brandMap.getOrDefault(product.getBrandID(), product.getBrandID());
-        holder.txtBrandName.setText("Brand: " + brandName);
-        if (product.getImageID() != null && !product.getImageID().isEmpty()) {
-            Picasso.get().load(product.getImageID()).placeholder(R.drawable.ic_placeholder).into(holder.imgProduct);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        holder.txtProductPrice.setText(formatter.format(product.getProductPrice()));
+        String categoryName = categoryMap.getOrDefault(product.getCateID(), "N/A");
+        holder.txtProductCategory.setText(String.format("Category: %s", categoryName));
+        String brandName = brandMap.getOrDefault(product.getBrandID(), "N/A");
+        holder.txtProductBrand.setText(String.format("Brand: %s", brandName));
+
+        String imageUrl = product.getProductImageCover();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Log.d("ProductAdapter", "Loading image for product " + product.getProductName() + ": " + imageUrl);
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_placeholder)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(holder.imgProduct);
         } else {
+            Log.w("ProductAdapter", "No cover image for product: " + product.getProductName());
             holder.imgProduct.setImageResource(R.drawable.ic_placeholder);
         }
+
         holder.btnEdit.setOnClickListener(v -> editListener.onClick(product));
         holder.btnDelete.setOnClickListener(v -> deleteListener.onClick(product));
     }
@@ -77,20 +96,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtProductName, txtProductPrice, txtProductCategory, txtProductBrand;
         ImageView imgProduct;
-        TextView txtProductName, txtProductPrice, txtProductType, txtBrandName;
         Button btnEdit, btnDelete;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgProduct = itemView.findViewById(R.id.imgProduct);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtProductPrice = itemView.findViewById(R.id.txtProductPrice);
-            txtProductType = itemView.findViewById(R.id.txtProductType);
-            txtBrandName = itemView.findViewById(R.id.txtBrandName);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
+            txtProductCategory = itemView.findViewById(R.id.txtProductCategory);
+            txtProductBrand = itemView.findViewById(R.id.txtProductBrand);
+            imgProduct = itemView.findViewById(R.id.imgProduct);
+            btnEdit = itemView.findViewById(R.id.btnEditProduct);
+            btnDelete = itemView.findViewById(R.id.btnDeleteProduct);
         }
     }
 }
