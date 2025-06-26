@@ -1,70 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_creamy_white"
     android:padding="16dp">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_creamy_white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/title_add_edit_blog"
+        app:titleTextColor="@color/color_espresso"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
+        android:elevation="2dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true"> <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add/Edit Blog"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="16dp"
+            app:hintTextColor="@color/color_medium_gray"
+            app:boxStrokeColor="@color/input_border_selector"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/title_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_blog_title"
+                android:textColor="@color/color_espresso"
+                android:textColorHint="@color/color_medium_gray"
+                android:fontFamily="sans-serif"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:transitionName="title_transition" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/edtBlogTitle"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/content_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Blog Title"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="16dp"
+            app:hintTextColor="@color/color_medium_gray"
+            app:boxStrokeColor="@color/input_border_selector"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/content_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_blog_content"
+                android:textColor="@color/color_espresso"
+                android:textColorHint="@color/color_medium_gray"
+                android:fontFamily="sans-serif"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:minLines="5"
+                android:gravity="top"
+                android:transitionName="content_transition" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/edtBlogContent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/image_url_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Blog Content"
-            android:minLines="5"
-            android:gravity="top"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/edtBlogImageUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Image URL"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="16dp"
+            app:hintTextColor="@color/color_medium_gray"
+            app:boxStrokeColor="@color/input_border_selector"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/image_url_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_blog_image_url"
+                android:textColor="@color/color_espresso"
+                android:textColorHint="@color/color_medium_gray"
+                android:fontFamily="sans-serif"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:transitionName="image_url_transition" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
-            android:id="@+id/spinnerBlogCategory"
+            android:id="@+id/spinner_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Blog Category"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="16dp"
+            android:background="@drawable/spinner_background"
+            android:padding="8dp" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/upload_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_ripple"
+            android:text="@string/title_upload_image"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:elevation="2dp"
+            app:cornerRadius="8dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_container"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/btnCancelBlog"
+                android:id="@+id/save_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancel" />
+                android:background="@drawable/button_ripple"
+                android:text="@string/title_save"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:elevation="2dp"
+                app:cornerRadius="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/delete_button"
+                android:layout_marginEnd="8dp" />
 
             <Button
-                android:id="@+id/btnSaveBlog"
+                android:id="@+id/delete_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Save" />
-        </LinearLayout>
+                android:background="@drawable/button_ripple"
+                android:text="@string/title_delete"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:elevation="2dp"
+                app:cornerRadius="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/save_button"
+                app:layout_constraintEnd_toStartOf="@id/cancel_button"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_ripple"
+                android:text="@string/title_close"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:elevation="2dp"
+                app:cornerRadius="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/delete_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,19 @@
 package saru.com.app;
 
+import android.content.DialogInterface; // Import for AlertDialog
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog; // Import for AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar; // Import Toolbar
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import saru.com.models.Blog;
+
 
 public class BlogDetailActivity extends AppCompatActivity {
     private TextView txtTitle, txtContent;
@@ -23,6 +28,7 @@ public class BlogDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog_detail);
         db = FirebaseFirestore.getInstance();
+        setupToolbar(); // Thiết lập Toolbar
         initializeViews();
         displayBlog();
         setupEvents();
@@ -34,6 +40,25 @@ public class BlogDetailActivity extends AppCompatActivity {
         imgBlog = findViewById(R.id.imgBlog);
         btnEdit = findViewById(R.id.btnEditBlog);
         btnDelete = findViewById(R.id.btnDeleteBlog);
+    }
+
+    // Phương thức thiết lập Toolbar
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_detail); // ID của toolbar trong activity_blog_detail.xml
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút quay lại
+            getSupportActionBar().setTitle(R.string.title_blog_detail); // Đặt tiêu đề
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Xử lý khi nút quay lại được nhấn
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void displayBlog() {
@@ -51,16 +76,36 @@ public class BlogDetailActivity extends AppCompatActivity {
             intent.putExtra("SELECTED_BLOG", blog);
             startActivityForResult(intent, REQUEST_CODE_EDIT_BLOG);
         });
-        btnDelete.setOnClickListener(v -> deleteBlog());
+        btnDelete.setOnClickListener(v -> showDeleteConfirmationDialog()); // Gọi dialog xác nhận
     }
 
+    // Phương thức hiển thị dialog xác nhận xóa blog
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.confirm_delete_title)
+                .setMessage(getString(R.string.confirm_delete_message, blog.getTitle()))
+                .setPositiveButton(R.string.confirm_delete_yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteBlog(); // Gọi phương thức xóa khi người dùng xác nhận
+                    }
+                })
+                .setNegativeButton(R.string.confirm_delete_no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    // Phương thức xóa blog khỏi Firestore
     private void deleteBlog() {
-        if (blog == null) return;
+        if (blog == null) {
+            showToast("No blog to delete.");
+            return;
+        }
+
         db.collection("blogs").document(blog.getBlogID()).delete()
                 .addOnSuccessListener(aVoid -> {
-                    showToast("Blog deleted");
-                    setResult(RESULT_OK);
-                    finish();
+                    showToast("Blog deleted successfully!");
+                    setResult(RESULT_OK); // Đặt kết quả thành OK để BlogsManagementActivity biết
+                    finish(); // Đóng BlogDetailActivity
                 })
                 .addOnFailureListener(e -> showToast("Failed to delete blog: " + e.getMessage()));
     }
@@ -69,7 +114,9 @@ public class BlogDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_EDIT_BLOG && resultCode == RESULT_OK) {
-            finish(); // Reload blog list in BlogsManagementActivity
+            // Nếu chỉnh sửa thành công, cũng cần thông báo cho Activity gốc cập nhật
+            setResult(RESULT_OK); // Đặt kết quả OK
+            finish(); // Đóng BlogDetailActivity để BlogManagementActivity tải lại
         }
     }
 

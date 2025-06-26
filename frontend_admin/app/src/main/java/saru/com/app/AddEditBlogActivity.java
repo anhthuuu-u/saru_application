@@ -1,14 +1,25 @@
 package saru.com.app;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,34 +29,82 @@ import saru.com.models.BlogCategory;
 public class AddEditBlogActivity extends AppCompatActivity {
     private EditText edtTitle, edtContent, edtImageUrl;
     private Spinner spinnerCategory;
-    private Button btnSave, btnCancel;
+    private Button btnSave, btnCancel, btnDelete, btnUploadImage;
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private Blog blog;
     private List<BlogCategory> categories;
     private ArrayAdapter<String> categoryAdapter;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
+    private ActivityResultLauncher<Intent> pickImageLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_blog);
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         initializeViews();
+        setupPermissionAndImagePicker();
         loadCategories();
         displayBlog();
         setupEvents();
     }
 
     private void initializeViews() {
-        edtTitle = findViewById(R.id.edtBlogTitle);
-        edtContent = findViewById(R.id.edtBlogContent);
-        edtImageUrl = findViewById(R.id.edtBlogImageUrl);
-        spinnerCategory = findViewById(R.id.spinnerBlogCategory);
-        btnSave = findViewById(R.id.btnSaveBlog);
-        btnCancel = findViewById(R.id.btnCancelBlog);
+        edtTitle = findViewById(R.id.title_input);
+        edtContent = findViewById(R.id.content_input);
+        edtImageUrl = findViewById(R.id.image_url_input);
+        spinnerCategory = findViewById(R.id.spinner_category);
+        btnSave = findViewById(R.id.save_button);
+        btnCancel = findViewById(R.id.cancel_button);
+        btnDelete = findViewById(R.id.delete_button);
+        btnUploadImage = findViewById(R.id.upload_image_button);
         categories = new ArrayList<>();
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>());
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(categoryAdapter);
+    }
+
+    private void setupPermissionAndImagePicker() {
+        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                openImagePicker();
+            } else {
+                showToast("Permission denied to access storage");
+            }
+        });
+
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Uri imageUri = result.getData().getData();
+                uploadImageToStorage(imageUri);
+            }
+        });
+    }
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageLauncher.launch(intent);
+    }
+
+    private void uploadImageToStorage(Uri imageUri) {
+        if (imageUri != null) {
+            StorageReference fileRef = storageRef.child("blog_images/" + UUID.randomUUID().toString());
+            fileRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl()
+                            .addOnSuccessListener(uri -> {
+                                String imageUrl = uri.toString();
+                                // Kiểm tra dữ liệu hiện tại để đảm bảo không ghi đè nếu không cần thiết
+                                if (blog == null || !imageUrl.equals(blog.getImageUrl())) {
+                                    edtImageUrl.setText(imageUrl);
+                                }
+                                showToast("Image uploaded successfully");
+                            }))
+                    .addOnFailureListener(e -> showToast("Failed to upload image: " + e.getMessage()));
+        }
     }
 
     private void loadCategories() {
@@ -79,12 +138,32 @@ public class AddEditBlogActivity extends AppCompatActivity {
             edtTitle.setText(blog.getTitle());
             edtContent.setText(blog.getContent());
             edtImageUrl.setText(blog.getImageUrl());
+            // Đảm bảo cateblogID khớp với dữ liệu hiện tại
+            if (!blog.getCateblogID().isEmpty()) {
+                for (int i = 0; i < categories.size(); i++) {
+                    if (categories.get(i).getCateblogID().equals(blog.getCateblogID())) {
+                        spinnerCategory.setSelection(i);
+                        break;
+                    }
+                }
+            }
         }
     }
 
     private void setupEvents() {
+        btnUploadImage.setOnClickListener(v -> checkPermissionAndPickImage());
         btnSave.setOnClickListener(v -> saveBlog());
         btnCancel.setOnClickListener(v -> finish());
+        btnDelete.setOnClickListener(v -> deleteBlog());
+    }
+
+    private void checkPermissionAndPickImage() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        } else {
+            openImagePicker();
+        }
     }
 
     private void saveBlog() {
@@ -114,6 +193,20 @@ public class AddEditBlogActivity extends AppCompatActivity {
                     finish();
                 })
                 .addOnFailureListener(e -> showToast("Failed to save blog: " + e.getMessage()));
+    }
+
+    private void deleteBlog() {
+        if (blog != null) {
+            db.collection("blogs").document(blog.getBlogID()).delete()
+                    .addOnSuccessListener(aVoid -> {
+                        showToast("Blog deleted");
+                        setResult(RESULT_OK);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> showToast("Failed to delete blog: " + e.getMessage()));
+        } else {
+            showToast("No blog to delete");
+        }
     }
 
     private void showToast(String message) {

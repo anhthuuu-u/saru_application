@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Saru Admin App</string>
+    <string name="app_name">Saru Admin</string>
+    <string name="title_admin_login">Admin Login</string>
+    <string name="title_network_status">Network Status</string>
+
+
     <string name="title_login_user_name">User name:</string>
     <string name="title_login_user_name_hint">Enter your user name</string>
     <string name="title_login_password">Password:</string>
@@ -41,12 +46,53 @@
     <string name="title_contact_name">Contact Name:</string>
     <string name="title_phone_number">Phone Number:</string>
     <string name="title_body">Body:</string>
-    <string name="title_multi_threading">Multi-Threading</string>
-    <string name="title_handler_send_message">Handler Send Message</string>
-    <string name="title_handler_post_message">Handler Post Message</string>
-    <string name="title_asynctask">AsyncTask</string>
-    <string name="title_draw">Draw</string>
-    <string name="title_number_of_customer">Number of Customer:</string>
-    <string name="title_load_customer">Load Customer</string>
-    <item name="chkSaveLogin" type="id" />
+    <string name="title_all_contacts">Show All Contacts</string>
+    <string name="title_viettel">Viettel</string>
+    <string name="title_mb">Mobile Phone</string>
+    <string name="title_other_networks">Other Networks</string>
+    <string name="title_add_edit_blog">Add/Edit Blog</string>
+    <string name="title_blog_title">Blog Title</string>
+    <string name="title_blog_content">Blog Content</string>
+    <string name="title_upload_image">Upload Image</string>
+    <string name="title_back">Back</string>
+    <string name="title_blog_image_url">Image URL</string>
+    <string name="title_delete">Delete</string>
+    <string name="title_blog_detail">Blog Detail</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_delete">Delete</string>
+    <string name="blog_image_description">Blog Image</string>
+    <string name="title_blogs_management">Blogs Management</string>
+    <string name="title_add_new_blog">Add New Blog</string>
+
+    <!-- Strings cho FAQs Management -->
+    <string name="title_faqs_management">FAQs Management</string>
+    <string name="title_add_new_faq">Add New FAQ</string>
+    <string name="title_add_edit_faq">Add/Edit FAQ</string>
+    <string name="title_add_faq">Add FAQ</string>
+    <string name="title_edit_faq">Edit FAQ</string>
+    <string name="title_faq_title_hint">FAQ Title</string>
+    <string name="title_faq_content_hint">FAQ Content</string>
+
+    <!-- Strings cho Promotions Management -->
+    <string name="title_promotions_management">Promotions Management</string>
+    <string name="title_add_new_voucher">Add New Voucher</string>
+    <string name="title_add_edit_voucher">Add/Edit Voucher</string>
+    <string name="title_add_voucher">Add Voucher</string>
+    <string name="title_edit_voucher">Edit Voucher</string>
+    <string name="title_voucher_description_hint">Voucher Description</string>
+    <string name="title_voucher_code_hint">Voucher Code</string>
+    <string name="title_expiry_date_hint">Expiry Date (DD/MM/YYYY)</string>
+    <string name="voucher_code_prefix">Code: %s</string>
+    <string name="voucher_expiry_prefix">Expires: %s</string>
+
+    <!-- Các chuỗi xác nhận dùng chung -->
+    <string name="confirm_delete_title">Confirm Delete</string>
+    <string name="confirm_delete_message">Are you sure you want to delete "%1$s"?</string>
+    <string name="confirm_delete_yes">Yes</string>
+    <string name="confirm_delete_no">No</string>
+    <string name="voucher_description">Voucher description</string>
+    <string name="voucher_code">Code</string>
+    <string name="voucher_expire">expired date</string>
+
+
 </resources>

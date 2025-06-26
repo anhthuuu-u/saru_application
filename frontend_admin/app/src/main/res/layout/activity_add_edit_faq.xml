@@ -1,56 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_creamy_white"
     android:padding="16dp">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_edit_faq"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_creamy_white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/title_add_edit_faq"
+        app:titleTextColor="@color/color_espresso"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
+        android:elevation="2dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add/Edit FAQ"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:layout_marginBottom="16dp" />
+    <!-- ScrollView để chứa nội dung có thể cuộn -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_add_edit_faq"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
 
-        <EditText
-            android:id="@+id/edtFaqTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="FAQ Title"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/edtFaqContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="FAQ Content"
-            android:minLines="5"
-            android:gravity="top"
-            android:layout_marginBottom="16dp" />
-
+        <!-- LinearLayout làm phần tử con duy nhất của ScrollView -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnCancelFaq"
-                android:layout_width="0dp"
+            <!-- TextInputLayout cho FAQ Title Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/faq_title_input_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancel" />
+                android:layout_marginTop="16dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtFaqTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_faq_title_hint"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnSaveFaq"
-                android:layout_width="0dp"
+            <!-- TextInputLayout cho FAQ Content Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/faq_content_input_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Save" />
+                android:layout_marginTop="16dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtFaqContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_faq_content_hint"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:minLines="5"
+                    android:gravity="top" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- LinearLayout cho các nút Cancel và Save -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/btnCancelFaq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_close"
+                    android:background="@drawable/button_ripple"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:elevation="2dp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnSaveFaq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_save"
+                    android:background="@drawable/button_ripple"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:elevation="2dp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
