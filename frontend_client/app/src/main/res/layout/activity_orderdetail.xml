@@ -227,7 +227,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_cancel_order"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
             <!-- Write Review -->
             <Button
@@ -241,7 +242,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_write_review"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
             <!-- Request Return -->
             <Button
@@ -255,7 +257,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_request_return"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

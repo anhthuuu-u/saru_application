@@ -395,14 +395,16 @@
     <!-- RETURN REQUEST -->
     <string name="return_request_title">YÊU CẦU TRẢ HÀNG</string>
     <string name="return_request_label">Yêu cầu</string>
-    <string name="return_request_refunded">Đã hoàn tiền</string>
-    <string name="return_request_returned">Đã trả hàng</string>
-    <string name="return_reason_label">Lý do trả hàng/hoàn tiền</string>
+    <string name="return_request_exchange">Đổi hàng</string>
+    <string name="return_request_returned">Trả hàng</string>
+    <string name="return_reason_label">Lý do trả hàng/đổi hàng</string>
     <string name="return_reason_wrong_item">Giao sai sản phẩm (kích cỡ, màu sắc, ...)</string>
     <string name="return_reason_not_as_expected">Sản phẩm không như mong đợi</string>
     <string name="return_reason_not_meet_request">Sản phẩm không đúng yêu cầu</string>
-    <string name="return_reason_other">Khác:</string>
-    <string name="return_other_reason_hint">Nhập lý do khác</string>
+    <string name="return_reason_damaged_product">Sản phẩm bị hư hỏng</string>
+    <string name="return_reason_wrong_item_sent">Gửi sai sản phẩm</string>
+    <string name="return_reason_suspected_counterfeit">Nghi ngờ hàng giả</string>
+    <string name="return_reason_no_longer_needed">Không còn nhu cầu</string>
     <string name="return_amount_refunded_label">Số tiền hoàn:</string>
     <string name="return_amount_refunded_value">0đ</string>
     <string name="return_product_image_description">Ảnh sản phẩm</string>
