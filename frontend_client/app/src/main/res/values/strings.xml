@@ -472,7 +472,6 @@
     <string name="chk_agree"><font color="#FF0000">*</font> I have read and agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Saru</string>
     <string name="text_login">Already have account?</string>
     <!--Verification -->
-    <!-- Verification -->
     <string name="prompt_upload_id_card">Tap to upload the front of your ID card</string>
     <string name="btn_change_image">Change image</string>
     <string name="status_uploading">Uploading &#8230;</string>
@@ -652,8 +651,32 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
+    <string name="title_Add_EWallet">Add E-Wallet Information</string>
 
-
+    <string name="user_not_logged_in">User not logged in</string>
+    <string name="enter_phone_number">Please enter a phone number</string>
+    <string name="max_payment_methods_reached">Maximum of 5 payment methods reached</string>
+    <string name="ewallet_added_success">E-Wallet added successfully</string>
+    <string name="ewallet_add_error">Error adding E-Wallet</string>
+    <string name="ewallet_updated_success">E-Wallet updated successfully</string>
+    <string name="ewallet_update_error">Error updating E-Wallet</string>
+    <string name="payment_method_exists">This payment method already exists</string>
+    <string name="cash_added_success">Cash payment method added successfully</string>
+    <string name="cash_add_error">Error adding cash payment method</string>
+    <string name="payment_method_deleted">Payment method deleted</string>
+    <string name="payment_delete_error">Error deleting payment method</string>
+    <string name="load_payment_methods_error">Error loading payment methods</string>
+    <string name="customer_id_missing">Customer ID is missing</string>
+    <string name="load_user_data_failed">Failed to load user data</string>
+    <string name="load_customer_data_failed">Failed to load customer data</string>
+    <string name="error_occurred">An error occurred, please try again later</string>
+    <string name="address_deleted">Address deleted</string>
+    <string name="address_delete_error">Error deleting address</string>
+    <string name="main_address_removed">Main address removed from list</string>
+    <string name="customer_id_not_found">Error: Customer ID not found</string>
+    <string name="select_payment_method">Select payment method</string>
+    <string name="update_ewallet">Update E-Wallet</string>
+    <string name="no_payment_methods_available">No payment methods available</string>
 
 </resources>
 

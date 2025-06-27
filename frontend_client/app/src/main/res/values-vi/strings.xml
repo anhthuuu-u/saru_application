@@ -654,6 +654,33 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
+    <string name="title_Add_EWallet">Thêm Ví điện tử</string>
+
+
+    <string name="user_not_logged_in">Người dùng chưa đăng nhập</string>
+    <string name="enter_phone_number">Vui lòng nhập số điện thoại</string>
+    <string name="max_payment_methods_reached">Đã đạt tối đa 5 phương thức thanh toán</string>
+    <string name="ewallet_added_success">Ví điện tử được thêm thành công</string>
+    <string name="ewallet_add_error">Lỗi khi thêm ví điện tử</string>
+    <string name="ewallet_updated_success">Ví điện tử được cập nhật thành công</string>
+    <string name="ewallet_update_error">Lỗi khi cập nhật ví điện tử</string>
+    <string name="payment_method_exists">Phương thức thanh toán này đã tồn tại</string>
+    <string name="cash_added_success">Phương thức thanh toán tiền mặt được thêm thành công</string>
+    <string name="cash_add_error">Lỗi khi thêm phương thức thanh toán tiền mặt</string>
+    <string name="payment_method_deleted">Phương thức thanh toán đã được xóa</string>
+    <string name="payment_delete_error">Lỗi khi xóa phương thức thanh toán</string>
+    <string name="load_payment_methods_error">Lỗi khi tải phương thức thanh toán</string>
+    <string name="customer_id_missing">Thiếu ID khách hàng</string>
+    <string name="load_user_data_failed">Không tải được dữ liệu người dùng</string>
+    <string name="load_customer_data_failed">Không tải được dữ liệu khách hàng</string>
+    <string name="error_occurred">Đã xảy ra lỗi, vui lòng thử lại sau</string>
+    <string name="address_deleted">Địa chỉ đã được xóa</string>
+    <string name="address_delete_error">Lỗi khi xóa địa chỉ</string>
+    <string name="main_address_removed">Địa chỉ chính đã được xóa khỏi danh sách</string>
+    <string name="customer_id_not_found">Lỗi: Không tìm thấy ID khách hàng</string>
+    <string name="select_payment_method">Chọn phương thức thanh toán</string>
+    <string name="update_ewallet">Cập nhật ví điện tử</string>
+    <string name="no_payment_methods_available">Không tồn tại phương thức thanh toán</string>
 
 
 </resources>
