@@ -79,7 +79,7 @@
     <string name="title_merchandise_total">Merchandise Total</string>
     <string name="title_item_quantity">Items</string>
     <string name="title_delivery_time">Time to delivery</string>
-    <string name="title_expected_delivery">Expected Delivery ngày tháng năm</string>
+    <string name="title_expected_delivery">Expected Delivery ngày 2 tháng 7 năm 2025</string>
 
     <!--    Voucher Code-->
     <string name="title_voucher_code">Voucher Code</string>
@@ -650,6 +650,7 @@
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
     <string name="title_confirm_payment">Confirm Payment</string>
     <string name="title_confirm_payment_message">Please take attention that the product are not available for who under 18, do you want to place order?</string>
+    <string name="title_x">x</string>
 
 
 </resources>

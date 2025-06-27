@@ -61,6 +61,9 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
             return insets;
         });
 
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
+
         // Khởi tạo các view
         listCartItems = new ListCartItems();
         recyclerView = findViewById(R.id.cart_recycler_view);
@@ -211,7 +214,10 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                     Log.d("ProductCart", "Loaded " + listCartItems.getItemCount() + " items from Firestore");
                 });
     }
-
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
+    }
     private void updateTotalPrice() {
         double total = listCartItems.calculateTotalPrice();
         TextView totalAmountText = findViewById(R.id.total_amount_text);

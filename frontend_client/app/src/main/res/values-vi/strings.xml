@@ -96,11 +96,7 @@
     <string name="title_brand_name">Hua Quang Han</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
-    <string name="title_product_1_price">400.000 đ</string>
-    <string name="title_product_2_price">200.000 đ</string>
-    <string name="title_product_3_price">400.000 đ</string>
-    <string name="title_quantity_2">x2</string>
-    <string name="title_quantity_1">x1</string>
+    <string name="title_total_item">xx</string>
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Phí vận chuyển:</string>
     <string name="title_merchandise_total">Tổng số tiền</string>
@@ -654,7 +650,8 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
-
+    <string name="title_confirm_payment">Xác nận thanh tóán</string>
+    <string name="title_confirm_payment_message">Hãy chú ý các sản phẩm rượu đều giới hạn người dưới 18 tuổi, bạn có muốn thanh toán?</string>
 
 </resources>
 

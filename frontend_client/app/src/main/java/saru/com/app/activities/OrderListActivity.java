@@ -160,10 +160,6 @@ public class OrderListActivity extends AppCompatActivity {
             }
         }
 
-        if (orderList.isEmpty() && statusID != null) {
-            Toast.makeText(this, "Không tìm thấy đơn hàng nào cho trạng thái này.", Toast.LENGTH_SHORT).show();
-        }
-
         updateUI();
     }
 

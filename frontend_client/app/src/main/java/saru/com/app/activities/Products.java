@@ -118,6 +118,8 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                 finish();
             });
         }
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
 
         searchBar = findViewById(R.id.search_bar);
         if (searchBar == null) {
@@ -160,6 +162,11 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         });
 
         updateCartItemCount();
+    }
+
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
     }
 
     private void searchProducts(String query) {

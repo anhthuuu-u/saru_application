@@ -39,6 +39,7 @@ import java.util.Map;
 
 import saru.com.app.R;
 import saru.com.app.connectors.CheckoutAdapter;
+import saru.com.app.models.Address;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.Voucher;
 
@@ -74,6 +75,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private String cvv = "";
     private String expiryDate = "";
     private List<CartItem> selectedItems = new ArrayList<>();
+    private String customerID; // To store CustomerID for Firestore queries
 
     // Firebase
     private FirebaseFirestore db;
@@ -107,6 +109,9 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         // Load selected cart items from Firestore to sync
         loadSelectedCartItems();
 
+        // Fetch default address
+        fetchDefaultAddress();
+
         // Set window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -120,7 +125,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         imgEditInfo = findViewById(R.id.imgEditInfo);
         imgEditInfoBank = findViewById(R.id.imgEditInfoBank);
         imgVoucher = findViewById(R.id.imgVoucher);
-        txtCustomerName = findViewById(R.id.edtCustomerName);
+        txtCustomerName = findViewById(R.id.txtCustomerName);
         txtCustomerPhoneNumber = findViewById(R.id.txtCustomerPhoneNumber);
         txtCustomerAddress = findViewById(R.id.txtCustomerAddress);
         edtVoucherCode = findViewById(R.id.edtVoucherCode);
@@ -141,6 +146,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         txtTotalPrice = findViewById(R.id.txtTotalPrice);
         txtTotalItemQuantity = findViewById(R.id.txtTotalItemQuantity);
         recyclerProductCheckout = findViewById(R.id.recyclerProductCheckout);
+        btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
 
         // Initialize RecyclerView
         recyclerProductCheckout.setLayoutManager(new LinearLayoutManager(this));
@@ -206,6 +212,73 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
             selectedPaymentMethod = "EWALLET";
             updatePaymentMethodDetails();
         });
+
+        btnPlaceOrder.setOnClickListener(v -> do_payment(v));
+    }
+
+    private void fetchDefaultAddress() {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập để tiếp tục", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        String accountID = auth.getCurrentUser().getUid();
+        db.collection("accounts").document(accountID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    customerID = documentSnapshot.getString("CustomerID");
+                    if (customerID == null) {
+                        Log.e("TransactionCheckout", "CustomerID is null");
+                        Toast.makeText(this, "Không tìm thấy CustomerID", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    db.collection("customers").document(customerID)
+                            .collection("addresses")
+                            .whereEqualTo("isDefault", true)
+                            .limit(1)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    QueryDocumentSnapshot doc = (QueryDocumentSnapshot) queryDocumentSnapshots.getDocuments().get(0);
+                                    customerName = doc.getString("name");
+                                    customerPhone = doc.getString("phone");
+                                    customerAddress = doc.getString("address");
+                                    updateCustomerInfo();
+                                    Log.d("TransactionCheckout", "Default address loaded: " + customerName + ", " + customerPhone + ", " + customerAddress);
+                                } else {
+                                    // Try to load main address from customers document if no default address in subcollection
+                                    db.collection("customers").document(customerID)
+                                            .get()
+                                            .addOnSuccessListener(customerDoc -> {
+                                                String mainAddress = customerDoc.getString("CustomerAdd");
+                                                if (mainAddress != null && !mainAddress.isEmpty()) {
+                                                    customerName = customerDoc.getString("CustomerName");
+                                                    customerPhone = customerDoc.getString("CustomerPhone");
+                                                    customerAddress = mainAddress;
+                                                    updateCustomerInfo();
+                                                    Log.d("TransactionCheckout", "Main address loaded: " + customerName + ", " + customerPhone + ", " + customerAddress);
+                                                } else {
+                                                    Log.e("TransactionCheckout", "No default address found");
+                                                    Toast.makeText(this, "Không tìm thấy địa chỉ mặc định", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("TransactionCheckout", "Error loading main address: " + e.getMessage());
+                                                Toast.makeText(this, "Lỗi khi tải địa chỉ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            });
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("TransactionCheckout", "Error loading default address: " + e.getMessage());
+                                Toast.makeText(this, "Lỗi khi tải địa chỉ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TransactionCheckout", "Error fetching CustomerID: " + e.getMessage());
+                    Toast.makeText(this, "Lỗi khi lấy thông tin tài khoản", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void loadSelectedCartItems() {
@@ -252,24 +325,24 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
     private void updateSummary() {
         totalAmount = 0.0;
-        int totalItemQuantity = 0; // Biến để lưu tổng số lượng items
+        int totalItemQuantity = 0;
 
         for (CartItem item : selectedItems) {
             totalAmount += item.getTotalPrice();
-            totalItemQuantity += item.getQuantity(); // Tính tổng số lượng items
+            totalItemQuantity += item.getQuantity();
         }
         payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
 
         DecimalFormat formatter = new DecimalFormat("#,###");
         txtMerchandiseTotal.setText(formatter.format(totalAmount + SHIPPING_FEE) + getString(R.string.product_cart_currency));
         txtTotalPrice.setText(formatter.format(payableAmount) + getString(R.string.product_cart_currency));
-        txtTotalItemQuantity.setText(String.valueOf(totalItemQuantity)); // Hiển thị tổng số lượng items
+        txtTotalItemQuantity.setText(String.valueOf(totalItemQuantity));
     }
 
     private void updateCustomerInfo() {
-        txtCustomerName.setText(customerName);
-        txtCustomerPhoneNumber.setText(customerPhone);
-        txtCustomerAddress.setText(customerAddress);
+        txtCustomerName.setText(customerName != null ? customerName : "Chưa có thông tin");
+        txtCustomerPhoneNumber.setText(customerPhone != null ? customerPhone : "Chưa có thông tin");
+        txtCustomerAddress.setText(customerAddress != null ? customerAddress : "Chưa có thông tin");
     }
 
     private void updatePaymentInfo() {
@@ -292,26 +365,33 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
             return;
         }
 
-        String accountID = auth.getCurrentUser().getUid();
+        if (customerName.isEmpty() || customerPhone.isEmpty() || customerAddress.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin địa chỉ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userUID = auth.getCurrentUser().getUid();
         WriteBatch batch = db.batch();
 
-        // Calculate total product quantity
         long totalProduct = selectedItems.stream().mapToLong(CartItem::getQuantity).sum();
-
-        // Format order date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String orderDate = sdf.format(new Date());
 
-        // Fetch CustomerID from accounts collection
-        db.collection("accounts").document(accountID).get()
+        db.collection("accounts").document(userUID).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     String customerID = documentSnapshot.getString("CustomerID");
+                    String accountID = documentSnapshot.getString("AccountID");
                     if (customerID == null) {
+                        Log.e("TransactionCheckout", "CustomerID is null");
                         Toast.makeText(this, "Không tìm thấy CustomerID", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (accountID == null) {
+                        Log.e("TransactionCheckout", "AccountID is null");
+                        Toast.makeText(this, "Không tìm thấy AccountID", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                    // Prepare order data
                     Map<String, Object> order = new HashMap<>();
                     String orderId = db.collection("orders").document().getId();
                     order.put("OrderID", orderId);
@@ -323,49 +403,54 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
                     order.put("customerPhone", customerPhone);
                     order.put("customerAddress", customerAddress);
                     order.put("OrderDate", orderDate);
-                    order.put("OrderStatusID", "0"); // Pending confirmation
+                    order.put("OrderStatusID", "0");
                     order.put("timestamp", System.currentTimeMillis());
 
-                    // Add order to 'orders' collection
                     batch.set(db.collection("orders").document(orderId), order);
 
-                    // Add order details to 'orderdetails' collection
                     for (CartItem item : selectedItems) {
                         Map<String, Object> orderDetail = new HashMap<>();
                         orderDetail.put("OrderID", orderId);
                         orderDetail.put("ProductID", item.getProductID());
                         orderDetail.put("Quantity", item.getQuantity());
-                        // Optionally add VoucherID if applicable
-                        // orderDetail.put("VoucherID", item.getVoucherID() != null ? item.getVoucherID() : "");
                         String orderDetailId = db.collection("orderdetails").document().getId();
                         batch.set(db.collection("orderdetails").document(orderDetailId), orderDetail);
                     }
 
-                    // Remove selected items from cart
                     for (CartItem item : selectedItems) {
-                        batch.delete(db.collection("carts").document(accountID)
+                        batch.delete(db.collection("carts").document(userUID)
                                 .collection("items").document(item.getProductID()));
                     }
 
-                    // Commit batch
+                    // Add notification to batch
+                    Map<String, Object> notification = new HashMap<>();
+                    String notificationId = db.collection("notifications").document().getId();
+                    notification.put("accountID", accountID);
+                    notification.put("notiID", "NT_02");
+                    notification.put("notiTime", com.google.firebase.Timestamp.now());
+                    notification.put("notiTitle", "Đang xác nhận đơn hàng");
+                    notification.put("noti_content", "Đơn hàng của bạn đang được xác nhận, vui lòng chờ trong giây lát");
+                    notification.put("orderID", orderId);
+                    batch.set(db.collection("notifications").document(notificationId), notification);
+
                     batch.commit()
                             .addOnSuccessListener(aVoid -> {
                                 Log.d("TransactionCheckout", "Order placed successfully: " + orderId);
+                                Log.d("TransactionCheckout", "Notification created successfully: " + notificationId);
                                 Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(this, SuccessfulPaymentActivity.class);
                                 intent.putExtra("orderId", orderId);
-                                // Pass statusID to highlight the correct tab
-                                intent.putExtra("statusID", "0"); // Pending confirmation
+                                intent.putExtra("statusID", "0");
                                 startActivity(intent);
                                 finish();
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("TransactionCheckout", "Error placing order: " + e.getMessage());
+                                Log.e("TransactionCheckout", "Error placing order or creating notification: " + e.getMessage());
                                 Toast.makeText(this, "Lỗi khi đặt hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("TransactionCheckout", "Error fetching CustomerID: " + e.getMessage());
+                    Log.e("TransactionCheckout", "Error fetching account document: " + e.getMessage());
                     Toast.makeText(this, "Lỗi khi lấy thông tin tài khoản", Toast.LENGTH_SHORT).show();
                 });
     }
@@ -373,7 +458,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private void applyVoucherCode(String discountCode) {
         validateVoucherCode(discountCode, (isValid, voucher) -> {
             if (isValid && voucher != null) {
-                discountAmount = 20000; // Adjust based on Firestore voucher data
+                discountAmount = 20000;
                 payableAmount = totalAmount + SHIPPING_FEE - discountAmount;
                 updateSummary();
                 btnApplyVoucherCode.setText(R.string.title_applied);
@@ -479,7 +564,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         }
     }
 
-    //Hỏi xem có thoát khoi trang thanh toán không
     public void do_back(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         Resources res = getResources();
@@ -493,7 +577,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    //Hỏi xem có chắc thanh toán hay không
     public void do_payment(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         Resources res = getResources();
@@ -539,6 +622,39 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
             customerAddress = data.getStringExtra("address_full");
             updateCustomerInfo();
             Toast.makeText(this, "Thông tin địa chỉ đã được cập nhật", Toast.LENGTH_SHORT).show();
+
+            // Update Firestore with new default address
+            if (customerID != null) {
+                Map<String, Object> addressData = new HashMap<>();
+                addressData.put("name", customerName);
+                addressData.put("phone", customerPhone);
+                addressData.put("address", customerAddress);
+                addressData.put("isDefault", true);
+                addressData.put("lastUpdated", com.google.firebase.Timestamp.now());
+
+                // Unset all other addresses as default
+                db.collection("customers").document(customerID)
+                        .collection("addresses")
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            WriteBatch batch = db.batch();
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                batch.update(doc.getReference(), "isDefault", false);
+                            }
+                            // Add or update the new default address
+                            db.collection("customers").document(customerID)
+                                    .collection("addresses")
+                                    .add(addressData)
+                                    .addOnSuccessListener(documentReference -> {
+                                        Log.d("TransactionCheckout", "New default address added with ID: " + documentReference.getId());
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("TransactionCheckout", "Error adding new default address: " + e.getMessage());
+                                        Toast.makeText(this, "Lỗi khi cập nhật địa chỉ mặc định", Toast.LENGTH_SHORT).show();
+                                    });
+                            batch.commit();
+                        });
+            }
         } else if (requestCode == EDIT_PAYMENT_METHOD_REQUEST && resultCode == RESULT_OK && data != null) {
             bankName = data.getStringExtra("bank_name");
             cardNumber = data.getStringExtra("card_number");

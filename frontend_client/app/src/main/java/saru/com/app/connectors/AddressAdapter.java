@@ -95,14 +95,14 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         });
 
         // Add long-click listener to the entire item view
-        convertView.setOnLongClickListener(v -> {
-            Log.d("AddressAdapter", "Long click detected at position: " + position);
+        // Add click listener to the entire item view
+        convertView.setOnClickListener(v -> {
+            Log.d("AddressAdapter", "Click detected at position: " + position);
             if (context instanceof ProfileEditActivity) {
                 ((ProfileEditActivity) context).showAddressContextMenu(position);
             } else {
                 Log.e("AddressAdapter", "Context is not ProfileEditActivity");
             }
-            return true; // Consume the event
         });
 
         // Ensure RadioButton doesn't interfere with long-click
