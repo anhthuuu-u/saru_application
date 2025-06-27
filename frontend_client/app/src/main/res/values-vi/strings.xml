@@ -650,8 +650,71 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
+
     <string name="title_confirm_payment">Xác nận thanh tóán</string>
     <string name="title_confirm_payment_message">Hãy chú ý các sản phẩm rượu đều giới hạn người dưới 18 tuổi, bạn có muốn thanh toán?</string>
+
+    <string name="title_Add_EWallet">Thêm Ví điện tử</string>
+
+
+    <string name="user_not_logged_in">Người dùng chưa đăng nhập</string>
+    <string name="enter_phone_number">Vui lòng nhập số điện thoại</string>
+    <string name="max_payment_methods_reached">Đã đạt tối đa 5 phương thức thanh toán</string>
+    <string name="ewallet_added_success">Ví điện tử được thêm thành công</string>
+    <string name="ewallet_add_error">Lỗi khi thêm ví điện tử</string>
+    <string name="ewallet_updated_success">Ví điện tử được cập nhật thành công</string>
+    <string name="ewallet_update_error">Lỗi khi cập nhật ví điện tử</string>
+    <string name="payment_method_exists">Phương thức thanh toán này đã tồn tại</string>
+    <string name="cash_added_success">Phương thức thanh toán tiền mặt được thêm thành công</string>
+    <string name="cash_add_error">Lỗi khi thêm phương thức thanh toán tiền mặt</string>
+    <string name="payment_method_deleted">Phương thức thanh toán đã được xóa</string>
+    <string name="payment_delete_error">Lỗi khi xóa phương thức thanh toán</string>
+    <string name="load_payment_methods_error">Lỗi khi tải phương thức thanh toán</string>
+    <string name="customer_id_missing">Thiếu ID khách hàng</string>
+    <string name="load_user_data_failed">Không tải được dữ liệu người dùng</string>
+    <string name="load_customer_data_failed">Không tải được dữ liệu khách hàng</string>
+    <string name="error_occurred">Đã xảy ra lỗi, vui lòng thử lại sau</string>
+    <string name="address_deleted">Địa chỉ đã được xóa</string>
+    <string name="address_delete_error">Lỗi khi xóa địa chỉ</string>
+    <string name="main_address_removed">Địa chỉ chính đã được xóa khỏi danh sách</string>
+    <string name="customer_id_not_found">Lỗi: Không tìm thấy ID khách hàng</string>
+    <string name="select_payment_method">Chọn phương thức thanh toán</string>
+    <string name="update_ewallet">Cập nhật ví điện tử</string>
+    <string name="no_payment_methods_available">Không tồn tại phương thức thanh toán</string>
+
+    <string name="save">Lưu</string>
+    <string name="personal_info_updated_success">Thông tin cá nhân được cập nhật thành công</string>
+    <string name="personal_info_update_error">Lỗi khi cập nhật thông tin cá nhân</string>
+    <string name="invalid_email">Vui lòng nhập địa chỉ email hợp lệ</string>
+    <string name="invalid_name">Vui lòng nhập tên hợp lệ</string>
+    <string name="invalid_phone">Vui lòng nhập số điện thoại hợp lệ</string>
+    <string name="invalid_birth_date">Vui lòng nhập ngày sinh hợp lệ (yyyy-MM-dd)</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="customer_name">Tên khách hàng</string>
+    <string name="customer_phone">Số điện thoại khách hàng</string>
+    <string name="customer_birth">Ngày sinh khách hàng</string>
+    <string name="customer_email">Email khách hàng</string>
+    <string name="customer_password">Mật khẩu khách hàng</string>
+    <string name="customer_join_date">Ngày tham gia</string>
+    <string name="customer_full_name">Họ và tên</string>
+    <string name="customer_full_address">Địa chỉ đầy đủ</string>
+    <string name="add_address">Thêm địa chỉ</string>
+    <string name="cash">Tiền mặt</string>
+    <string name="internet_banking">Ngân hàng</string>
+    <string name="ewallet_unknown">Ví điện tử không tồn tại</string>
+    <string name="ewallet">Ví điện tử</string>
+    <string name="delete">Xóa</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="cancel">Hủy</string>
+    <string name="select_option">Lựa chọn</string>
+    <string name="confirm_delete">Xác nhận xóa</string>
+    <string name="delete_payment_method_confirmation">Bạn có chắc chắn muốn xóa phương thức thanh toán này?</string>
+    <string name="yes">Có</string>
+    <string name="delete_address_confirmation">Bạn có chắc chắn muốn xóa địa chỉ này?</string>
+
+
+
 
 </resources>
 

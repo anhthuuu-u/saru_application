@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,19 +22,25 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import saru.com.app.R;
 import saru.com.app.connectors.AddressAdapter;
@@ -55,8 +62,10 @@ public class ProfileEditActivity extends AppCompatActivity {
     private List<Address> addressList = new ArrayList<>();
     private AddressAdapter addressAdapter;
     private Spinner paymentMethodSpinner;
+    private Button btnSavePersonalInfo;
 
     private static final int REQUEST_CODE_ADD_ADDRESS = 1;
+    private static final int REQUEST_CODE_ADD_EWALLET = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +89,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 fetchPaymentMethods(userUID);
             } else {
                 Log.d("ProfileEditActivity", "User not logged in.");
-                Toast.makeText(ProfileEditActivity.this, "User not logged in", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileEditActivity.this, R.string.user_not_logged_in, Toast.LENGTH_SHORT).show();
                 Intent loginIntent = new Intent(ProfileEditActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
                 finish();
@@ -96,10 +105,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             ImageView reloadBtn = findViewById(R.id.btn_reload);
             if (reloadBtn != null) {
-                reloadBtn.setOnClickListener(v -> {
-                    Intent intent = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
-                    startActivity(intent);
-                });
+                reloadBtn.setOnClickListener(v -> showPaymentMethodSelectionDialog());
             } else {
                 Log.e("ProfileEditActivity", "reloadBtn is null");
             }
@@ -114,15 +120,22 @@ public class ProfileEditActivity extends AppCompatActivity {
                         startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
                     } else {
                         Log.e("ProfileEditActivity", "userUID or customerID is null in btnAddAddress click: userUID=" + userUID + ", customerID=" + customerID);
-                        Toast.makeText(ProfileEditActivity.this, "Failed to get customer ID", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileEditActivity.this, R.string.customer_id_not_found, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
                 Log.e("ProfileEditActivity", "btnAddAddress is null");
             }
+
+            // Save personal info button
+            if (btnSavePersonalInfo != null) {
+                btnSavePersonalInfo.setOnClickListener(v -> savePersonalInformation());
+            } else {
+                Log.e("ProfileEditActivity", "btnSavePersonalInfo is null");
+            }
         } catch (Exception e) {
             Log.e("ProfileEditActivity", "Error in onCreate: ", e);
-            Toast.makeText(ProfileEditActivity.this, "An error occurred, please try again later.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileEditActivity.this, R.string.error_occurred, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -130,39 +143,46 @@ public class ProfileEditActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_ADDRESS && resultCode == RESULT_OK && data != null) {
-            String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
-            if (userUID != null && customerID != null) {
-                Log.d("ProfileEditActivity", "Received result from AddAddressActivity");
-                String addressId = data.getStringExtra("addressId");
-                String name = data.getStringExtra("name");
-                String phone = data.getStringExtra("phone");
-                String address = data.getStringExtra("address");
+        String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+        if (userUID != null) {
+            if (requestCode == REQUEST_CODE_ADD_ADDRESS && resultCode == RESULT_OK && data != null) {
+                if (customerID != null) {
+                    Log.d("ProfileEditActivity", "Received result from AddAddressActivity");
+                    String addressId = data.getStringExtra("addressId");
+                    String name = data.getStringExtra("name");
+                    String phone = data.getStringExtra("phone");
+                    String address = data.getStringExtra("address");
 
-                if (addressId != null) {
-                    // Update the specific address in the list
-                    for (int i = 0; i < addressList.size(); i++) {
-                        if (addressList.get(i).getId() != null && addressList.get(i).getId().equals(addressId)) {
-                            addressList.get(i).setName(name);
-                            addressList.get(i).setPhone(phone);
-                            addressList.get(i).setAddress(address);
-                            Log.d("ProfileEditActivity", "Updated address at position " + i + " with ID: " + addressId);
-                            break;
+                    if (addressId != null) {
+                        // Update the specific address in the list
+                        for (int i = 0; i < addressList.size(); i++) {
+                            if (addressList.get(i).getId() != null && addressList.get(i).getId().equals(addressId)) {
+                                addressList.get(i).setName(name);
+                                addressList.get(i).setPhone(phone);
+                                addressList.get(i).setAddress(address);
+                                Log.d("ProfileEditActivity", "Updated address at position " + i + " with ID: " + addressId);
+                                break;
+                            }
                         }
-                    }
-                    if (addressAdapter != null) {
-                        addressAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(lvAddresses);
-                        Log.d("ProfileEditActivity", "Adapter notified after edit");
+                        if (addressAdapter != null) {
+                            addressAdapter.notifyDataSetChanged();
+                            setListViewHeightBasedOnChildren(lvAddresses);
+                            Log.d("ProfileEditActivity", "Adapter notified after edit");
+                        }
+                    } else {
+                        // For new addresses, rely on the full refresh
+                        Log.d("ProfileEditActivity", "No addressId, performing full refresh");
+                        fetchUserProfile(userUID);
                     }
                 } else {
-                    // For new addresses, rely on the full refresh
-                    Log.d("ProfileEditActivity", "No addressId, performing full refresh");
-                    fetchUserProfile(userUID);
+                    Log.e("ProfileEditActivity", "customerID is null in onActivityResult: userUID=" + userUID);
                 }
-            } else {
-                Log.e("ProfileEditActivity", "userUID or customerID is null in onActivityResult: userUID=" + userUID + ", customerID=" + customerID);
+            } else if (requestCode == REQUEST_CODE_ADD_EWALLET && resultCode == RESULT_OK && data != null) {
+                Log.d("ProfileEditActivity", "Received result from AddEWalletActivity");
+                fetchPaymentMethods(userUID); // Refresh payment methods
             }
+        } else {
+            Log.e("ProfileEditActivity", "userUID is null in onActivityResult");
         }
     }
 
@@ -222,11 +242,108 @@ public class ProfileEditActivity extends AppCompatActivity {
         paymentMethodSpinner = findViewById(R.id.paymentMethod);
         if (paymentMethodSpinner == null) Log.e("ProfileEditActivity", "paymentMethodSpinner is null");
 
+        btnSavePersonalInfo = findViewById(R.id.btnSaveInfor);
+        if (btnSavePersonalInfo == null) Log.e("ProfileEditActivity", "btnSavePersonalInfo is null");
+
         addressAdapter = new AddressAdapter(this, addressList, null); // Initialize with null customerID, will be set later
         if (lvAddresses != null) {
             lvAddresses.setAdapter(addressAdapter);
         } else {
             Log.e("ProfileEditActivity", "Cannot set adapter, lvAddresses is null");
+        }
+    }
+
+    private void savePersonalInformation() {
+        String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+        if (userUID == null) {
+            Toast.makeText(this, R.string.user_not_logged_in, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (customerID == null) {
+            Toast.makeText(this, R.string.customer_id_not_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String name = edtCustomerName.getText().toString().trim();
+        String phone = edtCustomerPhone.getText().toString().trim();
+        String birth = edtCustomerBirth.getText().toString().trim();
+        String email = edtCustomerMail.getText().toString().trim();
+        String password = edtCustomerPass.getText().toString().trim();
+        String sex = ckbMale.isChecked() ? "Male" : ckbFemale.isChecked() ? "Female" : null;
+
+        // Validate inputs
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phone.isEmpty() || !Pattern.matches("[0-9]{10}", phone)) {
+            Toast.makeText(this, R.string.invalid_phone, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (birth.isEmpty() || !isValidDate(birth)) {
+            Toast.makeText(this, R.string.invalid_birth_date, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (sex == null) {
+            Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Update accounts collection
+        Map<String, Object> accountData = new HashMap<>();
+        accountData.put("CustomerEmail", email);
+        accountData.put("CustomerPassword", password);
+        accountData.put("CustomerID", customerID);
+
+        // Update customers collection
+        Map<String, Object> customerData = new HashMap<>();
+        customerData.put("CustomerName", name);
+        customerData.put("CustomerPhone", phone);
+        customerData.put("CustomerBirth", birth);
+        customerData.put("Sex", sex);
+
+        // Perform Firestore updates
+        DocumentReference accountRef = db.collection("accounts").document(userUID);
+        DocumentReference customerRef = db.collection("customers").document(customerID);
+
+        Tasks.whenAllSuccess(
+                accountRef.set(accountData),
+                customerRef.update(customerData)
+        ).addOnSuccessListener(aVoid -> {
+            Log.d("ProfileEditActivity", "Personal information updated successfully");
+            // Update UI
+            txtCustomerName.setText(name);
+            txtCustomerEmail.setText(email);
+            txtCustomerFullName.setText(name);
+            Toast.makeText(ProfileEditActivity.this, R.string.personal_info_updated_success, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Log.e("ProfileEditActivity", "Error updating personal information: " + e.getMessage());
+            Toast.makeText(ProfileEditActivity.this, R.string.personal_info_update_error, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private boolean isValidDate(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
         }
     }
 
@@ -254,7 +371,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.e("ProfileEditActivity", "CustomerID is missing.");
-                        Toast.makeText(ProfileEditActivity.this, "CustomerID is missing", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileEditActivity.this, R.string.customer_id_missing, Toast.LENGTH_SHORT).show();
                     }
 
                     FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -267,7 +384,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.e("ProfileEditActivity", "Error fetching user data: " + task.getException());
-                    Toast.makeText(ProfileEditActivity.this, "Failed to load user data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileEditActivity.this, R.string.load_user_data_failed, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
@@ -358,7 +475,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.e("ProfileEditActivity", "Error fetching customer data: " + task.getException());
-                    Toast.makeText(ProfileEditActivity.this, "Failed to load customer data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileEditActivity.this, R.string.load_customer_data_failed, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
@@ -366,63 +483,67 @@ public class ProfileEditActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchPaymentMethods(String customerID) {
-        Log.d("ProfileEditActivity", "Fetching payment methods for CustomerID: " + customerID);
+    private void fetchPaymentMethods(String userUID) {
+        Log.d("ProfileEditActivity", "Fetching payment methods for UserUID: " + userUID);
         paymentMethodsList = new ArrayList<>(); // Reset the list
-        final CountDownLatch latch = new CountDownLatch(5); // Wait for 5 collections
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
 
         // Iterate through all possible payment collections
         for (int i = 1; i <= 5; i++) {
-            final int index = i;
-            String paymentCollectionName = "payment0" + index;
-
-            db.collection("paymentofcustomer")
-                    .document(customerID)
+            String paymentCollectionName = "payment0" + i;
+            Task<QuerySnapshot> task = db.collection("paymentofcustomer")
+                    .document(userUID)
                     .collection(paymentCollectionName)
-                    .get()
-                    .addOnCompleteListener(paymentTask -> {
-                        try {
-                            if (paymentTask.isSuccessful()) {
-                                if (!paymentTask.getResult().isEmpty()) {
-                                    DocumentSnapshot paymentDoc = paymentTask.getResult().getDocuments().get(0);
-                                    if (paymentDoc != null) {
-                                        String paymentMethodID = paymentDoc.getString("PaymentMethodID");
-                                        if ("1".equals(paymentMethodID)) { // Internet Banking
-                                            String cardType = paymentDoc.getString("CardType");
-                                            String bank = paymentDoc.getString("Bank");
-                                            paymentMethodsList.add(cardType + " - " + bank);
-                                        } else if ("0".equals(paymentMethodID)) { // Cash
-                                            paymentMethodsList.add("Cash");
-                                        } else {
-                                            String paymentMethodName = paymentDoc.getString("PaymentMethod");
-                                            paymentMethodsList.add(paymentMethodName);
-                                        }
-                                    }
-                                }
-                            } else {
-                                Log.e("ProfileEditActivity", "Error fetching payment details for collection " + paymentCollectionName + ": " + paymentTask.getException());
-                            }
-                        } finally {
-                            latch.countDown(); // Decrease latch count after each task completes
-                        }
-                    });
+                    .get();
+            tasks.add(task);
         }
 
-        // Wait for all tasks to complete and then populate the spinner
-        new Thread(() -> {
-            try {
-                latch.await(); // Wait for all 5 collections to be processed
-                runOnUiThread(() -> populateSpinner(paymentMethodsList));
-            } catch (InterruptedException e) {
-                Log.e("ProfileEditActivity", "Interrupted while waiting for latch: " + e.getMessage());
-                runOnUiThread(() -> Toast.makeText(ProfileEditActivity.this, "Error loading payment methods", Toast.LENGTH_SHORT).show());
-            }
-        }).start();
+        // Wait for all tasks to complete
+        Tasks.whenAllComplete(tasks)
+                .addOnCompleteListener(task -> {
+                    for (Task<QuerySnapshot> queryTask : tasks) {
+                        if (queryTask.isSuccessful() && !queryTask.getResult().isEmpty()) {
+                            DocumentSnapshot paymentDoc = queryTask.getResult().getDocuments().get(0);
+                            if (paymentDoc != null) {
+                                String paymentMethodID = paymentDoc.getString("PaymentMethodID");
+                                if ("1".equals(paymentMethodID)) { // Internet Banking
+                                    String cardType = paymentDoc.getString("CardType");
+                                    String bank = paymentDoc.getString("Bank");
+                                    paymentMethodsList.add(cardType + " - " + bank);
+                                } else if ("0".equals(paymentMethodID)) { // Cash
+                                    paymentMethodsList.add(getString(R.string.cash));
+                                } else if ("2".equals(paymentMethodID)) { // E-Wallet
+                                    String phoneNumber = paymentDoc.getString("PhoneNumber");
+                                    String eWalletType = paymentDoc.getString("EWalletType");
+                                    String displayName = (eWalletType != null && phoneNumber != null)
+                                            ? eWalletType + " - " + phoneNumber
+                                            : getString(R.string.ewallet_unknown);
+                                    paymentMethodsList.add(displayName);
+                                }
+                            }
+                        }
+                    }
+
+                    if (paymentMethodsList.isEmpty()) {
+                        Log.e("ProfileEditActivity", "No payment methods to populate spinner with.");
+                        paymentMethodsList.add(getString(R.string.no_payment_methods_available));
+                    }
+
+                    runOnUiThread(() -> populateSpinner(paymentMethodsList));
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileEditActivity", "Error fetching payment methods: " + e.getMessage());
+                    runOnUiThread(() -> {
+                        paymentMethodsList.add(getString(R.string.no_payment_methods_available));
+                        populateSpinner(paymentMethodsList);
+                        Toast.makeText(ProfileEditActivity.this, R.string.load_payment_methods_error, Toast.LENGTH_SHORT).show();
+                    });
+                });
     }
 
     private void saveSelectedPaymentMethod(String selectedMethod) {
-        // Check if the method is not "Cash"
-        if (!"Cash".equals(selectedMethod)) {
+        // Check if the method is not "Cash" or "E-Wallet"
+        if (!getString(R.string.cash).equals(selectedMethod) && !selectedMethod.startsWith("E-Wallet")) {
             String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
             if (userUID != null) {
                 db.collection("paymentofcustomer")
@@ -440,11 +561,6 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void populateSpinner(List<String> paymentMethodsList) {
         Log.d("ProfileEditActivity", "Populating spinner with payment methods: " + paymentMethodsList);
-
-        if (paymentMethodsList.isEmpty()) {
-            Log.e("ProfileEditActivity", "No payment methods to populate spinner with.");
-            paymentMethodsList.add("No payment methods available"); // Placeholder for empty list
-        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileEditActivity.this,
                 android.R.layout.simple_spinner_item, paymentMethodsList);
@@ -478,7 +594,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     String selectedMethod = paymentMethodsList.get(position);
                     Log.d("ProfileEditActivity", "Selected payment method: " + selectedMethod);
-                    if (!"No payment methods available".equals(selectedMethod)) {
+                    if (!getString(R.string.no_payment_methods_available).equals(selectedMethod)) {
                         saveSelectedPaymentMethod(selectedMethod);
                     }
                 }
@@ -493,7 +609,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             paymentMethodSpinner.setOnLongClickListener(v -> {
                 if (paymentMethodSpinner.getSelectedItemPosition() >= 0) {
                     String selectedMethod = paymentMethodsList.get(paymentMethodSpinner.getSelectedItemPosition());
-                    if (!"No payment methods available".equals(selectedMethod)) {
+                    if (!getString(R.string.no_payment_methods_available).equals(selectedMethod)) {
                         showContextMenu(selectedMethod);
                     }
                 }
@@ -505,9 +621,9 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     private void showContextMenu(String selectedMethod) {
-        String[] options = {"Delete", "Edit"};
+        String[] options = {getString(R.string.delete), getString(R.string.edit)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select an option")
+        builder.setTitle(R.string.select_option)
                 .setItems(options, (dialog, which) -> {
                     String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
                     if (userUID != null) {
@@ -523,13 +639,13 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void showDeleteConfirmation(String selectedMethod, String userUID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this payment method?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.confirm_delete)
+                .setMessage(R.string.delete_payment_method_confirmation)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
                     deletePaymentMethod(selectedMethod, userUID);
                     dialog.dismiss();
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setCancelable(true);
         builder.create().show();
     }
@@ -546,8 +662,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                             for (DocumentSnapshot document : task.getResult()) {
                                 String cardType = document.getString("CardType");
                                 String bank = document.getString("Bank");
-                                String currentMethod = cardType + " - " + bank;
-                                if (currentMethod.equals(selectedMethod)) {
+                                String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
+                                String phoneNumber = document.getString("PhoneNumber");
+                                String eWalletType = document.getString("EWalletType");
+                                String ewalletMethod = (eWalletType != null && phoneNumber != null)
+                                        ? eWalletType + " - " + phoneNumber
+                                        : getString(R.string.ewallet_unknown);
+                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
                                     db.collection("paymentofcustomer")
                                             .document(userUID)
                                             .collection(paymentCollectionName)
@@ -555,13 +676,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                                             .delete()
                                             .addOnSuccessListener(aVoid -> {
                                                 Log.d("ProfileEditActivity", "Payment method deleted successfully from " + paymentCollectionName);
-                                                Toast.makeText(ProfileEditActivity.this, "Payment method deleted", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProfileEditActivity.this, R.string.payment_method_deleted, Toast.LENGTH_SHORT).show();
                                                 // Refresh all payment methods
                                                 fetchPaymentMethods(userUID);
                                             })
                                             .addOnFailureListener(e -> {
                                                 Log.e("ProfileEditActivity", "Error deleting payment method: " + e.getMessage());
-                                                Toast.makeText(ProfileEditActivity.this, "Error deleting payment method", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProfileEditActivity.this, R.string.payment_delete_error, Toast.LENGTH_SHORT).show();
                                             });
                                     return; // Exit after finding and deleting
                                 }
@@ -583,17 +704,32 @@ public class ProfileEditActivity extends AppCompatActivity {
                             for (DocumentSnapshot document : task.getResult()) {
                                 String cardType = document.getString("CardType");
                                 String bank = document.getString("Bank");
-                                String currentMethod = cardType + " - " + bank;
-                                if (currentMethod.equals(selectedMethod)) {
-                                    Intent intent = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
-                                    intent.putExtra("paymentCollection", paymentCollectionName);
-                                    intent.putExtra("paymentMethodID", document.getId());
-                                    intent.putExtra("cardType", cardType);
-                                    intent.putExtra("bank", bank);
-                                    intent.putExtra("cardNumber", document.getString("CardNumber"));
-                                    intent.putExtra("cvv", document.getString("CVV"));
-                                    intent.putExtra("expiryDate", document.getString("ExpiryDate"));
-                                    startActivity(intent);
+                                String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
+                                String phoneNumber = document.getString("PhoneNumber");
+                                String eWalletType = document.getString("EWalletType");
+                                String ewalletMethod = (eWalletType != null && phoneNumber != null)
+                                        ? eWalletType + " - " + phoneNumber
+                                        : getString(R.string.ewallet_unknown);
+                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
+                                    Intent intent;
+                                    if ("2".equals(document.getString("PaymentMethodID"))) {
+                                        intent = new Intent(ProfileEditActivity.this, AddEWalletActivity.class);
+                                        intent.putExtra("paymentCollection", paymentCollectionName);
+                                        intent.putExtra("paymentMethodID", document.getId());
+                                        intent.putExtra("phoneNumber", phoneNumber);
+                                        intent.putExtra("eWalletType", eWalletType);
+                                        intent.putExtra("isEdit", true); // Indicate edit mode
+                                    } else {
+                                        intent = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
+                                        intent.putExtra("paymentCollection", paymentCollectionName);
+                                        intent.putExtra("paymentMethodID", document.getId());
+                                        intent.putExtra("cardType", cardType);
+                                        intent.putExtra("bank", bank);
+                                        intent.putExtra("cardNumber", document.getString("CardNumber"));
+                                        intent.putExtra("cvv", document.getString("CVV"));
+                                        intent.putExtra("expiryDate", document.getString("ExpiryDate"));
+                                    }
+                                    startActivityForResult(intent, REQUEST_CODE_ADD_EWALLET);
                                     return; // Exit after finding and navigating
                                 }
                             }
@@ -604,9 +740,9 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     public void showAddressContextMenu(final int position) {
         Log.d("ProfileEditActivity", "Showing context menu for position: " + position);
-        String[] options = {"Delete", "Edit"};
+        String[] options = {getString(R.string.delete), getString(R.string.edit)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select an option")
+        builder.setTitle(R.string.select_option)
                 .setItems(options, (dialog, which) -> {
                     Address selectedAddress = addressList.get(position);
                     if (which == 0) { // Delete
@@ -620,13 +756,13 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void showDeleteConfirmation(Address address, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this address?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.confirm_delete)
+                .setMessage(R.string.delete_address_confirmation)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
                     deleteAddress(address, position);
                     dialog.dismiss();
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setCancelable(true);
         builder.create().show();
     }
@@ -638,7 +774,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 addressList.remove(position);
                 addressAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(lvAddresses);
-                Toast.makeText(this, "Main address removed from list", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.main_address_removed, Toast.LENGTH_SHORT).show();
             } else {
                 // This is a subcollection address
                 db.collection("customers").document(customerID)
@@ -650,16 +786,16 @@ public class ProfileEditActivity extends AppCompatActivity {
                             addressList.remove(position);
                             addressAdapter.notifyDataSetChanged();
                             setListViewHeightBasedOnChildren(lvAddresses);
-                            Toast.makeText(ProfileEditActivity.this, "Address deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditActivity.this, R.string.address_deleted, Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
                             Log.e("ProfileEditActivity", "Error deleting address: " + e.getMessage());
-                            Toast.makeText(ProfileEditActivity.this, "Error deleting address", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditActivity.this, R.string.address_delete_error, Toast.LENGTH_SHORT).show();
                         });
             }
         } else {
             Log.e("ProfileEditActivity", "customerID is null in deleteAddress");
-            Toast.makeText(this, "Error: Customer ID not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.customer_id_not_found, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -675,7 +811,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
         } else {
             Log.e("ProfileEditActivity", "customerID is null in navigateToEdit");
-            Toast.makeText(this, "Error: Customer ID not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.customer_id_not_found, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -695,5 +831,110 @@ public class ProfileEditActivity extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (addressAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private void showPaymentMethodSelectionDialog() {
+        String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+        if (userUID == null) {
+            Toast.makeText(this, R.string.user_not_logged_in, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] options = {getString(R.string.cash), getString(R.string.internet_banking), getString(R.string.ewallet)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.select_payment_method)
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: // Cash
+                            if (paymentMethodsList != null && paymentMethodsList.contains(getString(R.string.cash))) {
+                                Toast.makeText(ProfileEditActivity.this, R.string.payment_method_exists, Toast.LENGTH_SHORT).show();
+                            } else {
+                                addCashPaymentMethod(userUID);
+                            }
+                            break;
+                        case 1: // Internet Banking
+                            Intent intentInternet = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
+                            startActivityForResult(intentInternet, REQUEST_CODE_ADD_EWALLET);
+                            break;
+                        case 2: // E-Wallet
+                            Intent intentEWallet = new Intent(ProfileEditActivity.this, AddEWalletActivity.class);
+                            startActivityForResult(intentEWallet, REQUEST_CODE_ADD_EWALLET);
+                            break;
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void addCashPaymentMethod(String userUID) {
+        findNextAvailablePaymentIndex(userUID, nextIndex -> {
+            if (nextIndex > 0 && nextIndex <= 5) {
+                String paymentCollectionName = "payment0" + nextIndex;
+                Map<String, Object> paymentMethod = new HashMap<>();
+                paymentMethod.put("PaymentMethodID", "0"); // Cash
+                paymentMethod.put("PaymentMethod", getString(R.string.cash));
+
+                db.collection("paymentofcustomer")
+                        .document(userUID)
+                        .collection(paymentCollectionName)
+                        .document(String.valueOf(System.currentTimeMillis())) // Unique ID
+                        .set(paymentMethod)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("ProfileEditActivity", "Cash payment method added successfully to " + paymentCollectionName);
+                            paymentMethodsList.add(getString(R.string.cash));
+                            runOnUiThread(() -> populateSpinner(paymentMethodsList));
+                            Toast.makeText(ProfileEditActivity.this, R.string.cash_added_success, Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("ProfileEditActivity", "Error adding cash payment method: " + e.getMessage());
+                            Toast.makeText(ProfileEditActivity.this, R.string.cash_add_error, Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(this, R.string.max_payment_methods_reached, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void findNextAvailablePaymentIndex(String userUID, OnIndexFoundListener listener) {
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+
+        // Create tasks for checking each payment collection
+        for (int i = 1; i <= 5; i++) {
+            String collectionName = "payment0" + i;
+            Task<QuerySnapshot> task = db.collection("paymentofcustomer")
+                    .document(userUID)
+                    .collection(collectionName)
+                    .get();
+            tasks.add(task);
+        }
+
+        // Wait for all tasks to complete
+        Tasks.whenAllComplete(tasks)
+                .addOnCompleteListener(task -> {
+                    int[] occupied = new int[6]; // 1 to 5
+                    for (int i = 0; i < tasks.size(); i++) {
+                        Task<QuerySnapshot> queryTask = tasks.get(i);
+                        if (queryTask.isSuccessful() && !queryTask.getResult().isEmpty()) {
+                            occupied[i + 1] = 1; // Mark as occupied
+                        }
+                    }
+
+                    // Find the next available index
+                    for (int i = 1; i <= 5; i++) {
+                        if (occupied[i] == 0) {
+                            listener.onIndexFound(i);
+                            return;
+                        }
+                    }
+                    listener.onIndexFound(-1); // No available slot
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileEditActivity", "Error checking payment collections: " + e.getMessage());
+                    listener.onIndexFound(-1); // Indicate failure
+                });
+    }
+
+    // Callback interface to handle the async result
+    interface OnIndexFoundListener {
+        void onIndexFound(int index);
     }
 }
