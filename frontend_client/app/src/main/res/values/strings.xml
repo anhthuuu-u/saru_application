@@ -652,7 +652,12 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
-
+    <string name="invalid_category">Invalid Category</string>
+    <string name="invalid_brand">Invalid Brand</string>
+    <string name="no_filter_applied">No filter apply</string>
+    <string name="error_applying_filter">Error applying filter</string>
+    <string name="no_categories_available">No category available</string>
+    <string name="error_loading_cart">Error loading cart</string>
 
 
 </resources>

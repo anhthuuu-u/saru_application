@@ -48,7 +48,7 @@ public class Product implements Serializable {
         this.ingredients = ingredients;
         this.customerRating = customerRating;
         this.productDescription = productDescription;
-        this.CateID = CateID;
+        this.CateID = cateID;
         this.productStatusID = productStatusID;
         this.brandID = brandID;
         this.imageID = imageID;
@@ -213,9 +213,18 @@ public class Product implements Serializable {
     }
 
     public void setCategory(String cateName) {
+        this.productCategory = cateName;
     }
 
     public String getCategory() {
         return productCategory;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 }
