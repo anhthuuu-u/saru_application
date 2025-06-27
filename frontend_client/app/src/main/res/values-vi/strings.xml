@@ -682,6 +682,38 @@
     <string name="update_ewallet">Cập nhật ví điện tử</string>
     <string name="no_payment_methods_available">Không tồn tại phương thức thanh toán</string>
 
+    <string name="save">Lưu</string>
+    <string name="personal_info_updated_success">Thông tin cá nhân được cập nhật thành công</string>
+    <string name="personal_info_update_error">Lỗi khi cập nhật thông tin cá nhân</string>
+    <string name="invalid_email">Vui lòng nhập địa chỉ email hợp lệ</string>
+    <string name="invalid_name">Vui lòng nhập tên hợp lệ</string>
+    <string name="invalid_phone">Vui lòng nhập số điện thoại hợp lệ</string>
+    <string name="invalid_birth_date">Vui lòng nhập ngày sinh hợp lệ (yyyy-MM-dd)</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="customer_name">Tên khách hàng</string>
+    <string name="customer_phone">Số điện thoại khách hàng</string>
+    <string name="customer_birth">Ngày sinh khách hàng</string>
+    <string name="customer_email">Email khách hàng</string>
+    <string name="customer_password">Mật khẩu khách hàng</string>
+    <string name="customer_join_date">Ngày tham gia</string>
+    <string name="customer_full_name">Họ và tên</string>
+    <string name="customer_full_address">Địa chỉ đầy đủ</string>
+    <string name="add_address">Thêm địa chỉ</string>
+    <string name="cash">Tiền mặt</string>
+    <string name="internet_banking">Ngân hàng</string>
+    <string name="ewallet_unknown">Ví điện tử không tồn tại</string>
+    <string name="ewallet">Ví điện tử</string>
+    <string name="delete">Xóa</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="cancel">Hủy</string>
+    <string name="select_option">Lựa chọn</string>
+    <string name="confirm_delete">Xác nhận xóa</string>
+    <string name="delete_payment_method_confirmation">Bạn có chắc chắn muốn xóa phương thức thanh toán này?</string>
+    <string name="yes">Có</string>
+    <string name="delete_address_confirmation">Bạn có chắc chắn muốn xóa địa chỉ này?</string>
+
+
 
 </resources>
 

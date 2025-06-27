@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import saru.com.app.R;
 import saru.com.app.connectors.AddressAdapter;
@@ -59,6 +62,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private List<Address> addressList = new ArrayList<>();
     private AddressAdapter addressAdapter;
     private Spinner paymentMethodSpinner;
+    private Button btnSavePersonalInfo;
 
     private static final int REQUEST_CODE_ADD_ADDRESS = 1;
     private static final int REQUEST_CODE_ADD_EWALLET = 2;
@@ -121,6 +125,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                 });
             } else {
                 Log.e("ProfileEditActivity", "btnAddAddress is null");
+            }
+
+            // Save personal info button
+            if (btnSavePersonalInfo != null) {
+                btnSavePersonalInfo.setOnClickListener(v -> savePersonalInformation());
+            } else {
+                Log.e("ProfileEditActivity", "btnSavePersonalInfo is null");
             }
         } catch (Exception e) {
             Log.e("ProfileEditActivity", "Error in onCreate: ", e);
@@ -231,11 +242,108 @@ public class ProfileEditActivity extends AppCompatActivity {
         paymentMethodSpinner = findViewById(R.id.paymentMethod);
         if (paymentMethodSpinner == null) Log.e("ProfileEditActivity", "paymentMethodSpinner is null");
 
+        btnSavePersonalInfo = findViewById(R.id.btnSaveInfor);
+        if (btnSavePersonalInfo == null) Log.e("ProfileEditActivity", "btnSavePersonalInfo is null");
+
         addressAdapter = new AddressAdapter(this, addressList, null); // Initialize with null customerID, will be set later
         if (lvAddresses != null) {
             lvAddresses.setAdapter(addressAdapter);
         } else {
             Log.e("ProfileEditActivity", "Cannot set adapter, lvAddresses is null");
+        }
+    }
+
+    private void savePersonalInformation() {
+        String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+        if (userUID == null) {
+            Toast.makeText(this, R.string.user_not_logged_in, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (customerID == null) {
+            Toast.makeText(this, R.string.customer_id_not_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String name = edtCustomerName.getText().toString().trim();
+        String phone = edtCustomerPhone.getText().toString().trim();
+        String birth = edtCustomerBirth.getText().toString().trim();
+        String email = edtCustomerMail.getText().toString().trim();
+        String password = edtCustomerPass.getText().toString().trim();
+        String sex = ckbMale.isChecked() ? "Male" : ckbFemale.isChecked() ? "Female" : null;
+
+        // Validate inputs
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phone.isEmpty() || !Pattern.matches("[0-9]{10}", phone)) {
+            Toast.makeText(this, R.string.invalid_phone, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (birth.isEmpty() || !isValidDate(birth)) {
+            Toast.makeText(this, R.string.invalid_birth_date, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (sex == null) {
+            Toast.makeText(this, R.string.error_occurred, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Update accounts collection
+        Map<String, Object> accountData = new HashMap<>();
+        accountData.put("CustomerEmail", email);
+        accountData.put("CustomerPassword", password);
+        accountData.put("CustomerID", customerID);
+
+        // Update customers collection
+        Map<String, Object> customerData = new HashMap<>();
+        customerData.put("CustomerName", name);
+        customerData.put("CustomerPhone", phone);
+        customerData.put("CustomerBirth", birth);
+        customerData.put("Sex", sex);
+
+        // Perform Firestore updates
+        DocumentReference accountRef = db.collection("accounts").document(userUID);
+        DocumentReference customerRef = db.collection("customers").document(customerID);
+
+        Tasks.whenAllSuccess(
+                accountRef.set(accountData),
+                customerRef.update(customerData)
+        ).addOnSuccessListener(aVoid -> {
+            Log.d("ProfileEditActivity", "Personal information updated successfully");
+            // Update UI
+            txtCustomerName.setText(name);
+            txtCustomerEmail.setText(email);
+            txtCustomerFullName.setText(name);
+            Toast.makeText(ProfileEditActivity.this, R.string.personal_info_updated_success, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Log.e("ProfileEditActivity", "Error updating personal information: " + e.getMessage());
+            Toast.makeText(ProfileEditActivity.this, R.string.personal_info_update_error, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private boolean isValidDate(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
         }
     }
 
@@ -403,13 +511,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                                     String bank = paymentDoc.getString("Bank");
                                     paymentMethodsList.add(cardType + " - " + bank);
                                 } else if ("0".equals(paymentMethodID)) { // Cash
-                                    paymentMethodsList.add("Cash");
+                                    paymentMethodsList.add(getString(R.string.cash));
                                 } else if ("2".equals(paymentMethodID)) { // E-Wallet
                                     String phoneNumber = paymentDoc.getString("PhoneNumber");
                                     String eWalletType = paymentDoc.getString("EWalletType");
                                     String displayName = (eWalletType != null && phoneNumber != null)
                                             ? eWalletType + " - " + phoneNumber
-                                            : "E-Wallet - Unknown";
+                                            : getString(R.string.ewallet_unknown);
                                     paymentMethodsList.add(displayName);
                                 }
                             }
@@ -434,8 +542,8 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     private void saveSelectedPaymentMethod(String selectedMethod) {
-        // Check if the method is not "Cash"
-        if (!"Cash".equals(selectedMethod) && !selectedMethod.startsWith("E-Wallet")) {
+        // Check if the method is not "Cash" or "E-Wallet"
+        if (!getString(R.string.cash).equals(selectedMethod) && !selectedMethod.startsWith("E-Wallet")) {
             String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
             if (userUID != null) {
                 db.collection("paymentofcustomer")
@@ -513,9 +621,9 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     private void showContextMenu(String selectedMethod) {
-        String[] options = {"Delete", "Edit"};
+        String[] options = {getString(R.string.delete), getString(R.string.edit)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select an option")
+        builder.setTitle(R.string.select_option)
                 .setItems(options, (dialog, which) -> {
                     String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
                     if (userUID != null) {
@@ -531,13 +639,13 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void showDeleteConfirmation(String selectedMethod, String userUID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this payment method?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.confirm_delete)
+                .setMessage(R.string.delete_payment_method_confirmation)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
                     deletePaymentMethod(selectedMethod, userUID);
                     dialog.dismiss();
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setCancelable(true);
         builder.create().show();
     }
@@ -559,8 +667,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                                 String eWalletType = document.getString("EWalletType");
                                 String ewalletMethod = (eWalletType != null && phoneNumber != null)
                                         ? eWalletType + " - " + phoneNumber
-                                        : "E-Wallet - Unknown";
-                                if (currentMethod.equals(selectedMethod) || selectedMethod.equals("Cash") || ewalletMethod.equals(selectedMethod)) {
+                                        : getString(R.string.ewallet_unknown);
+                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
                                     db.collection("paymentofcustomer")
                                             .document(userUID)
                                             .collection(paymentCollectionName)
@@ -601,8 +709,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                                 String eWalletType = document.getString("EWalletType");
                                 String ewalletMethod = (eWalletType != null && phoneNumber != null)
                                         ? eWalletType + " - " + phoneNumber
-                                        : "E-Wallet - Unknown";
-                                if (currentMethod.equals(selectedMethod) || selectedMethod.equals("Cash") || ewalletMethod.equals(selectedMethod)) {
+                                        : getString(R.string.ewallet_unknown);
+                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
                                     Intent intent;
                                     if ("2".equals(document.getString("PaymentMethodID"))) {
                                         intent = new Intent(ProfileEditActivity.this, AddEWalletActivity.class);
@@ -632,9 +740,9 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     public void showAddressContextMenu(final int position) {
         Log.d("ProfileEditActivity", "Showing context menu for position: " + position);
-        String[] options = {"Delete", "Edit"};
+        String[] options = {getString(R.string.delete), getString(R.string.edit)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select an option")
+        builder.setTitle(R.string.select_option)
                 .setItems(options, (dialog, which) -> {
                     Address selectedAddress = addressList.get(position);
                     if (which == 0) { // Delete
@@ -648,13 +756,13 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void showDeleteConfirmation(Address address, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this address?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.confirm_delete)
+                .setMessage(R.string.delete_address_confirmation)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
                     deleteAddress(address, position);
                     dialog.dismiss();
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setCancelable(true);
         builder.create().show();
     }
@@ -732,13 +840,13 @@ public class ProfileEditActivity extends AppCompatActivity {
             return;
         }
 
-        String[] options = {"Cash", "Internet Banking", "E-Wallet"};
+        String[] options = {getString(R.string.cash), getString(R.string.internet_banking), getString(R.string.ewallet)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_payment_method)
                 .setItems(options, (dialog, which) -> {
                     switch (which) {
                         case 0: // Cash
-                            if (paymentMethodsList != null && paymentMethodsList.contains("Cash")) {
+                            if (paymentMethodsList != null && paymentMethodsList.contains(getString(R.string.cash))) {
                                 Toast.makeText(ProfileEditActivity.this, R.string.payment_method_exists, Toast.LENGTH_SHORT).show();
                             } else {
                                 addCashPaymentMethod(userUID);
@@ -763,7 +871,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 String paymentCollectionName = "payment0" + nextIndex;
                 Map<String, Object> paymentMethod = new HashMap<>();
                 paymentMethod.put("PaymentMethodID", "0"); // Cash
-                paymentMethod.put("PaymentMethod", "Cash");
+                paymentMethod.put("PaymentMethod", getString(R.string.cash));
 
                 db.collection("paymentofcustomer")
                         .document(userUID)
@@ -772,7 +880,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         .set(paymentMethod)
                         .addOnSuccessListener(aVoid -> {
                             Log.d("ProfileEditActivity", "Cash payment method added successfully to " + paymentCollectionName);
-                            paymentMethodsList.add("Cash");
+                            paymentMethodsList.add(getString(R.string.cash));
                             runOnUiThread(() -> populateSpinner(paymentMethodsList));
                             Toast.makeText(ProfileEditActivity.this, R.string.cash_added_success, Toast.LENGTH_SHORT).show();
                         })
