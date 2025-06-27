@@ -708,11 +708,7 @@
     <string name="delete_payment_method_confirmation">Are you sure you want to delete this payment method?</string>
     <string name="yes">Yes</string>
     <string name="delete_address_confirmation">Are you sure you want to delete this address?</string>
-
-
-
-
-
+    <string name="title_x">x</string>
 
 
 </resources>
