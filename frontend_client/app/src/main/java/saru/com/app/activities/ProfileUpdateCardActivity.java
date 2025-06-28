@@ -19,16 +19,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.BuildConfig;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Random;
 
 import saru.com.app.R;
 
@@ -40,8 +41,7 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
     private Spinner edtCardType;
     private EditText edtBank, edtCardNum, edtCVV, edtExDate;
     private Button btnSaveInfo;
-    private String selectedPaymentCollection; // To store the selected payment method collection
-    private String selectedPaymentMethodID;   // To store the selected payment method ID
+    private String selectedPaymentMethodID; // To store the selected payment method ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +77,49 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
             }
         }});
 
+        // Restrict and format edtExDate to MM/YY with mandatory "/"
+        edtExDate.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        String newText = dest.subSequence(0, dstart) + source.toString() + dest.subSequence(dend, dest.length());
+                        String cleanText = newText.replace("/", "");
+
+                        // Allow only digits and "/" at the correct position
+                        if (source != null && !source.toString().matches("[0-9/]*")) {
+                            return "";
+                        }
+
+                        // Prevent multiple slashes
+                        if (source.toString().equals("/") && newText.indexOf("/") != newText.lastIndexOf("/")) {
+                            return "";
+                        }
+
+                        // Allow up to 4 digits (MMYY)
+                        if (cleanText.length() > 4) {
+                            return "";
+                        }
+
+                        // Automatically add "/" after MM (e.g., after typing "06")
+                        if (cleanText.length() == 2 && dstart == 2 && !newText.contains("/")) {
+                            return source + "/";
+                        }
+
+                        // Prevent adding "/" manually unless at position 2
+                        if (source.toString().equals("/") && dstart != 2) {
+                            return "";
+                        }
+
+                        return null;
+                    }
+                },
+                new InputFilter.LengthFilter(5) // Limit to 5 characters (MM/YY)
+        });
+
         // Check if this is an edit operation
-        if (getIntent().hasExtra("paymentCollection") && getIntent().hasExtra("paymentMethodID")) {
-            selectedPaymentCollection = getIntent().getStringExtra("paymentCollection");
+        if (getIntent().hasExtra("paymentMethodID")) {
             selectedPaymentMethodID = getIntent().getStringExtra("paymentMethodID");
-            fetchExistingPaymentMethod(selectedPaymentCollection, selectedPaymentMethodID);
+            fetchExistingPaymentMethod(selectedPaymentMethodID);
         }
 
         btnSaveInfo.setOnClickListener(v -> savePaymentInfo());
@@ -101,41 +139,38 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
     }
 
     private void fetchPaymentMethods(String userUID) {
-        for (int i = 1; i <= 5; i++) {
-            String paymentCollection = "payment" + String.format("%02d", i);
-            db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(paymentCollection)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                TextView paymentView = findViewById(getResources().getIdentifier("txt_payment_" + paymentCollection, "id", getPackageName()));
-                                if (paymentView != null) {
-                                    paymentView.setText(document.getString("CardType") + " - " + document.getString("Bank"));
-                                    final String finalPaymentCollection = paymentCollection;
-                                    final String paymentMethodID = document.getId();
-                                    paymentView.setOnLongClickListener(v -> {
-                                        showContextMenu(finalPaymentCollection, paymentMethodID);
-                                        return true;
-                                    });
-                                }
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String paymentMethodID = document.getId();
+                            String cardType = document.getString("CardType");
+                            String bank = document.getString("Bank");
+                            TextView paymentView = findViewById(getResources().getIdentifier("txt_payment_" + paymentMethodID, "id", getPackageName()));
+                            if (paymentView != null) {
+                                paymentView.setText(cardType + " - " + bank);
+                                paymentView.setOnLongClickListener(v -> {
+                                    showContextMenu(paymentMethodID);
+                                    return true;
+                                });
                             }
                         }
-                    });
-        }
+                    }
+                });
     }
 
-    private void showContextMenu(String paymentCollection, String paymentMethodID) {
+    private void showContextMenu(String paymentMethodID) {
         String[] options = {"Delete", "Edit"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select an option")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) { // Delete
-                        showDeleteConfirmation(paymentCollection, paymentMethodID);
+                        showDeleteConfirmation(paymentMethodID);
                     } else if (which == 1) { // Edit
                         Intent intent = new Intent(ProfileUpdateCardActivity.this, ProfileUpdateCardActivity.class);
-                        intent.putExtra("paymentCollection", paymentCollection);
                         intent.putExtra("paymentMethodID", paymentMethodID);
                         startActivity(intent);
                     }
@@ -143,12 +178,12 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void showDeleteConfirmation(String paymentCollection, String paymentMethodID) {
+    private void showDeleteConfirmation(String paymentMethodID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete")
                 .setMessage("Are you sure you want to delete this payment method?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    deletePaymentMethod(paymentCollection, paymentMethodID);
+                    deletePaymentMethod(paymentMethodID);
                     dialog.dismiss();
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
@@ -156,18 +191,17 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void deletePaymentMethod(String paymentCollection, String paymentMethodID) {
+    private void deletePaymentMethod(String paymentMethodID) {
         String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
         if (userUID != null) {
             db.collection("paymentofcustomer")
                     .document(userUID)
-                    .collection(paymentCollection)
+                    .collection("paymentMethods")
                     .document(paymentMethodID)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
-                        Log.d("ProfileUpdateCardActivity", "Payment method deleted successfully from " + paymentCollection);
+                        Log.d("ProfileUpdateCardActivity", "Payment method deleted successfully");
                         Toast.makeText(ProfileUpdateCardActivity.this, "Payment method deleted", Toast.LENGTH_SHORT).show();
-                        // Refresh the activity or update UI
                         finish();
                         startActivity(getIntent());
                     })
@@ -178,12 +212,12 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchExistingPaymentMethod(String paymentCollection, String paymentMethodID) {
+    private void fetchExistingPaymentMethod(String paymentMethodID) {
         String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
         if (userUID != null) {
             db.collection("paymentofcustomer")
                     .document(userUID)
-                    .collection(paymentCollection)
+                    .collection("paymentMethods")
                     .document(paymentMethodID)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
@@ -202,7 +236,15 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
                             if (edtBank != null) edtBank.setText(bank != null ? bank : "");
                             if (edtCardNum != null) edtCardNum.setText(cardNumber != null ? cardNumber : "");
                             if (edtCVV != null) edtCVV.setText(cvv != null ? cvv : "");
-                            if (edtExDate != null) edtExDate.setText(expiryDate != null ? expiryDate : "");
+                            if (edtExDate != null && expiryDate != null) {
+                                // Format expiryDate from MM/YYYY to MM/YY for display
+                                String[] parts = expiryDate.split("/");
+                                if (parts.length == 3) {
+                                    String mm = parts[1];
+                                    String yy = parts[2].substring(2); // Last 2 digits of year
+                                    edtExDate.setText(mm + "/" + yy);
+                                }
+                            }
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -220,19 +262,47 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
             return;
         }
         Log.d("ProfileUpdateCardActivity", "Authenticated user UID: " + userUID);
-        Log.d("ProfileUpdateCardActivity", "Attempting to write to path: paymentofcustomer/" + userUID + "/payment0X");
 
         // Get data from the input fields
         String cardType = edtCardType.getSelectedItem() != null ? edtCardType.getSelectedItem().toString() : "";
         String bank = edtBank.getText().toString().trim();
         String cardNumber = edtCardNum.getText().toString().trim();
         String cvv = edtCVV.getText().toString().trim();
-        String expiryDate = edtExDate.getText().toString().trim();
+        String expiryDateInput = edtExDate.getText().toString().trim();
 
-        if (cardType.isEmpty() || bank.isEmpty() || cardNumber.isEmpty() || cvv.isEmpty() || expiryDate.isEmpty()) {
+        if (cardType.isEmpty() || bank.isEmpty() || cardNumber.isEmpty() || cvv.isEmpty() || expiryDateInput.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Validate expiry date format MM/YY with mandatory "/"
+        if (!expiryDateInput.matches("^(0[1-9]|1[0-2])/[0-9]{2}$")) {
+            Toast.makeText(this, "Expiry date must be in MM/YY format (e.g., 06/25)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] expiryParts = expiryDateInput.split("/");
+        int expiryMonth = Integer.parseInt(expiryParts[0]);
+        int expiryYear = Integer.parseInt("20" + expiryParts[1]); // Convert to full year (e.g., 25 -> 2025)
+
+        if (expiryMonth < 1 || expiryMonth > 12) {
+            Toast.makeText(this, "Month must be between 01 and 12", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validate that the expiry date is not in the past
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date()); // Current date: June 28, 2025
+        int currentMonth = currentDate.get(Calendar.MONTH) + 1; // 0-based, so +1
+        int currentYear = currentDate.get(Calendar.YEAR);
+
+        if (expiryYear < currentYear || (expiryYear == currentYear && expiryMonth < currentMonth)) {
+            Toast.makeText(this, "Expiry date must be current or future date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Format expiryDate to MM/YYYY for storage
+        String expiryDate = String.format("%02d/%d", expiryMonth, expiryYear);
 
         // Create a map for the payment method data
         Map<String, Object> paymentMethod = new HashMap<>();
@@ -244,25 +314,25 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         paymentMethod.put("ExpiryDate", expiryDate);
         paymentMethod.put("CardType", cardType);
 
-        if (selectedPaymentCollection != null && selectedPaymentMethodID != null) {
+        if (selectedPaymentMethodID != null) {
             // Update existing payment method
-            updatePaymentMethod(selectedPaymentCollection, selectedPaymentMethodID, paymentMethod);
+            updatePaymentMethod(selectedPaymentMethodID, paymentMethod);
         } else {
             // Create new payment method
-            determinePaymentCollection(userUID, paymentMethod);
+            createPaymentMethod(userUID, paymentMethod);
         }
     }
 
-    private void updatePaymentMethod(String paymentCollection, String paymentMethodID, Map<String, Object> paymentMethod) {
+    private void updatePaymentMethod(String paymentMethodID, Map<String, Object> paymentMethod) {
         String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
         if (userUID != null) {
             db.collection("paymentofcustomer")
                     .document(userUID)
-                    .collection(paymentCollection)
+                    .collection("paymentMethods")
                     .document(paymentMethodID)
                     .set(paymentMethod)
                     .addOnSuccessListener(aVoid -> {
-                        Log.d("ProfileUpdateCardActivity", "Payment method updated successfully in " + paymentCollection);
+                        Log.d("ProfileUpdateCardActivity", "Payment method updated successfully");
                         Toast.makeText(ProfileUpdateCardActivity.this, "Payment method updated successfully", Toast.LENGTH_SHORT).show();
                         showCustomToast();
                         finish();
@@ -274,82 +344,24 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         }
     }
 
-    private void determinePaymentCollection(String userUID, Map<String, Object> paymentMethod) {
-        final int[] nextPaymentIndex = {1}; // Start from payment01, will adjust based on existing
-        final AtomicBoolean isCollectionAssigned = new AtomicBoolean(false); // Flag to prevent multiple writes
-        final boolean[] occupied = new boolean[6]; // Track occupied collections (1 to 5)
-        CountDownLatch latch = new CountDownLatch(5);
-
-        for (int i = 1; i <= 5; i++) {
-            final int currentIndex = i;
-            String paymentCollection = "payment" + String.format("%02d", currentIndex);
-
-            db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(paymentCollection)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        try {
-                            if (task.isSuccessful() && !isCollectionAssigned.get()) {
-                                if (!task.getResult().isEmpty()) {
-                                    occupied[currentIndex] = true; // Mark as occupied
-                                } else if (task.getResult().isEmpty() && currentIndex > nextPaymentIndex[0]) {
-                                    // Update nextPaymentIndex to the first empty slot
-                                    if (nextPaymentIndex[0] < currentIndex) {
-                                        nextPaymentIndex[0] = currentIndex;
-                                    }
-                                }
-                            }
-                        } finally {
-                            latch.countDown();
-                            // After all checks, assign to the next available slot
-                            if (latch.getCount() == 0 && !isCollectionAssigned.get()) {
-                                for (int j = 1; j <= 5; j++) {
-                                    if (!occupied[j] && !isCollectionAssigned.get()) {
-                                        isCollectionAssigned.set(true);
-                                        createPaymentCollection(userUID, "payment" + String.format("%02d", j), paymentMethod);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
-
-        new Thread(() -> {
-            try {
-                latch.await();
-
-                runOnUiThread(() -> {
-                    if (!isCollectionAssigned.get() && nextPaymentIndex[0] <= 5) {
-                        String paymentCollection = "payment" + String.format("%02d", nextPaymentIndex[0]);
-                        // Ensure we find the next available slot
-                        for (int i = nextPaymentIndex[0]; i <= 5; i++) {
-                            if (!occupied[i]) {
-                                createPaymentCollection(userUID, "payment" + String.format("%02d", i), paymentMethod);
-                                return;
-                            }
-                        }
-                        Toast.makeText(this, "Maximum 5 payment methods allowed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } catch (InterruptedException e) {
-                Log.e("ProfileUpdateCardActivity", "Interrupted while waiting for latch: " + e.getMessage());
-                runOnUiThread(() -> Toast.makeText(this, "Error processing payment methods", Toast.LENGTH_SHORT).show());
-            }
-        }).start();
+    private String generateUniquePaymentId() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        String timestamp = sdf.format(new Date());
+        Random random = new Random();
+        int randomNum = random.nextInt(900) + 100; // Generate a random number between 100 and 999
+        return timestamp + randomNum; // Example: 20250628165009123 at 06:50 PM +07, June 28, 2025
     }
 
-    private void createPaymentCollection(String userUID, String paymentCollection, Map<String, Object> paymentMethod) {
-        String paymentMethodID = String.valueOf(System.currentTimeMillis()); // Unique ID based on timestamp
+    private void createPaymentMethod(String userUID, Map<String, Object> paymentMethod) {
+        String paymentMethodID = generateUniquePaymentId(); // Generate unique ID
 
         db.collection("paymentofcustomer")
                 .document(userUID)
-                .collection(paymentCollection)
+                .collection("paymentMethods")
                 .document(paymentMethodID)
                 .set(paymentMethod)
                 .addOnSuccessListener(aVoid -> {
-                    Log.d("ProfileUpdateCardActivity", "Payment method saved successfully to " + paymentCollection);
+                    Log.d("ProfileUpdateCardActivity", "Payment method saved successfully with ID: " + paymentMethodID);
                     Toast.makeText(ProfileUpdateCardActivity.this, "Payment method saved successfully", Toast.LENGTH_SHORT).show();
                     showCustomToast();
                     finish();
