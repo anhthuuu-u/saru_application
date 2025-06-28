@@ -423,7 +423,7 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/txtCOD"
+                            android:id="@+id/textView2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -532,12 +532,14 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/txtCustomerBankName"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/card_number_label"
-                                    android:fontFamily="@font/inter_bold"
-                                    android:textColor="@color/color_dark_brown"
-                                    android:textSize="10sp"/>
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/inter"
+                                    android:text="@string/title_customer_bank_name"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
 
                                 <TextView
                                     android:id="@+id/txtBankNumberCard"
@@ -562,6 +564,15 @@
 <!--                            android:onClick="do_edit_information"-->
 <!--                            android:paddingEnd="16dp"-->
 <!--                            app:srcCompat="@mipmap/ic_edit_information" />-->
+                        <!--                        <ImageView-->
+                        <!--                            android:id="@+id/imgEditInfoBank"-->
+                        <!--                            android:layout_width="30dp"-->
+                        <!--                            android:layout_height="20dp"-->
+                        <!--                            android:layout_marginStart="8dp"-->
+                        <!--                            android:contentDescription="Edit Info"-->
+                        <!--                            android:onClick="do_edit_information"-->
+                        <!--                            android:paddingEnd="16dp"-->
+                        <!--                            app:srcCompat="@mipmap/ic_edit_information" />-->
                     </LinearLayout>
 
                     <!-- E-Wallet -->
@@ -606,7 +617,7 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/txtEWalletName"
+                            android:id="@+id/txtBlog_CategoryNameInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

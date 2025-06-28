@@ -1,9 +1,11 @@
 package saru.com.app.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -13,10 +15,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,6 +46,8 @@ public class OrderListActivity extends AppCompatActivity {
 
     // UI elements for tabs
     private TextView tabAll, tabConfirming, tabConfirmed, tabInTransit, tabComplete, tabCanceled;
+    private TextView txtOrderID, txtOrderDate, txtTotalProduct, txtTotalValue;
+    Button btnOrderStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,7 @@ public class OrderListActivity extends AppCompatActivity {
         ImageButton btn_noti = findViewById(R.id.btn_noti);
         btn_noti.setOnClickListener(v -> openNotification());
 
+        // Lấy statusID từ Intent nếu có
         String initialStatusID = getIntent().getStringExtra("statusID");
         highlightOrderId = getIntent().getStringExtra("highlightOrderId");
 
@@ -110,6 +122,15 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        txtOrderID = findViewById(R.id.txtOrderID);
+        txtOrderDate = findViewById(R.id.txtOrderDate);
+        txtTotalProduct = findViewById(R.id.txtTotalProduct);
+        txtTotalValue = findViewById(R.id.txtTotalValue);
+        if (txtTotalValue == null) {
+            Log.e("OrderListActivity", "txtTotalValue is null");
+        }
+        btnOrderStatus = findViewById(R.id.btnOrderStatus);
+        // Initialize tabs
         tabAll = findViewById(R.id.tab_all);
         tabConfirming = findViewById(R.id.tab_confirming);
         tabConfirmed = findViewById(R.id.tab_confirmed);
@@ -159,6 +180,7 @@ public class OrderListActivity extends AppCompatActivity {
     private void filterOrdersByStatus(String statusID) {
         orderList.clear();
         if (statusID == null) {
+            // Hiển thị tất cả đơn hàng
             orderList.addAll(allOrders);
         } else {
             String targetStatus = getStatusName(statusID);
@@ -231,6 +253,7 @@ public class OrderListActivity extends AppCompatActivity {
                             for (DocumentSnapshot document : orderTask.getResult()) {
                                 String orderID = document.getString("OrderID");
                                 String orderDate = document.getString("OrderDate");
+
                                 Object orderStatusIDObj = document.get("OrderStatusID");
                                 String orderStatusID = null;
 
@@ -288,10 +311,15 @@ public class OrderListActivity extends AppCompatActivity {
                 .addOnCompleteListener(productTask -> {
                     if (productTask.isSuccessful()) {
                         Double productPrice = productTask.getResult().getDouble("productPrice");
+
                         if (productPrice != null && quantityObj != null) {
                             int quantity = (quantityObj instanceof Long) ? ((Long) quantityObj).intValue() : (Integer) quantityObj;
                             totalValue[0] += productPrice * quantity;
                         }
+
+                        Log.d("OrderListActivity", "ProductID: " + productID + " Price: " + productPrice + " Quantity: " + quantityObj);
+                        Log.d("OrderListActivity", "Total Value so far: " + totalValue[0]);
+
                         if (listener != null) {
                             listener.onTotalCalculated(totalValue[0]);
                         }

@@ -83,6 +83,20 @@
             android:scaleType="fitCenter"
             app:srcCompat="@mipmap/ic_cart"
             app:tint="#F8BC3B" />
+        <TextView
+            android:id="@+id/cart_item_count"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/circle_badge"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/btn_cart"
+            app:layout_constraintTop_toTopOf="@id/btn_cart"
+            app:layout_constraintBottom_toTopOf="@id/btn_cart"
+            app:layout_constraintHorizontal_bias="1.0" />
     </LinearLayout>
 
     <!-- Thêm vào activity_product_cart.xml, ngay dưới toolbar_layout -->

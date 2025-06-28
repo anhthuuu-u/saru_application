@@ -68,6 +68,15 @@ public class ProductComparison extends BaseActivity {
                 findViewById(R.id.delete_product_3)
         };
 
+        // Kiểm tra ánh xạ views
+        if (comparisonTable == null || comparisonScrollView == null || emptyComparisonLayout == null ||
+                buttonClearAll == null || btnBack == null || shopNowButton == null) {
+            Log.e("ProductComparison", "One or more views not found");
+            Toast.makeText(this, "Lỗi giao diện", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         // Cập nhật giao diện
         updateComparisonTable();
         updateVisibility();
@@ -157,6 +166,15 @@ public class ProductComparison extends BaseActivity {
         TableRow priceRow = (TableRow) comparisonTable.getChildAt(8);
         TableRow deleteRow = (TableRow) comparisonTable.getChildAt(9);
 
+        // Kiểm tra ánh xạ các hàng
+        if (imageRow == null || nameRow == null || brandRow == null || alcoholRow == null ||
+                volumeRow == null || wineTypeRow == null || ingredientsRow == null ||
+                tasteRow == null || priceRow == null || deleteRow == null) {
+            Log.e("ProductComparison", "One or more TableRows not found");
+            Toast.makeText(this, "Lỗi giao diện bảng so sánh", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Cập nhật từng cột
         for (int i = 1; i <= 3; i++) {
             ImageView imageView = (ImageView) imageRow.getChildAt(i);
@@ -185,14 +203,17 @@ public class ProductComparison extends BaseActivity {
                     imageView.setImageResource(R.drawable.ic_ver_fail);
                 }
 
-                nameText.setText(item.getProductName());
-                brandText.setText(item.getProductBrand());
-                alcoholText.setText(item.getAlcoholStrength());
-                volumeText.setText(item.getNetContent());
-                wineTypeText.setText(item.getWineType());
-                ingredientsText.setText(item.getIngredients());
-                tasteText.setText(item.getProductTaste());
-                priceText.setText(formatter.format(item.getProductPrice()) + getString(R.string.product_cart_currency));
+                // Hiển thị và log dữ liệu
+                nameText.setText(item.getProductName() != null ? item.getProductName() : "N/A");
+                String brand = item.getProductBrand();
+                Log.d("ProductComparison", "Product: " + item.getProductName() + ", Brand: " + brand);
+                brandText.setText(brand != null && !brand.isEmpty() ? brand : "N/A");
+                alcoholText.setText(item.getAlcoholStrength() != null ? item.getAlcoholStrength() : "N/A");
+                volumeText.setText(item.getNetContent() != null ? item.getNetContent() : "N/A");
+                wineTypeText.setText(item.getWineType() != null ? item.getWineType() : "N/A");
+                ingredientsText.setText(item.getIngredients() != null ? item.getIngredients() : "N/A");
+                tasteText.setText(item.getProductTaste() != null ? item.getProductTaste() : "N/A");
+                priceText.setText(item.getProductPrice() > 0 ? formatter.format(item.getProductPrice()) + getString(R.string.product_cart_currency) : "N/A");
                 deleteButton.setVisibility(View.VISIBLE);
             } else {
                 imageView.setImageDrawable(null);

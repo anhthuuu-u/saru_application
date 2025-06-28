@@ -22,9 +22,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.text.DecimalFormat;
@@ -72,6 +75,8 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private String bankName = "";
     private String cardNumber = "";
     private String cardType = "";
+    private String eWalletType = "";
+    private String eWalletPhone = "";
     private String cvv = "";
     private String expiryDate = "";
     private List<CartItem> selectedItems = new ArrayList<>();

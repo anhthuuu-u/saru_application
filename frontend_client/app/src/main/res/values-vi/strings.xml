@@ -100,7 +100,7 @@
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Phí vận chuyển:</string>
     <string name="title_merchandise_total">Tổng số tiền</string>
-    <string name="title_item_quantity">Số lượng</string>
+    <string name="title_item_quantity">(x sản phẩm)</string>
     <string name="title_delivery_time">Thời gian vận chuển</string>
     <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
 
@@ -119,10 +119,10 @@
     <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
     <string name="title_cod_detail">Thanh toán khi nhận hàng</string>
     <string name="title_bank">Thẻ ngân hàng (Thẻ tín Dụng hoặc thẻ ghi Nợ)</string>
-    <string name="title_bank_name">Vietcombank</string>
-    <string name="title_customer_bank_name">Anh Khoa</string>
-    <string name="title_bank_type">Mastercard</string>
-    <string name="title_bank_number_card">******789</string>
+    <string name="title_bank_name">Ngân hàng: Vietcombank</string>
+    <string name="title_customer_bank_name">Tên khách hàng: Anh Khoa</string>
+    <string name="title_bank_type">Loại thẻ: Mastercard</string>
+    <string name="title_bank_number_card">Số thẻ: ******789</string>
     <string name="title_ewallet">Ví điện tử</string>
     <string name="title_ewallet_detail">Ví điện tử Momo</string>
 
@@ -239,7 +239,7 @@
     <string name="title_aboutus_CFO">CFO\n</string>
     <string name="title_aboutus_cto">CTO</string>
     <string name="title_aboutus_coo">COO</string>
-    <string name="title_aboutus_endpage">Giới thiệu</string>
+    <string name="title_aboutus_endpage">Về chúng tôi</string>
     <string name="title_aboutuslocation_LaoCaiBranch">Cửa hàng Saru Tây Bắc chi nhánh Lào Cai</string>
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
     <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
@@ -333,7 +333,6 @@
     <!-- ORDER LIST -->
     <string name="order_back_button_description">Nút quay lại</string>
     <string name="order_detail_title">CHI TIẾT ĐƠN HÀNG</string>
-    <string name="order_list_title">DANH SÁCH ĐƠN HÀNG</string>
     <string name="order_tab_all">Tất cả</string>
     <string name="order_tab_confirm">Chờ xác nhận</string>
     <string name="order_tab_payment">Chờ thanh toán</string>
@@ -392,14 +391,16 @@
     <!-- RETURN REQUEST -->
     <string name="return_request_title">YÊU CẦU TRẢ HÀNG</string>
     <string name="return_request_label">Yêu cầu</string>
-    <string name="return_request_refunded">Đã hoàn tiền</string>
-    <string name="return_request_returned">Đã trả hàng</string>
-    <string name="return_reason_label">Lý do trả hàng/hoàn tiền</string>
+    <string name="return_request_exchange">Đổi hàng</string>
+    <string name="return_request_returned">Trả hàng</string>
+    <string name="return_reason_label">Lý do trả hàng/đổi hàng</string>
     <string name="return_reason_wrong_item">Giao sai sản phẩm (kích cỡ, màu sắc, ...)</string>
     <string name="return_reason_not_as_expected">Sản phẩm không như mong đợi</string>
     <string name="return_reason_not_meet_request">Sản phẩm không đúng yêu cầu</string>
-    <string name="return_reason_other">Khác:</string>
-    <string name="return_other_reason_hint">Nhập lý do khác</string>
+    <string name="return_reason_damaged_product">Sản phẩm bị hư hỏng</string>
+    <string name="return_reason_wrong_item_sent">Gửi sai sản phẩm</string>
+    <string name="return_reason_suspected_counterfeit">Nghi ngờ hàng giả</string>
+    <string name="return_reason_no_longer_needed">Không còn nhu cầu</string>
     <string name="return_amount_refunded_label">Số tiền hoàn:</string>
     <string name="return_amount_refunded_value">0đ</string>
     <string name="return_product_image_description">Ảnh sản phẩm</string>
@@ -713,6 +714,32 @@
     <string name="delete_payment_method_confirmation">Bạn có chắc chắn muốn xóa phương thức thanh toán này?</string>
     <string name="yes">Có</string>
     <string name="delete_address_confirmation">Bạn có chắc chắn muốn xóa địa chỉ này?</string>
+
+
+    <string name="message_sent_success">Tin nhắn được gửi thành công</string>
+    <string name="message_send_error">Lỗi khi gửi tin nhắn</string>
+    <string name="image_upload_success">Hình ảnh được tải lên thành công</string>
+
+    <string name="load_messages_error">Lỗi khi tải tin nhắn</string>
+
+    <string name="customer_support">Hỗ trợ khách hàng</string>
+    <string name="add_attachment">Thêm tệp đính kèm</string>
+    <string name="send_message">Gửi tin nhắn</string>
+    <string name="enter_message">Nhập tin nhắn của bạn</string>
+    <string name="message_timestamp_format">dd MMM yyyy HH:mm</string>
+    <string name="simulate_admin_message">Mô phỏng tin nhắn admin</string>
+
+
+    <string name="invalid_category">Invalid Category</string>
+    <string name="invalid_brand">Invalid Brand</string>
+    <string name="no_filter_applied">No filter apply</string>
+    <string name="error_applying_filter">Error applying filter</string>
+    <string name="no_categories_available">No category available</string>
+    <string name="error_loading_cart">Error loading cart</string>
+
+    <string name="cancel_reason_enter_voucher">Enter or change voucher code</string>
+    <string name="cancel_reason_edit_items">Edit order items</string>
+
     <string name="title_x">x</string>
 </resources>
 

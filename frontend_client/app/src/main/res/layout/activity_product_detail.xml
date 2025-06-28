@@ -84,14 +84,18 @@
             app:tint="#F8BC3B" />
         <TextView
             android:id="@+id/cart_item_count"
-            android:layout_width="@dimen/cart_count_size"
-            android:layout_height="@dimen/cart_count_size"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/circle_background"
-            android:gravity="center_vertical"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/circle_badge"
+            android:gravity="center"
+            android:text="0"
             android:textColor="@android:color/white"
-            android:textSize="10dp"
-            android:visibility="gone" />
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/btn_cart"
+            app:layout_constraintTop_toTopOf="@id/btn_cart"
+            app:layout_constraintBottom_toTopOf="@id/btn_cart"
+            app:layout_constraintHorizontal_bias="1.0" />
     </LinearLayout>
 
     <!-- ScrollView for Product Detail Content -->

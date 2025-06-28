@@ -16,16 +16,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import saru.com.app.R;
 
@@ -36,7 +35,6 @@ public class AddEWalletActivity extends AppCompatActivity {
     private Spinner spinnerEWalletType;
     private EditText editTextPhoneNumber;
     private Button btnSaveEWallet;
-    private String paymentCollection;
     private String paymentMethodID;
     private boolean isEditMode;
 
@@ -63,7 +61,6 @@ public class AddEWalletActivity extends AppCompatActivity {
         Intent intent = getIntent();
         isEditMode = intent.getBooleanExtra("isEdit", false);
         if (isEditMode) {
-            paymentCollection = intent.getStringExtra("paymentCollection");
             paymentMethodID = intent.getStringExtra("paymentMethodID");
             String phoneNumber = intent.getStringExtra("phoneNumber");
             String eWalletType = intent.getStringExtra("eWalletType");
@@ -116,15 +113,15 @@ public class AddEWalletActivity extends AppCompatActivity {
         paymentMethod.put("PhoneNumber", phoneNumber);
         paymentMethod.put("EWalletType", eWalletType);
 
-        if (isEditMode && paymentCollection != null && paymentMethodID != null) {
+        if (isEditMode && paymentMethodID != null) {
             // Update existing E-Wallet
             db.collection("paymentofcustomer")
                     .document(userUID)
-                    .collection(paymentCollection)
+                    .collection("paymentMethods")
                     .document(paymentMethodID)
                     .set(paymentMethod)
                     .addOnSuccessListener(aVoid -> {
-                        Log.d("AddEWallet", "E-Wallet payment method updated successfully in " + paymentCollection);
+                        Log.d("AddEWallet", "E-Wallet payment method updated successfully");
                         Intent intent = new Intent();
                         intent.putExtra("ewalletType", eWalletType);
                         intent.putExtra("phoneNumber", phoneNumber);
@@ -138,75 +135,38 @@ public class AddEWalletActivity extends AppCompatActivity {
                     });
         } else {
             // Add new E-Wallet
-            findNextAvailablePaymentIndex(userUID, nextIndex -> {
-                if (nextIndex > 0 && nextIndex <= 5) {
-                    String paymentCollectionName = "payment0" + nextIndex;
-                    db.collection("paymentofcustomer")
-                            .document(userUID)
-                            .collection(paymentCollectionName)
-                            .document(String.valueOf(System.currentTimeMillis())) // Unique ID
-                            .set(paymentMethod)
-                            .addOnSuccessListener(aVoid -> {
-                                Log.d("AddEWallet", "E-Wallet payment method added successfully to " + paymentCollectionName);
-                                Intent intent = new Intent();
-                                intent.putExtra("ewalletType", eWalletType);
-                                intent.putExtra("phoneNumber", phoneNumber);
-                                setResult(RESULT_OK, intent);
-                                Toast.makeText(AddEWalletActivity.this, R.string.ewallet_added_success, Toast.LENGTH_SHORT).show();
-                                finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("AddEWallet", "Error adding E-Wallet payment method: " + e.getMessage());
-                                Toast.makeText(AddEWalletActivity.this, R.string.ewallet_add_error, Toast.LENGTH_SHORT).show();
-                            });
-                } else {
-                    Toast.makeText(this, R.string.max_payment_methods_reached, Toast.LENGTH_SHORT).show();
-                }
-            });
+            createPaymentMethod(userUID, paymentMethod);
         }
     }
 
-    private void findNextAvailablePaymentIndex(String userUID, OnIndexFoundListener listener) {
-        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+    private String generateUniquePaymentId() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        String timestamp = sdf.format(new Date());
+        Random random = new Random();
+        int randomNum = random.nextInt(900) + 100; // Generate a random number between 100 and 999
+        return timestamp + randomNum; // Example: 20250628181309123
+    }
 
-        // Create tasks for checking each payment collection
-        for (int i = 1; i <= 5; i++) {
-            String collectionName = "payment0" + i;
-            Task<QuerySnapshot> task = db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(collectionName)
-                    .get();
-            tasks.add(task);
-        }
+    private void createPaymentMethod(String userUID, Map<String, Object> paymentMethod) {
+        String paymentMethodID = generateUniquePaymentId(); // Generate unique ID
 
-        // Wait for all tasks to complete
-        Tasks.whenAllComplete(tasks)
-                .addOnCompleteListener(task -> {
-                    int[] occupied = new int[6]; // 1 to 5
-                    for (int i = 0; i < tasks.size(); i++) {
-                        Task<QuerySnapshot> queryTask = tasks.get(i);
-                        if (queryTask.isSuccessful() && !queryTask.getResult().isEmpty()) {
-                            occupied[i + 1] = 1; // Mark as occupied
-                        }
-                    }
-
-                    // Find the next available index
-                    for (int i = 1; i <= 5; i++) {
-                        if (occupied[i] == 0) {
-                            listener.onIndexFound(i);
-                            return;
-                        }
-                    }
-                    listener.onIndexFound(-1); // No available slot
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .document(paymentMethodID)
+                .set(paymentMethod)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("AddEWallet", "E-Wallet payment method added successfully with ID: " + paymentMethodID);
+                    Intent intent = new Intent();
+                    intent.putExtra("ewalletType", paymentMethod.get("EWalletType").toString());
+                    intent.putExtra("phoneNumber", paymentMethod.get("PhoneNumber").toString());
+                    setResult(RESULT_OK, intent);
+                    Toast.makeText(AddEWalletActivity.this, R.string.ewallet_added_success, Toast.LENGTH_SHORT).show();
+                    finish();
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("AddEWallet", "Error checking payment collections: " + e.getMessage());
-                    listener.onIndexFound(-1); // Indicate failure
+                    Log.e("AddEWallet", "Error adding E-Wallet payment method: " + e.getMessage());
+                    Toast.makeText(AddEWalletActivity.this, R.string.ewallet_add_error, Toast.LENGTH_SHORT).show();
                 });
-    }
-
-    // Callback interface to handle the async result
-    interface OnIndexFoundListener {
-        void onIndexFound(int index);
     }
 }
