@@ -1,5 +1,6 @@
 package saru.com.models;
 
+import com.google.firebase.firestore.PropertyName;
 import java.io.Serializable;
 
 public class OrderDetails implements Serializable {
@@ -7,29 +8,27 @@ public class OrderDetails implements Serializable {
     private String orderID;
     private String productID;
     private int quantity;
-    private double price;
-    private double discount;
-    private double vat;
-    private double totalValue;
 
     public OrderDetails() {}
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    @PropertyName("OrderID")
     public String getOrderID() { return orderID; }
+
+    @PropertyName("OrderID")
     public void setOrderID(String orderID) { this.orderID = orderID; }
+
+    @PropertyName("ProductID")
     public String getProductID() { return productID; }
+
+    @PropertyName("ProductID")
     public void setProductID(String productID) { this.productID = productID; }
+
+    @PropertyName("Quantity")
     public int getQuantity() { return quantity; }
+
+    @PropertyName("Quantity")
     public void setQuantity(int quantity) { this.quantity = quantity; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-    public double getDiscount() { return discount; }
-    public void setDiscount(double discount) { this.discount = discount; }
-    public double getVAT() { return vat; }
-    public void setVAT(double vat) { this.vat = vat; }
-    public double getTotalValue() {
-        totalValue = (quantity * price - (discount / 100.0 * quantity * price)) * (1 + vat / 100.0);
-        return totalValue;
-    }
 }

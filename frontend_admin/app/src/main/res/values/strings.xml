@@ -121,6 +121,17 @@
     <string name="voucher_code">Code</string>
     <string name="voucher_expire">expired date</string>
     <string name="title_product_status">Product Status</string>
+        <string-array name="sex_options">
+            <item></item>
+            <item>Male</item>
+            <item>Female</item>
+        </string-array>
+
+        <string-array name="customer_status_filter_options">
+            <item>All</item>
+            <item>Active</item>
+            <item>Inactive</item>
+        </string-array>
 
 
 </resources>

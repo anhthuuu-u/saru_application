@@ -6,156 +6,137 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.firestore.DocumentSnapshot;
+
 import com.google.firebase.firestore.FirebaseFirestore;
-import saru.com.models.OrdersViewer;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import saru.com.models.Orders;
+
 public class OrderManagementActivity extends AppCompatActivity {
+
     private RecyclerView rvOrders;
+    private Button btnAddOrder;
+    private EditText edtSearch;
     private OrderAdapter orderAdapter;
     private FirebaseFirestore db;
-    private static final int REQUEST_CODE_EDIT_ORDER = 500;
+    private List<Orders> orderList = new ArrayList<>();
+
+    private static final int ADD_ORDER_REQUEST = 1;
+    private static final int EDIT_ORDER_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Sử dụng layout có thanh tìm kiếm
         setContentView(R.layout.activity_order_management);
+
         db = FirebaseFirestore.getInstance();
         initializeViews();
         setupRecyclerView();
+        setupEvents();
+
         loadOrders();
     }
 
     private void initializeViews() {
         rvOrders = findViewById(R.id.rvOrders);
+        btnAddOrder = findViewById(R.id.btnAddOrder);
+        edtSearch = findViewById(R.id.edtSearch);
     }
 
     private void setupRecyclerView() {
-        orderAdapter = new OrderAdapter(new ArrayList<>(), order -> {
-            Intent intent = new Intent(this, AddEditOrderActivity.class);
+        orderAdapter = new OrderAdapter(orderList, order -> {
+            Intent intent = new Intent(OrderManagementActivity.this, OrderDetailActivity.class);
             intent.putExtra("SELECTED_ORDER", order);
-            startActivityForResult(intent, REQUEST_CODE_EDIT_ORDER);
+            startActivityForResult(intent, EDIT_ORDER_REQUEST);
         });
         rvOrders.setLayoutManager(new LinearLayoutManager(this));
         rvOrders.setAdapter(orderAdapter);
     }
 
+    private void setupEvents() {
+        btnAddOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(OrderManagementActivity.this, AddEditOrderActivity.class);
+            startActivityForResult(intent, ADD_ORDER_REQUEST);
+        });
+
+        // Logic tìm kiếm có thể được thêm vào edtSearch ở đây
+    }
+
     private void loadOrders() {
         db.collection("orders")
+                .orderBy("timestamp", Query.Direction.DESCENDING) // Sắp xếp đơn hàng mới nhất lên đầu
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<OrdersViewer> orders = new ArrayList<>();
-                    for (DocumentSnapshot document : querySnapshot) {
-                        try {
-                            OrdersViewer order = new OrdersViewer();
-                            order.setOrderID(document.getString("orderID") != null ? document.getString("orderID") : document.getId());
-                            order.setOrderDate(document.getString("orderDate"));
-                            order.setCustomerName(document.getString("customerName"));
-                            order.setTotalAmount(document.getDouble("totalAmount") != null ? document.getDouble("totalAmount") : 0.0);
-                            order.setOrderStatusID(document.getString("orderStatusID") != null ? document.getString("orderStatusID") : document.getString("orderStatus"));
-                            order.setPaymentStatusID(document.getLong("paymentStatusID"));
-                            orders.add(order);
-                        } catch (Exception e) {
-                            Log.e("OrderManagementActivity", "Error converting document: " + document.getId(), e);
-                        }
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    orderList.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Orders order = document.toObject(Orders.class);
+                        orderList.add(order);
                     }
-                    orderAdapter.updateOrders(orders);
-                    if (orders.isEmpty()) {
-                        Toast.makeText(this, "No orders found", Toast.LENGTH_SHORT).show();
+                    orderAdapter.notifyDataSetChanged();
+                    if (orderList.isEmpty()) {
+                        Toast.makeText(this, "No orders found.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Log.e("OrderManagement", "Error loading orders", e);
+                    Toast.makeText(this, "Failed to load orders: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_EDIT_ORDER && resultCode == RESULT_OK) {
+        // Tải lại danh sách khi có thay đổi từ màn hình thêm/sửa
+        if (resultCode == RESULT_OK && (requestCode == ADD_ORDER_REQUEST || requestCode == EDIT_ORDER_REQUEST)) {
             loadOrders();
-            Toast.makeText(this, "Order updated", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // Inner Adapter class for Orders
     private static class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
-        private List<OrdersViewer> orders;
+        private List<Orders> orders;
         private OnOrderClickListener clickListener;
 
         interface OnOrderClickListener {
-            void onClick(OrdersViewer order);
+            void onClick(Orders order);
         }
 
-        OrderAdapter(List<OrdersViewer> orders, OnOrderClickListener clickListener) {
-            this.orders = orders != null ? orders : new ArrayList<>();
+        OrderAdapter(List<Orders> orders, OnOrderClickListener clickListener) {
+            this.orders = orders;
             this.clickListener = clickListener;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Sử dụng item layout cho danh sách đơn hàng
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordersviewer, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            OrdersViewer order = orders.get(position);
-            if (holder.txtOrderID != null) {
-                holder.txtOrderID.setText(order.getOrderID() != null ? order.getOrderID() : "N/A");
-            } else {
-                Log.e("OrderAdapter", "txtOrderID is null at position " + position);
-            }
-            if (holder.txtOrderDate != null) {
-                holder.txtOrderDate.setText(order.getOrderDate() != null ? order.getOrderDate() : "N/A");
-            } else {
-                Log.e("OrderAdapter", "txtOrderDate is null at position " + position);
-            }
-            if (holder.txtCustomerName != null) {
-                holder.txtCustomerName.setText(order.getCustomerName() != null ? order.getCustomerName() : "N/A");
-            } else {
-                Log.e("OrderAdapter", "txtCustomerName is null at position " + position);
-            }
-            if (holder.txtOrderStatus != null) {
-                holder.txtOrderStatus.setText(getOrderStatus(order.getOrderStatusID()));
-            } else {
-                Log.e("OrderAdapter", "txtOrderStatus is null at position " + position);
-            }
-            if (holder.txtTotalAmount != null) {
-                holder.txtTotalAmount.setText(String.format("%,.0f VNĐ", order.getTotalAmount()));
-            } else {
-                Log.e("OrderAdapter", "txtTotalAmount is null at position " + position);
-            }
-            holder.itemView.setOnClickListener(v -> clickListener.onClick(order));
-        }
-
-        private String getOrderStatus(String statusID) {
-            if (statusID == null) return "Unknown";
-            switch (statusID) {
-                case "0": return "Pending confirmation";
-                case "1": return "Confirmed";
-                case "2": return "Shipped";
-                case "3": return "Delivered";
-                case "4": return "Cancelled";
-                default: return statusID;
-            }
+            Orders order = orders.get(position);
+            holder.bind(order, clickListener);
         }
 
         @Override
         public int getItemCount() {
             return orders.size();
-        }
-
-        void updateOrders(List<OrdersViewer> newOrders) {
-            orders.clear();
-            orders.addAll(newOrders != null ? newOrders : new ArrayList<>());
-            notifyDataSetChanged();
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
@@ -168,10 +149,15 @@ public class OrderManagementActivity extends AppCompatActivity {
                 txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
                 txtOrderStatus = itemView.findViewById(R.id.txtOrderStatus);
                 txtTotalAmount = itemView.findViewById(R.id.txtTotalAmount);
-                if (txtOrderID == null || txtOrderDate == null || txtCustomerName == null ||
-                        txtOrderStatus == null || txtTotalAmount == null) {
-                    Log.e("OrderAdapter", "One or more TextViews are null in item_ordersviewer.xml");
-                }
+            }
+
+            public void bind(final Orders order, final OnOrderClickListener listener) {
+                txtOrderID.setText("ID: " + order.getOrderID());
+                txtOrderDate.setText(order.getOrderDate());
+                txtCustomerName.setText(order.getCustomerName());
+                txtOrderStatus.setText("Status ID: " + order.getOrderStatusID());
+                txtTotalAmount.setText(String.format("%,.0f VNĐ", order.getTotalAmount()));
+                itemView.setOnClickListener(v -> listener.onClick(order));
             }
         }
     }

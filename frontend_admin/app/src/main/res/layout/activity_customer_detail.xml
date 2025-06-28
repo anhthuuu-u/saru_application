@@ -17,7 +17,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
-        <!-- Basic Info -->
         <EditText
             android:id="@+id/edt_customer_id"
             android:layout_width="match_parent"
@@ -46,8 +45,8 @@
             android:id="@+id/edt_customer_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Birth Date"
-            android:inputType="text"
+            android:hint="Date of Birth (dd/mm/yyyy)"
+            android:inputType="date"
             android:layout_marginBottom="8dp" />
 
         <Spinner
@@ -60,17 +59,31 @@
             android:id="@+id/chk_receive_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Receive Email Promotions"
+            android:text="Receive Email?"
             android:layout_marginBottom="16dp" />
 
-        <!-- Addresses -->
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delivery Addresses"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Addresses"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Address" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddresses"
@@ -78,14 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <Button
-            android:id="@+id/btnAddAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add New Address"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Orders -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +105,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <!-- Actions -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

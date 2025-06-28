@@ -8,17 +8,18 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.firestore.FirebaseFirestore;
 import saru.com.models.Customer;
 import saru.com.app.R;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> {
-    private List<Customer> customerList;
+    private List<Customer> masterCustomerList; // Master list to hold all customers
+    private List<Customer> filteredCustomerList; // List to display
     private OnCustomerClickListener editListener;
     private OnCustomerClickListener deleteListener;
     private OnCustomerClickListener messageListener;
-    private FirebaseFirestore db;
 
     public interface OnCustomerClickListener {
         void onClick(Customer customer);
@@ -26,16 +27,34 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
 
     public CustomerAdapter(List<Customer> customerList, OnCustomerClickListener editListener,
                            OnCustomerClickListener deleteListener, OnCustomerClickListener messageListener) {
-        this.customerList = customerList;
+        this.masterCustomerList = new ArrayList<>(customerList);
+        this.filteredCustomerList = new ArrayList<>(customerList);
         this.editListener = editListener;
         this.deleteListener = deleteListener;
         this.messageListener = messageListener;
-        this.db = FirebaseFirestore.getInstance();
     }
 
+    // Update the master list and refresh the filtered list
     public void updateList(List<Customer> newList) {
-        customerList.clear();
-        customerList.addAll(newList);
+        masterCustomerList.clear();
+        masterCustomerList.addAll(newList);
+        filter(""); // Apply empty filter to show all items
+    }
+
+    // Filter the list based on a query
+    public void filter(String query) {
+        filteredCustomerList.clear();
+        if (query.isEmpty()) {
+            filteredCustomerList.addAll(masterCustomerList);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            for (Customer customer : masterCustomerList) {
+                if (customer.getCustomerName().toLowerCase().contains(lowerCaseQuery) ||
+                        customer.getCustomerPhone().toLowerCase().contains(lowerCaseQuery)) {
+                    filteredCustomerList.add(customer);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -48,35 +67,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Customer customer = customerList.get(position);
+        Customer customer = filteredCustomerList.get(position);
         holder.txtCustomerName.setText(customer.getCustomerName());
         holder.txtCustomerPhone.setText(customer.getCustomerPhone());
-
-        // *** FIX APPLIED HERE ***
-        // Safely check if 'sex' is null or empty before setting the text.
-        String sex = customer.getSex();
-        if (sex != null && !sex.isEmpty()) {
-            holder.txtCustomerStatus.setText(sex);
-        } else {
-            holder.txtCustomerStatus.setText("Unknown");
-        }
-
-        // The query for unread messages is inefficient here as it runs for every item.
-        // For better performance, this logic should be handled differently,
-        // but it is not the cause of the crash.
-        db.collection("messages")
-                .whereEqualTo("customerID", customer.getCustomerID())
-                .whereEqualTo("read", false)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    int unreadCount = querySnapshot.size();
-                    if (unreadCount > 0) {
-                        holder.txtUnreadCount.setText(String.valueOf(unreadCount));
-                        holder.txtUnreadCount.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.txtUnreadCount.setVisibility(View.GONE);
-                    }
-                });
+        holder.txtUnreadCount.setVisibility(View.GONE);
+        holder.txtCustomerStatus.setText("Status: Active"); // Placeholder status
 
         holder.btnMoreOptions.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), holder.btnMoreOptions);
@@ -101,7 +96,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return customerList.size();
+        return filteredCustomerList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
