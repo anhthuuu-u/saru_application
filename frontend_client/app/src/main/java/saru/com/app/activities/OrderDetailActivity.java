@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +26,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private TextView txtShowOrderCode, txtShowOrderDate, txtShowStatus, txtShowName, txtShowPhoneNumber, txtShowAddress;
     private ListView lvOrderDetail;
+    private Button btnCancelOrder, btnWriteReview, btnRequestReturn;
     private OrderDetailAdapter orderDetailAdapter;
     private List<OrderDetail> orderDetailList = new ArrayList<>();
     private FirebaseFirestore db;
@@ -46,9 +46,15 @@ public class OrderDetailActivity extends AppCompatActivity {
             txtShowName = findViewById(R.id.txtShowName);
             txtShowPhoneNumber = findViewById(R.id.txtShowPhoneNumber);
             txtShowAddress = findViewById(R.id.txtShowAddress);
+
             btn_write_review =findViewById(R.id.btn_write_review);
             btn_request_return = findViewById(R.id.btn_request_return);
             btn_cancel_order = findViewById(R.id.btn_cancel_order);
+
+            btnCancelOrder = findViewById(R.id.btn_cancel_order);
+            btnWriteReview = findViewById(R.id.btn_write_review);
+            btnRequestReturn = findViewById(R.id.btn_request_return);
+
 
 
            addEvent();
@@ -136,6 +142,9 @@ public class OrderDetailActivity extends AppCompatActivity {
                                     // Set order information
                                     txtShowOrderCode.setText(orderID != null ? orderID : "Unknown");
                                     txtShowOrderDate.setText(orderDate != null ? orderDate : "Unknown");
+
+                                    // Update button visibility and clickability based on orderStatusID
+                                    updateButtonVisibility(orderID, orderStatusID);
 
                                     // Fetch order status from "orderstatuses"
                                     if (orderStatusID != null) {
@@ -249,6 +258,64 @@ public class OrderDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("OrderDetailActivity", "Error initiating fetchOrderDetails: " + e.getMessage(), e);
             Toast.makeText(OrderDetailActivity.this, "Error initiating order load: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateButtonVisibility(String orderID, String orderStatusID) {
+        try {
+            // Convert orderStatusID to integer for comparison
+            int statusID = orderStatusID != null ? Integer.parseInt(orderStatusID) : -1;
+
+            // Show and enable Cancel button for status 0 or 1
+            if (statusID == 0 || statusID == 1) {
+                btnCancelOrder.setVisibility(View.VISIBLE);
+                btnCancelOrder.setEnabled(true);
+                btnWriteReview.setVisibility(View.GONE);
+                btnWriteReview.setEnabled(false);
+                btnRequestReturn.setVisibility(View.GONE);
+                btnRequestReturn.setEnabled(false);
+            }
+            // Show and enable Review and Return buttons for status 4
+            else if (statusID == 4) {
+                btnCancelOrder.setVisibility(View.GONE);
+                btnCancelOrder.setEnabled(false);
+                btnWriteReview.setVisibility(View.VISIBLE);
+                btnWriteReview.setEnabled(true);
+                btnRequestReturn.setVisibility(View.VISIBLE);
+                btnRequestReturn.setEnabled(true);
+            }
+            // Hide and disable all buttons for other statuses
+            else {
+                btnCancelOrder.setVisibility(View.GONE);
+                btnCancelOrder.setEnabled(false);
+                btnWriteReview.setVisibility(View.GONE);
+                btnWriteReview.setEnabled(false);
+                btnRequestReturn.setVisibility(View.GONE);
+                btnRequestReturn.setEnabled(false);
+            }
+
+            // Set click listeners for buttons
+            btnCancelOrder.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderCancelActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+            btnWriteReview.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderReviewActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+            btnRequestReturn.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderRequestReturnActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+        } catch (NumberFormatException e) {
+            Log.e("OrderDetailActivity", "Invalid OrderStatusID format: " + orderStatusID, e);
+            Toast.makeText(OrderDetailActivity.this, "Invalid order status ID", Toast.LENGTH_LONG).show();
         }
     }
 

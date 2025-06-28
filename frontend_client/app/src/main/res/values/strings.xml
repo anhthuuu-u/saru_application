@@ -376,16 +376,18 @@
     <string name="image_upload_error">Failed to upload image. Please try again.</string>
 
     <!-- RETURN REQUEST -->
-    <string name="return_request_title">RETURN REQUEST</string>
+    <string name="return_request_title">RETURN/EXCHANGE REQUEST</string>
     <string name="return_request_label">Request</string>
-    <string name="return_request_refunded">Refunded</string>
-    <string name="return_request_returned">Returned</string>
-    <string name="return_reason_label">Reason for Refund/Return</string>
+    <string name="return_request_exchange">Exchange</string>
+    <string name="return_request_returned">Return</string>
+    <string name="return_reason_label">Reason for Exchange/Return</string>
     <string name="return_reason_wrong_item">Wrong item (size, color, etc.)</string>
     <string name="return_reason_not_as_expected">Item not as expected</string>
     <string name="return_reason_not_meet_request">Item does not meet request</string>
-    <string name="return_reason_other">Other:</string>
-    <string name="return_other_reason_hint">Enter other reason</string>
+    <string name="return_reason_damaged_product">Damaged product</string>
+    <string name="return_reason_wrong_item_sent">Wrong item sent</string>
+    <string name="return_reason_suspected_counterfeit">Suspected counterfeit</string>
+    <string name="return_reason_no_longer_needed">No longer needed</string>
     <string name="return_amount_refunded_label">Amount to be refunded:</string>
     <string name="return_amount_refunded_value">0đ</string>
     <string name="return_product_image_description">Product Image</string>
@@ -398,6 +400,8 @@
     <string name="cancel_reason_no_need">I no longer need it</string>
     <string name="cancel_reason_change_address">I want to change the address</string>
     <string name="cancel_reason_not_meet_expectation">The item did not meet expectations</string>
+    <string name="cancel_reason_enter_voucher">Enter or change voucher code</string>
+    <string name="cancel_reason_edit_items">Edit order items</string>
     <string name="cancel_reason_other">Other:</string>
     <string name="cancel_other_reason_cancel_hint">Enter other reason</string>
     <string name="cancel_amount_refunded_label">Amount to be refunded:</string>
