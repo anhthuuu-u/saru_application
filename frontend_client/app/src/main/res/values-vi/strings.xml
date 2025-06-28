@@ -738,6 +738,10 @@
     <string name="no_categories_available">No category available</string>
     <string name="error_loading_cart">Error loading cart</string>
 
+    <string name="cancel_reason_enter_voucher">Enter or change voucher code</string>
+    <string name="cancel_reason_edit_items">Edit order items</string>
+    <string name="title_x">Your Title Here</string>
+
 
 </resources>
 

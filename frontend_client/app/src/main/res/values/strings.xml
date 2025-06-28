@@ -737,7 +737,7 @@
     <string name="message_timestamp_format">MMM dd, yyyy HH:mm</string>
     <string name="simulate_admin_message">Simulate Admin Message</string>
 
-
+    <string name="title_x">Your Title Here</string>
 
 
 </resources>
