@@ -23,6 +23,9 @@ public class CartItem {
         this.selected = selected;
     }
 
+    public CartItem() {
+    }
+
     public String getProductID() {
         return productID;
     }

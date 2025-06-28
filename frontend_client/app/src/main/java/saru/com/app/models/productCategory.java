@@ -1,40 +1,32 @@
 package saru.com.app.models;
 
+import com.google.firebase.firestore.PropertyName;
+
 public class productCategory {
-    private String CateDescription;
     private String CateID;
     private String CateName;
 
     public productCategory() {
     }
 
-    public productCategory(String cateDescription, String cateID, String cateName) {
-        CateDescription = cateDescription;
-        CateID = cateID;
-        CateName = cateName;
-    }
-
-    public String getCateDescription() {
-        return CateDescription;
-    }
-
-    public void setCateDescription(String cateDescription) {
-        CateDescription = cateDescription;
+    public productCategory(String CateID, String CateName) {
+        this.CateID = CateID; // Sửa gán
+        this.CateName = CateName; // Sửa gán
     }
 
     public String getCateID() {
         return CateID;
     }
 
-    public void setCateID(String cateID) {
-        CateID = cateID;
+    public void setCateID(String CateID) {
+        this.CateID = CateID;
     }
 
     public String getCateName() {
         return CateName;
     }
 
-    public void setCateName(String cateName) {
-        CateName = cateName;
+    public void setCateName(String CateName) {
+        this.CateName = CateName;
     }
 }
