@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.integrity)
     implementation(libs.core)
     implementation(libs.google.firebase.crashlytics)
+    implementation(libs.firebase.storage)
     debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
     implementation(libs.firebase.crashlytics)
 

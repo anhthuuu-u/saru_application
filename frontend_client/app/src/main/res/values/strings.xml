@@ -710,6 +710,19 @@
     <string name="delete_address_confirmation">Are you sure you want to delete this address?</string>
 
 
+    <string name="message_sent_success">Message sent successfully</string>
+    <string name="message_send_error">Error sending message</string>
+    <string name="image_upload_success">Image uploaded successfully</string>
+
+    <string name="load_messages_error">Error loading messages</string>
+
+    <string name="customer_support">Customer Support</string>
+    <string name="add_attachment">Add Attachment</string>
+    <string name="send_message">Send Message</string>
+    <string name="enter_message">Enter your message</string>
+    <string name="message_timestamp_format">MMM dd, yyyy HH:mm</string>
+    <string name="simulate_admin_message">Simulate Admin Message</string>
+
 
 
 

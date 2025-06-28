@@ -19,7 +19,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,6 +125,23 @@ public class OrderListActivity extends AppCompatActivity {
         if (orderList.isEmpty() && statusID != null) {
             Toast.makeText(OrderListActivity.this, "No orders found for this status.", Toast.LENGTH_SHORT).show();
         }
+
+        // Sort the filtered list by OrderDate in descending order
+        Collections.sort(orderList, new Comparator<Order>() {
+            private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+            @Override
+            public int compare(Order o1, Order o2) {
+                try {
+                    Date date1 = sdf.parse(o1.getOrderDate());
+                    Date date2 = sdf.parse(o2.getOrderDate());
+                    return date2.compareTo(date1); // Descending order
+                } catch (ParseException e) {
+                    Log.e("OrderListActivity", "Error parsing date: " + e.getMessage());
+                    return 0; // Default to no change if parsing fails
+                }
+            }
+        });
 
         runOnUiThread(() -> {
             if (orderAdapter == null) {
@@ -278,9 +300,26 @@ public class OrderListActivity extends AppCompatActivity {
                             Order order = new Order(orderID, orderDate, orderStatus, finalTotalQuantity, totalValue[0]);
                             allOrders.add(order); // Lưu vào allOrders
 
+                            // Sort allOrders by OrderDate in descending order
+                            Collections.sort(allOrders, new Comparator<Order>() {
+                                private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+                                @Override
+                                public int compare(Order o1, Order o2) {
+                                    try {
+                                        Date date1 = sdf.parse(o1.getOrderDate());
+                                        Date date2 = sdf.parse(o2.getOrderDate());
+                                        return date2.compareTo(date1); // Descending order
+                                    } catch (ParseException e) {
+                                        Log.e("OrderListActivity", "Error parsing date: " + e.getMessage());
+                                        return 0; // Default to no change if parsing fails
+                                    }
+                                }
+                            });
+
                             // Nếu chưa có orderList ban đầu, thêm vào để hiển thị
                             if (orderList.isEmpty()) {
-                                orderList.add(order);
+                                orderList.addAll(allOrders);
                             }
 
                             runOnUiThread(() -> {

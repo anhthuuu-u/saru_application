@@ -715,6 +715,19 @@
 
 
 
+    <string name="message_sent_success">Tin nhắn được gửi thành công</string>
+    <string name="message_send_error">Lỗi khi gửi tin nhắn</string>
+    <string name="image_upload_success">Hình ảnh được tải lên thành công</string>
+
+    <string name="load_messages_error">Lỗi khi tải tin nhắn</string>
+
+    <string name="customer_support">Hỗ trợ khách hàng</string>
+    <string name="add_attachment">Thêm tệp đính kèm</string>
+    <string name="send_message">Gửi tin nhắn</string>
+    <string name="enter_message">Nhập tin nhắn của bạn</string>
+    <string name="message_timestamp_format">dd MMM yyyy HH:mm</string>
+    <string name="simulate_admin_message">Mô phỏng tin nhắn admin</string>
+
 </resources>
 
 

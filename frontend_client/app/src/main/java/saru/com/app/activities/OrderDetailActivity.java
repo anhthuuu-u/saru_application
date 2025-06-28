@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -82,7 +82,6 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void fetchOrderDetails(String orderID) {
         try {
-            // Fetch the order from the "orders" collection
             db.collection("orders").document(orderID)
                     .get()
                     .addOnCompleteListener(task -> {
@@ -90,25 +89,20 @@ public class OrderDetailActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document != null && document.exists()) {
-                                    // Log entire document data for debugging
                                     Log.d("OrderDetailActivity", "Order document data: " + document.getData());
 
                                     String orderDate = document.getString("OrderDate");
-                                    // Use get() to handle any type for OrderStatusID
                                     Object orderStatusIDObj = document.get("OrderStatusID");
                                     String orderStatusID = orderStatusIDObj != null ? orderStatusIDObj.toString() : null;
                                     String customerID = document.getString("CustomerID");
 
-                                    // Log fetched data
                                     Log.d("OrderDetailActivity", "OrderDate: " + orderDate);
                                     Log.d("OrderDetailActivity", "OrderStatusID: " + orderStatusID);
                                     Log.d("OrderDetailActivity", "CustomerID: " + customerID);
 
-                                    // Set order information
                                     txtShowOrderCode.setText(orderID != null ? orderID : "Unknown");
                                     txtShowOrderDate.setText(orderDate != null ? orderDate : "Unknown");
 
-                                    // Fetch order status from "orderstatuses"
                                     if (orderStatusID != null) {
                                         db.collection("orderstatuses").document(orderStatusID)
                                                 .get()
@@ -142,7 +136,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                                         Toast.makeText(OrderDetailActivity.this, "Order status ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
-                                    // Fetch customer information from "customers"
                                     if (customerID != null) {
                                         db.collection("customers").document(customerID)
                                                 .get()
@@ -151,10 +144,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                         if (customerTask.isSuccessful()) {
                                                             DocumentSnapshot customerDoc = customerTask.getResult();
                                                             if (customerDoc != null && customerDoc.exists()) {
-                                                                // Log customer document data
                                                                 Log.d("OrderDetailActivity", "Customer document data: " + customerDoc.getData());
 
-                                                                // Use get() to handle any type for CustomerName, CustomerPhone, CustomerAdd
                                                                 Object customerNameObj = customerDoc.get("CustomerName");
                                                                 Object customerPhoneObj = customerDoc.get("CustomerPhone");
                                                                 Object customerAddressObj = customerDoc.get("CustomerAdd");
@@ -163,12 +154,10 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                 String customerPhone = customerPhoneObj != null ? customerPhoneObj.toString() : null;
                                                                 String customerAddress = customerAddressObj != null ? customerAddressObj.toString() : null;
 
-                                                                // Log customer data
                                                                 Log.d("OrderDetailActivity", "CustomerName: " + customerName);
                                                                 Log.d("OrderDetailActivity", "CustomerPhone: " + customerPhone);
                                                                 Log.d("OrderDetailActivity", "CustomerAddress: " + customerAddress);
 
-                                                                // Set customer information
                                                                 txtShowName.setText(customerName != null ? customerName : "Unknown");
                                                                 txtShowPhoneNumber.setText(customerPhone != null ? customerPhone : "Unknown");
                                                                 txtShowAddress.setText(customerAddress != null ? customerAddress : "Unknown");
@@ -202,7 +191,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                                         Toast.makeText(OrderDetailActivity.this, "Customer ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
-                                    // Fetch order products
                                     fetchOrderProducts(orderID);
                                 } else {
                                     Log.e("OrderDetailActivity", "Order document does not exist for orderID: " + orderID);
@@ -225,14 +213,12 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void fetchOrderProducts(String orderID) {
         try {
-            // Fetch order details (products) from "orderdetails"
             db.collection("orderdetails")
                     .whereEqualTo("OrderID", orderID)
                     .get()
                     .addOnCompleteListener(task -> {
                         try {
                             if (task.isSuccessful()) {
-                                // Clear the list before adding new items
                                 orderDetailList.clear();
 
                                 if (task.getResult() != null && !task.getResult().isEmpty()) {
@@ -241,10 +227,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                                         Long quantityLong = document.getLong("Quantity");
                                         int quantity = quantityLong != null ? quantityLong.intValue() : 0;
 
-                                        // Log order detail data
                                         Log.d("OrderDetailActivity", "ProductID: " + productID + ", Quantity: " + quantity);
 
-                                        // Fetch product details from the "products" collection
                                         db.collection("products").document(productID)
                                                 .get()
                                                 .addOnCompleteListener(productTask -> {
@@ -257,10 +241,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                 String imageID = productDoc.getString("imageID");
                                                                 String brandID = productDoc.getString("brandID");
 
-                                                                // Log product data
                                                                 Log.d("OrderDetailActivity", "ProductName: " + productName + ", Price: " + productPrice);
 
-                                                                // Fetch image details from "image" collection
                                                                 db.collection("image").document(imageID)
                                                                         .get()
                                                                         .addOnCompleteListener(imageTask -> {
@@ -270,7 +252,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                                     String productImageCover = imageDoc != null ? imageDoc.getString("ProductImageCover") : null;
                                                                                     Log.d("OrderDetailActivity", "ProductImageCover: " + productImageCover);
 
-                                                                                    // Fetch brand details from "productBrand" collection
                                                                                     db.collection("productBrand").document(brandID)
                                                                                             .get()
                                                                                             .addOnCompleteListener(brandTask -> {
@@ -280,13 +261,16 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                                                         String brandName = brandDoc != null ? brandDoc.getString("brandName") : "Unknown";
                                                                                                         Log.d("OrderDetailActivity", "BrandName: " + brandName);
 
-                                                                                                        // Create a new OrderDetail object
                                                                                                         OrderDetail orderDetail = new OrderDetail(productID, productName, quantity, productPrice != null ? productPrice : 0.0, brandName);
                                                                                                         orderDetail.setProductImageCover(productImageCover);
 
-                                                                                                        // Add to list and update adapter
                                                                                                         orderDetailList.add(orderDetail);
                                                                                                         orderDetailAdapter.notifyDataSetChanged();
+
+                                                                                                        // Set ListView height dynamically after data is added
+                                                                                                        if (orderDetailList.size() == task.getResult().size()) {
+                                                                                                            setListViewHeightBasedOnItems(lvOrderDetail);
+                                                                                                        }
                                                                                                     } else {
                                                                                                         Log.e("OrderDetailActivity", "Error fetching brand details: " + brandTask.getException());
                                                                                                     }
@@ -329,5 +313,24 @@ public class OrderDetailActivity extends AppCompatActivity {
             Log.e("OrderDetailActivity", "Error initiating fetchOrderProducts: " + e.getMessage(), e);
             Toast.makeText(OrderDetailActivity.this, "Error initiating product load: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void setListViewHeightBasedOnItems(ListView listView) {
+        OrderDetailAdapter adapter = (OrderDetailAdapter) listView.getAdapter();
+        if (adapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
