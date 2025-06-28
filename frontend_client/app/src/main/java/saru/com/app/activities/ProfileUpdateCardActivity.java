@@ -3,6 +3,8 @@ package saru.com.app.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,17 @@ public class ProfileUpdateCardActivity extends AppCompatActivity {
         edtCVV = findViewById(R.id.edtCVV);
         edtExDate = findViewById(R.id.edtExDate);
         btnSaveInfo = findViewById(R.id.btn_save_info);
+
+        // Restrict edtCVV to 3 digits
+        edtCVV.setFilters(new InputFilter[] { new InputFilter.LengthFilter(3), new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source != null && !source.toString().matches("[0-9]*")) {
+                    return "";
+                }
+                return null;
+            }
+        }});
 
         // Check if this is an edit operation
         if (getIntent().hasExtra("paymentCollection") && getIntent().hasExtra("paymentMethodID")) {

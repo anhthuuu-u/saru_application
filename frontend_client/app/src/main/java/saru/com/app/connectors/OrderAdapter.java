@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -62,7 +64,22 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             context.startActivity(intent);
         });
 
+        // Set background and text color based on status
+        String status = order.getOrderStatus();
+        if ("Delivery successful".equals(status)) {
+            btnOrderStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+            btnOrderStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black)); // Black text
+        } else if ("Confirmed".equals(status)) {
+            btnOrderStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
+            btnOrderStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black)); // Black text
+        } else if ("Canceled".equals(status)) {
+            btnOrderStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
+            btnOrderStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white)); // White text for contrast
+        } else {
+            btnOrderStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.light_beige));
+            btnOrderStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black)); // Black text for light beige
+        }
+
         return convertView;
     }
 }
-
