@@ -713,7 +713,6 @@
     <string name="delete_payment_method_confirmation">Bạn có chắc chắn muốn xóa phương thức thanh toán này?</string>
     <string name="yes">Có</string>
     <string name="delete_address_confirmation">Bạn có chắc chắn muốn xóa địa chỉ này?</string>
-<<<<<<< HEAD
 
 
     <string name="message_sent_success">Tin nhắn được gửi thành công</string>
