@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,6 +52,9 @@ public class OrderListActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.ic_back_arrow);
         backArrow.setOnClickListener(v -> finish());
 
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
+
         String initialStatusID = getIntent().getStringExtra("statusID");
         highlightOrderId = getIntent().getStringExtra("highlightOrderId");
 
@@ -60,6 +64,11 @@ public class OrderListActivity extends AppCompatActivity {
         } else {
             fetchOrdersForUser(null);
         }
+    }
+
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
     }
 
     private void highlightTab(String statusID) {

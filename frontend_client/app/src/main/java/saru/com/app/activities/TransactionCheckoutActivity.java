@@ -123,7 +123,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
     private void addViews() {
         imgBack = findViewById(R.id.imgBack);
         imgEditInfo = findViewById(R.id.imgEditInfo);
-        imgEditInfoBank = findViewById(R.id.imgEditInfoBank);
+//        imgEditInfoBank = findViewById(R.id.imgEditInfoBank);
         imgVoucher = findViewById(R.id.imgVoucher);
         txtCustomerName = findViewById(R.id.txtCustomerName);
         txtCustomerPhoneNumber = findViewById(R.id.txtCustomerPhoneNumber);
@@ -156,7 +156,7 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
 
     private void addEvents() {
         imgEditInfo.setOnClickListener(v -> openTransactionEditAddressActivity());
-        imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
+//        imgEditInfoBank.setOnClickListener(v -> openTransactionEditPaymentMethodActivity());
         imgVoucher.setOnClickListener(v -> openVouchersManagementActivity());
 
         btnApplyVoucherCode.setOnClickListener(v -> {
@@ -545,7 +545,6 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         payableAmount = totalAmount + SHIPPING_FEE;
         updateSummary();
     }
-
     private void updatePaymentMethodDetails() {
         layoutCODDetails.setVisibility(View.GONE);
         layoutBankDetails.setVisibility(View.GONE);
@@ -598,15 +597,15 @@ public class TransactionCheckoutActivity extends AppCompatActivity {
         startActivityForResult(intent, EDIT_ADDRESS_REQUEST);
     }
 
-    void openTransactionEditPaymentMethodActivity() {
-        Intent intent = new Intent(this, TransactionEditPaymentMethodActivity.class);
-        intent.putExtra("bank_name", bankName);
-        intent.putExtra("card_number", cardNumber);
-        intent.putExtra("card_type", cardType);
-        intent.putExtra("cvv", cvv);
-        intent.putExtra("expiry_date", expiryDate);
-        startActivityForResult(intent, EDIT_PAYMENT_METHOD_REQUEST);
-    }
+//    void openTransactionEditPaymentMethodActivity() {
+//        Intent intent = new Intent(this, TransactionEditPaymentMethodActivity.class);
+//        intent.putExtra("bank_name", bankName);
+//        intent.putExtra("card_number", cardNumber);
+//        intent.putExtra("card_type", cardType);
+//        intent.putExtra("cvv", cvv);
+//        intent.putExtra("expiry_date", expiryDate);
+//        startActivityForResult(intent, EDIT_PAYMENT_METHOD_REQUEST);
+//    }
 
     void openVouchersManagementActivity() {
         Intent intent = new Intent(this, VouchersManagement.class);

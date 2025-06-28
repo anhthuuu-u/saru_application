@@ -3,6 +3,8 @@ package saru.com.app.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -124,6 +126,41 @@ public class ProfileActivity extends BaseActivity {
         tvLanguageSetting.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, LanguageSettingActivity.class);
             startActivity(intent);
+        });
+
+        // Load saved state from Firestore
+        if (userUID != null) {
+            db.collection("accounts").document(userUID).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Boolean isNotificationEnabled = task.getResult().getBoolean("notificationsEnabled");
+                    if (isNotificationEnabled != null) {
+                        notificationSwitch.setChecked(isNotificationEnabled);
+                        notificationSwitch.setThumbTintList(ColorStateList.valueOf(
+                                isNotificationEnabled ? Color.parseColor("#3C2C26") : Color.parseColor("#DADADA")
+                        ));
+                    }
+                }
+            });
+        }
+
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (userUID != null) {
+                // Update Firestore with the new notification setting
+                db.collection("accounts").document(userUID)
+                        .update("notificationsEnabled", isChecked)
+                        .addOnSuccessListener(aVoid -> {
+                            if (isChecked) {
+                                notificationSwitch.setThumbTintList(ColorStateList.valueOf(Color.parseColor("#3C2C26")));
+                                Toast.makeText(ProfileActivity.this, "Đã bật thông báo", Toast.LENGTH_SHORT).show();
+                            } else {
+                                notificationSwitch.setThumbTintList(ColorStateList.valueOf(Color.parseColor("#DADADA")));
+                                Toast.makeText(ProfileActivity.this, "Đã tắt thông báo", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(ProfileActivity.this, "Failed to update notification settings", Toast.LENGTH_SHORT).show();
+                        });
+            }
         });
     }
 

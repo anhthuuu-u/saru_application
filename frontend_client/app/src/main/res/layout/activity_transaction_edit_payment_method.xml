@@ -99,10 +99,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@string/card_select_bank_label"
                     android:fontFamily="@font/inter_bold"
-                    android:text="@string/title_choose_bank"
                     android:textColor="#FFB74D"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <EditText
                     android:id="@+id/edtBankName"

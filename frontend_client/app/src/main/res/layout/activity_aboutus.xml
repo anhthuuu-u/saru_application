@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="16dp"
         android:background="@android:color/darker_gray" />
@@ -115,6 +115,12 @@
         android:text="@string/title_aboutus_endpage"
         android:textColor="#A96126"
         android:textStyle="bold" />
-
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerInParent="true" />
 
 </LinearLayout>
