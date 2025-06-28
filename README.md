@@ -3,7 +3,7 @@ This is our project of Mobile Commerce Development course.
 
 We are Group 6 from class 243MI2702, University of Economics and Law, VNU-HCM.
 
-Our team has built a Java-based mobile application for Android that sells handmade accessories and jewelry made from beads called - SARU. SARU is an online store specializing in wine and wine related products. Born amidst the majestic mountains and mystical mists of SaPa, SARU wine embodies the essence of upland rice and traditional distillation secrets, offering a warm and profound drinking experience. More than just a beverage, each drop of SARU is an invitation to explore the culture, people, and nature of SaPa, encapsulating the free spirit and memorable stories of the Northwest.
+Our team has built a Java-based mobile application for Android - SARU, is an online store specializing in wine and wine related products. Born amidst the majestic mountains and mystical mists of SaPa, SARU wine embodies the essence of upland rice and traditional distillation secrets, offering a warm and profound drinking experience. More than just a beverage, each drop of SARU is an invitation to explore the culture, people, and nature of SaPa, encapsulating the free spirit and memorable stories of the Northwest.
 
 This is the Final-term Project for Mobile App Development by our team with 5 members in 3 months. Our project includes 4 part:
 1. Backend
