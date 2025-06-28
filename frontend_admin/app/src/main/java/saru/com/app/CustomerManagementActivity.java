@@ -93,7 +93,10 @@ public class CustomerManagementActivity extends AppCompatActivity {
                             .addOnFailureListener(e -> showToast("Error deleting customer: " + e.getMessage()));
                 },
                 customer -> { // messageListener
-                    showToast("Message to " + customer.getCustomerName());
+                    Intent intent = new Intent(this, MessageActivity.class);
+                    intent.putExtra("CUSTOMER_ID", customer.getCustomerID());
+                    intent.putExtra("CUSTOMER_NAME", customer.getCustomerName());
+                    startActivity(intent);
                 });
         rvCustomers.setLayoutManager(new LinearLayoutManager(this));
         rvCustomers.setAdapter(customerAdapter);
