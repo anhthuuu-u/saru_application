@@ -1,4 +1,4 @@
-package saru.com.app
+package saru.com.app;
 
 import org.junit.Test;
 
