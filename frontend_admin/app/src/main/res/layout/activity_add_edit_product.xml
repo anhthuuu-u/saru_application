@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_creamy_white"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_edit_product"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_creamy_white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/title_add_edit_product"
+        app:titleTextColor="@color/color_espresso"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
+        android:elevation="2dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_add_edit_product"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/imgCover"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_placeholder"
+                    android:scaleType="centerCrop"
+                    android:background="@color/color_medium_gray"
+                    android:contentDescription="@string/product_image_cover_description" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/btnSelectImage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <Button
+                    android:id="@+id/btnSelectImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_select_image"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/button_ripple"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:elevation="2dp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtProductName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_product_name_hint"
+                    android:inputType="text"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtProductID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_product_id_hint"
+                    android:inputType="text"
+                    android:enabled="false"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_category"
+                android:textColor="@color/color_espresso"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spinnerCateID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_brand"
+                android:textColor="@color/color_espresso"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spinnerBrandID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_product_status"
+                android:textColor="@color/color_espresso"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spinnerProductStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCustomerRating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_customer_rating_hint"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtIngredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_ingredients_hint"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtNetContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_net_content_hint"
+                    android:inputType="text"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtProductDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_product_description_hint"
+                    android:inputType="textMultiLine"
+                    android:minLines="5"
+                    android:gravity="top"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtProductPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_product_price_hint"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtWineType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_wine_type_hint"
+                    android:inputType="text"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtAlcoholStrength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_alcohol_strength_hint"
+                    android:inputType="text"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:hintTextColor="@color/color_medium_gray"
+                app:boxStrokeColor="@color/input_border_selector"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtProductTaste"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_product_taste_hint"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:textColor="@color/color_espresso"
+                    android:textColorHint="@color/color_medium_gray"
+                    android:fontFamily="sans-serif" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- CheckBoxes for Best Selling and On Sale -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical">
+                <CheckBox
+                    android:id="@+id/chkBestSelling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_best_selling"
+                    android:textColor="@color/color_espresso"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginEnd="16dp" />
+                <CheckBox
+                    android:id="@+id/chkOnSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_on_sale"
+                    android:textColor="@color/color_espresso"
+                    android:fontFamily="sans-serif" />
+            </LinearLayout>
+
+            <!-- LinearLayout cho các nút Cancel và Save -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_close"
+                    android:background="@drawable/button_ripple"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:elevation="2dp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_save"
+                    android:background="@drawable/button_ripple"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:elevation="2dp"
+                    app:cornerRadius="8dp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

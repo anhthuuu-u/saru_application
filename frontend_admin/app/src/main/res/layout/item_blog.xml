@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white">
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+
+<ImageView
+    android:id="@+id/imgBlog"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:scaleType="centerCrop"
+    android:layout_marginEnd="12dp"
+    android:background="@color/color_medium_gray"
+    android:contentDescription="@string/blog_image_description" />
+
+<!-- TextView để hiển thị tiêu đề blog -->
+<TextView
+    android:id="@+id/txtBlogTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Blog Title"
+    android:textSize="18sp"
+    android:textColor="@color/color_espresso"
+    android:fontFamily="sans-serif-medium"
+    android:maxLines="2"
+    android:ellipsize="end" />
+
+</LinearLayout>
+</androidx.cardview.widget.CardView>

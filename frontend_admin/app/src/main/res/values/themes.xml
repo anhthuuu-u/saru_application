@@ -1,0 +1,60 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Saru" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- PRIMARY COLORS (Màu chính, ví dụ: Golden Yellow hoặc Terracotta là màu nhấn chính) -->
+        <item name="colorPrimary">@color/color_golden_yellow</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/color_pale_peach</item> <!-- Dùng màu nhạt hơn để làm container -->
+        <item name="colorOnPrimaryContainer">@color/color_espresso</item>
+
+        <!-- SECONDARY COLORS (Màu phụ, ví dụ: Terracotta hoặc Espresso) -->
+        <item name="colorSecondary">@color/color_terracotta</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/color_ochre</item>
+        <item name="colorOnSecondaryContainer">@color/color_espresso</item>
+
+        <!-- TERTIARY COLORS (Màu thứ ba, nếu cần dùng thêm màu khác) -->
+        <item name="colorTertiary">@color/green</item>
+        <item name="colorOnTertiary">@color/white</item>
+        <item name="colorTertiaryContainer">@color/voucher_applied_color</item>
+        <item name="colorOnTertiaryContainer">@color/color_espresso</item>
+
+        <!-- SURFACE COLORS (Màu nền của các bề mặt UI như CardView, Dialog) -->
+        <item name="colorSurface">@color/card_background</item> <!-- White -->
+        <item name="colorOnSurface">@color/color_espresso</item> <!-- Espresso for text on surface -->
+        <item name="colorSurfaceVariant">@color/color_creamy_white</item> <!-- Light variant for surfaces -->
+        <item name="colorOnSurfaceVariant">@color/color_medium_gray</item> <!-- Medium gray for text on surface variant -->
+
+        <!-- BACKGROUND COLORS (Màu nền tổng thể của Activity) -->
+        <item name="android:colorBackground">@color/background_light</item> <!-- Creamy white -->
+        <item name="colorOnBackground">@color/color_espresso</item> <!-- Espresso for text on background -->
+
+        <!-- ERROR COLORS -->
+        <item name="colorError">@color/red</item>
+        <item name="colorOnError">@color/white</item>
+        <item name="colorErrorContainer">@color/color_pale_peach</item> <!-- Có thể dùng màu nhạt để báo lỗi -->
+        <item name="colorOnErrorContainer">@color/color_dark_brown</item>
+
+        <!-- OUTLINE COLORS (Màu viền, đường phân cách) -->
+        <item name="colorOutline">@color/color_medium_gray</item>
+        <item name="colorOutlineVariant">@color/color_medium_gray</item>
+
+        <!-- Màu cho thanh trạng thái (status bar) -->
+        <!-- Đặt màu của status bar trùng với màu primary của ứng dụng -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Hoặc có thể đặt cứng một màu nếu muốn: <item name="android:statusBarColor">@color/color_golden_yellow</item> -->
+        <!-- Nếu màu status bar là sáng, thêm dòng này để icon/text trên status bar thành màu tối: -->
+        <!-- <item name="android:windowLightStatusBar">true</item> -->
+    </style>
+
+    <!-- Theme này dành cho các Activity muốn có ActionBar truyền thống (nếu bạn vẫn dùng) -->
+    <style name="Base.Theme.SaruWithActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Các tùy chỉnh màu sắc cho theme có ActionBar -->
+        <item name="colorPrimary">@color/color_terracotta</item>
+        <item name="colorPrimaryVariant">@color/color_dark_brown</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Các màu khác tùy chỉnh tương tự như Theme.Saru nếu cần -->
+    </style>
+
+    <style name="Theme.Saru" parent="Base.Theme.Saru" />
+</resources>

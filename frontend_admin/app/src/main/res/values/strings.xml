@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Saru Admin</string>
+    <string name="title_admin_login">Admin Login</string>
+    <string name="title_network_status">Network Status</string>
+
+
+    <string name="title_login_user_name">User name:</string>
+    <string name="title_login_user_name_hint">Enter your user name</string>
+    <string name="title_login_password">Password:</string>
+    <string name="title_login_save_login_infor">Save login infor</string>
+    <string name="title_login_button_login">Login</string>
+    <string name="confirm_exit_title">Exit confirmation</string>
+    <string name="confirm_exit_message">Are you sure you want to exit?</string>
+    <string name="confirm_exit_yes">YES</string>
+    <string name="confirm_exit_no">NO</string>
+    <string name="title_employee">Employee</string>
+    <string name="title_customer">Customer</string>
+    <string name="title_healthcare">Health Care</string>
+    <string name="title_salary">Salary</string>
+    <string name="title_employee_healthcare">Employee Healthcare</string>
+    <string name="title_height">Height:</string>
+    <string name="title_weight">Weight:</string>
+    <string name="title_calculate">Calculate</string>
+    <string name="title_clear">Clear</string>
+    <string name="title_close">Close</string>
+    <string name="title_slim">Slim</string>
+    <string name="title_normal">Normal</string>
+    <string name="title_fat">FAT</string>
+    <string name="title_product">Product</string>
+    <string name="title_advanced_product">Advanced Product</string>
+    <string name="title_new_customer">New Customer</string>
+    <string name="title_broadcast_advertising">Broadcast Advertising</string>
+    <string name="title_help">Help</string>
+    <string name="title_customer_detail">Customer Details</string>
+    <string name="title_customer_id">Customer ID:</string>
+    <string name="title_customer_name">Customer Name:</string>
+    <string name="title_customer_email">Customer Email:</string>
+    <string name="title_customer_phone">Customer Phone:</string>
+    <string name="title_new">New</string>
+    <string name="title_save">Save</string>
+    <string name="title_remove">Remove</string>
+    <string name="title_payment_method">Payment Method</string>
+    <string name="title_orders">Orders</string>
+    <string name="title_telephony">Telephony</string>
+    <string name="title_contact_name">Contact Name:</string>
+    <string name="title_phone_number">Phone Number:</string>
+    <string name="title_body">Body:</string>
+    <string name="title_all_contacts">Show All Contacts</string>
+    <string name="title_viettel">Viettel</string>
+    <string name="title_mb">Mobile Phone</string>
+    <string name="title_other_networks">Other Networks</string>
+    <string name="title_add_edit_blog">Add/Edit Blog</string>
+    <string name="title_blog_title">Blog Title</string>
+    <string name="title_blog_content">Blog Content</string>
+    <string name="title_upload_image">Upload Image</string>
+    <string name="title_back">Back</string>
+    <string name="title_blog_image_url">Image URL</string>
+    <string name="title_delete">Delete</string>
+    <string name="title_blog_detail">Blog Detail</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_delete">Delete</string>
+    <string name="blog_image_description">Blog Image</string>
+    <string name="title_blogs_management">Blogs Management</string>
+    <string name="title_add_new_blog">Add New Blog</string>
+
+    <!-- Strings cho FAQs Management -->
+    <string name="title_faqs_management">FAQs Management</string>
+    <string name="title_add_new_faq">Add New FAQ</string>
+    <string name="title_add_edit_faq">Add/Edit FAQ</string>
+    <string name="title_add_faq">Add FAQ</string>
+    <string name="title_edit_faq">Edit FAQ</string>
+    <string name="title_faq_title_hint">FAQ Title</string>
+    <string name="title_faq_content_hint">FAQ Content</string>
+
+    <!-- Strings cho Promotions Management -->
+    <string name="title_promotions_management">Promotions Management</string>
+    <string name="title_add_new_voucher">Add New Voucher</string>
+    <string name="title_add_edit_voucher">Add/Edit Voucher</string>
+    <string name="title_add_voucher">Add Voucher</string>
+    <string name="title_edit_voucher">Edit Voucher</string>
+    <string name="title_voucher_description_hint">Voucher Description</string>
+    <string name="title_voucher_code_hint">Voucher Code</string>
+    <string name="title_expiry_date_hint">Expiry Date (DD/MM/YYYY)</string>
+    <string name="voucher_code_prefix">Code: %s</string>
+    <string name="voucher_expiry_prefix">Expires: %s</string>
+
+    <!-- Strings cho Product Management -->
+    <string name="title_product_management">Product Management</string>
+    <string name="title_add">Add</string>
+    <string name="title_search_products_hint">Search Products</string>
+    <string name="title_select_category_description">Select a category to view its description</string>
+    <string name="title_add_edit_product">Add/Edit Product</string>
+    <string name="title_add_product">Add Product</string>
+    <string name="title_edit_product">Edit Product</string>
+    <string name="title_select_image">Select Image</string>
+    <string name="product_image_cover_description">Product Cover Image</string>
+    <string name="title_product_name_hint">Product Name</string>
+    <string name="title_product_id_hint">Product ID</string>
+    <string name="title_category">Category</string>
+    <string name="title_brand">Brand</string>
+    <string name="title_customer_rating_hint">Customer Rating (e.g., 4.5)</string>
+    <string name="title_ingredients_hint">Ingredients</string>
+    <string name="title_net_content_hint">Net Content (e.g., 750ml)</string>
+    <string name="title_product_description_hint">Product Description</string>
+    <string name="title_product_price_hint">Product Price</string>
+    <string name="title_product_status_id_hint">Product Status ID</string>
+    <string name="title_wine_type_hint">Wine Type (optional)</string>
+    <string name="title_alcohol_strength_hint">Alcohol Strength (e.g., 19%)</string>
+    <string name="title_product_taste_hint">Product Taste (optional)</string>
+    <string name="title_best_selling">Best Selling</string>
+    <string name="title_on_sale">On Sale</string>
+    <string name="product_image_description">Product Image</string>
+
+    <!-- Các chuỗi xác nhận dùng chung -->
+    <string name="confirm_delete_title">Confirm Delete</string>
+    <string name="confirm_delete_message">Are you sure you want to delete "%1$s"?</string>
+    <string name="confirm_delete_yes">Yes</string>
+    <string name="confirm_delete_no">No</string>
+    <string name="voucher_description">Voucher description</string>
+    <string name="voucher_code">Code</string>
+    <string name="voucher_expire">expired date</string>
+    <string name="title_product_status">Product Status</string>
+        <string-array name="sex_options">
+            <item></item>
+            <item>Male</item>
+            <item>Female</item>
+        </string-array>
+
+        <string-array name="customer_status_filter_options">
+            <item>All</item>
+            <item>Active</item>
+            <item>Inactive</item>
+        </string-array>
+
+
+</resources>

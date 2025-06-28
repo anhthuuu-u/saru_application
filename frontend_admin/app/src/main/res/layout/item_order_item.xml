@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/item_background_selector">
+
+    <TextView
+        android:id="@+id/txtProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Product Name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/txtProductPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Price: 0 VNĐ"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtItemQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qty: 0"
+            android:textSize="14sp"
+            android:textStyle="italic"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTotalAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: 0 VNĐ"
+        android:gravity="end"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"/>
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
