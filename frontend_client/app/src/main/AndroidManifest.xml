@@ -32,9 +32,6 @@
             android:name=".activities.AddEWalletActivity"
             android:exported="false" />
         <activity
-            android:name=".AddEWalletActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.AddAddressActivity"
             android:exported="false" />
         <activity
