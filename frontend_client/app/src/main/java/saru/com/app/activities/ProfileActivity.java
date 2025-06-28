@@ -3,6 +3,8 @@ package saru.com.app.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import saru.com.app.R;
 
 public class ProfileActivity extends BaseActivity {
-    private static final String TAG = "ProfileActivity"; // Added TAG constant
+    private static final String TAG = "ProfileActivity";
 
     ImageView img_aboutus;
     ImageView nexttoaboutus, imgforAboutSaru, img_backtoaboutSaru, img_directNotifipage, img_directtoNotification;
@@ -35,17 +37,17 @@ public class ProfileActivity extends BaseActivity {
     ImageView imgCustomerAva;
     TextView txtCustomerName, txtCustomerEmail;
 
-
     ImageView imgConfirming, imgConfirmed, imgIntransit;
     TextView txtConfirming, txtConfirmed, txtIntransit;
 
-    LinearLayout logoutSection; // Added logoutSection field
+    LinearLayout logoutSection;
     TextView txtLogout;
     ImageView imgLogout, imgLogoutArrow;
 
+    ImageView icBackArrow; // Added for back button
+
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -64,13 +66,12 @@ public class ProfileActivity extends BaseActivity {
 
         // Get the current logged-in user
         String userUID = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
-        Log.d("UserUID", "User UID: " + userUID);  // Log the UID to check if it's null
+        Log.d("UserUID", "User UID: " + userUID);
 
         if (userUID != null) {
             // Fetch user data from Firestore based on UID
             fetchUserProfile(userUID);
         } else {
-            // Log and display a message if the user is not logged in
             Log.d(TAG, "User not logged in.");
             Toast.makeText(ProfileActivity.this, "User not logged in", Toast.LENGTH_SHORT).show();
         }
@@ -125,6 +126,41 @@ public class ProfileActivity extends BaseActivity {
             Intent intent = new Intent(ProfileActivity.this, LanguageSettingActivity.class);
             startActivity(intent);
         });
+
+        // Load saved state from Firestore
+        if (userUID != null) {
+            db.collection("accounts").document(userUID).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Boolean isNotificationEnabled = task.getResult().getBoolean("notificationsEnabled");
+                    if (isNotificationEnabled != null) {
+                        notificationSwitch.setChecked(isNotificationEnabled);
+                        notificationSwitch.setThumbTintList(ColorStateList.valueOf(
+                                isNotificationEnabled ? Color.parseColor("#3C2C26") : Color.parseColor("#DADADA")
+                        ));
+                    }
+                }
+            });
+        }
+
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (userUID != null) {
+                // Update Firestore with the new notification setting
+                db.collection("accounts").document(userUID)
+                        .update("notificationsEnabled", isChecked)
+                        .addOnSuccessListener(aVoid -> {
+                            if (isChecked) {
+                                notificationSwitch.setThumbTintList(ColorStateList.valueOf(Color.parseColor("#3C2C26")));
+                                Toast.makeText(ProfileActivity.this, "Đã bật thông báo", Toast.LENGTH_SHORT).show();
+                            } else {
+                                notificationSwitch.setThumbTintList(ColorStateList.valueOf(Color.parseColor("#DADADA")));
+                                Toast.makeText(ProfileActivity.this, "Đã tắt thông báo", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(ProfileActivity.this, "Failed to update notification settings", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        });
     }
 
     private void initializeFirebase() {
@@ -168,7 +204,7 @@ public class ProfileActivity extends BaseActivity {
         DocumentReference customerRef = db.collection("customers").document(customerID);
 
         customerRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.getResult() != null && task.isSuccessful()) {
                 // Get customer data from Firestore
                 String name = task.getResult().getString("CustomerName");
                 String avatarUrl = task.getResult().getString("CustomerAvatar");
@@ -206,7 +242,7 @@ public class ProfileActivity extends BaseActivity {
         txtCustomerName = findViewById(R.id.edtCustomerName);
         txtCustomerEmail = findViewById(R.id.txtCustomerEmail);
 
-        img_aboutus = findViewById(R.id.nexttoaboutus);
+        img_aboutus = findViewById(R.id.img_aboutus);
         nexttoaboutus = findViewById(R.id.nexttoaboutus);
         aboutus_page = findViewById(R.id.aboutus_page);
 
@@ -218,7 +254,6 @@ public class ProfileActivity extends BaseActivity {
         img_directNotifipage = findViewById(R.id.img_directNotifipage);
         img_directtoNotification = findViewById(R.id.img_directtoNotification);
 
-
         // Initialize order status navigation elements
         imgConfirming = findViewById(R.id.imgconfirming);
         txtConfirming = findViewById(R.id.txtconfirming);
@@ -227,44 +262,50 @@ public class ProfileActivity extends BaseActivity {
         imgIntransit = findViewById(R.id.imgintransit);
         txtIntransit = findViewById(R.id.txtintransit);
 
-        logoutSection = findViewById(R.id.logout_section); // Initialize logoutSection
+        logoutSection = findViewById(R.id.logout_section);
         txtLogout = findViewById(R.id.txt_logout);
         imgLogout = findViewById(R.id.img_logout);
         imgLogoutArrow = findViewById(R.id.img_logout_arrow);
 
+        icBackArrow = findViewById(R.id.ic_back_arrow); // Initialize back button
     }
 
     private void addEvents() {
-        // Chuyển hướng qua about us
+        // Navigate to Homepage on back button click
+        icBackArrow.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, Homepage.class);
+            startActivity(intent);
+        });
+
+        // Navigate to About Us
         img_aboutus.setOnClickListener(v -> openAboutUs_SaruWine());
         nexttoaboutus.setOnClickListener(v -> openAboutUs_SaruWine());
         aboutus_page.setOnClickListener(v -> openAboutUs_SaruWine());
 
-        // Chuyển qua trang about Saru
+        // Navigate to About Saru
         imgforAboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
         img_backtoaboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
         txt_backtoaboutSaru.setOnClickListener(v -> openAboutUs_StoreLocation());
 
-        // Chuyển hướng qua trang notification
+        // Navigate to Notification
         txt_directtonotificationpage.setOnClickListener(v -> openNotification_Page());
         img_directNotifipage.setOnClickListener(v -> openNotification_Page());
         img_directtoNotification.setOnClickListener(v -> openNotification_Page());
 
-
-        // Chuyển đến OrderList với trạng thái Pending confirmation (OrderStatusID = 0)
+        // Navigate to OrderList with Pending confirmation (OrderStatusID = 0)
         imgConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
         txtConfirming.setOnClickListener(v -> openOrderListWithStatus("0"));
 
-        // Chuyển đến OrderList với trạng thái Confirmed (OrderStatusID = 1)
+        // Navigate to OrderList with Confirmed (OrderStatusID = 1)
         imgConfirmed.setOnClickListener(v -> openOrderListWithStatus("1"));
         txtConfirmed.setOnClickListener(v -> openOrderListWithStatus("1"));
 
-        // Chuyển đến OrderList với trạng thái In transit (OrderStatusID = 3)
+        // Navigate to OrderList with In transit (OrderStatusID = 3)
         imgIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
         txtIntransit.setOnClickListener(v -> openOrderListWithStatus("3"));
 
-        //chuyển hướng Logout
-        logoutSection.setOnClickListener(v -> logout()); // Added logoutSection listener
+        // Navigate to Logout
+        logoutSection.setOnClickListener(v -> logout());
         txtLogout.setOnClickListener(v -> logout());
         imgLogout.setOnClickListener(v -> logout());
         imgLogoutArrow.setOnClickListener(v -> logout());
@@ -272,9 +313,8 @@ public class ProfileActivity extends BaseActivity {
 
     private void openOrderListWithStatus(String statusID) {
         Intent intent = new Intent(ProfileActivity.this, OrderListActivity.class);
-        intent.putExtra("statusID", statusID); // Truyền trạng thái để lọc đơn hàng
+        intent.putExtra("statusID", statusID); // Pass status to filter orders
         startActivity(intent);
-
     }
 
     void openAboutUs_SaruWine() {
@@ -324,7 +364,7 @@ public class ProfileActivity extends BaseActivity {
             // Redirect to login screen if the user is not authenticated
             Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(loginIntent);
-            finish();  // Ensure ProfileActivity is not kept in the stack
+            finish();
         }
     }
 }

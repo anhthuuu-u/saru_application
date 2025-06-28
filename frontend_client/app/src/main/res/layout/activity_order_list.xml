@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/order_detail_title"
+            android:text="@string/order_list_title"
             android:textColor="#B16628"
             android:textSize="18sp"
             android:textStyle="bold" />

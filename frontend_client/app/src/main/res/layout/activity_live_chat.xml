@@ -28,7 +28,7 @@
             android:layout_marginTop="5dp" />
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/header_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

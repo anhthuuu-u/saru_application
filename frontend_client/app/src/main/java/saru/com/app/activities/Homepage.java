@@ -1,5 +1,4 @@
 package saru.com.app.activities;
-
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,15 +37,12 @@ import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.connectors.VoucherAdapter;
 import saru.com.app.models.CartItem;
+import saru.com.app.models.CartManager;
 import saru.com.app.models.CustomerReviewList;
-import saru.com.app.models.ListCartItems;
 import saru.com.app.models.Product;
 import saru.com.app.models.VoucherList;
 
-
 public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCartListener {
-    private static final String TAG = "Homepage"; // Added TAG
-    private ListCartItems cartItems = new ListCartItems();
     private TextView cartItemCountText;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -63,6 +60,9 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
     private TextView txtViewAllForYou;
     private TextView txtSuperSales;
     private TextView txtBestSeller;
+    // Thêm các biến cho avatar và tên người dùng
+    private ImageView imgCustomerAvatar;
+    private TextView txtCustomerName;
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -101,6 +101,23 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         txtSuperSales = findViewById(R.id.txtSuperSalesTitle);
         txtBestSeller = findViewById(R.id.txtBestSellerTitle);
 
+        // Khởi tạo views trong NavigationView
+        View headerView = findViewById(R.id.home_menu);
+        imgCustomerAvatar = headerView.findViewById(R.id.imgCustomerAvatar);
+        txtCustomerName = headerView.findViewById(R.id.txtCustomerName);
+
+        // Khởi tạo CartManager
+        CartManager.getInstance().initialize(this, success -> {
+            runOnUiThread(() -> {
+                if (success && cartItemCountText != null) {
+                    CartManager.getInstance().addBadgeView(cartItemCountText);
+                    CartManager.getInstance().updateAllBadges();
+                    Log.d(TAG, "Cart data loaded, badge updated");
+                } else {
+                    Log.e(TAG, "Failed to load cart data");
+                }
+            });
+        });
 
         // Thiết lập sự kiện
         btn_noti.setOnClickListener(v -> openNotification());
@@ -224,9 +241,8 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        updateCartItemCount();
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -237,7 +253,68 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+        } else {
+            CartManager.getInstance().setUser(currentUser.getUid());
+            CartManager.getInstance().initialize(this, success -> {
+                runOnUiThread(() -> {
+                    if (success && cartItemCountText != null) {
+                        CartManager.getInstance().addBadgeView(cartItemCountText);
+                        CartManager.getInstance().updateAllBadges();
+                        Log.d(TAG, "Cart data reloaded in onStart, badge updated");
+                    } else {
+                        Log.e(TAG, "Failed to reload cart data in onStart");
+                    }
+                });
+            });
+            // Cập nhật thông tin người dùng
+            updateUserInfo(currentUser);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (cartItemCountText != null) {
+            CartManager.getInstance().removeBadgeView(cartItemCountText);
+        }
+    }
+
+    private void updateUserInfo(FirebaseUser user) {
+        // Lấy thông tin từ collection "accounts"
+        db.collection("accounts").document(user.getUid()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Lấy CustomerEmail và xử lý để lấy phần trước @
+                        String customerEmail = documentSnapshot.getString("CustomerEmail");
+                        String displayName = "User"; // Giá trị mặc định
+                        if (customerEmail != null && customerEmail.contains("@")) {
+                            displayName = customerEmail.split("@")[0];
+                        }
+                        txtCustomerName.setText(displayName);
+
+                        // Lấy url ảnh, nếu không có thì dùng ảnh mặc định
+                        String photoUrl = documentSnapshot.getString("url");
+                        if (photoUrl != null && !photoUrl.isEmpty()) {
+                            Glide.with(this)
+                                    .load(photoUrl)
+                                    .placeholder(R.drawable.menu_customer_img)
+                                    .error(R.drawable.menu_customer_img)
+                                    .into(imgCustomerAvatar);
+                        } else {
+                            imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
+                        }
+                    } else {
+                        // Nếu không tìm thấy document, đặt giá trị mặc định
+                        txtCustomerName.setText("User");
+                        imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Homepage", "Error fetching user info: " + e.getMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    txtCustomerName.setText("User");
+                    imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
+                });
     }
 
     private void openNotification() {
@@ -248,7 +325,7 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
     @Override
     public void onAddToCart(Product product) {
         if (mAuth.getCurrentUser() == null) {
-            Toast.makeText(this, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please log in to use cart", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             return;
         }
@@ -256,7 +333,7 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         if (product == null || product.getProductID() == null) {
             Log.e("Homepage", "Cannot add null Product or Product with null ProductID");
             FirebaseCrashlytics.getInstance().recordException(new Exception("Null Product or ProductID in onAddToCart"));
-            Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error when adding to cart", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -272,7 +349,7 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         } else {
             Log.e("Homepage", "Google Play Services not available");
             FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available"));
-            Toast.makeText(this, "Google Play Services không khả dụng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Google Play Services is currently unavailable", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -321,26 +398,25 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                                         .set(cartItemMap)
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("Homepage", "Added/Updated to cart: " + product.getProductName());
-                                            Toast.makeText(this, "Đã thêm " + product.getProductName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                                            cartItems.addItem(cartItem);
-                                            updateCartItemCount();
+                                            Toast.makeText(this, "Added " + product.getProductName() + " to cart successfully!", Toast.LENGTH_SHORT).show();
+                                            CartManager.getInstance().addItem(cartItem);
                                         })
                                         .addOnFailureListener(e -> {
                                             Log.e("Homepage", "Error adding to cart: " + e.getMessage());
                                             FirebaseCrashlytics.getInstance().recordException(e);
-                                            Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
                                         });
                             })
                             .addOnFailureListener(e -> {
                                 Log.e("Homepage", "Error checking cart item: " + e.getMessage());
                                 FirebaseCrashlytics.getInstance().recordException(e);
-                                Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Homepage", "Error checking cart document: " + e.getMessage());
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    Toast.makeText(this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -399,13 +475,13 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                     recyclerViewSearchResults.setVisibility(View.VISIBLE);
                     Log.d("Homepage", "Search results loaded: " + products.size() + " for query: " + query);
                     if (products.isEmpty()) {
-                        Toast.makeText(Homepage.this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Homepage.this, "No products found", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Homepage", "Error searching products: " + e.getMessage());
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    Toast.makeText(Homepage.this, "Lỗi khi tìm kiếm sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Homepage.this, "Error occurred while searching for products", Toast.LENGTH_SHORT).show();
                     recyclerViewSearchResults.setVisibility(View.GONE);
                 });
     }
@@ -491,14 +567,6 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         });
     }
 
-    private void updateCartItemCount() {
-        int count = cartItems.getItemCount();
-        if (cartItemCountText != null) {
-            cartItemCountText.setText(String.valueOf(count));
-            cartItemCountText.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-        }
-    }
-
     private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
@@ -534,16 +602,13 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             int position = parent.getChildAdapterPosition(view);
             int spanCount = 2; // Số cột
 
-            // Thêm padding để khoảng cách giữa các item là 'spacing'
             outRect.top = spacing;
             outRect.bottom = spacing;
 
             if (position % spanCount == 0) {
-                // Cột trái: không padding trái, padding phải là spacing
                 outRect.left = 0;
                 outRect.right = spacing;
             } else {
-                // Cột phải: padding trái là spacing, không padding phải
                 outRect.left = spacing;
                 outRect.right = 0;
             }

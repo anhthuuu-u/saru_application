@@ -65,14 +65,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtCusName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_user_name"
                     android:textColor="#B16628"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtCusMail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_user_email"
@@ -118,6 +120,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:id="@+id/edtCardType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -144,6 +147,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtBank"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -172,6 +176,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCardNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -201,6 +206,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtCVV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -230,12 +236,12 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edtExDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/card_expiry_date_placeholder"
-                    android:inputType="date"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
                     android:textSize="14sp" />

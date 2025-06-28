@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,9 +26,11 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private TextView txtShowOrderCode, txtShowOrderDate, txtShowStatus, txtShowName, txtShowPhoneNumber, txtShowAddress;
     private ListView lvOrderDetail;
+    private Button btnCancelOrder, btnWriteReview, btnRequestReturn;
     private OrderDetailAdapter orderDetailAdapter;
     private List<OrderDetail> orderDetailList = new ArrayList<>();
     private FirebaseFirestore db;
+    Button btn_write_review,btn_request_return,btn_cancel_order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,20 @@ public class OrderDetailActivity extends AppCompatActivity {
             txtShowPhoneNumber = findViewById(R.id.txtShowPhoneNumber);
             txtShowAddress = findViewById(R.id.txtShowAddress);
 
-            // Set up back button functionality
-            ImageView backIcon = findViewById(R.id.ic_back_arrow);
+            btn_write_review =findViewById(R.id.btn_write_review);
+            btn_request_return = findViewById(R.id.btn_request_return);
+            btn_cancel_order = findViewById(R.id.btn_cancel_order);
+
+            btnCancelOrder = findViewById(R.id.btn_cancel_order);
+            btnWriteReview = findViewById(R.id.btn_write_review);
+            btnRequestReturn = findViewById(R.id.btn_request_return);
+
+
+
+           addEvent();
+
+                    // Set up back button functionality
+                    ImageView backIcon = findViewById(R.id.ic_back_arrow);
             if (backIcon != null) {
                 backIcon.setOnClickListener(v -> {
                     Log.d("OrderDetailActivity", "Back button clicked");
@@ -80,6 +94,27 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void addEvent() {
+        btn_write_review.setOnClickListener(v -> openReview());
+        btn_request_return.setOnClickListener(v -> openRequest());
+        btn_cancel_order.setOnClickListener(v -> openCancel());
+
+    }
+
+    void openReview() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderReviewActivity.class);
+        startActivity(intent);
+    }
+
+    void openRequest() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderRequestReturnActivity.class);
+        startActivity(intent);
+    }
+
+    void openCancel() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderCancelActivity.class);
+        startActivity(intent);
+    }
     private void fetchOrderDetails(String orderID) {
         try {
             // Fetch the order from the "orders" collection
@@ -107,6 +142,9 @@ public class OrderDetailActivity extends AppCompatActivity {
                                     // Set order information
                                     txtShowOrderCode.setText(orderID != null ? orderID : "Unknown");
                                     txtShowOrderDate.setText(orderDate != null ? orderDate : "Unknown");
+
+                                    // Update button visibility and clickability based on orderStatusID
+                                    updateButtonVisibility(orderID, orderStatusID);
 
                                     // Fetch order status from "orderstatuses"
                                     if (orderStatusID != null) {
@@ -142,22 +180,22 @@ public class OrderDetailActivity extends AppCompatActivity {
                                         Toast.makeText(OrderDetailActivity.this, "Order status ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
-                                    // Fetch customer information from "customers"
-                                    if (customerID != null) {
-                                        db.collection("customers").document(customerID)
+                                    // Fetch customer information from "orders"
+                                    if (orderID != null) { // Make sure you have orderID available, not customerID
+                                        db.collection("orders").document(orderID)
                                                 .get()
-                                                .addOnCompleteListener(customerTask -> {
+                                                .addOnCompleteListener(orderTask -> {
                                                     try {
-                                                        if (customerTask.isSuccessful()) {
-                                                            DocumentSnapshot customerDoc = customerTask.getResult();
-                                                            if (customerDoc != null && customerDoc.exists()) {
-                                                                // Log customer document data
-                                                                Log.d("OrderDetailActivity", "Customer document data: " + customerDoc.getData());
+                                                        if (orderTask.isSuccessful()) {
+                                                            DocumentSnapshot orderDoc = orderTask.getResult();
+                                                            if (orderDoc != null && orderDoc.exists()) {
+                                                                // Log order document data
+                                                                Log.d("OrderDetailActivity", "Order document data: " + orderDoc.getData());
 
-                                                                // Use get() to handle any type for CustomerName, CustomerPhone, CustomerAdd
-                                                                Object customerNameObj = customerDoc.get("CustomerName");
-                                                                Object customerPhoneObj = customerDoc.get("CustomerPhone");
-                                                                Object customerAddressObj = customerDoc.get("CustomerAdd");
+                                                                // Use get() to handle any type for CustomerName, CustomerPhone, CustomerAdd from the order document
+                                                                Object customerNameObj = orderDoc.get("customerName"); // Assuming field names in "orders" are "customerName"
+                                                                Object customerPhoneObj = orderDoc.get("customerPhone"); // Assuming field names in "orders" are "customerPhone"
+                                                                Object customerAddressObj = orderDoc.get("customerAddress"); // Assuming field names in "orders" are "customerAddress"
 
                                                                 String customerName = customerNameObj != null ? customerNameObj.toString() : null;
                                                                 String customerPhone = customerPhoneObj != null ? customerPhoneObj.toString() : null;
@@ -176,30 +214,30 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                 txtShowName.setText("Unknown");
                                                                 txtShowPhoneNumber.setText("Unknown");
                                                                 txtShowAddress.setText("Unknown");
-                                                                Log.e("OrderDetailActivity", "Customer document does not exist for CustomerID: " + customerID);
-                                                                Toast.makeText(OrderDetailActivity.this, "Customer not found for ID: " + customerID, Toast.LENGTH_LONG).show();
+                                                                Log.e("OrderDetailActivity", "Order document does not exist for OrderID: " + orderID);
+                                                                Toast.makeText(OrderDetailActivity.this, "Order not found for ID: " + orderID, Toast.LENGTH_LONG).show();
                                                             }
                                                         } else {
                                                             txtShowName.setText("Unknown");
                                                             txtShowPhoneNumber.setText("Unknown");
                                                             txtShowAddress.setText("Unknown");
-                                                            Log.e("OrderDetailActivity", "Error fetching customer details: " + customerTask.getException());
-                                                            Toast.makeText(OrderDetailActivity.this, "Failed to load customer details: " + customerTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                            Log.e("OrderDetailActivity", "Error fetching order details: " + orderTask.getException());
+                                                            Toast.makeText(OrderDetailActivity.this, "Failed to load order details: " + orderTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                                                         }
                                                     } catch (Exception e) {
-                                                        Log.e("OrderDetailActivity", "Exception in fetching customer details: " + e.getMessage(), e);
+                                                        Log.e("OrderDetailActivity", "Exception in fetching order details: " + e.getMessage(), e);
                                                         txtShowName.setText("Unknown");
                                                         txtShowPhoneNumber.setText("Unknown");
                                                         txtShowAddress.setText("Unknown");
-                                                        Toast.makeText(OrderDetailActivity.this, "Error loading customer: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(OrderDetailActivity.this, "Error loading order: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                                     }
                                                 });
                                     } else {
                                         txtShowName.setText("Unknown");
                                         txtShowPhoneNumber.setText("Unknown");
                                         txtShowAddress.setText("Unknown");
-                                        Log.e("OrderDetailActivity", "CustomerID is null for orderID: " + orderID);
-                                        Toast.makeText(OrderDetailActivity.this, "Customer ID is missing", Toast.LENGTH_LONG).show();
+                                        Log.e("OrderDetailActivity", "OrderID is null."); // Changed from CustomerID to OrderID
+                                        Toast.makeText(OrderDetailActivity.this, "Order ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
                                     // Fetch order products
@@ -220,6 +258,64 @@ public class OrderDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("OrderDetailActivity", "Error initiating fetchOrderDetails: " + e.getMessage(), e);
             Toast.makeText(OrderDetailActivity.this, "Error initiating order load: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateButtonVisibility(String orderID, String orderStatusID) {
+        try {
+            // Convert orderStatusID to integer for comparison
+            int statusID = orderStatusID != null ? Integer.parseInt(orderStatusID) : -1;
+
+            // Show and enable Cancel button for status 0 or 1
+            if (statusID == 0 || statusID == 1) {
+                btnCancelOrder.setVisibility(View.VISIBLE);
+                btnCancelOrder.setEnabled(true);
+                btnWriteReview.setVisibility(View.GONE);
+                btnWriteReview.setEnabled(false);
+                btnRequestReturn.setVisibility(View.GONE);
+                btnRequestReturn.setEnabled(false);
+            }
+            // Show and enable Review and Return buttons for status 4
+            else if (statusID == 4) {
+                btnCancelOrder.setVisibility(View.GONE);
+                btnCancelOrder.setEnabled(false);
+                btnWriteReview.setVisibility(View.VISIBLE);
+                btnWriteReview.setEnabled(true);
+                btnRequestReturn.setVisibility(View.VISIBLE);
+                btnRequestReturn.setEnabled(true);
+            }
+            // Hide and disable all buttons for other statuses
+            else {
+                btnCancelOrder.setVisibility(View.GONE);
+                btnCancelOrder.setEnabled(false);
+                btnWriteReview.setVisibility(View.GONE);
+                btnWriteReview.setEnabled(false);
+                btnRequestReturn.setVisibility(View.GONE);
+                btnRequestReturn.setEnabled(false);
+            }
+
+            // Set click listeners for buttons
+            btnCancelOrder.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderCancelActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+            btnWriteReview.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderReviewActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+            btnRequestReturn.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderRequestReturnActivity.class);
+                intent.putExtra("ORDER_ID", orderID);
+                startActivity(intent);
+            });
+
+        } catch (NumberFormatException e) {
+            Log.e("OrderDetailActivity", "Invalid OrderStatusID format: " + orderStatusID, e);
+            Toast.makeText(OrderDetailActivity.this, "Invalid order status ID", Toast.LENGTH_LONG).show();
         }
     }
 

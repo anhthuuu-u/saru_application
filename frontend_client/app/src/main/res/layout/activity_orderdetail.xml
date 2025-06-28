@@ -148,11 +148,24 @@
 
         <!-- Contact Information Section -->
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/order_products_label"
+            android:layout_marginTop="20dp"
+            android:textColor="#FBBC05"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
         <ListView
             android:id="@+id/lvOrderDetail"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -227,7 +240,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_cancel_order"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
             <!-- Write Review -->
             <Button
@@ -241,7 +255,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_write_review"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
             <!-- Request Return -->
             <Button
@@ -255,7 +270,8 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/order_request_return"
                 android:textSize="12sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -6,20 +6,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_rounded_white"
         android:orientation="vertical"
         android:padding="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:text="@string/order_products_label"
-            android:textColor="#FBBC05"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

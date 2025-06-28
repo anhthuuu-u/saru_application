@@ -18,11 +18,10 @@
 
         <ImageView
             android:id="@+id/ic_back_arrow"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@mipmap/ic_back_arrow"
-            app:tint="@color/title_orange"
-            android:layout_marginStart="@dimen/margin_small" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/color_dark_brown" />
 
         <TextView
             android:layout_width="0dp"
@@ -31,7 +30,7 @@
             android:text="@string/title_blog_Blog"
             android:textAlignment="center"
             android:textColor="@color/title_orange"
-            android:textSize="@dimen/text_size_title"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="@font/inter_bold"
             android:layout_marginStart="@dimen/margin_medium" />

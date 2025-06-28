@@ -32,20 +32,20 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import saru.com.app.R;
 import saru.com.app.connectors.ProductAdapter;
 import saru.com.app.models.CartItem;
-import saru.com.app.models.ListCartItems;
+import saru.com.app.models.CartManager;
 import saru.com.app.models.Product;
 import saru.com.app.models.productBrand;
 import saru.com.app.models.productCategory;
@@ -59,13 +59,29 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
     private List<productBrand> brands;
     private List<String> volumes;
     private List<String> wineTypes;
-    private ListCartItems cartItems = new ListCartItems();
     private TextView cartItemCountText;
     private AtomicBoolean isFilterDataLoaded = new AtomicBoolean(false);
+    private Map<String, String> categoryCache = new HashMap<>();
 
     @Override
     protected int getSelectedMenuItemId() {
         return R.id.menu_product;
+    }
+
+    private void initializeData() {
+        try {
+            checkPlayServices(() -> {
+                loadFilterData(null);
+                loadProducts(null);
+            });
+        } catch (SecurityException e) {
+            Log.e("Products", "SecurityException in initializeData: " + e.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
+            Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
+            // Tiếp tục tải dữ liệu mà không phụ thuộc Google Play Services
+            loadFilterData(null);
+            loadProducts(null);
+        }
     }
 
     @Override
@@ -74,11 +90,9 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_products);
 
-        // Khởi tạo Firebase
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        // Khởi tạo cartItemCountText
         cartItemCountText = findViewById(R.id.cart_item_count);
         if (cartItemCountText == null) {
             throw new IllegalStateException("TextView cart_item_count not found");
@@ -97,8 +111,21 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
 
-        loadProducts(null);
-        loadFilterData();
+        // Khởi tạo CartManager với callback
+        CartManager.getInstance().initialize(this, success -> {
+            runOnUiThread(() -> {
+                if (success && cartItemCountText != null) {
+                    CartManager.getInstance().addBadgeView(cartItemCountText);
+                    CartManager.getInstance().updateAllBadges();
+                    Log.d("Products", "Cart data loaded, badge updated");
+                } else {
+                    Log.e("Products", "Failed to load cart data");
+                    Toast.makeText(this, getString(R.string.error_loading_cart), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        initializeData();
 
         ImageButton btnFilter = findViewById(R.id.btn_filter);
         btnFilter.setOnClickListener(v -> showFilterDialog());
@@ -118,6 +145,8 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                 finish();
             });
         }
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
 
         searchBar = findViewById(R.id.search_bar);
         if (searchBar == null) {
@@ -135,7 +164,6 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             Log.d("Products", "SearchView focused");
         });
 
-        // Thiết lập tìm kiếm
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -158,15 +186,45 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
-        updateCartItemCount();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (auth.getCurrentUser() != null) {
+            CartManager.getInstance().setUser(auth.getCurrentUser().getUid());
+            CartManager.getInstance().initialize(this, success -> {
+                runOnUiThread(() -> {
+                    if (success && cartItemCountText != null) {
+                        CartManager.getInstance().addBadgeView(cartItemCountText);
+                        CartManager.getInstance().updateAllBadges();
+                        Log.d("Products", "Cart data reloaded in onStart, badge updated");
+                    } else {
+                        Log.e("Products", "Failed to reload cart data in onStart");
+                        Toast.makeText(this, getString(R.string.error_loading_cart), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (cartItemCountText != null) {
+            CartManager.getInstance().removeBadgeView(cartItemCountText);
+        }
+    }
+
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
     }
 
     private void searchProducts(String query) {
         if (query.isEmpty()) {
-            loadProducts(null); // Tải lại danh sách sản phẩm mặc định
+            loadProducts(null);
             Log.d("Products", "Query empty, loading default products");
-            Toast.makeText(Products.this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -179,41 +237,40 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                         if (product != null && product.getProductName() != null &&
                                 product.getProductName().toLowerCase().contains(query.toLowerCase())) {
                             String cateID = product.getCateID();
-                            if (cateID != null) {
+                            if (cateID != null && categoryCache.containsKey(cateID)) {
+                                product.setCategory(categoryCache.get(cateID));
+                                products.add(product);
+                            } else if (cateID != null) {
                                 db.collection("productCategory").document(cateID).get()
                                         .addOnSuccessListener(categoryDoc -> {
                                             productCategory category = categoryDoc.toObject(productCategory.class);
-                                            if (category != null) {
-                                                product.setCategory(category.getCateName());
-                                            } else {
-                                                product.setCategory(getString(R.string.no_category_available));
-                                            }
+                                            String categoryName = category != null ? category.getCateName() : getString(R.string.no_category_available);
+                                            product.setCategory(categoryName);
+                                            categoryCache.put(cateID, categoryName);
                                             products.add(product);
-                                            productAdapter.updateData(products);
-                                            Log.d("Products", "Product added to search results: " + product.getProductName());
+                                            productAdapter.updateData(new ArrayList<>(products));
                                         })
                                         .addOnFailureListener(e -> {
                                             product.setCategory(getString(R.string.error_loading_category));
+                                            categoryCache.put(cateID, getString(R.string.error_loading_category));
                                             products.add(product);
-                                            productAdapter.updateData(products);
+                                            productAdapter.updateData(new ArrayList<>(products));
                                             Log.e("Products", "Error loading category for cateID: " + cateID, e);
                                         });
                             } else {
                                 product.setCategory(getString(R.string.no_category_id));
                                 products.add(product);
-                                productAdapter.updateData(products);
-                                Log.w("Products", "No cateID for product: " + product.getProductID());
                             }
                         }
                     }
-                    productAdapter.updateData(products);
+                    productAdapter.updateData(new ArrayList<>(products));
                     Log.d("Products", "Search results loaded: " + products.size() + " for query: " + query);
                     if (products.isEmpty()) {
                         Toast.makeText(Products.this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Products", "Error searching products: " + e.getMessage());
+                    Log.e("Products", "Error searching products: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Toast.makeText(Products.this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
                 });
@@ -235,18 +292,26 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         }
 
         String accountID = auth.getCurrentUser().getUid();
-        checkPlayServices(() -> onAddToCartInternal(product, accountID));
+        onAddToCartInternal(product, accountID); // Thực hiện trực tiếp mà không cần checkPlayServices
     }
 
     private void checkPlayServices(Runnable firebaseAction) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode == ConnectionResult.SUCCESS) {
-            firebaseAction.run();
-        } else {
-            Log.e("Products", "Google Play Services not available");
-            FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available"));
+        try {
+            GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+            int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+            if (resultCode == ConnectionResult.SUCCESS) {
+                Log.d("Products", "Google Play Services available");
+                firebaseAction.run();
+            } else {
+                Log.e("Products", "Google Play Services not available, resultCode: " + resultCode);
+                FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available, resultCode: " + resultCode));
+                Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
+            }
+        } catch (SecurityException e) {
+            Log.e("Products", "SecurityException in checkPlayServices: " + e.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
+            firebaseAction.run(); // Tiếp tục thực hiện hành động Firestore
         }
     }
 
@@ -276,9 +341,9 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!documentSnapshot.exists()) {
                         db.collection("carts").document(accountID).set(new HashMap<>())
-                                .addOnSuccessListener(aVoid -> Log.d("Homepage", "Created cart document for: " + accountID))
+                                .addOnSuccessListener(aVoid -> Log.d("Products", "Created cart document for: " + accountID))
                                 .addOnFailureListener(e -> {
-                                    Log.e("Homepage", "Error creating cart document: " + e.getMessage());
+                                    Log.e("Products", "Error creating cart document: ", e);
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 });
                     }
@@ -287,139 +352,179 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                             .get()
                             .addOnSuccessListener(itemSnapshot -> {
                                 if (itemSnapshot.exists()) {
-                                    long currentQuantity = itemSnapshot.getLong("quantity");
-                                    cartItemMap.put("quantity", currentQuantity + 1);
-                                    cartItem.setQuantity((int) currentQuantity + 1);
+                                    Long currentQuantity = itemSnapshot.getLong("quantity");
+                                    if (currentQuantity != null) {
+                                        cartItemMap.put("quantity", currentQuantity + 1);
+                                        cartItem.setQuantity(currentQuantity.intValue() + 1);
+                                    }
                                 }
                                 db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                                         .set(cartItemMap)
                                         .addOnSuccessListener(aVoid -> {
-                                            Log.d("Homepage", "Added/Updated to cart: " + product.getProductName());
+                                            Log.d("Products", "Added/Updated to cart: " + product.getProductName());
                                             Toast.makeText(this, getString(R.string.added_to_cart, product.getProductName()), Toast.LENGTH_SHORT).show();
-                                            cartItems.addItem(cartItem);
-                                            updateCartItemCount();
+                                            CartManager.getInstance().addItem(cartItem);
+                                            CartManager.getInstance().updateAllBadges();
                                         })
                                         .addOnFailureListener(e -> {
-                                            Log.e("Homepage", "Error adding to cart: " + e.getMessage());
+                                            Log.e("Products", "Error adding to cart: ", e);
                                             FirebaseCrashlytics.getInstance().recordException(e);
                                             Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
                                         });
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("Homepage", "Error checking cart item: " + e.getMessage());
+                                Log.e("Products", "Error checking cart item: ", e);
                                 FirebaseCrashlytics.getInstance().recordException(e);
                                 Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error checking cart document: " + e.getMessage());
+                    Log.e("Products", "Error checking cart document: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private void updateCartItemCount() {
-        int count = cartItems.getItemCount();
-        if (cartItemCountText != null) {
-            cartItemCountText.setText(String.valueOf(count));
-            cartItemCountText.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    private void loadProducts(com.google.firebase.firestore.Query query) {
+    private void loadProducts(Query query) {
         if (query == null) {
             query = db.collection("products");
         }
         query.get().addOnSuccessListener(querySnapshot -> {
             List<Product> products = new ArrayList<>();
-            for (DocumentSnapshot doc : querySnapshot) {
+            List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+            if (documents.isEmpty()) {
+                productAdapter.updateData(products);
+                Toast.makeText(this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
+                Log.d("Products", "No products found");
+                return;
+            }
+
+            for (DocumentSnapshot doc : documents) {
                 Product product = doc.toObject(Product.class);
                 if (product != null) {
                     String cateID = product.getCateID();
                     if (cateID != null) {
-                        db.collection("productCategory").document(cateID).get()
-                                .addOnSuccessListener(categoryDoc -> {
-                                    productCategory category = categoryDoc.toObject(productCategory.class);
-                                    if (category != null) {
-                                        product.setCategory(category.getCateName());
-                                    } else {
-                                        product.setCategory(getString(R.string.no_category_available));
-                                    }
-                                    products.add(product);
-                                    productAdapter.updateData(products);
-                                    Log.d("Products", "Product loaded with category: " + product.getCategory());
-                                })
-                                .addOnFailureListener(e -> {
-                                    product.setCategory(getString(R.string.error_loading_category));
-                                    products.add(product);
-                                    productAdapter.updateData(products);
-                                    Log.e("Products", "Error loading category for cateID: " + cateID, e);
-                                });
+                        if (categoryCache.containsKey(cateID)) {
+                            product.setCategory(categoryCache.get(cateID));
+                            products.add(product);
+                        } else {
+                            db.collection("productCategory").document(cateID).get()
+                                    .addOnSuccessListener(categoryDoc -> {
+                                        productCategory category = categoryDoc.toObject(productCategory.class);
+                                        String categoryName = category != null ? category.getCateName() : getString(R.string.no_category_available);
+                                        product.setCategory(categoryName);
+                                        categoryCache.put(cateID, categoryName);
+                                        products.add(product);
+                                        productAdapter.updateData(new ArrayList<>(products));
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        product.setCategory(getString(R.string.error_loading_category));
+                                        categoryCache.put(cateID, getString(R.string.error_loading_category));
+                                        products.add(product);
+                                        productAdapter.updateData(new ArrayList<>(products));
+                                        Log.e("Products", "Error loading category for cateID: " + cateID, e);
+                                    });
+                        }
                     } else {
                         product.setCategory(getString(R.string.no_category_id));
                         products.add(product);
-                        productAdapter.updateData(products);
-                        Log.w("Products", "No cateID for product: " + product.getProductID());
                     }
                 }
             }
-            productAdapter.updateData(products);
+            productAdapter.updateData(new ArrayList<>(products));
             Log.d("Products", "Products loaded: " + products.size());
-            if (products.isEmpty()) {
-                Toast.makeText(this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
-            }
         }).addOnFailureListener(e -> {
-            Log.e("Products", "Error loading products: " + e.getMessage());
+            Log.e("Products", "Error loading products: ", e);
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(this, getString(R.string.no_search_results), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void loadFilterData() {
-        Tasks.whenAllSuccess(
-                db.collection("productCategory").get(),
+    private void loadFilterData(Runnable callback) {
+        categories.clear();
+        brands.clear();
+        volumes.clear();
+        wineTypes.clear();
+
+        db.collection("productCategory").get().addOnSuccessListener(categorySnapshot -> {
+            for (DocumentSnapshot doc : categorySnapshot.getDocuments()) {
+                try {
+                    productCategory category = doc.toObject(productCategory.class);
+                    if (category != null) {
+                        Log.d("Products", "Raw category data: " + doc.getData());
+                        String cateName = doc.getString("CateName");
+                        String cateID = doc.getString("CateID");
+                        if (cateName != null || cateID != null) {
+                            if (category.getCateName() == null) category.setCateName(cateName);
+                            if (category.getCateID() == null) category.setCateID(cateID);
+                            categories.add(category);
+                            Log.d("Products", "Loaded category: ID=" + category.getCateID() + ", Name=" + category.getCateName());
+                        } else {
+                            Log.w("Products", "Invalid category data (null CateName and CateID): " + doc.getData());
+                        }
+                    } else {
+                        Log.e("Products", "Failed to map category: " + doc.getData());
+                        String cateName = doc.getString("CateName");
+                        String cateID = doc.getString("CateID");
+                        if (cateName != null && cateID != null) {
+                            category = new productCategory(cateID, cateName);
+                            categories.add(category);
+                            Log.d("Products", "Manually loaded category: ID=" + cateID + ", Name=" + cateName);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("Products", "Error mapping category document: " + doc.getId(), e);
+                }
+            }
+            Log.d("Products", "Total categories loaded: " + categories.size());
+        }).addOnFailureListener(e -> {
+            Log.e("Products", "Error loading categories: ", e);
+            Toast.makeText(this, getString(R.string.error_loading_filter_data), Toast.LENGTH_SHORT).show();
+        });
+
+        com.google.android.gms.tasks.Tasks.whenAllSuccess(
                 db.collection("productBrand").get(),
                 db.collection("products").get()
         ).addOnSuccessListener(results -> {
-            // Load categories
-            for (DocumentSnapshot doc : (com.google.firebase.firestore.QuerySnapshot) results.get(0)) {
-                productCategory category = doc.toObject(productCategory.class);
-                if (category != null) {
-                    categories.add(category);
-                }
-            }
-            Log.d("Products", "Categories loaded: " + categories.size());
-
-            // Load brands
-            for (DocumentSnapshot doc : (com.google.firebase.firestore.QuerySnapshot) results.get(1)) {
+            com.google.firebase.firestore.QuerySnapshot brandSnapshot = (com.google.firebase.firestore.QuerySnapshot) results.get(0);
+            for (DocumentSnapshot doc : brandSnapshot.getDocuments()) {
                 productBrand brand = doc.toObject(productBrand.class);
-                if (brand != null) {
+                if (brand != null && brand.getBrandID() != null && brand.getBrandName() != null) {
                     brands.add(brand);
+                    Log.d("Products", "Loaded brand: ID=" + brand.getBrandID() + ", Name=" + brand.getBrandName());
                 }
             }
-            Log.d("Products", "Brands loaded: " + brands.size());
+            Log.d("Products", "Total brands loaded: " + brands.size());
 
-            // Load volumes and wineTypes from products
             Set<String> volumeSet = new HashSet<>();
             Set<String> wineTypeSet = new HashSet<>();
-            for (DocumentSnapshot doc : (com.google.firebase.firestore.QuerySnapshot) results.get(2)) {
+            com.google.firebase.firestore.QuerySnapshot productSnapshot = (com.google.firebase.firestore.QuerySnapshot) results.get(1);
+            for (DocumentSnapshot doc : productSnapshot.getDocuments()) {
                 String volume = doc.getString("netContent");
-                if (volume != null && !volumeSet.contains(volume)) {
+                if (volume != null && !volume.isEmpty() && !volumeSet.contains(volume)) {
                     volumeSet.add(volume);
                     volumes.add(volume);
                 }
                 String wineType = doc.getString("wineType");
-                if (wineType != null && !wineTypeSet.contains(wineType)) {
+                if (wineType != null && !wineType.isEmpty() && !wineTypeSet.contains(wineType)) {
                     wineTypeSet.add(wineType);
                     wineTypes.add(wineType);
                 }
             }
-            Log.d("Products", "Volumes loaded: " + volumes.size());
-            Log.d("Products", "WineTypes loaded: " + wineTypes.size());
+            Log.d("Products", "Total volumes loaded: " + volumes.size());
+            Log.d("Products", "Total wineTypes loaded: " + wineTypes.size());
 
-            isFilterDataLoaded.set(true);
+            if (!categories.isEmpty()) {
+                isFilterDataLoaded.set(true);
+                if (callback != null) {
+                    callback.run();
+                }
+            } else {
+                Log.e("Products", "No categories loaded. Check Firestore or connection.");
+                Toast.makeText(this, getString(R.string.error_loading_filter_data), Toast.LENGTH_LONG).show();
+            }
         }).addOnFailureListener(e -> {
-            Log.e("Products", "Error loading filter data: " + e.getMessage());
+            Log.e("Products", "Error loading filter data: ", e);
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(this, getString(R.string.error_loading_filter_data), Toast.LENGTH_SHORT).show();
             isFilterDataLoaded.set(false);
@@ -429,8 +534,8 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
     private void showFilterDialog() {
         if (!isFilterDataLoaded.get()) {
             Toast.makeText(this, getString(R.string.filter_data_not_ready), Toast.LENGTH_SHORT).show();
-            Log.w("Products", "Filter data not loaded yet");
-            loadFilterData();
+            Log.d("Products", "Filter data not loaded, reloading...");
+            loadFilterData(() -> showFilterDialog());
             return;
         }
 
@@ -466,7 +571,6 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         Button buttonApplyFilter = filterDialog.findViewById(R.id.button_apply_filter);
         TextView textResetFilter = filterDialog.findViewById(R.id.text_reset_filter);
 
-        // Lưu giá trị mặc định
         String defaultCategory = getString(R.string.filter_product_dialog_category);
         String defaultSortBy = getString(R.string.title_product_dialog_sort);
         String defaultBrand = getString(R.string.title_filter_product_dialog_brand);
@@ -475,8 +579,17 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
 
         dropdownCategory.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownCategory);
-            for (productCategory category : categories) {
-                popupMenu.getMenu().add(category.getCateName());
+            popupMenu.getMenu().add(getString(R.string.filter_all));
+            if (categories != null && !categories.isEmpty()) {
+                for (productCategory category : categories) {
+                    if (category != null && category.getCateName() != null) {
+                        popupMenu.getMenu().add(category.getCateName());
+                        Log.d("Products", "Added to dropdown: " + category.getCateName() + " (ID: " + category.getCateID() + ")");
+                    }
+                }
+            } else {
+                Log.e("Products", "Categories list is empty or null. Check loadFilterData()");
+                popupMenu.getMenu().add(getString(R.string.no_categories_available));
             }
             popupMenu.setOnMenuItemClickListener(item -> {
                 textCategory.setText(item.getTitle());
@@ -488,6 +601,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
 
         dropdownSortBy.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Products.this, dropdownSortBy);
+            popupMenu.getMenu().add(getString(R.string.filter_all));
             popupMenu.getMenu().add(getString(R.string.sort_low_to_high));
             popupMenu.getMenu().add(getString(R.string.sort_high_to_low));
             popupMenu.setOnMenuItemClickListener(item -> {
@@ -551,95 +665,123 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             String priceMax = editPriceMax.getText().toString().trim();
             boolean isBestSelling = checkboxBestSelling.isChecked();
             boolean isOnSale = checkboxOnSale.isChecked();
+            boolean hasFilter = false;
 
-            // Lọc theo danh mục
-            if (!selectedCategory.equals(defaultCategory)) {
-                String cateID = categories.stream()
-                        .filter(c -> c.getCateName().equals(selectedCategory))
-                        .findFirst()
-                        .map(productCategory::getCateID)
-                        .orElse(null);
-                if (cateID != null) {
-                    query = query.whereEqualTo("CateID", cateID);
-                    Log.d("Products", "Filtering by CateID: " + cateID);
+            try {
+                if (!selectedCategory.equals(defaultCategory) && !selectedCategory.equals(getString(R.string.filter_all))) {
+                    Log.d("Products", "Attempting to filter by category: " + selectedCategory);
+                    String cateID = categories.stream()
+                            .filter(c -> c != null && c.getCateName() != null && c.getCateName().equals(selectedCategory))
+                            .findFirst()
+                            .map(productCategory::getCateID)
+                            .orElse(null);
+                    if (cateID != null) {
+                        query = query.whereEqualTo("CateID", cateID);
+                        hasFilter = true;
+                        Log.d("Products", "Filtering by CateID: " + cateID);
+                    } else {
+                        Log.w("Products", "No CateID found for category: " + selectedCategory + ". Available categories: " +
+                                (categories != null ? categories.stream().filter(c -> c != null && c.getCateName() != null)
+                                        .map(c -> c.getCateName()).collect(Collectors.joining(", ")) : "null"));
+                        Toast.makeText(this, getString(R.string.invalid_category), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (!selectedBrand.equals(defaultBrand) && !selectedBrand.equals(getString(R.string.filter_all))) {
+                    String brandID = brands.stream()
+                            .filter(b -> b != null && b.getBrandName() != null && b.getBrandName().equals(selectedBrand))
+                            .findFirst()
+                            .map(productBrand::getBrandID)
+                            .orElse(null);
+                    if (brandID != null) {
+                        query = query.whereEqualTo("brandID", brandID);
+                        hasFilter = true;
+                        Log.d("Products", "Filtering by brandID: " + brandID);
+                    } else {
+                        Log.w("Products", "No brandID found for brand: " + selectedBrand);
+                        Toast.makeText(this, getString(R.string.invalid_brand), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (!selectedVolume.equals(defaultVolume) && !selectedVolume.equals(getString(R.string.filter_all))) {
+                    query = query.whereEqualTo("netContent", selectedVolume);
+                    hasFilter = true;
+                    Log.d("Products", "Filtering by netContent: " + selectedVolume);
+                }
+
+                if (!selectedWineType.equals(defaultWineType) && !selectedWineType.equals(getString(R.string.filter_all))) {
+                    query = query.whereEqualTo("wineType", selectedWineType);
+                    hasFilter = true;
+                    Log.d("Products", "Filtering by wineType: " + selectedWineType);
+                }
+
+                if (!priceMin.isEmpty()) {
+                    try {
+                        double min = Double.parseDouble(priceMin);
+                        if (min >= 0) {
+                            query = query.whereGreaterThanOrEqualTo("productPrice", min);
+                            hasFilter = true;
+                            Log.d("Products", "Filtering by productPrice min: " + min);
+                        } else {
+                            Toast.makeText(this, getString(R.string.invalid_price_min), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.e("Products", "Invalid priceMin: " + priceMin, e);
+                        Toast.makeText(this, getString(R.string.invalid_price_min), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (!priceMax.isEmpty()) {
+                    try {
+                        double max = Double.parseDouble(priceMax);
+                        if (max >= 0 && (!priceMin.isEmpty() ? max >= Double.parseDouble(priceMin) : true)) {
+                            query = query.whereLessThanOrEqualTo("productPrice", max);
+                            hasFilter = true;
+                            Log.d("Products", "Filtering by productPrice max: " + max);
+                        } else {
+                            Toast.makeText(this, getString(R.string.invalid_price_max), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.e("Products", "Invalid priceMax: " + priceMax, e);
+                        Toast.makeText(this, getString(R.string.invalid_price_max), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (isBestSelling) {
+                    query = query.whereEqualTo("isBestSelling", true);
+                    hasFilter = true;
+                    Log.d("Products", "Filtering by isBestSelling: true");
+                }
+
+                if (isOnSale) {
+                    query = query.whereEqualTo("isOnSale", true);
+                    hasFilter = true;
+                    Log.d("Products", "Filtering by isOnSale: true");
+                }
+
+                if (!selectedSortBy.equals(defaultSortBy) && !selectedSortBy.equals(getString(R.string.filter_all))) {
+                    if (selectedSortBy.equals(getString(R.string.sort_low_to_high))) {
+                        query = query.orderBy("productPrice", Query.Direction.ASCENDING);
+                        hasFilter = true;
+                        Log.d("Products", "Sorting by productPrice: low to high");
+                    } else if (selectedSortBy.equals(getString(R.string.sort_high_to_low))) {
+                        query = query.orderBy("productPrice", Query.Direction.DESCENDING);
+                        hasFilter = true;
+                        Log.d("Products", "Sorting by productPrice: high to low");
+                    }
+                }
+
+                if (!hasFilter) {
+                    Toast.makeText(this, getString(R.string.no_filter_applied), Toast.LENGTH_SHORT).show();
+                    loadProducts(null);
                 } else {
-                    Log.w("Products", "No CateID found for category: " + selectedCategory);
+                    loadProducts(query);
                 }
+            } catch (Exception e) {
+                Log.e("Products", "Error applying filter: ", e);
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Toast.makeText(this, getString(R.string.error_applying_filter), Toast.LENGTH_SHORT).show();
             }
-
-            // Lọc theo thương hiệu
-            if (!selectedBrand.equals(defaultBrand) && !selectedBrand.equals(getString(R.string.filter_all))) {
-                String brandID = brands.stream()
-                        .filter(b -> b.getBrandName().equals(selectedBrand))
-                        .findFirst()
-                        .map(productBrand::getBrandID)
-                        .orElse(null);
-                if (brandID != null) {
-                    query = query.whereEqualTo("brandID", brandID);
-                    Log.d("Products", "Filtering by brandID: " + brandID);
-                } else {
-                    Log.w("Products", "No brandID found for brand: " + selectedBrand);
-                }
-            }
-
-            // Lọc theo dung tích
-            if (!selectedVolume.equals(defaultVolume) && !selectedVolume.equals(getString(R.string.filter_all))) {
-                query = query.whereEqualTo("netContent", selectedVolume);
-                Log.d("Products", "Filtering by netContent: " + selectedVolume);
-            }
-
-            // Lọc theo loại rượu
-            if (!selectedWineType.equals(defaultWineType) && !selectedWineType.equals(getString(R.string.filter_all))) {
-                query = query.whereEqualTo("wineType", selectedWineType);
-                Log.d("Products", "Filtering by wineType: " + selectedWineType);
-            }
-
-            // Lọc theo giá tối thiểu
-            if (!priceMin.isEmpty()) {
-                try {
-                    double min = Double.parseDouble(priceMin);
-                    query = query.whereGreaterThanOrEqualTo("productPrice", min);
-                    Log.d("Products", "Filtering by productPrice min: " + min);
-                } catch (NumberFormatException e) {
-                    Log.e("Products", "Invalid priceMin: " + priceMin);
-                    Toast.makeText(this, getString(R.string.invalid_price_min), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            // Lọc theo giá tối đa
-            if (!priceMax.isEmpty()) {
-                try {
-                    double max = Double.parseDouble(priceMax);
-                    query = query.whereLessThanOrEqualTo("productPrice", max);
-                    Log.d("Products", "Filtering by productPrice max: " + max);
-                } catch (NumberFormatException e) {
-                    Log.e("Products", "Invalid priceMax: " + priceMax);
-                    Toast.makeText(this, getString(R.string.invalid_price_max), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            // Lọc theo bán chạy
-            if (isBestSelling) {
-                query = query.whereEqualTo("isBestSelling", true);
-                Log.d("Products", "Filtering by isBestSelling: true");
-            }
-
-            // Lọc theo giảm giá
-            if (isOnSale) {
-                query = query.whereEqualTo("isOnSale", true);
-                Log.d("Products", "Filtering by isOnSale: true");
-            }
-
-            // Sắp xếp
-            if (selectedSortBy.equals(getString(R.string.sort_low_to_high))) {
-                query = query.orderBy("productPrice", Query.Direction.ASCENDING);
-                Log.d("Products", "Sorting by productPrice: low to high");
-            } else if (selectedSortBy.equals(getString(R.string.sort_high_to_low))) {
-                query = query.orderBy("productPrice", Query.Direction.DESCENDING);
-                Log.d("Products", "Sorting by productPrice: high to low");
-            }
-
-            loadProducts(query);
             filterDialog.dismiss();
         });
 
@@ -654,13 +796,14 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             checkboxBestSelling.setChecked(false);
             checkboxOnSale.setChecked(false);
             Log.d("Products", "Filter reset");
+            loadProducts(null);
         });
 
         filterDialog.setCanceledOnTouchOutside(true);
         filterDialog.show();
     }
 
-    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
+    static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
         public ItemSpacingDecoration(int spacing) {

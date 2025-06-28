@@ -3,6 +3,7 @@ package saru.com.app.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -27,18 +28,18 @@ public class CustomerSupportActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private ImageView img_open_chat; // Khai báo img_open_chat như field
+    private ImageView img_open_chat;
     private EditText askQuestionInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Khởi tạo Firebase Auth
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Kiểm tra trạng thái đăng nhập
+        // Check login status
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             Intent intent = new Intent(CustomerSupportActivity.this, LoginActivity.class);
@@ -55,13 +56,13 @@ public class CustomerSupportActivity extends AppCompatActivity {
 
     private void addView() {
         img_open_chat = findViewById(R.id.img_open_chat);
-        askQuestionInput = findViewById(R.id.ask_question_input); // Gán EditText
+        askQuestionInput = findViewById(R.id.ask_question_input);
     }
 
     private void addEvents() {
         img_open_chat.setOnClickListener(v -> openLiveChat());
 
-        // Thêm sự kiện cho nút gửi câu hỏi
+        // Add event for sending question
         findViewById(R.id.btn_send_question).setOnClickListener(v -> sendQuestion());
 
         setupSocialMediaLinks();
@@ -92,7 +93,7 @@ public class CustomerSupportActivity extends AppCompatActivity {
             try {
                 startActivity(emailIntent);
             } catch (Exception e) {
-                Toast.makeText(this, "Không tìm thấy ứng dụng email", Toast.LENGTH_SHORT).show();
+                showCustomToast("Không tìm thấy ứng dụng email");
             }
         });
 
@@ -114,7 +115,7 @@ public class CustomerSupportActivity extends AppCompatActivity {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fallbackUrl));
                 startActivity(browserIntent);
             } catch (Exception ex) {
-                Toast.makeText(this, "Không thể mở liên kết", Toast.LENGTH_SHORT).show();
+                showCustomToast("Không thể mở liên kết");
             }
         }
     }
@@ -155,34 +156,69 @@ public class CustomerSupportActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Lỗi khi tải FAQs: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    showCustomToast("Lỗi khi tải FAQs: " + e.getMessage());
                 });
     }
 
-    // Thêm phương thức để gửi câu hỏi
     private void sendQuestion() {
         String questionText = askQuestionInput.getText().toString().trim();
         if (questionText.isEmpty()) {
-            Toast.makeText(this, getString(R.string.error_empty_question), Toast.LENGTH_SHORT).show();
+            showCustomToast(getString(R.string.error_empty_question));
             return;
         }
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Map<String, Object> question = new HashMap<>();
-            question.put("userId", currentUser.getUid());
-            question.put("question", questionText);
-            question.put("timestamp", System.currentTimeMillis());
+            String email = currentUser.getEmail();
+            db.collection("accounts")
+                    .whereEqualTo("CustomerEmail", email)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) queryDocumentSnapshots.getDocuments().get(0);
+                            String customerID = document.getString("CustomerID");
+                            if (customerID != null && !customerID.isEmpty()) {
+                                Map<String, Object> question = new HashMap<>();
+                                question.put("customerID", customerID);
+                                question.put("sector", "CustomerSupport");
+                                question.put("question", questionText);
+                                question.put("timestamp", System.currentTimeMillis());
 
-            db.collection(getString(R.string.firestore_questions_collection))
-                    .add(question)
-                    .addOnSuccessListener(documentReference -> {
-                        Toast.makeText(this, getString(R.string.success_question_sent), Toast.LENGTH_SHORT).show();
-                        askQuestionInput.setText("");
+                                db.collection(getString(R.string.firestore_questions_collection))
+                                        .add(question)
+                                        .addOnSuccessListener(documentReference -> {
+                                            showCustomToast(getString(R.string.success_question_sent));
+                                            askQuestionInput.setText("");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            showCustomToast(getString(R.string.error_send_question, e.getMessage()));
+                                        });
+                            } else {
+                                showCustomToast("Không tìm thấy CustomerID");
+                            }
+                        } else {
+                            showCustomToast("Không tìm thấy thông tin tài khoản");
+                        }
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(this, getString(R.string.error_send_question, e.getMessage()), Toast.LENGTH_SHORT).show();
+                        showCustomToast("Lỗi khi lấy CustomerID: " + e.getMessage());
                     });
         }
+    }
+
+    private void showCustomToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView toastText = layout.findViewById(R.id.tv_toast_message);
+        if (toastText != null) {
+            toastText.setText(message);
+        }
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 100);
+        toast.show();
     }
 }
