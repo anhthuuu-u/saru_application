@@ -1,36 +1,42 @@
-// File: saru/com/app/MessageActivity.java
 package saru.com.app;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import saru.com.adapters.MessageAdapter;
 import saru.com.models.Message;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
+
+    private static final String TAG = "MessageActivity";
+
+    private FirebaseFirestore db;
     private RecyclerView rvMessages;
     private EditText edtMessage;
     private Button btnSend;
-    private Toolbar toolbar;
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
-    private FirebaseFirestore db;
-    private ListenerRegistration messageListener;
-    private String customerId;
-    private String customerName;
-    private static final String SENDER_ADMIN = "Admin";
+
+    // IMPORTANT: This should be the ID of the currently logged-in user.
+    // Replace this placeholder with your actual user ID logic, e.g., from Firebase Auth.
+    private String currentUserID = "iis6IltEW3T92eheyKb066XCx182"; // Example User ID from your screenshot
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,118 +44,78 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         db = FirebaseFirestore.getInstance();
-        customerId = getIntent().getStringExtra("CUSTOMER_ID");
-        customerName = getIntent().getStringExtra("CUSTOMER_NAME");
 
-        if (customerId == null) {
-            showToast("Thiếu ID khách hàng");
-            finish();
-            return;
-        }
-
-        initializeViews();
-        setupToolbar();
-        setupRecyclerView();
-        loadMessages();
-        setupSendButton();
-    }
-
-    private void initializeViews() {
-        rvMessages = findViewById(R.id.rvMessages);
+        // Initialize views with correct IDs from XML
         edtMessage = findViewById(R.id.edtMessage);
         btnSend = findViewById(R.id.btnSend);
-        toolbar = findViewById(R.id.toolbar_message);
-    }
+        rvMessages = findViewById(R.id.rvMessages);
 
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar_message);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(customerName != null ? customerName : "Chat");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
-    }
-
-    private void setupRecyclerView() {
+        // Setup RecyclerView
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messageList, SENDER_ADMIN);
+        messageAdapter = new MessageAdapter(messageList, currentUserID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true); // Hiển thị tin nhắn mới nhất ở dưới cùng
+        layoutManager.setStackFromEnd(true); // New messages appear at the bottom
         rvMessages.setLayoutManager(layoutManager);
         rvMessages.setAdapter(messageAdapter);
+
+        // Load messages from Firestore
+        loadMessages();
+
+        btnSend.setOnClickListener(v -> {
+            String messageText = edtMessage.getText().toString().trim();
+            if (TextUtils.isEmpty(messageText)) {
+                Toast.makeText(this, "Please enter a message", Toast.LENGTH_SHORT).show();
+            } else {
+                sendMessage(messageText);
+                edtMessage.setText("");
+            }
+        });
     }
 
     private void loadMessages() {
-        messageListener = db.collection("messages")
-                .whereEqualTo("customerID", customerId) // Lọc tin nhắn theo customerId
-                .orderBy("timestamp", Query.Direction.ASCENDING) // Sắp xếp theo thời gian
-                .addSnapshotListener((snapshots, error) -> {
-                    if (error != null) {
-                        showToast("Lỗi tải tin nhắn: " + error.getMessage());
+        db.collection("chats")
+                .document(currentUserID)
+                .collection("messages")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
                         return;
                     }
+
                     if (snapshots != null) {
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    Message message = dc.getDocument().toObject(Message.class);
-                                    message.setMessageID(dc.getDocument().getId());
-                                    messageList.add(message);
-                                    break;
-                                case REMOVED:
-                                    // Xử lý xóa tin nhắn nếu cần
-                                    break;
-                                case MODIFIED:
-                                    // Xử lý sửa tin nhắn nếu cần
-                                    break;
-                            }
+                        messageList.clear();
+                        for (com.google.firebase.firestore.DocumentSnapshot doc : snapshots.getDocuments()) {
+                            Message message = doc.toObject(Message.class);
+                            messageList.add(message);
                         }
                         messageAdapter.notifyDataSetChanged();
-                        if (!messageList.isEmpty()) {
-                            rvMessages.smoothScrollToPosition(messageList.size() - 1); // Cuộn mượt mà đến tin nhắn mới
-                        }
+                        rvMessages.scrollToPosition(messageList.size() - 1); // Scroll to the latest message
                     }
                 });
     }
 
-    private void setupSendButton() {
-        btnSend.setOnClickListener(v -> {
-            String content = edtMessage.getText().toString().trim();
-            if (content.isEmpty()) {
-                showToast("Vui lòng nhập nội dung tin nhắn");
-                return;
-            }
-            sendMessage(content);
-        });
-    }
+    private void sendMessage(String messageText) {
+        Map<String, Object> messageData = new HashMap<>();
+        // These fields must match your Message.java model and Firestore document structure
+        messageData.put("senderID", currentUserID);
+        messageData.put("content", messageText);
+        messageData.put("timestamp", Timestamp.now());
+        // Optional fields from your screenshot, you can add them if needed
+        messageData.put("senderType", "customer"); // or "admin" depending on who is sending
+        messageData.put("contentType", "text");
 
-    private void sendMessage(String content) {
-        Message message = new Message();
-        message.setCustomerID(customerId);
-        message.setMessageContent(content);
-        message.setTimestamp(Timestamp.now());
-        message.setSender(SENDER_ADMIN);
 
-        db.collection("messages")
-                .add(message)
+        db.collection("chats")
+                .document(currentUserID)
+                .collection("messages")
+                .add(messageData)
                 .addOnSuccessListener(documentReference -> {
-                    edtMessage.setText(""); // Xóa nội dung sau khi gửi
-                    // Không cần cuộn vì SnapshotListener sẽ tự động cập nhật
+                    Log.d(TAG, "Message sent successfully");
                 })
-                .addOnFailureListener(e -> showToast("Lỗi gửi tin nhắn: " + e.getMessage()));
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (messageListener != null) {
-            messageListener.remove(); // Ngừng lắng nghe để tránh rò rỉ bộ nhớ
-        }
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error sending message", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Error sending message", e);
+                });
     }
 }

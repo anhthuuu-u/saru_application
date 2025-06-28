@@ -3,30 +3,41 @@ package saru.com.models;
 import com.google.firebase.Timestamp;
 
 public class Message {
-    private String messageID;
-    private String customerID;
-    private String messageContent;
+    private String content;
+    private String senderID;
     private Timestamp timestamp;
-    private String sender;
 
-    public Message() {}
-
-    public Message(String messageID, String customerID, String messageContent, Timestamp timestamp, String sender) {
-        this.messageID = messageID;
-        this.customerID = customerID;
-        this.messageContent = messageContent;
-        this.timestamp = timestamp;
-        this.sender = sender;
+    public Message() {
+        // Firestore requires a public, no-argument constructor
     }
 
-    public String getMessageID() { return messageID; }
-    public void setMessageID(String messageID) { this.messageID = messageID; }
-    public String getCustomerID() { return customerID; }
-    public void setCustomerID(String customerID) { this.customerID = customerID; }
-    public String getMessageContent() { return messageContent; }
-    public void setMessageContent(String messageContent) { this.messageContent = messageContent; }
-    public Timestamp getTimestamp() { return timestamp; }
-    public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
-    public String getSender() { return sender; }
-    public void setSender(String sender) { this.sender = sender; }
+    public Message(String content, String senderID, Timestamp timestamp) {
+        this.content = content;
+        this.senderID = senderID;
+        this.timestamp = timestamp;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getSenderID() {
+        return senderID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 }

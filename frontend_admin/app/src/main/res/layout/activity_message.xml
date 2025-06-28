@@ -6,8 +6,6 @@
     android:name=".MessageActivity"
     android:theme="@style/Theme.Saru">
 
-
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_message"
         android:layout_width="match_parent"
@@ -18,7 +16,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar_message"
         android:layout_above="@+id/layout_chatbox"
         android:padding="8dp"

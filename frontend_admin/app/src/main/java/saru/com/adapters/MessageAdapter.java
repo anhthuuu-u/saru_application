@@ -17,35 +17,42 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private static final int VIEW_TYPE_RECEIVED = 2;
 
     private final List<Message> messageList;
-    private final String currentSenderId;
+    private final String currentUserID;
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-    public MessageAdapter(List<Message> messageList, String currentSenderId) {
+    public MessageAdapter(List<Message> messageList, String currentUserID) {
         this.messageList = messageList;
-        this.currentSenderId = currentSenderId;
+        this.currentUserID = currentUserID;
     }
 
     @Override
     public int getItemViewType(int position) {
         Message message = messageList.get(position);
-        return (message.getSender() != null && message.getSender().equals(currentSenderId))
-                ? VIEW_TYPE_SENT : VIEW_TYPE_RECEIVED;
+        // This line requires message.getSenderID()
+        if (message.getSenderID() != null && message.getSenderID().equals(currentUserID)) {
+            return VIEW_TYPE_SENT;
+        } else {
+            return VIEW_TYPE_RECEIVED;
+        }
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(
-                viewType == VIEW_TYPE_SENT ? R.layout.item_message_sent : R.layout.item_message_received,
-                parent, false
-        );
+        View view;
+        if (viewType == VIEW_TYPE_SENT) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_sent, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_received, parent, false);
+        }
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Message message = messageList.get(position);
-        holder.txtMessageContent.setText(message.getMessageContent());
+        // This line requires message.getContent()
+        holder.txtMessageContent.setText(message.getContent());
         if (message.getTimestamp() != null) {
             holder.txtMessageTime.setText(timeFormat.format(message.getTimestamp().toDate()));
         } else {

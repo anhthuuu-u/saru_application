@@ -51,9 +51,19 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         Customer customer = customerList.get(position);
         holder.txtCustomerName.setText(customer.getCustomerName());
         holder.txtCustomerPhone.setText(customer.getCustomerPhone());
-        holder.txtCustomerStatus.setText(customer.getSex().isEmpty() ? "Unknown" : customer.getSex());
 
-        // Truy vấn số tin nhắn chưa đọc từ Firestore
+        // *** FIX APPLIED HERE ***
+        // Safely check if 'sex' is null or empty before setting the text.
+        String sex = customer.getSex();
+        if (sex != null && !sex.isEmpty()) {
+            holder.txtCustomerStatus.setText(sex);
+        } else {
+            holder.txtCustomerStatus.setText("Unknown");
+        }
+
+        // The query for unread messages is inefficient here as it runs for every item.
+        // For better performance, this logic should be handled differently,
+        // but it is not the cause of the crash.
         db.collection("messages")
                 .whereEqualTo("customerID", customer.getCustomerID())
                 .whereEqualTo("read", false)
