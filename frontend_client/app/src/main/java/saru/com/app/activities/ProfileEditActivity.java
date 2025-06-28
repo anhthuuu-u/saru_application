@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import saru.com.app.R;
@@ -486,58 +487,45 @@ public class ProfileEditActivity extends AppCompatActivity {
     private void fetchPaymentMethods(String userUID) {
         Log.d("ProfileEditActivity", "Fetching payment methods for UserUID: " + userUID);
         paymentMethodsList = new ArrayList<>(); // Reset the list
-        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
 
-        // Iterate through all possible payment collections
-        for (int i = 1; i <= 5; i++) {
-            String paymentCollectionName = "payment0" + i;
-            Task<QuerySnapshot> task = db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(paymentCollectionName)
-                    .get();
-            tasks.add(task);
-        }
-
-        // Wait for all tasks to complete
-        Tasks.whenAllComplete(tasks)
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .get()
                 .addOnCompleteListener(task -> {
-                    for (Task<QuerySnapshot> queryTask : tasks) {
-                        if (queryTask.isSuccessful() && !queryTask.getResult().isEmpty()) {
-                            DocumentSnapshot paymentDoc = queryTask.getResult().getDocuments().get(0);
-                            if (paymentDoc != null) {
-                                String paymentMethodID = paymentDoc.getString("PaymentMethodID");
-                                if ("1".equals(paymentMethodID)) { // Internet Banking
-                                    String cardType = paymentDoc.getString("CardType");
-                                    String bank = paymentDoc.getString("Bank");
-                                    paymentMethodsList.add(cardType + " - " + bank);
-                                } else if ("0".equals(paymentMethodID)) { // Cash
-                                    paymentMethodsList.add(getString(R.string.cash));
-                                } else if ("2".equals(paymentMethodID)) { // E-Wallet
-                                    String phoneNumber = paymentDoc.getString("PhoneNumber");
-                                    String eWalletType = paymentDoc.getString("EWalletType");
-                                    String displayName = (eWalletType != null && phoneNumber != null)
-                                            ? eWalletType + " - " + phoneNumber
-                                            : getString(R.string.ewallet_unknown);
-                                    paymentMethodsList.add(displayName);
-                                }
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String paymentMethodID = document.getString("PaymentMethodID");
+                            if ("1".equals(paymentMethodID)) { // Internet Banking
+                                String cardType = document.getString("CardType");
+                                String bank = document.getString("Bank");
+                                paymentMethodsList.add(cardType + " - " + bank);
+                            } else if ("0".equals(paymentMethodID)) { // Cash
+                                paymentMethodsList.add(getString(R.string.cash));
+                            } else if ("2".equals(paymentMethodID)) { // E-Wallet
+                                String phoneNumber = document.getString("PhoneNumber");
+                                String eWalletType = document.getString("EWalletType");
+                                String displayName = (eWalletType != null && phoneNumber != null)
+                                        ? eWalletType + " - " + phoneNumber
+                                        : getString(R.string.ewallet_unknown);
+                                paymentMethodsList.add(displayName);
                             }
                         }
-                    }
 
-                    if (paymentMethodsList.isEmpty()) {
-                        Log.e("ProfileEditActivity", "No payment methods to populate spinner with.");
-                        paymentMethodsList.add(getString(R.string.no_payment_methods_available));
-                    }
+                        if (paymentMethodsList.isEmpty()) {
+                            Log.e("ProfileEditActivity", "No payment methods to populate spinner with.");
+                            paymentMethodsList.add(getString(R.string.no_payment_methods_available));
+                        }
 
-                    runOnUiThread(() -> populateSpinner(paymentMethodsList));
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ProfileEditActivity", "Error fetching payment methods: " + e.getMessage());
-                    runOnUiThread(() -> {
-                        paymentMethodsList.add(getString(R.string.no_payment_methods_available));
-                        populateSpinner(paymentMethodsList);
-                        Toast.makeText(ProfileEditActivity.this, R.string.load_payment_methods_error, Toast.LENGTH_SHORT).show();
-                    });
+                        runOnUiThread(() -> populateSpinner(paymentMethodsList));
+                    } else {
+                        Log.e("ProfileEditActivity", "Error fetching payment methods: " + task.getException());
+                        runOnUiThread(() -> {
+                            paymentMethodsList.add(getString(R.string.no_payment_methods_available));
+                            populateSpinner(paymentMethodsList);
+                            Toast.makeText(ProfileEditActivity.this, R.string.load_payment_methods_error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
                 });
     }
 
@@ -651,91 +639,83 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     private void deletePaymentMethod(String selectedMethod, String userUID) {
-        for (int i = 1; i <= 5; i++) {
-            String paymentCollectionName = "payment0" + i;
-            db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(paymentCollectionName)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String cardType = document.getString("CardType");
-                                String bank = document.getString("Bank");
-                                String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
-                                String phoneNumber = document.getString("PhoneNumber");
-                                String eWalletType = document.getString("EWalletType");
-                                String ewalletMethod = (eWalletType != null && phoneNumber != null)
-                                        ? eWalletType + " - " + phoneNumber
-                                        : getString(R.string.ewallet_unknown);
-                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
-                                    db.collection("paymentofcustomer")
-                                            .document(userUID)
-                                            .collection(paymentCollectionName)
-                                            .document(document.getId())
-                                            .delete()
-                                            .addOnSuccessListener(aVoid -> {
-                                                Log.d("ProfileEditActivity", "Payment method deleted successfully from " + paymentCollectionName);
-                                                Toast.makeText(ProfileEditActivity.this, R.string.payment_method_deleted, Toast.LENGTH_SHORT).show();
-                                                // Refresh all payment methods
-                                                fetchPaymentMethods(userUID);
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                Log.e("ProfileEditActivity", "Error deleting payment method: " + e.getMessage());
-                                                Toast.makeText(ProfileEditActivity.this, R.string.payment_delete_error, Toast.LENGTH_SHORT).show();
-                                            });
-                                    return; // Exit after finding and deleting
-                                }
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String cardType = document.getString("CardType");
+                            String bank = document.getString("Bank");
+                            String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
+                            String phoneNumber = document.getString("PhoneNumber");
+                            String eWalletType = document.getString("EWalletType");
+                            String ewalletMethod = (eWalletType != null && phoneNumber != null)
+                                    ? eWalletType + " - " + phoneNumber
+                                    : getString(R.string.ewallet_unknown);
+                            if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
+                                db.collection("paymentofcustomer")
+                                        .document(userUID)
+                                        .collection("paymentMethods")
+                                        .document(document.getId())
+                                        .delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("ProfileEditActivity", "Payment method deleted successfully");
+                                            Toast.makeText(ProfileEditActivity.this, R.string.payment_method_deleted, Toast.LENGTH_SHORT).show();
+                                            // Refresh all payment methods
+                                            fetchPaymentMethods(userUID);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("ProfileEditActivity", "Error deleting payment method: " + e.getMessage());
+                                            Toast.makeText(ProfileEditActivity.this, R.string.payment_delete_error, Toast.LENGTH_SHORT).show();
+                                        });
+                                return; // Exit after finding and deleting
                             }
                         }
-                    });
-        }
+                    }
+                });
     }
 
     private void navigateToEdit(String selectedMethod, String userUID) {
-        for (int i = 1; i <= 5; i++) {
-            String paymentCollectionName = "payment0" + i;
-            db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(paymentCollectionName)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String cardType = document.getString("CardType");
-                                String bank = document.getString("Bank");
-                                String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
-                                String phoneNumber = document.getString("PhoneNumber");
-                                String eWalletType = document.getString("EWalletType");
-                                String ewalletMethod = (eWalletType != null && phoneNumber != null)
-                                        ? eWalletType + " - " + phoneNumber
-                                        : getString(R.string.ewallet_unknown);
-                                if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
-                                    Intent intent;
-                                    if ("2".equals(document.getString("PaymentMethodID"))) {
-                                        intent = new Intent(ProfileEditActivity.this, AddEWalletActivity.class);
-                                        intent.putExtra("paymentCollection", paymentCollectionName);
-                                        intent.putExtra("paymentMethodID", document.getId());
-                                        intent.putExtra("phoneNumber", phoneNumber);
-                                        intent.putExtra("eWalletType", eWalletType);
-                                        intent.putExtra("isEdit", true); // Indicate edit mode
-                                    } else {
-                                        intent = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
-                                        intent.putExtra("paymentCollection", paymentCollectionName);
-                                        intent.putExtra("paymentMethodID", document.getId());
-                                        intent.putExtra("cardType", cardType);
-                                        intent.putExtra("bank", bank);
-                                        intent.putExtra("cardNumber", document.getString("CardNumber"));
-                                        intent.putExtra("cvv", document.getString("CVV"));
-                                        intent.putExtra("expiryDate", document.getString("ExpiryDate"));
-                                    }
-                                    startActivityForResult(intent, REQUEST_CODE_ADD_EWALLET);
-                                    return; // Exit after finding and navigating
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String cardType = document.getString("CardType");
+                            String bank = document.getString("Bank");
+                            String currentMethod = cardType != null && bank != null ? cardType + " - " + bank : "";
+                            String phoneNumber = document.getString("PhoneNumber");
+                            String eWalletType = document.getString("EWalletType");
+                            String ewalletMethod = (eWalletType != null && phoneNumber != null)
+                                    ? eWalletType + " - " + phoneNumber
+                                    : getString(R.string.ewallet_unknown);
+                            if (currentMethod.equals(selectedMethod) || getString(R.string.cash).equals(selectedMethod) || ewalletMethod.equals(selectedMethod)) {
+                                Intent intent;
+                                if ("2".equals(document.getString("PaymentMethodID"))) {
+                                    intent = new Intent(ProfileEditActivity.this, AddEWalletActivity.class);
+                                    intent.putExtra("paymentMethodID", document.getId());
+                                    intent.putExtra("phoneNumber", phoneNumber);
+                                    intent.putExtra("eWalletType", eWalletType);
+                                    intent.putExtra("isEdit", true); // Indicate edit mode
+                                } else {
+                                    intent = new Intent(ProfileEditActivity.this, ProfileUpdateCardActivity.class);
+                                    intent.putExtra("paymentMethodID", document.getId());
+                                    intent.putExtra("cardType", cardType);
+                                    intent.putExtra("bank", bank);
+                                    intent.putExtra("cardNumber", document.getString("CardNumber"));
+                                    intent.putExtra("cvv", document.getString("CVV"));
+                                    intent.putExtra("expiryDate", document.getString("ExpiryDate"));
                                 }
+                                startActivityForResult(intent, REQUEST_CODE_ADD_EWALLET);
+                                return; // Exit after finding and navigating
                             }
                         }
-                    });
-        }
+                    }
+                });
     }
 
     public void showAddressContextMenu(final int position) {
@@ -865,72 +845,40 @@ public class ProfileEditActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void addCashPaymentMethod(String userUID) {
-        findNextAvailablePaymentIndex(userUID, nextIndex -> {
-            if (nextIndex > 0 && nextIndex <= 5) {
-                String paymentCollectionName = "payment0" + nextIndex;
-                Map<String, Object> paymentMethod = new HashMap<>();
-                paymentMethod.put("PaymentMethodID", "0"); // Cash
-                paymentMethod.put("PaymentMethod", getString(R.string.cash));
+    private String generateUniquePaymentId() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        String timestamp = sdf.format(new Date());
+        Random random = new Random();
+        int randomNum = random.nextInt(900) + 100; // Generate a random number between 100 and 999
+        return timestamp + randomNum; // Example: 20250628180909123
+    }
 
-                db.collection("paymentofcustomer")
-                        .document(userUID)
-                        .collection(paymentCollectionName)
-                        .document(String.valueOf(System.currentTimeMillis())) // Unique ID
-                        .set(paymentMethod)
-                        .addOnSuccessListener(aVoid -> {
-                            Log.d("ProfileEditActivity", "Cash payment method added successfully to " + paymentCollectionName);
-                            paymentMethodsList.add(getString(R.string.cash));
-                            runOnUiThread(() -> populateSpinner(paymentMethodsList));
-                            Toast.makeText(ProfileEditActivity.this, R.string.cash_added_success, Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e("ProfileEditActivity", "Error adding cash payment method: " + e.getMessage());
-                            Toast.makeText(ProfileEditActivity.this, R.string.cash_add_error, Toast.LENGTH_SHORT).show();
-                        });
-            } else {
-                Toast.makeText(this, R.string.max_payment_methods_reached, Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void addCashPaymentMethod(String userUID) {
+        String paymentMethodId = generateUniquePaymentId(); // Generate unique ID
+        Map<String, Object> paymentMethod = new HashMap<>();
+        paymentMethod.put("PaymentMethodID", "0"); // Cash
+        paymentMethod.put("PaymentMethod", getString(R.string.cash));
+
+        db.collection("paymentofcustomer")
+                .document(userUID)
+                .collection("paymentMethods")
+                .document(paymentMethodId)
+                .set(paymentMethod)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("ProfileEditActivity", "Cash payment method added successfully with ID: " + paymentMethodId);
+                    paymentMethodsList.add(getString(R.string.cash));
+                    runOnUiThread(() -> populateSpinner(paymentMethodsList));
+                    Toast.makeText(ProfileEditActivity.this, R.string.cash_added_success, Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileEditActivity", "Error adding cash payment method: " + e.getMessage());
+                    Toast.makeText(ProfileEditActivity.this, R.string.cash_add_error, Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void findNextAvailablePaymentIndex(String userUID, OnIndexFoundListener listener) {
-        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
-
-        // Create tasks for checking each payment collection
-        for (int i = 1; i <= 5; i++) {
-            String collectionName = "payment0" + i;
-            Task<QuerySnapshot> task = db.collection("paymentofcustomer")
-                    .document(userUID)
-                    .collection(collectionName)
-                    .get();
-            tasks.add(task);
-        }
-
-        // Wait for all tasks to complete
-        Tasks.whenAllComplete(tasks)
-                .addOnCompleteListener(task -> {
-                    int[] occupied = new int[6]; // 1 to 5
-                    for (int i = 0; i < tasks.size(); i++) {
-                        Task<QuerySnapshot> queryTask = tasks.get(i);
-                        if (queryTask.isSuccessful() && !queryTask.getResult().isEmpty()) {
-                            occupied[i + 1] = 1; // Mark as occupied
-                        }
-                    }
-
-                    // Find the next available index
-                    for (int i = 1; i <= 5; i++) {
-                        if (occupied[i] == 0) {
-                            listener.onIndexFound(i);
-                            return;
-                        }
-                    }
-                    listener.onIndexFound(-1); // No available slot
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ProfileEditActivity", "Error checking payment collections: " + e.getMessage());
-                    listener.onIndexFound(-1); // Indicate failure
-                });
+        // No need to find an index since we're using a single collection with unique IDs
+        listener.onIndexFound(1); // Always return a valid index as a placeholder
     }
 
     // Callback interface to handle the async result
