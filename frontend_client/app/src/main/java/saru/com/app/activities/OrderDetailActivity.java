@@ -180,22 +180,22 @@ public class OrderDetailActivity extends AppCompatActivity {
                                         Toast.makeText(OrderDetailActivity.this, "Order status ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
-                                    // Fetch customer information from "customers"
-                                    if (customerID != null) {
-                                        db.collection("customers").document(customerID)
+                                    // Fetch customer information from "orders"
+                                    if (orderID != null) { // Make sure you have orderID available, not customerID
+                                        db.collection("orders").document(orderID)
                                                 .get()
-                                                .addOnCompleteListener(customerTask -> {
+                                                .addOnCompleteListener(orderTask -> {
                                                     try {
-                                                        if (customerTask.isSuccessful()) {
-                                                            DocumentSnapshot customerDoc = customerTask.getResult();
-                                                            if (customerDoc != null && customerDoc.exists()) {
-                                                                // Log customer document data
-                                                                Log.d("OrderDetailActivity", "Customer document data: " + customerDoc.getData());
+                                                        if (orderTask.isSuccessful()) {
+                                                            DocumentSnapshot orderDoc = orderTask.getResult();
+                                                            if (orderDoc != null && orderDoc.exists()) {
+                                                                // Log order document data
+                                                                Log.d("OrderDetailActivity", "Order document data: " + orderDoc.getData());
 
-                                                                // Use get() to handle any type for CustomerName, CustomerPhone, CustomerAdd
-                                                                Object customerNameObj = customerDoc.get("CustomerName");
-                                                                Object customerPhoneObj = customerDoc.get("CustomerPhone");
-                                                                Object customerAddressObj = customerDoc.get("CustomerAdd");
+                                                                // Use get() to handle any type for CustomerName, CustomerPhone, CustomerAdd from the order document
+                                                                Object customerNameObj = orderDoc.get("customerName"); // Assuming field names in "orders" are "customerName"
+                                                                Object customerPhoneObj = orderDoc.get("customerPhone"); // Assuming field names in "orders" are "customerPhone"
+                                                                Object customerAddressObj = orderDoc.get("customerAddress"); // Assuming field names in "orders" are "customerAddress"
 
                                                                 String customerName = customerNameObj != null ? customerNameObj.toString() : null;
                                                                 String customerPhone = customerPhoneObj != null ? customerPhoneObj.toString() : null;
@@ -214,30 +214,30 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                 txtShowName.setText("Unknown");
                                                                 txtShowPhoneNumber.setText("Unknown");
                                                                 txtShowAddress.setText("Unknown");
-                                                                Log.e("OrderDetailActivity", "Customer document does not exist for CustomerID: " + customerID);
-                                                                Toast.makeText(OrderDetailActivity.this, "Customer not found for ID: " + customerID, Toast.LENGTH_LONG).show();
+                                                                Log.e("OrderDetailActivity", "Order document does not exist for OrderID: " + orderID);
+                                                                Toast.makeText(OrderDetailActivity.this, "Order not found for ID: " + orderID, Toast.LENGTH_LONG).show();
                                                             }
                                                         } else {
                                                             txtShowName.setText("Unknown");
                                                             txtShowPhoneNumber.setText("Unknown");
                                                             txtShowAddress.setText("Unknown");
-                                                            Log.e("OrderDetailActivity", "Error fetching customer details: " + customerTask.getException());
-                                                            Toast.makeText(OrderDetailActivity.this, "Failed to load customer details: " + customerTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                            Log.e("OrderDetailActivity", "Error fetching order details: " + orderTask.getException());
+                                                            Toast.makeText(OrderDetailActivity.this, "Failed to load order details: " + orderTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                                                         }
                                                     } catch (Exception e) {
-                                                        Log.e("OrderDetailActivity", "Exception in fetching customer details: " + e.getMessage(), e);
+                                                        Log.e("OrderDetailActivity", "Exception in fetching order details: " + e.getMessage(), e);
                                                         txtShowName.setText("Unknown");
                                                         txtShowPhoneNumber.setText("Unknown");
                                                         txtShowAddress.setText("Unknown");
-                                                        Toast.makeText(OrderDetailActivity.this, "Error loading customer: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(OrderDetailActivity.this, "Error loading order: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                                     }
                                                 });
                                     } else {
                                         txtShowName.setText("Unknown");
                                         txtShowPhoneNumber.setText("Unknown");
                                         txtShowAddress.setText("Unknown");
-                                        Log.e("OrderDetailActivity", "CustomerID is null for orderID: " + orderID);
-                                        Toast.makeText(OrderDetailActivity.this, "Customer ID is missing", Toast.LENGTH_LONG).show();
+                                        Log.e("OrderDetailActivity", "OrderID is null."); // Changed from CustomerID to OrderID
+                                        Toast.makeText(OrderDetailActivity.this, "Order ID is missing", Toast.LENGTH_LONG).show();
                                     }
 
                                     // Fetch order products

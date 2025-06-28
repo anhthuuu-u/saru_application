@@ -73,17 +73,13 @@
     <string name="title_brand_name">Hua Quang Han</string>
     <string name="title_merchandise_total_price">1.020.000đ</string>
     <string name="title_shipping_fee_price">20.000 đ</string>
-    <string name="title_product_1_price">400.000 đ</string>
-    <string name="title_product_2_price">200.000 đ</string>
-    <string name="title_product_3_price">400.000 đ</string>
-    <string name="title_quantity_2">x2</string>
-    <string name="title_quantity_1">x1</string>
+    <string name="title_total_item">xx</string>
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Shipping Fee:</string>
     <string name="title_merchandise_total">Merchandise Total</string>
-    <string name="title_item_quantity">(x items)</string>
+    <string name="title_item_quantity">Items</string>
     <string name="title_delivery_time">Time to delivery</string>
-    <string name="title_expected_delivery">Expected Delivery ngày tháng năm</string>
+    <string name="title_expected_delivery">Expected Delivery ngày 2 tháng 7 năm 2025</string>
 
     <!--    Voucher Code-->
     <string name="title_voucher_code">Voucher Code</string>
@@ -101,10 +97,10 @@
     <string name="title_cod_detail">Cash on delivery</string>
 
     <string name="title_bank">Bank (Credit or Debit)</string>
-    <string name="title_bank_name">Bank: Vietcombank</string>
-    <string name="title_customer_bank_name">Customer Bank Name: Anh Khoa</string>
-    <string name="title_bank_type">Bank type: Mastercard</string>
-    <string name="title_bank_number_card">Number Card: ******789</string>
+    <string name="title_bank_name">Vietcombank</string>
+    <string name="title_customer_bank_name">Anh Khoa</string>
+    <string name="title_bank_type">Mastercard</string>
+    <string name="title_bank_number_card">******789</string>
 
     <string name="title_ewallet">E-Wallet</string>
     <string name="title_ewallet_detail">Momo Ewallet</string>
@@ -225,7 +221,7 @@
     <string name="title_aboutus_CFO">CFO\n</string>
     <string name="title_aboutus_cto">CTO</string>
     <string name="title_aboutus_coo">COO</string>
-    <string name="title_aboutus_endpage">About us</string>
+    <string name="title_aboutus_endpage">Introduction</string>
     <string name="title_aboutuslocation_LaoCaiBranch">Saru Tay Bac Store, Lao Cai Branch</string>
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Address: 16 Le Hong Phong, Lao Cai City, Lao Cai Province</string>
     <string name="title_aboutuslocation_HCMBranch">Saru Tay Bac Store, Ho Chi Minh Branch</string>
@@ -319,6 +315,7 @@
     <!-- ORDER LIST -->
     <string name="order_back_button_description">Back Button</string>
     <string name="order_detail_title">ORDER DETAILS</string>
+    <string name="order_list_title">ORDER LIST</string>
     <string name="order_tab_all">All</string>
     <string name="order_tab_confirm">Pending Confirmation</string>
     <string name="order_tab_payment">Pending Payment</string>
@@ -476,7 +473,6 @@
     <string name="chk_agree"><font color="#FF0000">*</font> I have read and agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Saru</string>
     <string name="text_login">Already have account?</string>
     <!--Verification -->
-    <!-- Verification -->
     <string name="prompt_upload_id_card">Tap to upload the front of your ID card</string>
     <string name="btn_change_image">Change image</string>
     <string name="status_uploading">Uploading &#8230;</string>
@@ -656,6 +652,7 @@
     <string name="error_adding_to_cart">Error adding to cart</string>
     <string name="google_play_services_unavailable">Google Play Services is not available</string>
     <string name="added_to_cart">Added %1$s to cart successfully!</string>
+
     <string name="invalid_category">Invalid Category</string>
     <string name="invalid_brand">Invalid Brand</string>
     <string name="no_filter_applied">No filter apply</string>
@@ -664,5 +661,85 @@
     <string name="error_loading_cart">Error loading cart</string>
 
 
+    <string name="title_confirm_payment">Confirm Payment</string>
+    <string name="title_confirm_payment_message">Please take attention that the product are not available for who under 18, do you want to place order?</string>
+
+    <string name="title_Add_EWallet">Add E-Wallet Information</string>
+
+    <string name="user_not_logged_in">User not logged in</string>
+    <string name="enter_phone_number">Please enter a phone number</string>
+    <string name="max_payment_methods_reached">Maximum of 5 payment methods reached</string>
+    <string name="ewallet_added_success">E-Wallet added successfully</string>
+    <string name="ewallet_add_error">Error adding E-Wallet</string>
+    <string name="ewallet_updated_success">E-Wallet updated successfully</string>
+    <string name="ewallet_update_error">Error updating E-Wallet</string>
+    <string name="payment_method_exists">This payment method already exists</string>
+    <string name="cash_added_success">Cash payment method added successfully</string>
+    <string name="cash_add_error">Error adding cash payment method</string>
+    <string name="payment_method_deleted">Payment method deleted</string>
+    <string name="payment_delete_error">Error deleting payment method</string>
+    <string name="load_payment_methods_error">Error loading payment methods</string>
+    <string name="customer_id_missing">Customer ID is missing</string>
+    <string name="load_user_data_failed">Failed to load user data</string>
+    <string name="load_customer_data_failed">Failed to load customer data</string>
+    <string name="error_occurred">An error occurred, please try again later</string>
+    <string name="address_deleted">Address deleted</string>
+    <string name="address_delete_error">Error deleting address</string>
+    <string name="main_address_removed">Main address removed from list</string>
+    <string name="customer_id_not_found">Error: Customer ID not found</string>
+    <string name="select_payment_method">Select payment method</string>
+    <string name="update_ewallet">Update E-Wallet</string>
+    <string name="no_payment_methods_available">No payment methods available</string>
+
+    <string name="save">Save</string>
+    <string name="personal_info_updated_success">Personal information updated successfully</string>
+    <string name="personal_info_update_error">Error updating personal information</string>
+    <string name="invalid_email">Please enter a valid email address</string>
+    <string name="invalid_name">Please enter a valid name</string>
+    <string name="invalid_phone">Please enter a valid phone number</string>
+    <string name="invalid_birth_date">Please enter a valid birth date (yyyy-MM-dd)</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="customer_phone">Customer Phone</string>
+    <string name="customer_birth">Customer Birth</string>
+    <string name="customer_email">Customer Email</string>
+    <string name="customer_password">Customer Password</string>
+    <string name="customer_join_date">Join Date</string>
+    <string name="customer_full_name">Full Name</string>
+    <string name="customer_full_address">Full Address</string>
+    <string name="add_address">Add Address</string>
+    <string name="cash">Cash</string>
+    <string name="ewallet">E-wallet</string>
+    <string name="internet_banking">Internet Banking</string>
+    <string name="ewallet_unknown">E-Wallet Unknown</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_option">Select Option</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="delete_payment_method_confirmation">Are you sure you want to delete this payment method?</string>
+    <string name="yes">Yes</string>
+    <string name="delete_address_confirmation">Are you sure you want to delete this address?</string>
+
+
+
+    <string name="message_sent_success">Message sent successfully</string>
+    <string name="message_send_error">Error sending message</string>
+    <string name="image_upload_success">Image uploaded successfully</string>
+
+    <string name="load_messages_error">Error loading messages</string>
+
+    <string name="customer_support">Customer Support</string>
+    <string name="add_attachment">Add Attachment</string>
+    <string name="send_message">Send Message</string>
+    <string name="enter_message">Enter your message</string>
+    <string name="message_timestamp_format">MMM dd, yyyy HH:mm</string>
+    <string name="simulate_admin_message">Simulate Admin Message</string>
+
+
+
+
 </resources>
+
 

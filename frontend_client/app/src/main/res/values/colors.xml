@@ -22,5 +22,8 @@
     <color name="highlight_yellow">#F8BC3B</color>
     <color name="green">#008000</color>
     <color name="scrollbar_thumb">#B16628</color>
+    <color name="orange">#FFA500</color>
+    <color name="light_beige">#F2E8DA</color>
+    <color name="default_button">#CCCCCC</color>
 
 </resources>

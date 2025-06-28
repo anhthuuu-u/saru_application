@@ -1,8 +1,9 @@
 package saru.com.app.models;
 
-import saru.com.app.connectors.ProductAdapter;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class CartItem {
+public class CartItem implements Parcelable {
     private String productID;
     private String AccountID;
     private long timestamp;
@@ -23,7 +24,44 @@ public class CartItem {
         this.selected = selected;
     }
 
-    public CartItem() {
+    protected CartItem(Parcel in) {
+        productID = in.readString();
+        AccountID = in.readString();
+        timestamp = in.readLong();
+        productName = in.readString();
+        productPrice = in.readDouble();
+        imageID = in.readString();
+        quantity = in.readInt();
+        selected = in.readByte() != 0;
+    }
+
+    public static final Creator<CartItem> CREATOR = new Creator<CartItem>() {
+        @Override
+        public CartItem createFromParcel(Parcel in) {
+            return new CartItem(in);
+        }
+
+        @Override
+        public CartItem[] newArray(int size) {
+            return new CartItem[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(productID);
+        dest.writeString(AccountID);
+        dest.writeLong(timestamp);
+        dest.writeString(productName);
+        dest.writeDouble(productPrice);
+        dest.writeString(imageID);
+        dest.writeInt(quantity);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     public String getProductID() {
@@ -87,11 +125,10 @@ public class CartItem {
     }
 
     public void setSelected(boolean selected) {
-        this.selected = selected; // Lưu trạng thái chọn
+        this.selected = selected;
     }
 
     public boolean isSelected() {
-        return selected; // Trả về trạng thái chọn
+        return selected;
     }
-
 }

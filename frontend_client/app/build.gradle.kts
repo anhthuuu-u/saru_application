@@ -44,6 +44,13 @@ dependencies {
     // Sử dụng BOM để quản lý phiên bản Firebase
     implementation(platform(libs.firebase.bom))
     // Firebase dependencies (không cần chỉ định phiên bản vì đã có BOM)
+
+    implementation("com.google.firebase:firebase-firestore") // Firestore
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-firestore-ktx:24.9.1")
+
     implementation(libs.firebase.firestore) // Firestore
     implementation(libs.firebase.auth.ktx)
     implementation(libs.google.firebase.database)
@@ -54,6 +61,7 @@ dependencies {
     implementation(libs.integrity)
     implementation(libs.core)
     implementation(libs.google.firebase.crashlytics)
+    implementation(libs.firebase.storage)
     debugImplementation ("com.google.firebase:firebase-appcheck-debug:17.1.2") // Hoặc phiên bản mới nhất
     implementation(libs.firebase.crashlytics)
 

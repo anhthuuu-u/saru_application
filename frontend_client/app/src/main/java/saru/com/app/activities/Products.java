@@ -145,6 +145,8 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                 finish();
             });
         }
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
 
         searchBar = findViewById(R.id.search_bar);
         if (searchBar == null) {
@@ -212,6 +214,11 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         if (cartItemCountText != null) {
             CartManager.getInstance().removeBadgeView(cartItemCountText);
         }
+    }
+
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
     }
 
     private void searchProducts(String query) {
@@ -796,7 +803,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         filterDialog.show();
     }
 
-    private static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
+    static class ItemSpacingDecoration extends RecyclerView.ItemDecoration {
         private final int spacing;
 
         public ItemSpacingDecoration(int spacing) {

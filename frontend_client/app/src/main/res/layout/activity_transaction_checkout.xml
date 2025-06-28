@@ -87,7 +87,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/edtCustomerName"
+                                android:id="@+id/txtCustomerName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter_bold"
@@ -219,22 +219,13 @@
 
 
                         <TextView
-                            android:id="@+id/txtItemQuantity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/title_item_quantity"
-                            android:textSize="10sp" />
-
-
-                        <TextView
                             android:id="@+id/txtMerchandiseTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
                             android:text="@string/title_merchandise_total_price"
                             android:textColor="@color/color_dark_brown"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <!-- Delivery Time Card -->
@@ -432,7 +423,7 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/txtCOD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -496,20 +487,38 @@
                                 android:orientation="horizontal">
 
                                 <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/title_choose_bank"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:textColor="@color/color_dark_brown"
+                                    android:textSize="10sp" />
+
+                                <TextView
                                     android:id="@+id/txtBankName"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:layout_marginStart="4dp"
                                     android:fontFamily="@font/inter"
                                     android:text="@string/title_bank_name"
                                     android:textColor="@android:color/black"
                                     android:textSize="10sp" />
 
                                 <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_type_label"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:textColor="@color/color_dark_brown"
+                                    android:textSize="10sp"/>
+
+                                <TextView
                                     android:id="@+id/txtBankCardType"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:layout_marginStart="4dp"
                                     android:fontFamily="@font/inter"
                                     android:text="@string/title_bank_type"
                                     android:textColor="@android:color/black"
@@ -523,20 +532,19 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/txtCustomerBankName"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:fontFamily="@font/inter"
-                                    android:text="@string/title_customer_bank_name"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="10sp" />
+                                    android:text="@string/card_number_label"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:textColor="@color/color_dark_brown"
+                                    android:textSize="10sp"/>
 
                                 <TextView
                                     android:id="@+id/txtBankNumberCard"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:layout_marginStart="4dp"
                                     android:fontFamily="@font/inter"
                                     android:text="@string/title_bank_number_card"
                                     android:textColor="@android:color/black"
@@ -545,15 +553,15 @@
                         </LinearLayout>
 
                         <!-- Bên phải: Icon -->
-                        <ImageView
-                            android:id="@+id/imgEditInfoBank"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:layout_marginStart="8dp"
-                            android:contentDescription="Edit Info"
-                            android:onClick="do_edit_information"
-                            android:paddingEnd="16dp"
-                            app:srcCompat="@mipmap/ic_edit_information" />
+                        <!--                        <ImageView-->
+                        <!--                            android:id="@+id/imgEditInfoBank"-->
+                        <!--                            android:layout_width="30dp"-->
+                        <!--                            android:layout_height="20dp"-->
+                        <!--                            android:layout_marginStart="8dp"-->
+                        <!--                            android:contentDescription="Edit Info"-->
+                        <!--                            android:onClick="do_edit_information"-->
+                        <!--                            android:paddingEnd="16dp"-->
+                        <!--                            app:srcCompat="@mipmap/ic_edit_information" />-->
                     </LinearLayout>
 
                     <!-- E-Wallet -->
@@ -598,7 +606,7 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/txtBlog_CategoryNameInfo"
+                            android:id="@+id/txtEWalletName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -683,26 +691,25 @@
 
 
                 <TextView
-                    android:id="@+id/txtTotalSaved"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:text="@string/title_total_saved"
+                    android:text="@string/title_item_quantity"
                     android:textAlignment="textEnd"
                     android:textSize="10sp" />
 
 
                 <TextView
-                    android:id="@+id/txtSavedPrice"
+                    android:id="@+id/txtTotalItemQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/title_saved_price"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/title_total_item"
                     android:textAlignment="textEnd"
                     android:textColor="#F4B907"
-                    android:textSize="10sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
 

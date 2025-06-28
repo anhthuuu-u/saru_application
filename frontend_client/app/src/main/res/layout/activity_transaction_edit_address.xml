@@ -18,7 +18,6 @@
         android:padding="16dp">
 
         <ImageView
-            android:onClick="onBackPressed"
             android:id="@+id/imgBack"
             android:layout_width="20dp"
             android:layout_height="match_parent"
