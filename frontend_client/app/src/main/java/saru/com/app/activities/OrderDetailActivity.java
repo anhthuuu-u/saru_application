@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     private OrderDetailAdapter orderDetailAdapter;
     private List<OrderDetail> orderDetailList = new ArrayList<>();
     private FirebaseFirestore db;
+    Button btn_write_review,btn_request_return,btn_cancel_order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,15 @@ public class OrderDetailActivity extends AppCompatActivity {
             txtShowName = findViewById(R.id.txtShowName);
             txtShowPhoneNumber = findViewById(R.id.txtShowPhoneNumber);
             txtShowAddress = findViewById(R.id.txtShowAddress);
+            btn_write_review =findViewById(R.id.btn_write_review);
+            btn_request_return = findViewById(R.id.btn_request_return);
+            btn_cancel_order = findViewById(R.id.btn_cancel_order);
 
-            // Set up back button functionality
-            ImageView backIcon = findViewById(R.id.ic_back_arrow);
+
+           addEvent();
+
+                    // Set up back button functionality
+                    ImageView backIcon = findViewById(R.id.ic_back_arrow);
             if (backIcon != null) {
                 backIcon.setOnClickListener(v -> {
                     Log.d("OrderDetailActivity", "Back button clicked");
@@ -80,6 +88,27 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void addEvent() {
+        btn_write_review.setOnClickListener(v -> openReview());
+        btn_request_return.setOnClickListener(v -> openRequest());
+        btn_cancel_order.setOnClickListener(v -> openCancel());
+
+    }
+
+    void openReview() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderReviewActivity.class);
+        startActivity(intent);
+    }
+
+    void openRequest() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderRequestReturnActivity.class);
+        startActivity(intent);
+    }
+
+    void openCancel() {
+        Intent intent = new Intent(OrderDetailActivity.this, OrderCancelActivity.class);
+        startActivity(intent);
+    }
     private void fetchOrderDetails(String orderID) {
         try {
             // Fetch the order from the "orders" collection
