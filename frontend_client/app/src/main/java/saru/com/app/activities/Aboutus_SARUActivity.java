@@ -1,12 +1,15 @@
 package saru.com.app.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +32,7 @@ public class Aboutus_SARUActivity extends AppCompatActivity {
     TextView txtAboutus_SaruWine;
     TextView txtAboutus_StoreLocation;
     ImageView imgAboutUs_Back;
+    VideoView videoView;
     private RecyclerView recyclerViewAboutUs;
     private FirebaseFirestore db;
     private List<AboutUsItem> aboutUsList;
@@ -55,6 +59,22 @@ public class Aboutus_SARUActivity extends AppCompatActivity {
 
         // Lấy dữ liệu từ Firestore
         loadAboutUsData();
+
+        // Tải video lên
+        videoView = findViewById(R.id.videoView);
+        String videoUrl = "https://ik.imagekit.io/saruApp/Saru%20App/videointro.mp4"; // 🔁 Đổi thành link video thật
+
+        Uri uri = Uri.parse(videoUrl);
+        videoView.setVideoURI(uri);
+
+        // Tạo controller cho phép play/pause tua video
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+
+        videoView.requestFocus();
+        videoView.start(); // Phát tự động
+
     }
     private void addView() {
         txtAboutus_SaruWine=findViewById(R.id.txtAboutus_SaruWine);

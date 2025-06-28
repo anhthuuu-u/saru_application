@@ -97,10 +97,10 @@
     <string name="title_cod_detail">Cash on delivery</string>
 
     <string name="title_bank">Bank (Credit or Debit)</string>
-    <string name="title_bank_name">Bank: Vietcombank</string>
-    <string name="title_customer_bank_name">Customer Bank Name: Anh Khoa</string>
-    <string name="title_bank_type">Bank type: Mastercard</string>
-    <string name="title_bank_number_card">Number Card: ******789</string>
+    <string name="title_bank_name">Vietcombank</string>
+    <string name="title_customer_bank_name">Anh Khoa</string>
+    <string name="title_bank_type">Mastercard</string>
+    <string name="title_bank_number_card">******789</string>
 
     <string name="title_ewallet">E-Wallet</string>
     <string name="title_ewallet_detail">Momo Ewallet</string>
@@ -221,7 +221,7 @@
     <string name="title_aboutus_CFO">CFO\n</string>
     <string name="title_aboutus_cto">CTO</string>
     <string name="title_aboutus_coo">COO</string>
-    <string name="title_aboutus_endpage">About us</string>
+    <string name="title_aboutus_endpage">Introduction</string>
     <string name="title_aboutuslocation_LaoCaiBranch">Saru Tay Bac Store, Lao Cai Branch</string>
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Address: 16 Le Hong Phong, Lao Cai City, Lao Cai Province</string>
     <string name="title_aboutuslocation_HCMBranch">Saru Tay Bac Store, Ho Chi Minh Branch</string>
@@ -315,6 +315,7 @@
     <!-- ORDER LIST -->
     <string name="order_back_button_description">Back Button</string>
     <string name="order_detail_title">ORDER DETAILS</string>
+    <string name="order_list_title">ORDER LIST</string>
     <string name="order_tab_all">All</string>
     <string name="order_tab_confirm">Pending Confirmation</string>
     <string name="order_tab_payment">Pending Payment</string>
@@ -650,7 +651,7 @@
 
     <string name="title_confirm_payment">Confirm Payment</string>
     <string name="title_confirm_payment_message">Please take attention that the product are not available for who under 18, do you want to place order?</string>
-    
+
     <string name="title_Add_EWallet">Add E-Wallet Information</string>
 
     <string name="user_not_logged_in">User not logged in</string>
@@ -708,6 +709,7 @@
     <string name="delete_payment_method_confirmation">Are you sure you want to delete this payment method?</string>
     <string name="yes">Yes</string>
     <string name="delete_address_confirmation">Are you sure you want to delete this address?</string>
+<<<<<<< HEAD
 
 
     <string name="message_sent_success">Message sent successfully</string>
@@ -725,8 +727,6 @@
 
 
 
-
-
-
 </resources>
+
 

@@ -100,7 +100,7 @@
     <string name="title_product_price_original_2">230.000 đ</string>
     <string name="title_shipping_fee">Phí vận chuyển:</string>
     <string name="title_merchandise_total">Tổng số tiền</string>
-    <string name="title_item_quantity">(x sản phẩm)</string>
+    <string name="title_item_quantity">Số lượng</string>
     <string name="title_delivery_time">Thời gian vận chuển</string>
     <string name="title_expected_delivery">Dự kiến giao hàng ngày tháng năm</string>
 
@@ -119,10 +119,10 @@
     <string name="title_cash_on_delivery">Thanh toán khi nhận hàng (COD)</string>
     <string name="title_cod_detail">Thanh toán khi nhận hàng</string>
     <string name="title_bank">Thẻ ngân hàng (Thẻ tín Dụng hoặc thẻ ghi Nợ)</string>
-    <string name="title_bank_name">Ngân hàng: Vietcombank</string>
-    <string name="title_customer_bank_name">Tên khách hàng: Anh Khoa</string>
-    <string name="title_bank_type">Loại thẻ: Mastercard</string>
-    <string name="title_bank_number_card">Số thẻ: ******789</string>
+    <string name="title_bank_name">Vietcombank</string>
+    <string name="title_customer_bank_name">Anh Khoa</string>
+    <string name="title_bank_type">Mastercard</string>
+    <string name="title_bank_number_card">******789</string>
     <string name="title_ewallet">Ví điện tử</string>
     <string name="title_ewallet_detail">Ví điện tử Momo</string>
 
@@ -239,7 +239,7 @@
     <string name="title_aboutus_CFO">CFO\n</string>
     <string name="title_aboutus_cto">CTO</string>
     <string name="title_aboutus_coo">COO</string>
-    <string name="title_aboutus_endpage">Về chúng tôi</string>
+    <string name="title_aboutus_endpage">Giới thiệu</string>
     <string name="title_aboutuslocation_LaoCaiBranch">Cửa hàng Saru Tây Bắc chi nhánh Lào Cai</string>
     <string name="title_aboutuslocation_LaoCaiBranch_Address">Địa chỉ: 16 Lê Hồng Phong, TP Lào Cai, tỉnh Lào Cai</string>
     <string name="title_aboutuslocation_HCMBranch">Cửa hàng Saru Tây Bắc chi nhánh Thành phố Hồ Chí Minh</string>
@@ -333,6 +333,7 @@
     <!-- ORDER LIST -->
     <string name="order_back_button_description">Nút quay lại</string>
     <string name="order_detail_title">CHI TIẾT ĐƠN HÀNG</string>
+    <string name="order_list_title">DANH SÁCH ĐƠN HÀNG</string>
     <string name="order_tab_all">Tất cả</string>
     <string name="order_tab_confirm">Chờ xác nhận</string>
     <string name="order_tab_payment">Chờ thanh toán</string>
@@ -712,6 +713,7 @@
     <string name="delete_payment_method_confirmation">Bạn có chắc chắn muốn xóa phương thức thanh toán này?</string>
     <string name="yes">Có</string>
     <string name="delete_address_confirmation">Bạn có chắc chắn muốn xóa địa chỉ này?</string>
+<<<<<<< HEAD
 
 
     <string name="message_sent_success">Tin nhắn được gửi thành công</string>
