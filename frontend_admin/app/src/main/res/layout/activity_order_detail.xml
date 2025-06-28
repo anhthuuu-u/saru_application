@@ -36,14 +36,14 @@
             android:id="@+id/txtOrderStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Date"
+            android:text="Order Status"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCustomerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Status"
+            android:text="Customer Name"
             android:textSize="14sp" />
 
         <TextView
@@ -67,26 +67,18 @@
             android:text="Total Amount"
             android:textSize="14sp" />
 
-        <Spinner
-            android:id="@+id/spinnerOrderStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Order Status" />
-
-        <Spinner
-            android:id="@+id/spinnerPaymentStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Payment Status" />
-
         <Button
             android:id="@+id/btnViewCustomer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="View Customer Details" />
+
+        <Spinner
+            android:id="@+id/spinnerOrderStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:layout_width="match_parent"

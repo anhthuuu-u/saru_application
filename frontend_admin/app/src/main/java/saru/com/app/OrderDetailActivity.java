@@ -1,5 +1,6 @@
 package saru.com.app;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,12 +27,13 @@ import saru.com.models.OrderDetailItem;
 import saru.com.models.OrderDetails;
 import saru.com.models.Orders;
 import saru.com.models.Product;
+import saru.com.models.Customer;
 
 public class OrderDetailActivity extends AppCompatActivity {
 
     private TextView txtOrderID, txtOrderDate, txtOrderStatus, txtCustomerName, txtCustomerPhone, txtCustomerAddress, txtTotalAmount;
     private Spinner spinnerOrderStatus;
-    private Button btnSave, btnDelete, btnCancel;
+    private Button btnSave, btnDelete, btnCancel, btnViewCustomer;
     private RecyclerView rvOrderItems;
     private OrderItemAdapter orderItemAdapter;
     private FirebaseFirestore db;
@@ -74,6 +76,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnDelete = findViewById(R.id.btnDelete);
         btnCancel = findViewById(R.id.btnCancel);
+        btnViewCustomer = findViewById(R.id.btnViewCustomer);
     }
 
     private void displayOrderInfo() {
@@ -94,7 +97,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void setupEvents() {
         btnSave.setOnClickListener(v -> saveOrderStatus());
         btnCancel.setOnClickListener(v -> finish());
-        btnDelete.setOnClickListener(v -> deleteOrder());
+        btnDelete.setOnClickListener(v -> confirmDeleteOrder());
+        btnViewCustomer.setOnClickListener(v -> viewCustomerDetails());
     }
 
     private void saveOrderStatus() {
@@ -115,6 +119,15 @@ public class OrderDetailActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(OrderDetailActivity.this, "Failed to update status.", Toast.LENGTH_SHORT).show());
     }
 
+    private void confirmDeleteOrder() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Deletion")
+                .setMessage("Are you sure you want to delete this order?")
+                .setPositiveButton("Delete", (dialog, which) -> deleteOrder())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     private void deleteOrder() {
         db.collection("orderdetails").whereEqualTo("OrderID", currentOrder.getOrderID()).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -133,6 +146,21 @@ public class OrderDetailActivity extends AppCompatActivity {
                     }).addOnFailureListener(e -> Toast.makeText(OrderDetailActivity.this, "Failed to delete order details.", Toast.LENGTH_SHORT).show());
                 })
                 .addOnFailureListener(e -> Toast.makeText(OrderDetailActivity.this, "Failed to load order details for deletion.", Toast.LENGTH_SHORT).show());
+    }
+
+    private void viewCustomerDetails() {
+        db.collection("customers").document(currentOrder.getCustomerID()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Customer customer = documentSnapshot.toObject(Customer.class);
+                    if (customer != null) {
+                        Intent intent = new Intent(OrderDetailActivity.this, CustomerDetailActivity.class);
+                        intent.putExtra("SELECTED_CUSTOMER", customer);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(OrderDetailActivity.this, "Customer not found.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(OrderDetailActivity.this, "Error loading customer: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void loadOrderStatuses() {
