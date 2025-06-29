@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class CartItem implements Parcelable {
     private String productID;
-    private String AccountID;
+    private String accountID;
     private long timestamp;
     private String productName;
     private double productPrice;
@@ -15,7 +15,7 @@ public class CartItem implements Parcelable {
 
     public CartItem(String productID, String accountID, long timestamp, String productName, double productPrice, String imageID, int quantity, boolean selected) {
         this.productID = productID;
-        AccountID = accountID;
+        accountID = accountID;
         this.timestamp = timestamp;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -24,17 +24,22 @@ public class CartItem implements Parcelable {
         this.selected = selected;
     }
 
+    public CartItem() {
+    }
+
+    // Constructor từ Parcel
     protected CartItem(Parcel in) {
         productID = in.readString();
-        AccountID = in.readString();
+        accountID = in.readString();
         timestamp = in.readLong();
         productName = in.readString();
         productPrice = in.readDouble();
         imageID = in.readString();
         quantity = in.readInt();
-        selected = in.readByte() != 0;
+        selected = in.readByte() != 0; // boolean được đọc từ byte
     }
 
+    // Triển khai Parcelable
     public static final Creator<CartItem> CREATOR = new Creator<CartItem>() {
         @Override
         public CartItem createFromParcel(Parcel in) {
@@ -48,22 +53,23 @@ public class CartItem implements Parcelable {
     };
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(productID);
-        dest.writeString(AccountID);
+        dest.writeString(accountID);
         dest.writeLong(timestamp);
         dest.writeString(productName);
         dest.writeDouble(productPrice);
         dest.writeString(imageID);
         dest.writeInt(quantity);
-        dest.writeByte((byte) (selected ? 1 : 0));
+        dest.writeByte((byte) (selected ? 1 : 0)); // boolean được ghi dưới dạng byte
     }
 
+    @Override
+    public int describeContents() {
+        return 0; // Không có nội dung đặc biệt
+    }
+
+    // Các getter và setter
     public String getProductID() {
         return productID;
     }
@@ -73,11 +79,11 @@ public class CartItem implements Parcelable {
     }
 
     public String getAccountID() {
-        return AccountID;
+        return accountID;
     }
 
     public void setAccountID(String accountID) {
-        AccountID = accountID;
+        accountID = accountID;
     }
 
     public long getTimestamp() {

@@ -32,7 +32,7 @@ import saru.com.app.R;
 import saru.com.app.connectors.CartAdapter;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.CartManager;
-import saru.com.app.models.ListCartItems;
+
 public class ProductCart extends AppCompatActivity implements CartAdapter.OnCartItemChangeListener {
     private static final String TAG = "ProductCart";
     private RecyclerView recyclerView;
@@ -43,7 +43,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private TextView cartItemCountText;
-    private ListCartItems listCartItems;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -55,17 +54,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         // Khởi tạo Firebase
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        ImageButton btn_noti = findViewById(R.id.btn_noti);
-        btn_noti.setOnClickListener(v -> openNotification());
-
 
         // Khởi tạo các view
         recyclerView = findViewById(R.id.cart_recycler_view);
@@ -125,23 +113,9 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
         // Sự kiện nút thanh toán
         Button paymentButton = findViewById(R.id.payment_button);
         paymentButton.setOnClickListener(v -> {
-
-            List<CartItem> selectedItems = new ArrayList<>();
-            for (CartItem item : listCartItems.getCartItems()) {
-                if (item.isSelected()) {
-                    selectedItems.add(item);
-                }
-            }
-            if (selectedItems.isEmpty()) {
-                Toast.makeText(this, getString(R.string.toast_no_items_selected), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            double total = listCartItems.calculateTotalPrice();
-            Toast.makeText(this, getString(R.string.product_cart_payment_toast_label) + " " +
-                    String.format("%.0f", total) + getString(R.string.product_cart_currency), Toast.LENGTH_SHORT).show();
-
+            double total = CartManager.getInstance().calculateTotalPrice();
+            Toast.makeText(this, getString(R.string.product_cart_payment_toast_label) + " " + String.format("%.0f", total) + getString(R.string.product_cart_currency), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProductCart.this, TransactionCheckoutActivity.class);
-            intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
             startActivity(intent);
         });
 
@@ -164,7 +138,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                         String accountID = auth.getCurrentUser().getUid();
                         List<String> deletedProductIds = new ArrayList<>();
                         for (CartItem item : selectedItems) {
-
                             db.collection("carts").document(accountID).collection("items")
                                     .document(item.getProductID())
                                     .delete()
@@ -196,22 +169,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                         Toast.makeText(this, "Lỗi khi xóa sản phẩm", Toast.LENGTH_SHORT).show();
                                     });
-
-                            int position = listCartItems.getCartItems().indexOf(item);
-                            if (position != -1) {
-                                db.collection("carts").document(accountID).collection("items")
-                                        .document(item.getProductID())
-                                        .delete()
-                                        .addOnSuccessListener(aVoid -> Log.d("ProductCart", "Deleted item: " + item.getProductName()))
-                                        .addOnFailureListener(e -> {
-                                            Log.e("ProductCart", "Error deleting item: " + e.getMessage());
-                                            FirebaseCrashlytics.getInstance().recordException(e);
-                                        });
-                                listCartItems.removeItem(position);
-                                cartAdapter.notifyItemRemoved(position);
-                                cartAdapter.notifyItemRangeChanged(position, listCartItems.getItemCount());
-                            }
-
                         }
                     })
                     .setNegativeButton(getString(R.string.dialog_cancel), null)
@@ -268,12 +225,6 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
                         Log.e(TAG, "Failed to reload cart data in onStart");
                         Toast.makeText(this, "Lỗi khi tải giỏ hàng", Toast.LENGTH_SHORT).show();
                     }
-
-                    cartAdapter.notifyDataSetChanged();
-                    updateCartVisibility();
-                    updateTotalPrice();
-                    Log.d("ProductCart", "Loaded " + listCartItems.getItemCount() + " items from Firestore");
-
                 });
             });
         }
@@ -287,10 +238,7 @@ public class ProductCart extends AppCompatActivity implements CartAdapter.OnCart
             Log.d(TAG, "Removed badge view in onStop");
         }
     }
-    private void openNotification() {
-        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
-        startActivity(intent);
-    }
+
     private void updateTotalPrice() {
         double total = CartManager.getInstance().calculateTotalPrice();
         TextView totalAmountText = findViewById(R.id.total_amount_text);
