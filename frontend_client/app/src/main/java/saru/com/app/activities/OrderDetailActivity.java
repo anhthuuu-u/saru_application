@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -332,6 +333,9 @@ public class OrderDetailActivity extends AppCompatActivity {
                                 orderDetailList.clear();
 
                                 if (task.getResult() != null && !task.getResult().isEmpty()) {
+                                    int totalItems = task.getResult().size();
+                                    int[] completedItems = {0}; // Counter for completed items
+
                                     for (DocumentSnapshot document : task.getResult()) {
                                         String productID = document.getString("ProductID");
                                         Long quantityLong = document.getLong("Quantity");
@@ -383,47 +387,113 @@ public class OrderDetailActivity extends AppCompatActivity {
                                                                                                         // Add to list and update adapter
                                                                                                         orderDetailList.add(orderDetail);
                                                                                                         orderDetailAdapter.notifyDataSetChanged();
+
+                                                                                                        // Increment completed items
+                                                                                                        completedItems[0]++;
+                                                                                                        // Check if all items are processed
+                                                                                                        if (completedItems[0] == totalItems) {
+                                                                                                            // All items are processed, set ListView height
+                                                                                                            runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                                                        }
                                                                                                     } else {
                                                                                                         Log.e("OrderDetailActivity", "Error fetching brand details: " + brandTask.getException());
+                                                                                                        completedItems[0]++;
+                                                                                                        if (completedItems[0] == totalItems) {
+                                                                                                            runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                                                        }
                                                                                                     }
                                                                                                 } catch (Exception e) {
                                                                                                     Log.e("OrderDetailActivity", "Exception in fetching brand details: " + e.getMessage(), e);
+                                                                                                    completedItems[0]++;
+                                                                                                    if (completedItems[0] == totalItems) {
+                                                                                                        runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                                                    }
                                                                                                 }
                                                                                             });
                                                                                 } else {
                                                                                     Log.e("OrderDetailActivity", "Error fetching product image: " + imageTask.getException());
+                                                                                    completedItems[0]++;
+                                                                                    if (completedItems[0] == totalItems) {
+                                                                                        runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                                    }
                                                                                 }
                                                                             } catch (Exception e) {
                                                                                 Log.e("OrderDetailActivity", "Exception in fetching image details: " + e.getMessage(), e);
+                                                                                completedItems[0]++;
+                                                                                if (completedItems[0] == totalItems) {
+                                                                                    runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                                }
                                                                             }
                                                                         });
                                                             } else {
                                                                 Log.e("OrderDetailActivity", "Product document does not exist for ProductID: " + productID);
+                                                                completedItems[0]++;
+                                                                if (completedItems[0] == totalItems) {
+                                                                    runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                                }
                                                             }
                                                         } else {
                                                             Log.e("OrderDetailActivity", "Error fetching product details: " + productTask.getException());
+                                                            completedItems[0]++;
+                                                            if (completedItems[0] == totalItems) {
+                                                                runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                            }
                                                         }
                                                     } catch (Exception e) {
                                                         Log.e("OrderDetailActivity", "Exception in fetching product details: " + e.getMessage(), e);
+                                                        completedItems[0]++;
+                                                        if (completedItems[0] == totalItems) {
+                                                            runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
+                                                        }
                                                     }
                                                 });
                                     }
                                 } else {
                                     Toast.makeText(OrderDetailActivity.this, "No products found for this order.", Toast.LENGTH_LONG).show();
                                     Log.d("OrderDetailActivity", "No order details found for OrderID: " + orderID);
+                                    // Set height even if no items are found to ensure ListView is updated
+                                    runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
                                 }
                             } else {
                                 Log.e("OrderDetailActivity", "Error fetching order details: " + task.getException());
                                 Toast.makeText(OrderDetailActivity.this, "Failed to load order products: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
                             }
                         } catch (Exception e) {
                             Log.e("OrderDetailActivity", "Exception in fetchOrderProducts: " + e.getMessage(), e);
                             Toast.makeText(OrderDetailActivity.this, "Error loading order products: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
                         }
                     });
         } catch (Exception e) {
             Log.e("OrderDetailActivity", "Error initiating fetchOrderProducts: " + e.getMessage(), e);
             Toast.makeText(OrderDetailActivity.this, "Error initiating product load: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            runOnUiThread(() -> setListViewHeightBasedOnItems(lvOrderDetail));
         }
+    }
+
+    private void setListViewHeightBasedOnItems(ListView listView) {
+        OrderDetailAdapter adapter = (OrderDetailAdapter) listView.getAdapter();
+        if (adapter == null || adapter.getCount() == 0) {
+            // Set a minimum height or make ListView invisible if no items
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = 0; // Or set a minimum height if desired
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
