@@ -175,7 +175,7 @@ public class TransactionEditPaymentMethodActivity extends AppCompatActivity {
             return;
         }
 
-        if (cardNumber.isEmpty() || cardNumber.length() < 16) {
+        if (cardNumber.isEmpty() || cardNumber.length() < 10) {
             edtCardNumber.setError(getString(R.string.error_invalid_card_number));
             return;
         }

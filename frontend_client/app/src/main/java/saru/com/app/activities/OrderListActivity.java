@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,10 +45,12 @@ public class OrderListActivity extends AppCompatActivity {
     List<Order> orderList = new ArrayList<>();
     List<Order> allOrders = new ArrayList<>(); // Lưu tất cả đơn hàng để lọc
 
+
     // UI elements
     TextView txtOrderID, txtOrderDate, txtTotalProduct, txtTotalValue;
     Button btnOrderStatus;
     TextView tabAll, tabConfirming, tabConfirmed, tabInTransit, tabComplete, tabCanceled;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,11 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
 
+
+        ImageButton btn_noti = findViewById(R.id.btn_noti);
+        btn_noti.setOnClickListener(v -> openNotification());
+
+
         // Lấy statusID từ Intent nếu có
         String initialStatusID = getIntent().getStringExtra("statusID");
         if (initialStatusID != null) {
@@ -74,6 +84,45 @@ public class OrderListActivity extends AppCompatActivity {
             // Fetch and display all orders if no statusID is provided
             fetchOrdersForUser();
         }
+    }
+
+
+    private void openNotification() {
+        Intent intent = new Intent(this, Notification_FromOrderActivity.class);
+        startActivity(intent);
+    }
+
+    private void highlightTab(String statusID) {
+        resetAllTabs();
+        switch (statusID) {
+            case "0":
+                tabConfirming.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+            case "1":
+                tabConfirmed.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+            case "2":
+                tabCanceled.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+            case "3":
+                tabInTransit.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+            case "4":
+                tabComplete.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+            default:
+                tabAll.setBackgroundResource(R.drawable.tab_selected_background);
+                break;
+        }
+    }
+
+    private void resetAllTabs() {
+        tabAll.setBackgroundResource(0);
+        tabConfirming.setBackgroundResource(0);
+        tabConfirmed.setBackgroundResource(0);
+        tabInTransit.setBackgroundResource(0);
+        tabComplete.setBackgroundResource(0);
+        tabCanceled.setBackgroundResource(0);
     }
 
     private void initializeFirebase() {

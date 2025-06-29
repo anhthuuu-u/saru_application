@@ -731,17 +731,16 @@
     <string name="simulate_admin_message">Mô phỏng tin nhắn admin</string>
 
 
-    <string name="invalid_category">Invalid Category</string>
-    <string name="invalid_brand">Invalid Brand</string>
-    <string name="no_filter_applied">No filter apply</string>
-    <string name="error_applying_filter">Error applying filter</string>
-    <string name="no_categories_available">No category available</string>
-    <string name="error_loading_cart">Error loading cart</string>
 
-    <string name="cancel_reason_enter_voucher">Enter or change voucher code</string>
-    <string name="cancel_reason_edit_items">Edit order items</string>
-    <string name="title_x">Your Title Here</string>
-
+    <string name="invalid_category">Danh mục không tồn tại</string>
+    <string name="invalid_brand">Thương hiệu không tồn tại</string>
+    <string name="no_filter_applied">Không có bộ lọc được áp dụng</string>
+    <string name="error_applying_filter">Lỗi khi áp dụng lọc</string>
+    <string name="no_categories_available">Danh mục không tồn tại</string>
+    <string name="error_loading_cart">Lỗi khi tải giỏ hàng</string>
+    <string name="cancel_reason_enter_voucher">Nhập hoặc đổi mã voucher</string>
+    <string name="cancel_reason_edit_items">Chỉnh sửa sản phẩm</string>
+    <string name="title_x">x</string>
 
 </resources>
 
