@@ -27,7 +27,7 @@ Thank you for your attention.
 - Promotions Management: Add, Delete, View, Edit
 - FAQs Management: Add, Delete, View, Edit
 
-### To login to Administrator website, enter the following user name and password
+### To login to Administrator application, enter the following user name and password
 * User name: tuilaadmin@saru.com
 * Password: 123456
 
