@@ -3,9 +3,11 @@ package saru.com.app.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 public class CartItem implements Parcelable {
     private String productID;
-    private String accountID;
+    private String accountID; // Giữ cho logic giao dịch
     private long timestamp;
     private String productName;
     private double productPrice;
@@ -15,7 +17,7 @@ public class CartItem implements Parcelable {
 
     public CartItem(String productID, String accountID, long timestamp, String productName, double productPrice, String imageID, int quantity, boolean selected) {
         this.productID = productID;
-        accountID = accountID;
+        this.accountID = accountID;
         this.timestamp = timestamp;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -27,7 +29,6 @@ public class CartItem implements Parcelable {
     public CartItem() {
     }
 
-    // Constructor từ Parcel
     protected CartItem(Parcel in) {
         productID = in.readString();
         accountID = in.readString();
@@ -36,10 +37,9 @@ public class CartItem implements Parcelable {
         productPrice = in.readDouble();
         imageID = in.readString();
         quantity = in.readInt();
-        selected = in.readByte() != 0; // boolean được đọc từ byte
+        selected = in.readByte() != 0;
     }
 
-    // Triển khai Parcelable
     public static final Creator<CartItem> CREATOR = new Creator<CartItem>() {
         @Override
         public CartItem createFromParcel(Parcel in) {
@@ -61,15 +61,14 @@ public class CartItem implements Parcelable {
         dest.writeDouble(productPrice);
         dest.writeString(imageID);
         dest.writeInt(quantity);
-        dest.writeByte((byte) (selected ? 1 : 0)); // boolean được ghi dưới dạng byte
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     @Override
     public int describeContents() {
-        return 0; // Không có nội dung đặc biệt
+        return 0;
     }
 
-    // Các getter và setter
     public String getProductID() {
         return productID;
     }
@@ -78,12 +77,14 @@ public class CartItem implements Parcelable {
         this.productID = productID;
     }
 
+    @Exclude
     public String getAccountID() {
         return accountID;
     }
 
+    @Exclude
     public void setAccountID(String accountID) {
-        accountID = accountID;
+        this.accountID = accountID;
     }
 
     public long getTimestamp() {

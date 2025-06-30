@@ -2,6 +2,7 @@ package saru.com.app.connectors;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,6 +31,7 @@ import saru.com.app.R;
 import saru.com.app.models.CartItem;
 import saru.com.app.models.CartManager;
 import saru.com.app.models.image;
+import saru.com.app.activities.LoginActivity;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
@@ -39,7 +39,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private final CartManager cartManager;
     private final OnCartItemChangeListener listener;
     private final FirebaseFirestore db;
-    private final FirebaseAuth auth;
     private final int placeholderResId = R.mipmap.img_saru_cup;
     private final int errorResId = R.drawable.ic_ver_fail;
 
@@ -52,7 +51,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         this.cartManager = cartManager;
         this.listener = listener;
         this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
     }
 
     @NonNull
@@ -103,18 +101,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 context.getString(R.string.product_cart_currency));
         holder.productQuantity.setText(String.valueOf(cartItem.getQuantity()));
 
-        // Chỉ cập nhật checkbox nếu trạng thái thay đổi
-        if (holder.itemCheckbox.isChecked() != cartItem.isSelected()) {
-            holder.itemCheckbox.setOnCheckedChangeListener(null); // Bỏ listener trước khi setChecked
-            holder.itemCheckbox.setChecked(cartItem.isSelected());
-            holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                cartItem.setSelected(isChecked);
-                updateFirestoreItem(cartItem);
-                notifyListener();
-                Log.d(TAG, "Checkbox changed for " + cartItem.getProductName() +
-                        ", Selected: " + isChecked);
-            });
-        }
+        // Cập nhật checkbox mà không kích hoạt listener
+        holder.itemCheckbox.setOnCheckedChangeListener(null);
+        holder.itemCheckbox.setChecked(cartItem.isSelected());
+        holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            cartItem.setSelected(isChecked);
+            updateFirestoreItem(cartItem);
+            // Sử dụng post để tránh gọi notify trong lúc layout
+            holder.itemView.post(() -> notifyListener());
+            Log.d(TAG, "Checkbox changed for " + cartItem.getProductName() +
+                    ", Selected: " + isChecked);
+        });
 
         // Nút giảm số lượng
         holder.minusButton.setText(context.getString(R.string.minus_button_text));
@@ -126,7 +123,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 holder.productTotal.setText(context.getString(R.string.product_cart_total_label) + " " +
                         formatter.format(cartItem.getProductPrice() * cartItem.getQuantity()) +
                         context.getString(R.string.product_cart_currency));
-                notifyListener();
+                holder.itemView.post(() -> notifyListener());
                 Log.d(TAG, "Decreased quantity for " + cartItem.getProductName() +
                         " to " + cartItem.getQuantity() + ", New total: " + (cartItem.getProductPrice() * cartItem.getQuantity()));
             }
@@ -141,7 +138,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.productTotal.setText(context.getString(R.string.product_cart_total_label) + " " +
                     formatter.format(cartItem.getProductPrice() * cartItem.getQuantity()) +
                     context.getString(R.string.product_cart_currency));
-            notifyListener();
+            holder.itemView.post(() -> notifyListener());
             Log.d(TAG, "Increased quantity for " + cartItem.getProductName() +
                     " to " + cartItem.getQuantity() + ", New total: " + (cartItem.getProductPrice() * cartItem.getQuantity()));
         });
@@ -157,14 +154,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         .setPositiveButton(context.getString(R.string.dialog_confirm_delete), (dialog, which) -> {
                             Log.d(TAG, "Initiating delete for item: " + itemToDelete.getProductName() +
                                     ", Position: " + positionToRemove);
-                            if (auth.getCurrentUser() == null) {
+                            String accountID = cartManager.getCurrentAccountID();
+                            if (accountID == null) {
                                 Toast.makeText(context, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context, LoginActivity.class);
+                                context.startActivity(intent);
+                                if (context instanceof AppCompatActivity) {
+                                    ((AppCompatActivity) context).finish();
+                                }
                                 return;
                             }
                             // Xóa item khỏi danh sách cục bộ trước
                             if (positionToRemove < cartManager.getCartItems().size()) {
                                 cartManager.removeItem(positionToRemove);
-                                // Cập nhật UI ngay lập tức
                                 holder.itemView.post(() -> {
                                     notifyItemRemoved(positionToRemove);
                                     notifyItemRangeChanged(positionToRemove, cartManager.getItemCount());
@@ -173,13 +175,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                 });
                             }
                             // Xóa trên Firestore
-                            String accountID = auth.getCurrentUser().getUid();
                             db.collection("carts").document(accountID).collection("items")
                                     .document(itemToDelete.getProductID())
                                     .delete()
                                     .addOnSuccessListener(aVoid -> {
                                         Log.d(TAG, "Successfully deleted item from Firestore: " + itemToDelete.getProductName());
-                                        // Đồng bộ lại danh sách từ Firestore
                                         cartManager.loadCartItemsFromFirestore(success -> {
                                             holder.itemView.post(() -> {
                                                 if (success) {
@@ -189,7 +189,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                                     Log.d(TAG, "UI updated after Firestore sync, new item count: " + cartManager.getItemCount());
                                                 } else {
                                                     Log.e(TAG, "Failed to sync cart items after deletion");
-                                                    notifyDataSetChanged(); // Dự phòng để làm mới UI
+                                                    notifyDataSetChanged();
                                                     notifyListener();
                                                 }
                                                 Toast.makeText(context, context.getString(R.string.delete_item_noti, itemToDelete.getProductName()), Toast.LENGTH_SHORT).show();
@@ -200,7 +200,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                         Log.e(TAG, "Error deleting item from Firestore: " + e.getMessage());
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                         Toast.makeText(context, "Lỗi khi xóa sản phẩm", Toast.LENGTH_SHORT).show();
-                                        // Phục hồi item nếu xóa Firestore thất bại
                                         cartManager.addItem(itemToDelete);
                                         holder.itemView.post(() -> {
                                             notifyDataSetChanged();
@@ -253,58 +252,44 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     private void updateFirestoreItem(CartItem cartItem) {
-        if (cartItem == null || cartItem.getProductID() == null || cartItem.getAccountID() == null) {
-            Log.e(TAG, "Invalid CartItem or ProductID/AccountID is null");
-            FirebaseCrashlytics.getInstance().recordException(new Exception("Invalid CartItem or ProductID/AccountID"));
+        if (cartItem == null || cartItem.getProductID() == null) {
+            Log.e(TAG, "Invalid CartItem or ProductID is null");
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Invalid CartItem or ProductID"));
             Toast.makeText(context, "Lỗi khi cập nhật giỏ hàng", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        try {
-            checkPlayServices(() -> {
-                Map<String, Object> updates = new HashMap<>();
-                updates.put("quantity", cartItem.getQuantity());
-                updates.put("selected", cartItem.isSelected());
-
-                db.collection("carts")
-                        .document(cartItem.getAccountID())
-                        .collection("items")
-                        .document(cartItem.getProductID())
-                        .update(updates)
-                        .addOnSuccessListener(aVoid -> {
-                            Log.d(TAG, "Firestore updated for product: " + cartItem.getProductName());
-                            CartManager.getInstance().updateAllBadges();
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e(TAG, "Error updating Firestore: " + e.getMessage());
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            Toast.makeText(context, "Lỗi khi cập nhật giỏ hàng", Toast.LENGTH_SHORT).show();
-                        });
-            });
-        } catch (SecurityException e) {
-            Log.e(TAG, "SecurityException in updateFirestoreItem: " + e.getMessage());
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Toast.makeText(context, "Lỗi kết nối Google Play Services", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void checkPlayServices(Runnable firebaseAction) {
-        try {
-            GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-            int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
-            if (resultCode == ConnectionResult.SUCCESS) {
-                Log.d(TAG, "Google Play Services available");
-                firebaseAction.run();
-            } else {
-                Log.e(TAG, "Google Play Services not available, resultCode: " + resultCode);
-                FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available, resultCode: " + resultCode));
-                Toast.makeText(context, "Google Play Services không khả dụng", Toast.LENGTH_SHORT).show();
+        String accountID = cartManager.getCurrentAccountID();
+        if (accountID == null) {
+            Log.e(TAG, "AccountID is null, user may not be logged in");
+            Toast.makeText(context, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+            if (context instanceof AppCompatActivity) {
+                ((AppCompatActivity) context).finish();
             }
-        } catch (SecurityException e) {
-            Log.e(TAG, "SecurityException in checkPlayServices: " + e.getMessage());
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Toast.makeText(context, "Lỗi kết nối Google Play Services", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("quantity", cartItem.getQuantity());
+        updates.put("selected", cartItem.isSelected());
+
+        Log.d(TAG, "Updating Firestore with accountID: " + accountID + ", productID: " + cartItem.getProductID());
+        db.collection("carts")
+                .document(accountID)
+                .collection("items")
+                .document(cartItem.getProductID())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Firestore updated for product: " + cartItem.getProductName());
+                    CartManager.getInstance().updateAllBadges();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating Firestore: " + e.getMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Toast.makeText(context, "Lỗi khi cập nhật giỏ hàng", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override
