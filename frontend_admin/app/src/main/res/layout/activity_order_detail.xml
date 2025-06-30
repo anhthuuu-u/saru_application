@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Details"
+            android:text="@string/title_order_details"
             android:textSize="24sp"
             android:gravity="center"
             android:layout_marginBottom="16dp" />
@@ -21,7 +21,7 @@
             android:id="@+id/txtOrderID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order ID"
+            android:text="@string/tittle_order_id"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -29,42 +29,42 @@
             android:id="@+id/txtOrderDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Date"
+            android:text="@string/tittle_order_date"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtOrderStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Status"
+            android:text="@string/tittle_order_status"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCustomerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Name"
+            android:text="@string/tittle_customer_name"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCustomerPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Phone"
+            android:text="@string/customer_phone"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCustomerAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Address"
+            android:text="@string/title_customer_address"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtTotalAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Amount"
+            android:text="@string/title_total_amount"
             android:textSize="14sp" />
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="View Customer Details" />
+            android:text="@string/btn_view_customer" />
 
         <Spinner
             android:id="@+id/spinnerOrderStatus"
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Items"
+            android:text="@string/title_order_items"
             android:textSize="16sp"
             android:layout_marginTop="16dp" />
 
@@ -103,21 +103,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancel" />
+                android:text="@string/btn_cancel" />
 
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Delete" />
+                android:text="@string/btn_delete" />
 
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Save" />
+                android:text="@string/btn_save" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

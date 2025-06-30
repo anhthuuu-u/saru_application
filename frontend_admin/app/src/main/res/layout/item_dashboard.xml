@@ -16,7 +16,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menu Item"
+        android:text="@string/title_menu_item"
         android:textSize="18sp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp" />

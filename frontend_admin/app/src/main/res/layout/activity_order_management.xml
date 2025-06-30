@@ -17,14 +17,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Search Orders"
+            android:hint="@string/hint_search_order"
             android:inputType="text" />
 
         <Button
             android:id="@+id/btnAddOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Order" />
+            android:text="@string/btn_add_order" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

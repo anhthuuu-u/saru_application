@@ -20,7 +20,7 @@
     android:id="@+id/txtFaqTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="FAQ Title"
+    android:text="@string/faq_title"
     android:textSize="18sp"
     android:textStyle="bold"
     android:textColor="@color/color_espresso"

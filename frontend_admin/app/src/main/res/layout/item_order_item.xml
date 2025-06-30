@@ -11,7 +11,7 @@
         android:id="@+id/txtProductName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Product Name"
+        android:text="@string/title_product_name"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"/>
@@ -27,14 +27,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Price: 0 VNĐ"
+            android:text="@string/price"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtItemQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Qty: 0"
+            android:text="@string/quantity"
             android:textSize="14sp"
             android:textStyle="italic"/>
     </LinearLayout>

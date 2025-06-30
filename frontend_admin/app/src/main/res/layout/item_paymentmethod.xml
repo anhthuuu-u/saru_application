@@ -8,7 +8,6 @@
         android:id="@+id/txtPaymentMethodName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:textColor="#F44336"
         android:textSize="24sp" />
 
@@ -16,6 +15,5 @@
         android:id="@+id/txtPaymentMethodDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:textColor="#673AB7" />
 </LinearLayout>

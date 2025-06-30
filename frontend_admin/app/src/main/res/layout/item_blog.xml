@@ -34,7 +34,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:text="Blog Title"
+    android:text="@string/title_blog"
     android:textSize="18sp"
     android:textColor="@color/color_espresso"
     android:fontFamily="sans-serif-medium"

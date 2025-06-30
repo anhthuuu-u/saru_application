@@ -11,7 +11,7 @@
         android:id="@+id/txtOrderID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Order ID"
+        android:text="@string/title_order_id"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"/>
@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Order Date"
+            android:text="@string/title_order_date"
             android:textSize="14sp"/>
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Customer Name"
+            android:text="@string/title_customer_name"
             android:textSize="14sp"/>
     </LinearLayout>
 

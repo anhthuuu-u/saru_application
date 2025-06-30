@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -12,16 +13,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Customer Details"
+            android:text="@string/tittle_customer_detail"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/edt_customer_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Customer ID"
+            android:hint="@string/tittle_customer_id"
             android:inputType="text"
             android:layout_marginBottom="8dp" />
 
@@ -29,7 +31,7 @@
             android:id="@+id/edt_customer_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/hint_customer_name"
             android:inputType="textPersonName"
             android:layout_marginBottom="8dp" />
 
@@ -37,7 +39,7 @@
             android:id="@+id/edt_customer_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone"
+            android:hint="@string/tittle_customer_phone"
             android:inputType="phone"
             android:layout_marginBottom="8dp" />
 
@@ -45,7 +47,7 @@
             android:id="@+id/edt_customer_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date of Birth (dd/mm/yyyy)"
+            android:hint="@string/hint_customer_birth"
             android:inputType="date"
             android:layout_marginBottom="8dp" />
 
@@ -59,7 +61,7 @@
             android:id="@+id/chk_receive_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Receive Email?"
+            android:text="@string/chk_receive_email"
             android:layout_marginBottom="16dp" />
 
         <LinearLayout
@@ -73,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Addresses"
+                android:text="@string/tittle_addresses"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -81,7 +83,7 @@
                 android:id="@+id/btnAddAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Address" />
+                android:text="@string/tittle_add_address"/>
 
         </LinearLayout>
 
@@ -94,7 +96,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Orders"
+            android:text="@string/tittle_orders"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -115,21 +117,21 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:text="@string/btn_cancel"
                 android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remove"
+                android:text="@string/btn_remove"
                 android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update" />
+                android:text="@string/btn_save" />
 
         </LinearLayout>
 

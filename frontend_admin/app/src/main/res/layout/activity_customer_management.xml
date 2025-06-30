@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Customer Management"
+        android:text="@string/tittle_customer_management"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Search by name, phone"
+            android:hint="@string/hint_search_customer"
             android:inputType="text" />
 
         <Spinner
@@ -37,7 +37,7 @@
             android:id="@+id/btnApplyFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filter"
+            android:text="@string/btn_apply_filter"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>
@@ -46,7 +46,7 @@
         android:id="@+id/btnAddCustomer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Customer"
+        android:text="@string/btn_add_customer"
         android:layout_marginBottom="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
