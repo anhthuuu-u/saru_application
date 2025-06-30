@@ -351,19 +351,21 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                     db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                             .get()
                             .addOnSuccessListener(itemSnapshot -> {
-                                if (itemSnapshot.exists()) {
+                                if (itemSnapshot.exists() && itemSnapshot.getLong("quantity") != null) {
                                     Long currentQuantity = itemSnapshot.getLong("quantity");
-                                    if (currentQuantity != null) {
-                                        cartItemMap.put("quantity", currentQuantity + 1);
-                                        cartItem.setQuantity(currentQuantity.intValue() + 1);
-                                    }
+                                    cartItemMap.put("quantity", currentQuantity + 1);
+                                    cartItem.setQuantity(currentQuantity.intValue() + 1);
+                                    Log.d("Products", "Item exists, updated quantity to: " + (currentQuantity + 1));
+                                } else {
+                                    cartItemMap.put("quantity", 1);
+                                    cartItem.setQuantity(1);
+                                    Log.d("Products", "Item does not exist, setting quantity to 1");
                                 }
                                 db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                                         .set(cartItemMap)
                                         .addOnSuccessListener(aVoid -> {
-                                            Log.d("Products", "Added/Updated to cart: " + product.getProductName());
+                                            Log.d("Products", "Added/Updated to cart: " + product.getProductName() + ", Quantity: " + cartItem.getQuantity());
                                             Toast.makeText(this, getString(R.string.added_to_cart, product.getProductName()), Toast.LENGTH_SHORT).show();
-                                            CartManager.getInstance().addItem(cartItem);
                                             CartManager.getInstance().updateAllBadges();
                                         })
                                         .addOnFailureListener(e -> {
