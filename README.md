@@ -9,14 +9,16 @@ This is the Final-term Project for Mobile App Development by our team with 5 mem
 1. Administrator application implementation
 2. Client application implementation
 
+Related Project: 
+- Saru admin and client website: https://github.com/anhtqtran/saru-website
 Thank you for your attention.
 
 ## Administrator application
 ### Tools used:
 
 1. Cloud Firestore for backend data
-2. Firebase hosting
-3. Programming language: Javascript, XML
+2. Authentication: Firebase Authentication
+3. Android Studio (Java)
    
 ### Functions have been done:
 - Authentication: Login: Email, password (pre-filled); Logout.
