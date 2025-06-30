@@ -41,7 +41,7 @@ This folder primarily contains project configuration files and does not directly
 
 1. Cloud Firestore for backend data
 2. Firebase hosting
-3. Programming language: HTML, CSS, Javascript
+3. Programming language: Javascript, XML
    
 ### Functions have been done:
 - List
@@ -54,7 +54,7 @@ This folder primarily contains project configuration files and does not directly
 * User name:
 * Password:
 
-### Video demo: View demo
+### Video demo: https://drive.google.com/drive/folders/1-6qmVtngaYG3CZrLERnelXKoipkOwcwk?usp=sharing
 
 ## Client application
 ### Tools used:
@@ -77,4 +77,4 @@ This folder primarily contains project configuration files and does not directly
 - View FAQs, contact us via email, social media, phone call and send questions around SARU’s products and services
 - View notifications and delete notifications
 ### Deployment on Google Play: View deployment
-### Video demo: View demo (có thể là link youtube nếu up được)
+### Video demo: https://drive.google.com/drive/folders/1-6qmVtngaYG3CZrLERnelXKoipkOwcwk?usp=sharing
