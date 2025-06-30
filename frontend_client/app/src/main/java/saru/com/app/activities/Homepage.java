@@ -1,4 +1,5 @@
 package saru.com.app.activities;
+
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -30,8 +31,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import saru.com.app.R;
 import saru.com.app.connectors.CustomerReviewAdapter;
 import saru.com.app.connectors.ProductAdapter;
@@ -43,6 +46,7 @@ import saru.com.app.models.Product;
 import saru.com.app.models.VoucherList;
 
 public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCartListener {
+    private static final String TAG = "Homepage";
     private TextView cartItemCountText;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -60,9 +64,9 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
     private TextView txtViewAllForYou;
     private TextView txtSuperSales;
     private TextView txtBestSeller;
-    // Thêm các biến cho avatar và tên người dùng
     private ImageView imgCustomerAvatar;
     private TextView txtCustomerName;
+    private final Set<String> pendingCartOperations = new HashSet<>();
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -78,7 +82,6 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Khởi tạo views
         btn_noti = findViewById(R.id.btn_noti);
         drawerLayout = findViewById(R.id.drawer_layout);
         searchBar = findViewById(R.id.search_bar);
@@ -101,12 +104,10 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         txtSuperSales = findViewById(R.id.txtSuperSalesTitle);
         txtBestSeller = findViewById(R.id.txtBestSellerTitle);
 
-        // Khởi tạo views trong NavigationView
         View headerView = findViewById(R.id.home_menu);
         imgCustomerAvatar = headerView.findViewById(R.id.imgCustomerAvatar);
         txtCustomerName = headerView.findViewById(R.id.txtCustomerName);
 
-        // Khởi tạo CartManager
         CartManager.getInstance().initialize(this, success -> {
             runOnUiThread(() -> {
                 if (success && cartItemCountText != null) {
@@ -119,12 +120,11 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             });
         });
 
-        // Thiết lập sự kiện
         btn_noti.setOnClickListener(v -> openNotification());
 
         ImageButton btnFilter = findViewById(R.id.btn_filter);
         if (btnFilter == null) {
-            Log.e("Homepage", "ImageButton btn_filter not found");
+            Log.e(TAG, "ImageButton btn_filter not found");
             throw new IllegalStateException("ImageButton btn_filter not found");
         }
         btnFilter.setOnClickListener(v -> {
@@ -144,7 +144,6 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             icCart.setOnClickListener(v -> startActivity(new Intent(Homepage.this, ProductCart.class)));
         }
 
-        // Thiết lập SearchBar
         searchBar.setIconifiedByDefault(false);
         searchBar.setFocusable(false);
         searchBar.setFocusableInTouchMode(false);
@@ -152,18 +151,16 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             searchBar.setFocusable(true);
             searchBar.setFocusableInTouchMode(true);
             searchBar.requestFocus();
-            Log.d("Homepage", "SearchView focused");
+            Log.d(TAG, "SearchView focused");
         });
 
-        // Thiết lập RecyclerView cho kết quả tìm kiếm
         searchResultsAdapter = new ProductAdapter(this, this);
         recyclerViewSearchResults.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerViewSearchResults.setAdapter(searchResultsAdapter);
         int spacing = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerViewSearchResults.addItemDecoration(new GridSpacingItemDecoration(spacing));
-        recyclerViewSearchResults.setVisibility(View.GONE); // Ẩn mặc định
+        recyclerViewSearchResults.setVisibility(View.GONE);
 
-        // Thiết lập các RecyclerView khác
         ProductAdapter superSalesAdapter = new ProductAdapter(this, this);
         ProductAdapter bestsellerAdapter = new ProductAdapter(this, this);
         VoucherAdapter voucherAdapter = new VoucherAdapter(new ArrayList<>());
@@ -189,7 +186,6 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         recyclerViewCustomerReviews.setAdapter(customerReviewAdapter);
         recyclerViewCustomerReviews.addItemDecoration(new ItemSpacingDecoration(spacing));
 
-        // Tải dữ liệu
         loadSuperSales(superSalesAdapter);
         loadBestsellers(bestsellerAdapter);
 
@@ -205,24 +201,22 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
             customerReviewAdapter.notifyDataSetChanged();
         });
 
-        // Thiết lập tìm kiếm
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("Homepage", "Query submitted: " + query);
+                Log.d(TAG, "Query submitted: " + query);
                 searchProducts(query.trim());
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("Homepage", "Text changed: " + newText);
+                Log.d(TAG, "Text changed: " + newText);
                 searchProducts(newText.trim());
                 return true;
             }
         });
 
-        // Thiết lập các nút điều hướng
         if (txtViewAllSuperSales != null) {
             txtViewAllSuperSales.setOnClickListener(v -> startActivity(new Intent(Homepage.this, Products.class)));
         }
@@ -266,7 +260,6 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                     }
                 });
             });
-            // Cập nhật thông tin người dùng
             updateUserInfo(currentUser);
         }
     }
@@ -277,22 +270,20 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         if (cartItemCountText != null) {
             CartManager.getInstance().removeBadgeView(cartItemCountText);
         }
+        pendingCartOperations.clear();
     }
 
     private void updateUserInfo(FirebaseUser user) {
-        // Lấy thông tin từ collection "accounts"
         db.collection("accounts").document(user.getUid()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        // Lấy CustomerEmail và xử lý để lấy phần trước @
                         String customerEmail = documentSnapshot.getString("CustomerEmail");
-                        String displayName = "User"; // Giá trị mặc định
+                        String displayName = "User";
                         if (customerEmail != null && customerEmail.contains("@")) {
                             displayName = customerEmail.split("@")[0];
                         }
                         txtCustomerName.setText(displayName);
 
-                        // Lấy url ảnh, nếu không có thì dùng ảnh mặc định
                         String photoUrl = documentSnapshot.getString("url");
                         if (photoUrl != null && !photoUrl.isEmpty()) {
                             Glide.with(this)
@@ -304,13 +295,12 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                             imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
                         }
                     } else {
-                        // Nếu không tìm thấy document, đặt giá trị mặc định
                         txtCustomerName.setText("User");
                         imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error fetching user info: " + e.getMessage());
+                    Log.e(TAG, "Error fetching user info: " + e.getMessage());
                     FirebaseCrashlytics.getInstance().recordException(e);
                     txtCustomerName.setText("User");
                     imgCustomerAvatar.setImageResource(R.drawable.menu_customer_img);
@@ -331,13 +321,21 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         }
 
         if (product == null || product.getProductID() == null) {
-            Log.e("Homepage", "Cannot add null Product or Product with null ProductID");
+            Log.e(TAG, "Cannot add null Product or Product with null ProductID");
             FirebaseCrashlytics.getInstance().recordException(new Exception("Null Product or ProductID in onAddToCart"));
             Toast.makeText(this, "Error when adding to cart", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String accountID = mAuth.getCurrentUser().getUid();
+        String productID = product.getProductID();
+        synchronized (pendingCartOperations) {
+            if (pendingCartOperations.contains(productID)) {
+                Log.d(TAG, "Add to cart operation for product " + productID + " is already in progress, ignoring");
+                return;
+            }
+            pendingCartOperations.add(productID);
+        }
         checkPlayServices(() -> onAddToCartInternal(product, accountID));
     }
 
@@ -347,9 +345,10 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         if (resultCode == ConnectionResult.SUCCESS) {
             firebaseAction.run();
         } else {
-            Log.e("Homepage", "Google Play Services not available");
-            FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available"));
+            Log.e(TAG, "Google Play Services not available, resultCode: " + resultCode);
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available, resultCode: " + resultCode));
             Toast.makeText(this, "Google Play Services is currently unavailable", Toast.LENGTH_SHORT).show();
+            firebaseAction.run();
         }
     }
 
@@ -375,48 +374,104 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         cartItemMap.put("quantity", cartItem.getQuantity());
         cartItemMap.put("selected", cartItem.isSelected());
 
+        if (cartItemCountText != null) {
+            int currentCount = CartManager.getInstance().getItemCount();
+            boolean itemExists = CartManager.getInstance().getCartItems().stream()
+                    .anyMatch(item -> item.getProductID().equals(product.getProductID()));
+            if (!itemExists) {
+                cartItemCountText.setText(String.valueOf(currentCount + 1));
+                cartItemCountText.setVisibility(View.VISIBLE);
+                Log.d(TAG, "Temporary badge update: " + (currentCount + 1));
+            }
+        }
+
+        long startTime = System.nanoTime();
         db.collection("carts").document(accountID).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!documentSnapshot.exists()) {
                         db.collection("carts").document(accountID).set(new HashMap<>())
-                                .addOnSuccessListener(aVoid -> Log.d("Homepage", "Created cart document for: " + accountID))
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Created cart document for: " + accountID))
                                 .addOnFailureListener(e -> {
-                                    Log.e("Homepage", "Error creating cart document: " + e.getMessage());
+                                    Log.e(TAG, "Error creating cart document: ", e);
                                     FirebaseCrashlytics.getInstance().recordException(e);
+                                    synchronized (pendingCartOperations) {
+                                        pendingCartOperations.remove(product.getProductID());
+                                    }
+                                    if (cartItemCountText != null) {
+                                        cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                        cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                    }
                                 });
                     }
 
                     db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                             .get()
                             .addOnSuccessListener(itemSnapshot -> {
-                                if (itemSnapshot.exists()) {
-                                    long currentQuantity = itemSnapshot.getLong("quantity");
+                                Long currentQuantity = itemSnapshot.getLong("quantity");
+                                if (itemSnapshot.exists() && currentQuantity != null && currentQuantity > 0) {
                                     cartItemMap.put("quantity", currentQuantity + 1);
-                                    cartItem.setQuantity((int) currentQuantity + 1);
+                                    cartItem.setQuantity(currentQuantity.intValue() + 1);
+                                    Log.d(TAG, "Item exists with valid quantity " + currentQuantity + ", updated to: " + (currentQuantity + 1));
+                                } else {
+                                    cartItemMap.put("quantity", 1);
+                                    cartItem.setQuantity(1);
+                                    if (itemSnapshot.exists()) {
+                                        Log.d(TAG, "Item exists but has invalid quantity (" + currentQuantity + "), resetting to 1");
+                                        db.collection("carts").document(accountID).collection("items").document(product.getProductID())
+                                                .delete()
+                                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Deleted invalid item document: " + product.getProductID()))
+                                                .addOnFailureListener(e -> Log.e(TAG, "Error deleting invalid item document: ", e));
+                                    } else {
+                                        Log.d(TAG, "Item does not exist, setting quantity to 1");
+                                    }
                                 }
                                 db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                                         .set(cartItemMap)
                                         .addOnSuccessListener(aVoid -> {
-                                            Log.d("Homepage", "Added/Updated to cart: " + product.getProductName());
-                                            Toast.makeText(this, "Added " + product.getProductName() + " to cart successfully!", Toast.LENGTH_SHORT).show();
-                                            CartManager.getInstance().addItem(cartItem);
+                                            Log.d(TAG, "Added/Updated to cart: " + product.getProductName() + ", Quantity: " + cartItem.getQuantity() + ", Time: " + (System.nanoTime() - startTime) / 1_000_000 + "ms");
+                                            Toast.makeText(this, getString(R.string.added_to_cart, product.getProductName()), Toast.LENGTH_SHORT).show();
+                                            CartManager.getInstance().updateAllBadges();
+                                            synchronized (pendingCartOperations) {
+                                                pendingCartOperations.remove(product.getProductID());
+                                            }
                                         })
                                         .addOnFailureListener(e -> {
-                                            Log.e("Homepage", "Error adding to cart: " + e.getMessage());
+                                            Log.e(TAG, "Error adding to cart: ", e);
                                             FirebaseCrashlytics.getInstance().recordException(e);
-                                            Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                                            if (cartItemCountText != null) {
+                                                cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                                cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                            }
+                                            synchronized (pendingCartOperations) {
+                                                pendingCartOperations.remove(product.getProductID());
+                                            }
                                         });
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("Homepage", "Error checking cart item: " + e.getMessage());
+                                Log.e(TAG, "Error checking cart item: ", e);
                                 FirebaseCrashlytics.getInstance().recordException(e);
-                                Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                                if (cartItemCountText != null) {
+                                    cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                    cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                }
+                                synchronized (pendingCartOperations) {
+                                    pendingCartOperations.remove(product.getProductID());
+                                }
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error checking cart document: " + e.getMessage());
+                    Log.e(TAG, "Error checking cart document: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    Toast.makeText(this, "Error adding item to cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                    if (cartItemCountText != null) {
+                        cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                        cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                    }
+                    synchronized (pendingCartOperations) {
+                        pendingCartOperations.remove(product.getProductID());
+                    }
                 });
     }
 
@@ -473,13 +528,13 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                     }
                     searchResultsAdapter.updateData(products);
                     recyclerViewSearchResults.setVisibility(View.VISIBLE);
-                    Log.d("Homepage", "Search results loaded: " + products.size() + " for query: " + query);
+                    Log.d(TAG, "Search results loaded: " + products.size() + " for query: " + query);
                     if (products.isEmpty()) {
                         Toast.makeText(Homepage.this, "No products found", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error searching products: " + e.getMessage());
+                    Log.e(TAG, "Error searching products: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Toast.makeText(Homepage.this, "Error occurred while searching for products", Toast.LENGTH_SHORT).show();
                     recyclerViewSearchResults.setVisibility(View.GONE);
@@ -497,10 +552,10 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                         products.add(doc.toObject(Product.class));
                     }
                     adapter.updateData(products);
-                    Log.d("Homepage", "Super Sales loaded: " + products.size());
+                    Log.d(TAG, "Super Sales loaded: " + products.size());
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error loading Super Sales: " + e.getMessage());
+                    Log.e(TAG, "Error loading Super Sales: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                 });
     }
@@ -516,10 +571,10 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
                         products.add(doc.toObject(Product.class));
                     }
                     adapter.updateData(products);
-                    Log.d("Homepage", "Bestsellers loaded: " + products.size());
+                    Log.d(TAG, "Bestsellers loaded: " + products.size());
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Homepage", "Error loading Bestsellers: " + e.getMessage());
+                    Log.e(TAG, "Error loading Bestsellers: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                 });
     }
@@ -535,7 +590,7 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
 
         if (homepageItem == null || productItem == null || cartItem == null ||
                 blogItem == null || faqsItem == null || aboutUsItem == null || notiItem == null) {
-            Log.e("Homepage", "Menu items not found");
+            Log.e(TAG, "Menu items not found");
             return;
         }
 
@@ -600,7 +655,7 @@ public class Homepage extends BaseActivity implements ProductAdapter.OnAddToCart
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             int position = parent.getChildAdapterPosition(view);
-            int spanCount = 2; // Số cột
+            int spanCount = 2;
 
             outRect.top = spacing;
             outRect.bottom = spacing;

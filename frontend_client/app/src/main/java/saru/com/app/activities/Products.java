@@ -62,6 +62,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
     private TextView cartItemCountText;
     private AtomicBoolean isFilterDataLoaded = new AtomicBoolean(false);
     private Map<String, String> categoryCache = new HashMap<>();
+    private final Set<String> pendingCartOperations = new HashSet<>();
 
     @Override
     protected int getSelectedMenuItemId() {
@@ -78,7 +79,6 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             Log.e("Products", "SecurityException in initializeData: " + e.getMessage());
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
-            // Tiếp tục tải dữ liệu mà không phụ thuộc Google Play Services
             loadFilterData(null);
             loadProducts(null);
         }
@@ -111,7 +111,6 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
 
-        // Khởi tạo CartManager với callback
         CartManager.getInstance().initialize(this, success -> {
             runOnUiThread(() -> {
                 if (success && cartItemCountText != null) {
@@ -214,6 +213,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         if (cartItemCountText != null) {
             CartManager.getInstance().removeBadgeView(cartItemCountText);
         }
+        pendingCartOperations.clear();
     }
 
     private void openNotification() {
@@ -292,7 +292,15 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         }
 
         String accountID = auth.getCurrentUser().getUid();
-        onAddToCartInternal(product, accountID); // Thực hiện trực tiếp mà không cần checkPlayServices
+        String productID = product.getProductID();
+        synchronized (pendingCartOperations) {
+            if (pendingCartOperations.contains(productID)) {
+                Log.d("Products", "Add to cart operation for product " + productID + " is already in progress, ignoring");
+                return;
+            }
+            pendingCartOperations.add(productID);
+        }
+        onAddToCartInternal(product, accountID);
     }
 
     private void checkPlayServices(Runnable firebaseAction) {
@@ -306,12 +314,13 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                 Log.e("Products", "Google Play Services not available, resultCode: " + resultCode);
                 FirebaseCrashlytics.getInstance().recordException(new Exception("Google Play Services not available, resultCode: " + resultCode));
                 Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
+                firebaseAction.run();
             }
         } catch (SecurityException e) {
             Log.e("Products", "SecurityException in checkPlayServices: " + e.getMessage());
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(this, getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT).show();
-            firebaseAction.run(); // Tiếp tục thực hiện hành động Firestore
+            firebaseAction.run();
         }
     }
 
@@ -337,6 +346,20 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
         cartItemMap.put("quantity", cartItem.getQuantity());
         cartItemMap.put("selected", cartItem.isSelected());
 
+        // Cập nhật badge tạm thời
+        if (cartItemCountText != null) {
+            int currentCount = CartManager.getInstance().getItemCount();
+            boolean itemExists = CartManager.getInstance().getCartItems().stream()
+                    .anyMatch(item -> item.getProductID().equals(product.getProductID()));
+            if (!itemExists) {
+                cartItemCountText.setText(String.valueOf(currentCount + 1));
+                cartItemCountText.setVisibility(View.VISIBLE);
+                Log.d("Products", "Temporary badge update: " + (currentCount + 1));
+            }
+        }
+
+        // Kiểm tra và tạo document carts/{accountID}
+        long startTime = System.nanoTime();
         db.collection("carts").document(accountID).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!documentSnapshot.exists()) {
@@ -345,45 +368,87 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
                                 .addOnFailureListener(e -> {
                                     Log.e("Products", "Error creating cart document: ", e);
                                     FirebaseCrashlytics.getInstance().recordException(e);
+                                    synchronized (pendingCartOperations) {
+                                        pendingCartOperations.remove(product.getProductID());
+                                    }
+                                    if (cartItemCountText != null) {
+                                        cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                        cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                    }
                                 });
                     }
 
+                    // Kiểm tra document sản phẩm
                     db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                             .get()
                             .addOnSuccessListener(itemSnapshot -> {
-                                if (itemSnapshot.exists() && itemSnapshot.getLong("quantity") != null) {
-                                    Long currentQuantity = itemSnapshot.getLong("quantity");
+                                Long currentQuantity = itemSnapshot.getLong("quantity");
+                                if (itemSnapshot.exists() && currentQuantity != null && currentQuantity > 0) {
                                     cartItemMap.put("quantity", currentQuantity + 1);
                                     cartItem.setQuantity(currentQuantity.intValue() + 1);
-                                    Log.d("Products", "Item exists, updated quantity to: " + (currentQuantity + 1));
+                                    Log.d("Products", "Item exists with valid quantity " + currentQuantity + ", updated to: " + (currentQuantity + 1));
                                 } else {
                                     cartItemMap.put("quantity", 1);
                                     cartItem.setQuantity(1);
-                                    Log.d("Products", "Item does not exist, setting quantity to 1");
+                                    if (itemSnapshot.exists()) {
+                                        Log.d("Products", "Item exists but has invalid quantity (" + currentQuantity + "), resetting to 1");
+                                        // Xóa document không hợp lệ để đảm bảo trạng thái sạch
+                                        db.collection("carts").document(accountID).collection("items").document(product.getProductID())
+                                                .delete()
+                                                .addOnSuccessListener(aVoid -> Log.d("Products", "Deleted invalid item document: " + product.getProductID()))
+                                                .addOnFailureListener(e -> Log.e("Products", "Error deleting invalid item document: ", e));
+                                    } else {
+                                        Log.d("Products", "Item does not exist, setting quantity to 1");
+                                    }
                                 }
+                                // Cập nhật Firestore
                                 db.collection("carts").document(accountID).collection("items").document(product.getProductID())
                                         .set(cartItemMap)
                                         .addOnSuccessListener(aVoid -> {
-                                            Log.d("Products", "Added/Updated to cart: " + product.getProductName() + ", Quantity: " + cartItem.getQuantity());
+                                            Log.d("Products", "Added/Updated to cart: " + product.getProductName() + ", Quantity: " + cartItem.getQuantity() + ", Time: " + (System.nanoTime() - startTime) / 1_000_000 + "ms");
                                             Toast.makeText(this, getString(R.string.added_to_cart, product.getProductName()), Toast.LENGTH_SHORT).show();
                                             CartManager.getInstance().updateAllBadges();
+                                            synchronized (pendingCartOperations) {
+                                                pendingCartOperations.remove(product.getProductID());
+                                            }
                                         })
                                         .addOnFailureListener(e -> {
                                             Log.e("Products", "Error adding to cart: ", e);
                                             FirebaseCrashlytics.getInstance().recordException(e);
                                             Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                                            if (cartItemCountText != null) {
+                                                cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                                cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                            }
+                                            synchronized (pendingCartOperations) {
+                                                pendingCartOperations.remove(product.getProductID());
+                                            }
                                         });
                             })
                             .addOnFailureListener(e -> {
                                 Log.e("Products", "Error checking cart item: ", e);
                                 FirebaseCrashlytics.getInstance().recordException(e);
                                 Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                                if (cartItemCountText != null) {
+                                    cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                                    cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                                }
+                                synchronized (pendingCartOperations) {
+                                    pendingCartOperations.remove(product.getProductID());
+                                }
                             });
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Products", "Error checking cart document: ", e);
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Toast.makeText(this, getString(R.string.error_adding_to_cart), Toast.LENGTH_SHORT).show();
+                    if (cartItemCountText != null) {
+                        cartItemCountText.setText(String.valueOf(CartManager.getInstance().getItemCount()));
+                        cartItemCountText.setVisibility(CartManager.getInstance().getItemCount() > 0 ? View.VISIBLE : View.GONE);
+                    }
+                    synchronized (pendingCartOperations) {
+                        pendingCartOperations.remove(product.getProductID());
+                    }
                 });
     }
 
@@ -499,7 +564,7 @@ public class Products extends BaseActivity implements ProductAdapter.OnAddToCart
             Log.d("Products", "Total brands loaded: " + brands.size());
 
             Set<String> volumeSet = new HashSet<>();
-            Set<String> wineTypeSet = new HashSet<>();
+            Set<String> wineTypeSet =new HashSet<>();
             com.google.firebase.firestore.QuerySnapshot productSnapshot = (com.google.firebase.firestore.QuerySnapshot) results.get(1);
             for (DocumentSnapshot doc : productSnapshot.getDocuments()) {
                 String volume = doc.getString("netContent");

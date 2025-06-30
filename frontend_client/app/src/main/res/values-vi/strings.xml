@@ -741,6 +741,8 @@
     <string name="cancel_reason_enter_voucher">Nhập hoặc đổi mã voucher</string>
     <string name="cancel_reason_edit_items">Chỉnh sửa sản phẩm</string>
     <string name="title_x">x</string>
+    <string name="google_play_unavailable">Google Play không hoạt động</string>
+    <string name="please_login_to_cart">Vui lòng đăng nhập để truy cập giỏ hàng</string>
 
 </resources>
 
