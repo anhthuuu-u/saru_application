@@ -9,7 +9,7 @@
         android:id="@+id/edtRecipientName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Recipient Name"
+        android:hint="@string/recipient_name"
         android:inputType="textPersonName"
         android:layout_marginBottom="8dp" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/edtPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone"
+        android:hint="@string/phone_number"
         android:inputType="phone"
         android:layout_marginBottom="8dp" />
 
@@ -25,7 +25,7 @@
         android:id="@+id/edtAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address"
+        android:hint="@string/hint_address"
         android:inputType="textPostalAddress"
         android:layout_marginBottom="8dp" />
 
